@@ -11,7 +11,7 @@ export type DocumentationProp = {
 export type ComponentDocumentationEntry = {
   id: string;
   name: string;
-  category: 'Application display' | 'Shell';
+  category: 'Application display' | 'Data display' | 'Feedback' | 'Shell';
   maturity: 'stable';
   sourcePath: string;
   summary: string;
@@ -22,7 +22,16 @@ export type ComponentDocumentationEntry = {
 };
 
 export function getDocumentationCategoryLabel(category: ComponentDocumentationEntry['category']) {
-  return category === 'Application display' ? 'Presentación de aplicaciones' : 'Shell';
+  switch (category) {
+    case 'Application display':
+      return 'Presentación de aplicaciones';
+    case 'Data display':
+      return 'Presentación de datos';
+    case 'Feedback':
+      return 'Feedback';
+    default:
+      return 'Shell';
+  }
 }
 
 export function getMaturityLabel(maturity: ComponentDocumentationEntry['maturity']) {
@@ -74,6 +83,68 @@ export const componentDocumentation: readonly ComponentDocumentationEntry[] = [
     variants: ['predeterminada', 'compacta'],
     states: ['shell claro', 'shell oscuro'],
     example: '<ApplicationPreview application={application} compact />',
+  },
+  {
+    id: 'metric-card',
+    name: 'MetricCard',
+    category: 'Data display',
+    maturity: 'stable',
+    sourcePath: 'src/components/data-display/MetricCard.tsx',
+    summary: 'Tarjeta compacta para una métrica principal con nota contextual y tono semántico opcional.',
+    props: [
+      { name: 'label', type: 'string', required: true, description: 'Nombre visible de la métrica.' },
+      { name: 'value', type: 'string', required: true, description: 'Valor principal ya formateado para la interfaz.' },
+      { name: 'note', type: 'string', required: false, description: 'Contexto secundario, variación o estado de la métrica.' },
+      { name: 'tone', type: "'positive' | 'neutral' | 'warning'", required: false, defaultValue: 'neutral', description: 'Tono semántico de la nota.' },
+    ],
+    variants: ['positivo', 'neutral', 'advertencia'],
+    states: ['con nota', 'sin nota'],
+    example: '<MetricCard label="Pedidos" value="126" note="+12 desde ayer" tone="positive" />',
+  },
+  {
+    id: 'status-badge',
+    name: 'StatusBadge',
+    category: 'Data display',
+    maturity: 'stable',
+    sourcePath: 'src/components/data-display/StatusBadge.tsx',
+    summary: 'Badge semántico para estados breves dentro de listas, tablas y superficies operativas.',
+    props: [
+      { name: 'label', type: 'string', required: true, description: 'Texto visible del estado.' },
+      { name: 'tone', type: "'success' | 'warning' | 'info' | 'neutral'", required: false, defaultValue: 'neutral', description: 'Tono semántico visual del estado.' },
+    ],
+    variants: ['success', 'warning', 'info', 'neutral'],
+    states: ['predeterminado'],
+    example: '<StatusBadge label="Listo" tone="success" />',
+  },
+  {
+    id: 'activity-feed',
+    name: 'ActivityFeed',
+    category: 'Data display',
+    maturity: 'stable',
+    sourcePath: 'src/components/data-display/ActivityFeed.tsx',
+    summary: 'Lista responsive de actividad reciente con detalle, tiempo y estado opcional.',
+    props: [
+      { name: 'items', type: 'readonly ActivityFeedItem[]', required: true, description: 'Actividad tipada con identificadores estables y metadata visible.' },
+    ],
+    variants: ['lista operativa'],
+    states: ['con elementos', 'vacío'],
+    example: '<ActivityFeed items={activity} />',
+  },
+  {
+    id: 'inline-feedback',
+    name: 'InlineFeedback',
+    category: 'Feedback',
+    maturity: 'stable',
+    sourcePath: 'src/components/feedback/InlineFeedback.tsx',
+    summary: 'Feedback contextual para estados de carga, vacío, advertencia y error sin recurrir a overlays.',
+    props: [
+      { name: 'title', type: 'string', required: true, description: 'Título breve del estado.' },
+      { name: 'message', type: 'string', required: true, description: 'Explicación o siguiente contexto para la persona usuaria.' },
+      { name: 'tone', type: "'info' | 'warning' | 'error' | 'neutral'", required: false, defaultValue: 'neutral', description: 'Tono semántico del bloque.' },
+    ],
+    variants: ['info', 'warning', 'error', 'neutral'],
+    states: ['status', 'alert en error'],
+    example: '<InlineFeedback title="Sin datos" message="Todavía no hay actividad." />',
   },
   {
     id: 'left-app-shell',
