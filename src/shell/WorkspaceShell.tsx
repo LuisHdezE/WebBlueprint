@@ -7,7 +7,7 @@ type WorkspaceShellProps = {
   children: ReactNode;
   title: string;
   subtitle?: string;
-  userName?: string;
+  userName?: string | undefined;
   onSignOut: () => void;
   variant?: WorkspaceShellVariant;
 };
