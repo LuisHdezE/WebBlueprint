@@ -46,6 +46,24 @@ export function applyPreset(
   };
 }
 
+export function validateComposerConfiguration(configuration: ComposerConfiguration) {
+  const issues: string[] = [];
+
+  if (!configuration.name.trim()) {
+    issues.push('Application name is required.');
+  }
+
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(configuration.slug.trim())) {
+    issues.push('Slug must contain lowercase letters, numbers and single hyphens only.');
+  }
+
+  if (!/^#[0-9a-f]{6}$/i.test(configuration.branding.accentColor)) {
+    issues.push('Accent color must be a six-digit hexadecimal color.');
+  }
+
+  return issues;
+}
+
 export function buildComposerManifest(configuration: ComposerConfiguration): ComposerManifest {
   const selectedFeatures = new Set(configuration.featureIds);
   const selectedPages = new Set(configuration.pageIds);

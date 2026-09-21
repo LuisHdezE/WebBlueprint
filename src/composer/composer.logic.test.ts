@@ -6,6 +6,7 @@ import {
   buildComposerManifest,
   createEmptyComposerConfiguration,
   deriveApplicationSlug,
+  validateComposerConfiguration,
 } from '@/composer/composer.logic';
 
 describe('composer core', () => {
@@ -43,5 +44,18 @@ describe('composer core', () => {
     expect(manifest.features).toHaveLength(firstFeature ? 1 : 0);
     expect(manifest.pages).toHaveLength(firstPage ? 1 : 0);
     expect(manifest.navigation.items).toHaveLength(manifest.pages.length);
+  });
+
+  it('reports invalid identity and branding before manifest download', () => {
+    const configuration = createEmptyComposerConfiguration();
+    configuration.name = '   ';
+    configuration.slug = 'Bad Slug';
+    configuration.branding.accentColor = 'blue';
+
+    expect(validateComposerConfiguration(configuration)).toEqual([
+      'Application name is required.',
+      'Slug must contain lowercase letters, numbers and single hyphens only.',
+      'Accent color must be a six-digit hexadecimal color.',
+    ]);
   });
 });

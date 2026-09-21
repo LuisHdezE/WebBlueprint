@@ -6,6 +6,7 @@ import {
   buildComposerManifest,
   createEmptyComposerConfiguration,
   deriveApplicationSlug,
+  validateComposerConfiguration,
 } from '@/composer/composer.logic';
 import type { ComposerConfiguration, ComposerStep } from '@/composer/composer.types';
 import { leftMenuVariants } from '@/shell/shell.types';
@@ -66,6 +67,7 @@ export function ComposerWizard() {
   const [configuration, setConfiguration] = useState<ComposerConfiguration>(readStoredConfiguration);
   const currentStepIndex = steps.findIndex((step) => step.id === currentStep);
   const manifest = buildComposerManifest(configuration);
+  const validationIssues = validateComposerConfiguration(configuration);
   const selectedPreset = applicationRegistry.find((application) => application.id === configuration.presetId);
   const selectedPages = composerPageOptions.filter((page) => configuration.pageIds.includes(page.id));
 
@@ -121,6 +123,20 @@ export function ComposerWizard() {
     if (target) {
       setCurrentStep(target.id);
     }
+  }
+
+  function downloadManifest() {
+    if (validationIssues.length > 0) {
+      return;
+    }
+
+    const blob = new Blob([`${JSON.stringify(manifest, null, 2)}\n`], { type: 'application/json' });
+    const objectUrl = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = objectUrl;
+    link.download = 'webblueprint.json';
+    link.click();
+    URL.revokeObjectURL(objectUrl);
   }
 
   return (
@@ -200,6 +216,11 @@ export function ComposerWizard() {
                   value={configuration.description}
                 />
               </label>
+              {validationIssues.some((issue) => issue.startsWith('Application name') || issue.startsWith('Slug')) && (
+                <div className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
+                  Complete a valid application name and slug before downloading the manifest.
+                </div>
+              )}
             </div>
           )}
 
@@ -404,7 +425,7 @@ export function ComposerWizard() {
 
           {currentStep === 'review' && (
             <div>
-              <StepHeading title="Review manifest" description="This is the deterministic configuration boundary the Export Engine will consume in U0.4." />
+              <StepHeading title="Review manifest" description="This deterministic configuration boundary is ready to become the Export Engine input in U0.4." />
               <div className="mt-4 grid gap-4 lg:grid-cols-[260px_1fr]">
                 <div className="space-y-2">
                   <ReviewLine label="Application" value={configuration.name} />
@@ -412,6 +433,26 @@ export function ComposerWizard() {
                   <ReviewLine label="Features" value={String(configuration.featureIds.length)} />
                   <ReviewLine label="Pages" value={String(configuration.pageIds.length)} />
                   <ReviewLine label="Shell" value={configuration.shellVariant} />
+                  {validationIssues.length > 0 ? (
+                    <div className="rounded-lg border border-amber-200 bg-amber-50 p-3">
+                      <p className="text-xs font-semibold text-amber-900">Manifest needs attention</p>
+                      <ul className="mt-1.5 space-y-1 text-[11px] leading-4 text-amber-800">
+                        {validationIssues.map((issue) => <li key={issue}>• {issue}</li>)}
+                      </ul>
+                    </div>
+                  ) : (
+                    <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-xs font-semibold text-emerald-800">
+                      Manifest configuration is valid.
+                    </div>
+                  )}
+                  <button
+                    className="w-full rounded-lg bg-brand-600 px-3 py-2.5 text-xs font-semibold text-white transition hover:bg-brand-700 disabled:cursor-not-allowed disabled:bg-slate-300"
+                    disabled={validationIssues.length > 0}
+                    onClick={downloadManifest}
+                    type="button"
+                  >
+                    Download webblueprint.json
+                  </button>
                 </div>
                 <pre className="max-h-[520px] overflow-auto rounded-xl bg-slate-950 p-4 text-[11px] leading-5 text-slate-200">
                   {JSON.stringify(manifest, null, 2)}
@@ -432,7 +473,7 @@ export function ComposerWizard() {
             <div className="text-center text-[11px] text-slate-400">Draft saved locally</div>
             <button
               className="rounded-lg bg-brand-600 px-3 py-2 text-xs font-semibold text-white transition hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-40"
-              disabled={currentStepIndex === steps.length - 1}
+              disabled={currentStepIndex === steps.length - 1 || (currentStep === 'application' && validationIssues.length > 0)}
               onClick={() => goRelative(1)}
               type="button"
             >
@@ -458,9 +499,11 @@ export function ComposerWizard() {
         </section>
 
         <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-2">
             <p className="text-xs font-semibold text-slate-700">Manifest status</p>
-            <span className="rounded-full bg-emerald-50 px-2 py-1 text-[10px] font-semibold text-emerald-700">LIVE</span>
+            <span className={`rounded-full px-2 py-1 text-[10px] font-semibold ${validationIssues.length === 0 ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'}`}>
+              {validationIssues.length === 0 ? 'READY' : 'CHECK'}
+            </span>
           </div>
           <p className="mt-2 text-xs leading-5 text-slate-500">
             `webblueprint.json` is generated from the current draft. ZIP export remains intentionally reserved for U0.4.
