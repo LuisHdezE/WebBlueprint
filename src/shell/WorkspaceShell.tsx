@@ -13,14 +13,14 @@ type WorkspaceShellProps = {
 };
 
 const composerSections = [
-  'Overview',
-  'Application',
-  'Branding',
-  'Presets',
-  'Features',
-  'Navigation',
-  'Review',
-  'Export',
+  { id: 'overview', label: 'Resumen' },
+  { id: 'application', label: 'Aplicación' },
+  { id: 'branding', label: 'Marca' },
+  { id: 'presets', label: 'Presets' },
+  { id: 'features', label: 'Funciones' },
+  { id: 'navigation', label: 'Navegación' },
+  { id: 'review', label: 'Revisión' },
+  { id: 'export', label: 'Exportación' },
 ] as const;
 
 export function WorkspaceShell({
@@ -33,8 +33,8 @@ export function WorkspaceShell({
 }: WorkspaceShellProps) {
   const isDark = variant === 'vertical-dark-menu';
   const navItems = composerSections.map((section, index) => ({
-    id: section.toLowerCase().replaceAll(' ', '-'),
-    label: section,
+    id: section.id,
+    label: section.label,
     href: '/composer',
     isActive: index === 0,
   }));
@@ -43,7 +43,7 @@ export function WorkspaceShell({
     <LeftAppShell
       brandInitials="WB"
       brandName="WebBlueprint"
-      brandSubtitle="App Composer"
+      brandSubtitle="Compositor de aplicaciones"
       navItems={navItems}
       subtitle={subtitle}
       title={title}
@@ -56,15 +56,15 @@ export function WorkspaceShell({
       footer={
         <div>
           <div className={`mb-2 rounded-lg p-2.5 ${isDark ? 'bg-white/5 text-white' : 'bg-brand-50 text-slate-900'}`}>
-            <p className="truncate text-sm font-semibold">{userName || 'Composer user'}</p>
-            <p className={`mt-0.5 text-[11px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Authenticated workspace</p>
+            <p className="truncate text-sm font-semibold">{userName || 'Usuario del Compositor'}</p>
+            <p className={`mt-0.5 text-[11px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Espacio autenticado</p>
           </div>
           <div className="grid gap-1">
             <Link className={`rounded-lg px-2.5 py-1.5 text-[13px] font-medium ${isDark ? 'text-slate-300 hover:bg-white/10 hover:text-white' : 'text-slate-600 hover:bg-brand-50 hover:text-brand-700'}`} to="/">
-              Public site
+              Sitio público
             </Link>
             <button className={`rounded-lg px-2.5 py-1.5 text-left text-[13px] font-medium ${isDark ? 'text-slate-300 hover:bg-white/10 hover:text-white' : 'text-slate-600 hover:bg-brand-50 hover:text-brand-700'}`} onClick={onSignOut} type="button">
-              Sign out
+              Cerrar sesión
             </button>
           </div>
         </div>
