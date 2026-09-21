@@ -33,12 +33,13 @@ jobs:
       - name: Install dependencies
         run: npm install --no-audit --no-fund
 
-      - name: Emit bootstrap lockfile evidence
-        run: |
-          echo "LOCKFILE_GZIP_BASE64_BEGIN"
-          gzip -c package-lock.json | base64 -w 0
-          echo
-          echo "LOCKFILE_GZIP_BASE64_END"
+      - name: Upload bootstrap lockfile
+        uses: actions/upload-artifact@v4
+        with:
+          name: bootstrap-package-lock
+          path: package-lock.json
+          if-no-files-found: error
+          retention-days: 1
 
       - name: Quality gate
         run: npm run check
