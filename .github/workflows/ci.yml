@@ -36,11 +36,15 @@ jobs:
       - name: Quality gate
         run: npm run check
 
+      - name: Verify deployable SPA fallback
+        run: test -f dist/.htaccess
+
       - name: Upload PR build preview
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4
         with:
           name: web-preview
           path: dist
+          include-hidden-files: true
           if-no-files-found: error
           retention-days: 3
