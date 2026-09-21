@@ -21,7 +21,7 @@ export type ComponentDocumentationEntry = {
   example: string;
 };
 
-export const componentDocumentation = [
+export const componentDocumentation: readonly ComponentDocumentationEntry[] = [
   {
     id: 'application-card',
     name: 'ApplicationCard',
@@ -121,7 +121,7 @@ export const componentDocumentation = [
     states: ['active route', 'mobile menu open', 'mobile menu closed'],
     example: '<Route element={<PublicShell />}>…</Route>',
   },
-] as const satisfies readonly ComponentDocumentationEntry[];
+];
 
 export const livingDocumentationPrinciples = [
   'Document reusable code when it enters the product.',
