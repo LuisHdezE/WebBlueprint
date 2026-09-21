@@ -44,8 +44,11 @@ function buildPageOptions(): readonly ComposerPageOption[] {
   return applicationRegistry.flatMap((application) =>
     application.demoPages.map((page) => ({
       id: `${application.id}.${page.id}`,
+      pageKey: page.pageKey,
       label: page.label,
       path: page.path,
+      iconKey: page.iconKey,
+      group: page.group,
       description: page.description,
       sourceApplicationId: application.id,
     })),

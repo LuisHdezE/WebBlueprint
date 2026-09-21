@@ -73,13 +73,16 @@ export function buildComposerManifest(configuration: ComposerConfiguration): Com
     .filter((page) => selectedPages.has(page.id))
     .map((page) => ({
       id: page.id,
+      pageKey: page.pageKey,
       label: page.label,
       path: page.path,
+      iconKey: page.iconKey,
+      group: page.group,
       sourceApplicationId: page.sourceApplicationId,
     }));
 
   return {
-    schemaVersion: '0.1',
+    schemaVersion: '0.2',
     application: {
       name: configuration.name.trim(),
       slug: configuration.slug.trim(),
@@ -96,8 +99,11 @@ export function buildComposerManifest(configuration: ComposerConfiguration): Com
       shellVariant: configuration.shellVariant,
       items: pages.map((page) => ({
         pageId: page.id,
+        pageKey: page.pageKey,
         label: page.label,
         path: page.path,
+        iconKey: page.iconKey,
+        group: page.group,
       })),
     },
   };

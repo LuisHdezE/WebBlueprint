@@ -1,4 +1,5 @@
-import type { ApplicationDefinition } from '@/applications/application.types';
+import type { ApplicationDefinition, DemoPageDefinition } from '@/applications/application.types';
+import { getPageDefinition, type PageKey } from '@/applications/pageRegistry';
 
 const capabilityLabels: Readonly<Record<string, string>> = {
   Dashboard: 'Panel',
@@ -10,6 +11,20 @@ const capabilityLabels: Readonly<Record<string, string>> = {
 
 export function getCapabilityLabel(capability: string) {
   return capabilityLabels[capability] ?? capability;
+}
+
+function defineDemoPage(id: string, pageKey: PageKey, description: string): DemoPageDefinition {
+  const page = getPageDefinition(pageKey);
+
+  return {
+    id,
+    pageKey,
+    label: page.label,
+    path: page.path,
+    description,
+    iconKey: page.iconKey,
+    group: page.group,
+  };
 }
 
 export const applicationRegistry = [
@@ -24,36 +39,11 @@ export const applicationRegistry = [
     shellVariant: 'vertical-light-menu',
     capabilities: ['Dashboard', 'Products', 'Customers', 'Orders', 'Inventory'],
     demoPages: [
-      {
-        id: 'dashboard',
-        label: 'Panel',
-        path: 'dashboard',
-        description: 'Resumen operativo con las señales clave que el equipo necesita consultar de un vistazo.',
-      },
-      {
-        id: 'products',
-        label: 'Productos',
-        path: 'products',
-        description: 'Catálogo de productos y espacio de trabajo orientado al stock.',
-      },
-      {
-        id: 'customers',
-        label: 'Clientes',
-        path: 'customers',
-        description: 'Directorio de clientes y contexto de la relación comercial.',
-      },
-      {
-        id: 'orders',
-        label: 'Pedidos',
-        path: 'orders',
-        description: 'Seguimiento de pedidos y espacio de trabajo orientado al cumplimiento.',
-      },
-      {
-        id: 'inventory',
-        label: 'Inventario',
-        path: 'inventory',
-        description: 'Visibilidad de inventario y espacio de trabajo orientado a la reposición.',
-      },
+      defineDemoPage('dashboard', 'dashboard', 'Resumen operativo con las señales clave que el equipo necesita consultar de un vistazo.'),
+      defineDemoPage('products', 'product-catalog-admin', 'Catálogo de productos y espacio de trabajo orientado al stock.'),
+      defineDemoPage('customers', 'customers', 'Directorio de clientes y contexto de la relación comercial.'),
+      defineDemoPage('orders', 'orders', 'Seguimiento de pedidos y espacio de trabajo orientado al cumplimiento.'),
+      defineDemoPage('inventory', 'inventory', 'Visibilidad de inventario y espacio de trabajo orientado a la reposición.'),
     ],
   },
 ] as const satisfies readonly ApplicationDefinition[];
