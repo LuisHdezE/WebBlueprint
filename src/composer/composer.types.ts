@@ -33,14 +33,17 @@ export type ComposerFeatureOption = {
 
 export type ComposerPageOption = {
   id: string;
+  pageKey: string;
   label: string;
   path: string;
+  iconKey: string;
+  group: string;
   description: string;
   sourceApplicationId: string;
 };
 
 export type ComposerManifest = {
-  schemaVersion: '0.1';
+  schemaVersion: '0.2';
   application: {
     name: string;
     slug: string;
@@ -57,16 +60,22 @@ export type ComposerManifest = {
   }[];
   pages: readonly {
     id: string;
+    pageKey: string;
     label: string;
     path: string;
+    iconKey: string;
+    group: string;
     sourceApplicationId: string;
   }[];
   navigation: {
     shellVariant: LeftMenuVariant;
     items: readonly {
       pageId: string;
+      pageKey: string;
       label: string;
       path: string;
+      iconKey: string;
+      group: string;
     }[];
   };
 };
