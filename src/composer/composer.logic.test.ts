@@ -48,12 +48,25 @@ describe('composer core', () => {
 
     const manifest = buildComposerManifest(configuration);
 
-    expect(manifest.schemaVersion).toBe('0.1');
+    expect(manifest.schemaVersion).toBe('0.2');
     expect(manifest.application.slug).toBe('portal-de-clientes');
     expect(manifest.branding.logoUrl).toBeNull();
     expect(manifest.features).toHaveLength(firstFeature ? 1 : 0);
     expect(manifest.pages).toHaveLength(firstPage ? 1 : 0);
     expect(manifest.navigation.items).toHaveLength(manifest.pages.length);
+
+    if (firstPage) {
+      expect(manifest.pages[0]).toMatchObject({
+        pageKey: firstPage.pageKey,
+        iconKey: firstPage.iconKey,
+        group: firstPage.group,
+      });
+      expect(manifest.navigation.items[0]).toMatchObject({
+        pageKey: firstPage.pageKey,
+        iconKey: firstPage.iconKey,
+        group: firstPage.group,
+      });
+    }
   });
 
   it('reports invalid identity and branding before manifest download', () => {
