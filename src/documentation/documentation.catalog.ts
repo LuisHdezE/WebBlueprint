@@ -107,7 +107,7 @@ export const componentDocumentation: readonly ComponentDocumentationEntry[] = [
     category: 'Data display',
     maturity: 'stable',
     sourcePath: 'src/components/data-display/StatusBadge.tsx',
-    summary: 'Badge semántico para estados breves dentro de listas, tablas y superficies operativas.',
+    summary: 'Etiqueta semántica compacta para estados breves dentro de listas, tablas y superficies operativas.',
     props: [
       { name: 'label', type: 'string', required: true, description: 'Texto visible del estado.' },
       { name: 'tone', type: "'success' | 'warning' | 'info' | 'neutral'", required: false, defaultValue: 'neutral', description: 'Tono semántico visual del estado.' },
