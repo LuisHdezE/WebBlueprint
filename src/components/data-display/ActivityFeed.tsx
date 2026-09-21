@@ -27,7 +27,9 @@ export function ActivityFeed({ items }: ActivityFeedProps) {
             <p className="mt-1 text-xs leading-5 text-slate-500">{item.detail}</p>
           </div>
           <div className="flex items-center gap-2 sm:flex-col sm:items-end">
-            {item.statusLabel ? <StatusBadge label={item.statusLabel} tone={item.statusTone} /> : null}
+            {item.statusLabel ? (
+              item.statusTone ? <StatusBadge label={item.statusLabel} tone={item.statusTone} /> : <StatusBadge label={item.statusLabel} />
+            ) : null}
             <span className="text-[11px] text-slate-400">{item.timeLabel}</span>
           </div>
         </article>
