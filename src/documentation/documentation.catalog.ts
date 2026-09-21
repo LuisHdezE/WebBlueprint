@@ -1,3 +1,5 @@
+import { leftMenuVariants } from '@/shell/shell.types';
+
 export type DocumentationProp = {
   name: string;
   type: string;
@@ -84,7 +86,7 @@ export const componentDocumentation = [
       { name: 'topbarActions', type: 'ReactNode', required: false, description: 'Optional topbar action content.' },
       { name: 'children', type: 'ReactNode', required: true, description: 'Application content rendered in the shell workspace.' },
     ],
-    variants: ['collapsible-menu', 'vertical-dark-menu', 'vertical-light-menu'],
+    variants: leftMenuVariants,
     states: ['expanded desktop', 'collapsed desktop', 'mobile drawer open', 'mobile drawer closed'],
     example: '<LeftAppShell brandName="Acme" brandInitials="AC" navItems={items} title="Dashboard">…</LeftAppShell>',
   },
@@ -103,7 +105,7 @@ export const componentDocumentation = [
       { name: 'variant', type: 'LeftMenuVariant', required: false, defaultValue: 'collapsible-menu', description: 'Delegated governed left-menu variant.' },
       { name: 'children', type: 'ReactNode', required: true, description: 'Composer workspace content.' },
     ],
-    variants: ['collapsible-menu', 'vertical-dark-menu', 'vertical-light-menu'],
+    variants: leftMenuVariants,
     states: ['authenticated workspace', 'mobile drawer', 'collapsed navigation'],
     example: '<WorkspaceShell title="App Composer" onSignOut={signOut}>…</WorkspaceShell>',
   },
