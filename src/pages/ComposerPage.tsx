@@ -1,5 +1,6 @@
 import { useSession } from '@/auth/useSession';
 import { ComposerWizard } from '@/composer/ComposerWizard';
+import { ComposerExportPanel } from '@/export/ComposerExportPanel';
 import { WorkspaceShell } from '@/shell/WorkspaceShell';
 
 export function ComposerPage() {
@@ -15,6 +16,7 @@ export function ComposerPage() {
     >
       <section className="mx-auto max-w-[1440px]">
         <ComposerWizard />
+        <ComposerExportPanel />
       </section>
     </WorkspaceShell>
   );
