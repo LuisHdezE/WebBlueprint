@@ -1,120 +1,120 @@
-# ADR-0001 · WebBlueprint Foundation Baseline
+# ADR-0001 · Baseline de fundación de WebBlueprint
 
-Status: **Accepted**  
-Date: **2026-09-20**
+Estado: **Aceptado**  
+Fecha: **2026-09-20**
 
-## Purpose
+## Propósito
 
-Freeze the non-negotiable product and UI foundations before implementation begins.
+Fijar las bases no negociables de producto y UI antes de comenzar la implementación.
 
-## Technology scope
+## Alcance tecnológico
 
-- Frontend only.
+- Solo frontend.
 - React.js.
 - Tailwind CSS.
-- All runtime/domain data is mock during the Blueprint phase.
-- Mock data must be consumed through replaceable data providers/repositories/hooks/services. Domain data must not be embedded directly inside page components.
+- Todos los datos de runtime/dominio son simulados durante la fase Blueprint.
+- Los datos simulados deben consumirse mediante providers/repositorios/hooks/servicios reemplazables. Los datos de dominio no deben incrustarse directamente dentro de componentes de página.
 
-## Visual baseline
+## Baseline visual
 
-The approved visual baseline is **Style 1**.
+El baseline visual aprobado es **Style 1**.
 
-Characteristics:
+Características:
 
-- light, clean and professional;
-- restrained shadows;
-- soft rounded surfaces;
-- strong typography hierarchy;
-- consistent spacing;
-- calm neutral backgrounds;
-- one configurable accent/theme color system;
-- application name and logo are configurable branding inputs.
+- claro, limpio y profesional;
+- sombras discretas;
+- superficies suavemente redondeadas;
+- jerarquía tipográfica fuerte;
+- espaciado consistente;
+- fondos neutros y calmados;
+- un sistema configurable de color de acento/tema;
+- nombre y logo de la aplicación como entradas configurables de marca.
 
-The fundamental visual language is stable across generated applications. Branding changes must be token/config driven rather than page-specific redesigns.
+El lenguaje visual fundamental es estable entre aplicaciones generadas. Los cambios de marca deben gobernarse por tokens/configuración y no mediante rediseños específicos de página.
 
-## Responsive baseline
+## Baseline responsive
 
-Mobile-first is mandatory.
+Mobile-first es obligatorio.
 
-A view or component is not complete unless it works at mobile, tablet and desktop widths. Responsive behavior is part of acceptance criteria, not a later polish phase.
+Una vista o componente no se considera completo hasta funcionar en anchos móvil, tablet y escritorio. El comportamiento responsive forma parte de los criterios de aceptación, no de una fase posterior de pulido.
 
-## Navigation and shell
+## Navegación y shell
 
-Navigation is always on the **left** for desktop/tablet shell layouts.
+La navegación se mantiene siempre a la **izquierda** en layouts de shell para escritorio/tablet.
 
-Only these CORK shell variants are accepted as functional reference material:
+Solo estas variantes de shell de CORK se aceptan como material de referencia funcional:
 
 1. `collapsible-menu`
 2. `vertical-dark-menu`
 3. `vertical-light-menu`
 
-Horizontal menu variants, modern menu variants, semi-dark menu variants and RTL variants are excluded from the reference scope unless a future explicit decision changes this ADR.
+Las variantes con menú horizontal, menú moderno, menú semi-dark y RTL quedan excluidas del alcance de referencia salvo que una futura decisión explícita modifique este ADR.
 
-WebBlueprint will implement its own componentized shell rather than copying CORK shell code.
+WebBlueprint implementará su propio shell componentizado en lugar de copiar código de shell de CORK.
 
-Shared shell UI exists once:
+La UI compartida del shell existe una sola vez:
 
 - `AppShell`
 - `Sidebar`
 - `Topbar`
-- responsive/mobile navigation behavior
-- optional `BottomBar` where the mobile pattern requires it
+- comportamiento de navegación responsive/móvil
+- `BottomBar` opcional cuando el patrón móvil lo requiera
 
-Pages must never recreate those structures independently.
+Las páginas nunca deben recrear esas estructuras de forma independiente.
 
-## Component architecture
+## Arquitectura de componentes
 
-WebBlueprint will own its component library.
+WebBlueprint será propietario de su librería de componentes.
 
-Pages compose reusable components. If a page requires a reusable UI element that does not yet exist, the component is implemented in the library first and then consumed by the page.
+Las páginas componen componentes reutilizables. Si una página necesita un elemento UI reutilizable que todavía no existe, primero se implementa en la librería y después se consume desde la página.
 
-The component library grows incrementally from real page requirements rather than being invented in full up front.
+La librería crece de manera incremental a partir de necesidades reales de páginas, en lugar de inventarse completa por anticipado.
 
-Examples include:
+Ejemplos:
 
 - Button
 - Badge
 - Dropdown
 - Modal
 - Drawer
-- Form controls
+- controles de formulario
 - DataTable
 - Pagination
 - PageHeader
-- navigation primitives
-- feedback/state components
+- primitivas de navegación
+- componentes de feedback/estado
 
-A single configurable component should serve multiple pages through props/configuration instead of creating page-specific duplicates.
+Un único componente configurable debe servir a varias páginas mediante props/configuración, evitando duplicados específicos por página.
 
-## Documentation
+## Documentación
 
-Documentation is a first-class application area from the beginning.
+La documentación es un área de primera clase de la aplicación desde el inicio.
 
-Every reusable component must be documented as it is introduced, including relevant variants, states, properties/configuration, responsive behavior and examples.
+Cada componente reutilizable debe documentarse cuando se introduce, incluyendo variantes relevantes, estados, propiedades/configuración, comportamiento responsive y ejemplos.
 
-The documentation and component gallery must grow together with the implementation.
+La documentación y la galería de componentes deben crecer junto con la implementación.
 
-## Reference-template rule
+## Regla de template de referencia
 
-The initial CORK archive is a functional and visual reference catalog only.
+El archivo inicial de CORK es únicamente un catálogo de referencia funcional y visual.
 
-Its implementation technology, source structure and styling are not architectural dependencies of WebBlueprint.
+Su tecnología de implementación, estructura fuente y estilos no son dependencias arquitectónicas de WebBlueprint.
 
-Each reference view will be classified before implementation as:
+Cada vista de referencia se clasificará antes de implementarse como:
 
 - `KEEP`
 - `ADAPT`
 - `MERGE`
 - `DISCARD`
 
-CORK is the starting catalog, not the final boundary of the product. Additional view/pattern research will follow the first reference-coverage phase.
+CORK es el catálogo inicial, no el límite final del producto. Después de la primera fase de cobertura de referencia se realizará investigación adicional de vistas/patrones.
 
-## Delivery and evidence
+## Entrega y evidencia
 
-Development is incremental and evidence-driven:
+El desarrollo es incremental y guiado por evidencia:
 
-- Git version control from the first change;
-- small branches/PRs;
-- living architecture and inventory documentation;
-- CI introduced during foundation;
-- CD introduced early so the current `main` state can remain publicly demonstrable through Eliaswork infrastructure.
+- control de versiones Git desde el primer cambio;
+- ramas/PR pequeños;
+- documentación viva de arquitectura e inventario;
+- CI introducido durante la fundación;
+- CD introducido temprano para que el estado actual de `main` pueda mantenerse públicamente demostrable mediante la infraestructura de EliasWorks.
