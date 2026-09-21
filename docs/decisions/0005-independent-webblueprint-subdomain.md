@@ -1,30 +1,30 @@
-# ADR-0005 · Independent WebBlueprint Subdomain
+# ADR-0005 · Subdominio independiente de WebBlueprint
 
-Status: **Accepted**  
-Date: **2026-09-21**
+Estado: **Aceptado**  
+Fecha: **2026-09-21**
 
-## Decision
+## Decisión
 
-WebBlueprint is an independent web application hosted at:
+WebBlueprint es una aplicación web independiente alojada en:
 
 - `https://webblueprint.eliasworks.uy`
 
-It is not mounted under the Laravel portfolio route space.
+No está montada dentro del espacio de rutas del portafolio Laravel.
 
-The browser-facing application root is `/`, while the current EliasWorks FTP hosting maps the site to its own physical directory:
+La raíz de la aplicación visible para el navegador es `/`, mientras que el hosting FTP actual de EliasWorks mapea el sitio a su propio directorio físico:
 
 - `public_html/webblueprint/`
 
-## Consequences
+## Consecuencias
 
-- Vite keeps production base `/`;
-- React Router keeps the subdomain root as its basename;
-- the root Laravel application at `https://eliasworks.uy` remains operationally independent;
-- Apache `.htaccess` SPA fallback belongs inside the WebBlueprint deployment directory;
-- production CD publishes only the WebBlueprint `dist/` bundle into that directory;
-- production smoke tests target the subdomain and direct deep links;
-- Render is not a canonical deployment target.
+- Vite mantiene la base de producción `/`;
+- React Router mantiene la raíz del subdominio como basename;
+- la aplicación Laravel raíz en `https://eliasworks.uy` permanece operacionalmente independiente;
+- el fallback SPA de Apache mediante `.htaccess` pertenece al directorio de despliegue de WebBlueprint;
+- el CD de producción publica únicamente el bundle `dist/` de WebBlueprint dentro de ese directorio;
+- los smoke tests de producción apuntan al subdominio y a deep links directos;
+- Render no es un destino canónico de despliegue.
 
-## Delivery rule
+## Regla de entrega
 
-Production must deploy the exact `dist/` artifact created by a successful CI run for `main`, rather than rebuilding a second unverified bundle in the deployment job.
+Producción debe desplegar el artefacto `dist/` exacto creado por una ejecución exitosa de CI sobre `main`, en lugar de recompilar un segundo bundle no verificado dentro del job de despliegue.
