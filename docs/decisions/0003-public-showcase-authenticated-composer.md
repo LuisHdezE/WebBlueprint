@@ -59,6 +59,38 @@ Example:
 
 The demo is showcase-only. It must not expose an application ZIP export action.
 
+### Commercial proposal demo use case
+
+Public demos are also a first-class commercial/proposal capability of WebBlueprint.
+
+When a prospective client requests a custom application through a freelance marketplace, direct sales contact or another commercial channel, WebBlueprint should allow a relevant application concept/demo to be assembled quickly from the existing page/component catalog and published as a shareable public URL.
+
+The intended workflow is:
+
+```text
+Prospective client requirement
+        ↓
+Choose/create application concept
+        ↓
+Select relevant pages/features
+        ↓
+Apply branding/theme as appropriate
+        ↓
+Publish navigable frontend demo
+        ↓
+Feature the application on the public landing/catalog when desired
+        ↓
+Share direct demo URL with prospect
+```
+
+The prospective client can then navigate a realistic, responsive mock frontend and understand the proposed product before backend/API implementation exists.
+
+The demo must communicate the intended user experience, navigation, information architecture and visible capabilities of the proposed application while remaining technically honest: at this stage its domain data may be mock and its backend/API functionality may not yet exist.
+
+A demo created for a proposal can become one of the applications promoted in the public catalog. Therefore a commercially useful demo should not be treated as disposable mockup work; when appropriate it should enrich the reusable WebBlueprint application/preset library.
+
+Direct demo links must be stable and human-shareable enough to send in a proposal or freelance-platform conversation without requiring the recipient to understand WebBlueprint itself.
+
 ## Public documentation
 
 Documentation is public and directly reachable from the landing/navigation experience.
@@ -116,7 +148,7 @@ Initial direction:
 - `/` — landing page
 - `/apps` — public application catalog
 - `/apps/:slug` — application presentation/detail
-- `/demo/:slug/*` — public navigable application demo
+- `/demo/:slug/*` — public navigable application demo/shareable proposal URL
 - `/docs/*` — public documentation
 - `/login` — sign-in entry
 
@@ -135,6 +167,8 @@ Additional authenticated account routes may be added only when required.
 - presets/application concepts become reusable metadata consumed by both the public showcase and App Composer;
 - a Pet Shop definition should not be duplicated separately for marketing, demo and Composer selection;
 - public demo navigation must derive from the same application/feature registry direction used by the Composer;
+- demos must be suitable both for general public showcase and direct commercial proposal sharing;
+- useful proposal demos should be preservable/promotable as reusable catalog applications instead of becoming disposable one-off mockups;
 - export actions exist only inside the authenticated Composer experience;
 - Style 1 remains the visual authority for product UI, adapted appropriately for the public landing and workspace surfaces;
 - all surfaces remain mobile-first and responsive.
@@ -150,7 +184,9 @@ Public catalog card
         ↓
 Public application detail
         ↓
-Public navigable demo
+Public navigable / proposal demo
+        ↓
+Shareable client URL
         ↓
 App Composer preset selection
         ↓
