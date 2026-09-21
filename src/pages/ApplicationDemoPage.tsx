@@ -2,6 +2,7 @@ import { Link, Navigate, useParams } from 'react-router';
 import { getApplicationBySlug, getCapabilityLabel } from '@/applications/applicationRegistry';
 import type { ApplicationDefinition, DemoPageDefinition } from '@/applications/application.types';
 import { DashboardView } from '@/dashboard/DashboardView';
+import { ProductCatalogView } from '@/products/ProductCatalogView';
 import { LeftAppShell } from '@/shell/LeftAppShell';
 
 export function ApplicationDemoPage() {
@@ -67,6 +68,8 @@ export function ApplicationDemoPage() {
         <div className="mt-4">
           {activePage.pageKey === 'dashboard' ? (
             <DashboardView />
+          ) : activePage.pageKey === 'product-catalog-admin' ? (
+            <ProductCatalogView />
           ) : (
             <GenericDemoWorkspace application={application} activePage={activePage} />
           )}
