@@ -1,7 +1,7 @@
 export const appConfig = {
   name: 'WebBlueprint',
   description:
-    'A mobile-first React and Tailwind blueprint for composing and exporting application frontends.',
+    'Una plataforma React y Tailwind mobile-first para componer y exportar interfaces de aplicaciones.',
   defaultTheme: {
     accent: '#2563eb',
     mode: 'light' as const,
