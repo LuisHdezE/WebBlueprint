@@ -41,15 +41,15 @@ describe('composer core', () => {
     const firstFeature = composerFeatureOptions[0];
     const firstPage = composerPageOptions[0];
 
-    configuration.name = 'Proposal CRM';
-    configuration.slug = 'proposal-crm';
+    configuration.name = 'Portal de clientes';
+    configuration.slug = 'portal-de-clientes';
     configuration.featureIds = firstFeature ? [firstFeature.id] : [];
     configuration.pageIds = firstPage ? [firstPage.id] : [];
 
     const manifest = buildComposerManifest(configuration);
 
     expect(manifest.schemaVersion).toBe('0.1');
-    expect(manifest.application.slug).toBe('proposal-crm');
+    expect(manifest.application.slug).toBe('portal-de-clientes');
     expect(manifest.branding.logoUrl).toBeNull();
     expect(manifest.features).toHaveLength(firstFeature ? 1 : 0);
     expect(manifest.pages).toHaveLength(firstPage ? 1 : 0);
@@ -63,9 +63,9 @@ describe('composer core', () => {
     configuration.branding.accentColor = 'blue';
 
     expect(validateComposerConfiguration(configuration)).toEqual([
-      'Application name is required.',
-      'Slug must contain lowercase letters, numbers and single hyphens only.',
-      'Accent color must be a six-digit hexadecimal color.',
+      'El nombre de la aplicación es obligatorio.',
+      'El slug solo puede contener letras minúsculas, números y guiones simples.',
+      'El color de acento debe ser un hexadecimal de seis dígitos.',
     ]);
   });
 });

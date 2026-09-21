@@ -52,7 +52,7 @@ export function LeftAppShell({
   const sidebarContent = (
     <>
       <div className={`flex h-14 items-center border-b px-2.5 ${isDark ? 'border-slate-800' : 'border-slate-200'}`}>
-        <Link className="flex min-w-0 items-center gap-2.5" to={navItems[0]?.href ?? '/'} aria-label={`${brandName} home`}>
+        <Link className="flex min-w-0 items-center gap-2.5" to={navItems[0]?.href ?? '/'} aria-label={`${brandName} · inicio`}>
           <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-brand-600 text-[10px] font-bold text-white">
             {brandInitials}
           </span>
@@ -65,7 +65,7 @@ export function LeftAppShell({
         </Link>
       </div>
 
-      <nav className="flex-1 overflow-y-auto p-2.5" aria-label={`${brandName} navigation`}>
+      <nav className="flex-1 overflow-y-auto p-2.5" aria-label={`${brandName} · navegación`}>
         <div className="grid gap-1">
           {navItems.map((item, index) => (
             <Link
@@ -101,8 +101,8 @@ export function LeftAppShell({
       </aside>
 
       {isMobileOpen ? (
-        <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true" aria-label={`${brandName} navigation`}>
-          <button className="absolute inset-0 bg-slate-900/35" aria-label="Close navigation" onClick={() => setIsMobileOpen(false)} type="button" />
+        <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true" aria-label={`${brandName} · navegación`}>
+          <button className="absolute inset-0 bg-slate-900/35" aria-label="Cerrar navegación" onClick={() => setIsMobileOpen(false)} type="button" />
           <aside className={`relative flex h-full w-[min(16rem,84vw)] flex-col border-r shadow-2xl ${sidebarSurface}`}>
             {sidebarContent}
           </aside>
@@ -113,11 +113,11 @@ export function LeftAppShell({
         <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur">
           <div className="flex min-h-14 items-center gap-2.5 px-3.5 sm:px-5 lg:px-6">
             <button className="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-sm font-semibold text-slate-700 shadow-sm lg:hidden" onClick={() => setIsMobileOpen(true)} type="button">
-              Menu
+              Menú
             </button>
             {canCollapse ? (
               <button className="hidden rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-600 shadow-sm hover:border-brand-100 hover:bg-brand-50 hover:text-brand-700 lg:inline-flex" onClick={() => setIsCollapsed((value) => !value)} type="button">
-                {collapsed ? 'Expand' : 'Collapse'}
+                {collapsed ? 'Expandir' : 'Contraer'}
               </button>
             ) : null}
 

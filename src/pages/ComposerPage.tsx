@@ -9,8 +9,8 @@ export function ComposerPage() {
   return (
     <WorkspaceShell
       onSignOut={signOut}
-      subtitle="Configure, review and export reusable frontend applications"
-      title="App Composer"
+      subtitle="Configura, revisa y exporta aplicaciones frontend reutilizables"
+      title="Compositor de aplicaciones"
       userName={user?.displayName}
       variant="collapsible-menu"
     >

@@ -1,84 +1,84 @@
-# CORK v4 Reference Baseline
+# Baseline de referencia CORK v4
 
-Date: **2026-09-20**
+Fecha: **2026-09-20**
 
-## Source archive
+## Archivo fuente
 
-- File: `themeforest-TkEseu24-cork-responsive-admin-dashboard-template.zip`
-- Product/version detected: **CORK v4.0.0**
-- Archive size: **125,837,996 bytes**
+- Archivo: `themeforest-TkEseu24-cork-responsive-admin-dashboard-template.zip`
+- Producto/versión detectado: **CORK v4.0.0**
+- Tamaño del archivo: **125,837,996 bytes**
 - SHA-256: `20bcbafd65148dc46f4402403e2e3e3a8a5d81ab0872046a54dd664ff119f29d`
-- Total archive entries: **23,987**
+- Entradas totales del archivo: **23,987**
 
-This fingerprint identifies the exact reference archive used for the first WebBlueprint inventory.
+Esta huella identifica el archivo de referencia exacto utilizado para el primer inventario de WebBlueprint.
 
-## Approved reference layouts
+## Layouts de referencia aprobados
 
-Only the following non-RTL layout directories are in scope:
+Solo están dentro del alcance los siguientes directorios de layout no RTL:
 
 - `cork-v4.0.0/html/collapsible-menu/`
 - `cork-v4.0.0/html/vertical-dark-menu/`
 - `cork-v4.0.0/html/vertical-light-menu/`
 
-Navigation remains on the **left** in WebBlueprint.
+La navegación permanece a la **izquierda** en WebBlueprint.
 
-All horizontal, modern, semi-dark and RTL layout families are excluded from the initial reference audit.
+Todas las familias de layout horizontal, modern, semi-dark y RTL quedan excluidas de la auditoría de referencia inicial.
 
-## Inventory counts
+## Conteos del inventario
 
-Each approved CORK layout directory contains **105 HTML pages**.
+Cada directorio de layout CORK aprobado contiene **105 páginas HTML**.
 
-Across the three approved directories:
+Entre los tres directorios aprobados:
 
-- unique reference page filenames: **107**;
-- present in all three layouts: **103**;
-- layout-specific differences: **4 filenames** across carousel/layout examples.
+- nombres únicos de archivos de páginas de referencia: **107**;
+- presentes en los tres layouts: **103**;
+- diferencias específicas por layout: **4 nombres de archivo** entre ejemplos de carousel/layout.
 
-### Functional categories
+### Categorías funcionales
 
-| Category | Unique references |
+| Categoría | Referencias únicas |
 |---|---:|
-| Applications | 21 |
-| Forms | 20 |
-| Components | 17 |
-| Elements | 17 |
-| Authentication | 10 |
+| Aplicaciones | 21 |
+| Formularios | 20 |
+| Componentes | 17 |
+| Elementos | 17 |
+| Autenticación | 10 |
 | Layouts | 5 |
-| General pages | 5 |
-| Tables | 5 |
+| Páginas generales | 5 |
+| Tablas | 5 |
 | Dashboards | 2 |
-| User/Profile | 2 |
-| Charts | 1 |
-| Maps | 1 |
+| Usuario/Perfil | 2 |
+| Gráficos | 1 |
+| Mapas | 1 |
 | Widgets | 1 |
 | **Total** | **107** |
 
-## Important interpretation
+## Interpretación importante
 
-The number `107` is a **reference inventory count**, not a commitment to implement 107 independent WebBlueprint pages.
+El número `107` es un **conteo del inventario de referencia**, no un compromiso de implementar 107 páginas independientes en WebBlueprint.
 
-The audit must identify reusable primitives and patterns. Multiple CORK examples may collapse into one configurable WebBlueprint component or pattern.
+La auditoría debe identificar primitivas y patrones reutilizables. Varios ejemplos de CORK pueden condensarse en un único componente o patrón configurable de WebBlueprint.
 
-Examples:
+Ejemplos:
 
-- multiple DataTable examples may become one configurable `DataTable` plus documented variants;
-- multiple authentication presentations may be merged into reusable authentication layouts and components;
-- layout demonstration pages may be unnecessary once WebBlueprint's own shell behavior is documented;
-- component demo pages are inputs to the WebBlueprint component library and documentation, not necessarily one-to-one application pages.
+- varios ejemplos de DataTable pueden convertirse en un `DataTable` configurable con variantes documentadas;
+- varias presentaciones de autenticación pueden fusionarse en layouts y componentes reutilizables de autenticación;
+- las páginas de demostración de layouts pueden resultar innecesarias una vez documentado el comportamiento del propio shell de WebBlueprint;
+- las páginas demo de componentes son entradas para la librería y documentación de componentes de WebBlueprint, no necesariamente páginas de aplicación uno-a-uno.
 
-## Classification workflow
+## Flujo de clasificación
 
-Every row in the page inventory begins as `REVIEW` and must later be classified as one of:
+Cada fila del inventario de páginas comienza como `REVIEW` y posteriormente debe clasificarse como una de:
 
-- `KEEP`: implement as a distinct useful view;
-- `ADAPT`: preserve the capability but redesign/restructure for WebBlueprint;
-- `MERGE`: capability is represented through another page, pattern or configurable component;
-- `DISCARD`: low-value, redundant or out-of-scope reference.
+- `KEEP`: implementar como una vista útil y diferenciada;
+- `ADAPT`: conservar la capacidad pero rediseñarla/reestructurarla para WebBlueprint;
+- `MERGE`: la capacidad queda representada mediante otra página, patrón o componente configurable;
+- `DISCARD`: referencia de bajo valor, redundante o fuera de alcance.
 
-No implementation should begin for a reference view until its classification and required reusable components are understood.
+No debe comenzar la implementación de una vista de referencia hasta comprender su clasificación y los componentes reutilizables requeridos.
 
-## Evidence artifact
+## Artefacto de evidencia
 
-The corresponding machine-readable inventory is maintained at:
+El inventario correspondiente legible por máquina se mantiene en:
 
 `docs/reference/cork-v4-page-inventory.csv`

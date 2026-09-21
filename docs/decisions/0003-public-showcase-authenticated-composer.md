@@ -1,37 +1,37 @@
-# ADR-0003 · Public Showcase and Authenticated Composer Boundary
+# ADR-0003 · Frontera entre presentación pública y Compositor autenticado
 
-Status: **Accepted**  
-Date: **2026-09-20**
+Estado: **Aceptado**  
+Fecha: **2026-09-20**
 
-## Purpose
+## Propósito
 
-Define the product boundary between WebBlueprint's public presentation experience and the authenticated application-building experience.
+Definir la frontera de producto entre la experiencia de presentación pública de WebBlueprint y la experiencia autenticada de construcción de aplicaciones.
 
-## Product surfaces
+## Superficies del producto
 
-WebBlueprint is not only an internal application builder. It must also present its available application concepts publicly in a polished, informative and navigable way.
+WebBlueprint no es únicamente un constructor interno de aplicaciones. También debe presentar públicamente sus conceptos de aplicaciones disponibles de forma pulida, informativa y navegable.
 
-The product therefore has two primary surfaces:
+Por tanto, el producto tiene dos superficies principales:
 
-1. **Public experience**
-2. **Authenticated workspace**
+1. **Experiencia pública**
+2. **Espacio de trabajo autenticado**
 
-## Public experience
+## Experiencia pública
 
-The public area is accessible without authentication and includes:
+El área pública es accesible sin autenticación e incluye:
 
-- a marketing/informational landing page;
-- a catalog of ready-made application concepts;
-- a detail/presentation page for each application concept;
-- public interactive demos of the pages included in those application concepts;
-- public product/documentation access;
-- sign-in entry point.
+- una landing de marketing/información;
+- un catálogo de conceptos de aplicaciones listas;
+- una página de detalle/presentación para cada concepto de aplicación;
+- demos públicas interactivas de las páginas incluidas en esos conceptos;
+- acceso público al producto/documentación;
+- punto de entrada para iniciar sesión.
 
-### Application catalog language
+### Lenguaje del catálogo de aplicaciones
 
-Public-facing content must present these items as **applications/solutions**, not as templates.
+El contenido público debe presentar estos elementos como **aplicaciones/soluciones**, no como templates.
 
-Examples:
+Ejemplos:
 
 - Pet Shop
 - Fitness
@@ -40,159 +40,159 @@ Examples:
 - Help Desk
 - Logistics
 
-Each public application card/detail should be able to show:
+Cada tarjeta/detalle público de aplicación debe poder mostrar:
 
-- application name;
-- concise description;
-- representative image/visual;
-- category;
-- key capabilities;
-- action to launch the public demo.
+- nombre de la aplicación;
+- descripción concisa;
+- imagen/visual representativo;
+- categoría;
+- capacidades clave;
+- acción para abrir la demo pública.
 
-### Demo behavior
+### Comportamiento de la demo
 
-A public demo allows visitors to navigate the set of pages that compose that application concept.
+Una demo pública permite a los visitantes navegar el conjunto de páginas que componen ese concepto de aplicación.
 
-Example:
+Ejemplo:
 
-`Pet Shop` may expose a demo containing dashboard, products, categories, customers, orders and other pages selected by the corresponding preset.
+`Pet Shop` puede exponer una demo con panel, productos, categorías, clientes, pedidos y otras páginas seleccionadas por el preset correspondiente.
 
-The demo is showcase-only. It must not expose an application ZIP export action.
+La demo sirve únicamente para presentación. No debe exponer una acción de exportación ZIP de la aplicación.
 
-### Commercial proposal demo use case
+### Caso de uso de demo para propuestas comerciales
 
-Public demos are also a first-class commercial/proposal capability of WebBlueprint.
+Las demos públicas también son una capacidad comercial/de propuesta de primera clase de WebBlueprint.
 
-When a prospective client requests a custom application through a freelance marketplace, direct sales contact or another commercial channel, WebBlueprint should allow a relevant application concept/demo to be assembled quickly from the existing page/component catalog and published as a shareable public URL.
+Cuando un cliente potencial solicita una aplicación personalizada mediante un marketplace freelance, contacto directo de ventas u otro canal comercial, WebBlueprint debe permitir ensamblar rápidamente un concepto/demo relevante a partir del catálogo existente de páginas/componentes y publicarlo mediante una URL pública compartible.
 
-The intended workflow is:
-
-```text
-Prospective client requirement
-        ↓
-Choose/create application concept
-        ↓
-Select relevant pages/features
-        ↓
-Apply branding/theme as appropriate
-        ↓
-Publish navigable frontend demo
-        ↓
-Feature the application on the public landing/catalog when desired
-        ↓
-Share direct demo URL with prospect
-```
-
-The prospective client can then navigate a realistic, responsive mock frontend and understand the proposed product before backend/API implementation exists.
-
-The demo must communicate the intended user experience, navigation, information architecture and visible capabilities of the proposed application while remaining technically honest: at this stage its domain data may be mock and its backend/API functionality may not yet exist.
-
-A demo created for a proposal can become one of the applications promoted in the public catalog. Therefore a commercially useful demo should not be treated as disposable mockup work; when appropriate it should enrich the reusable WebBlueprint application/preset library.
-
-Direct demo links must be stable and human-shareable enough to send in a proposal or freelance-platform conversation without requiring the recipient to understand WebBlueprint itself.
-
-## Public documentation
-
-Documentation is public and directly reachable from the landing/navigation experience.
-
-The public documentation area grows together with WebBlueprint and may include:
-
-- product concepts;
-- component documentation;
-- design-system documentation;
-- usage examples;
-- supported application concepts;
-- responsive behavior;
-- Composer/export concepts where appropriate.
-
-Sensitive/internal implementation details are not required to be exposed merely because documentation is public.
-
-## Authenticated workspace
-
-The App Composer belongs to the authenticated workspace.
-
-Unauthenticated visitors may discover the product, browse application concepts, run demos and read public documentation, but they do not enter the Composer workspace.
-
-The authenticated experience includes, progressively:
-
-- user/session boundary;
-- App Composer;
-- application identity configuration;
-- branding/theme configuration;
-- preset selection;
-- feature/page selection;
-- generated navigation review;
-- application review;
-- export/download capability.
-
-## Export boundary
-
-Application ZIP generation/download is exposed only from the authenticated Composer flow.
-
-The public landing, catalog and demos do not expose export controls.
-
-### Security note
-
-During the current frontend-only Blueprint phase, authentication and authorization may be represented through replaceable mock/provider abstractions so the UX and routing model can be built without introducing a backend prematurely.
-
-A client-side route guard alone is **not** a security boundary capable of guaranteeing that protected export assets cannot be recovered by a determined user. If WebBlueprint later requires real enforcement of authenticated ZIP generation/download, authorization must be validated by a trusted authenticated service/backend (or equivalent protected infrastructure).
-
-Therefore authentication must be abstracted behind a replaceable boundary from the beginning rather than coupled directly to page components.
-
-## Proposed route model
-
-Initial direction:
-
-### Public
-
-- `/` — landing page
-- `/apps` — public application catalog
-- `/apps/:slug` — application presentation/detail
-- `/demo/:slug/*` — public navigable application demo/shareable proposal URL
-- `/docs/*` — public documentation
-- `/login` — sign-in entry
-
-### Authenticated
-
-- `/composer/*` — App Composer workspace
-
-Additional authenticated account routes may be added only when required.
-
-## Architectural consequences
-
-- public and authenticated shells/navigation must be distinguishable;
-- authentication state must be provided through an application-level provider/boundary;
-- pages must not implement ad-hoc login checks;
-- route protection must be centralized;
-- presets/application concepts become reusable metadata consumed by both the public showcase and App Composer;
-- a Pet Shop definition should not be duplicated separately for marketing, demo and Composer selection;
-- public demo navigation must derive from the same application/feature registry direction used by the Composer;
-- demos must be suitable both for general public showcase and direct commercial proposal sharing;
-- useful proposal demos should be preservable/promotable as reusable catalog applications instead of becoming disposable one-off mockups;
-- export actions exist only inside the authenticated Composer experience;
-- Style 1 remains the visual authority for product UI, adapted appropriately for the public landing and workspace surfaces;
-- all surfaces remain mobile-first and responsive.
-
-## Source-of-truth principle
-
-A stored application concept/preset should eventually power all relevant product surfaces:
+Flujo previsto:
 
 ```text
-Application Definition / Preset
+Requisito del cliente potencial
         ↓
-Public catalog card
+Elegir/crear concepto de aplicación
         ↓
-Public application detail
+Seleccionar páginas/funciones relevantes
         ↓
-Public navigable / proposal demo
+Aplicar marca/tema según corresponda
         ↓
-Shareable client URL
+Publicar demo frontend navegable
         ↓
-App Composer preset selection
+Destacar la aplicación en landing/catálogo cuando se desee
         ↓
-Feature/page/navigation configuration
-        ↓
-Authenticated ZIP export
+Compartir URL directa de demo con el prospecto
 ```
 
-This avoids maintaining separate and drifting representations of the same application concept.
+El cliente potencial puede navegar entonces un frontend simulado realista y responsive, y comprender el producto propuesto antes de que exista implementación de backend/API.
+
+La demo debe comunicar la experiencia de usuario prevista, navegación, arquitectura de información y capacidades visibles de la aplicación propuesta, manteniendo honestidad técnica: en esta etapa los datos de dominio pueden ser simulados y la funcionalidad de backend/API puede no existir todavía.
+
+Una demo creada para una propuesta puede convertirse en una de las aplicaciones promovidas en el catálogo público. Por ello, una demo comercialmente útil no debe tratarse como un mockup desechable; cuando corresponda, debe enriquecer la librería reutilizable de aplicaciones/presets de WebBlueprint.
+
+Los enlaces directos de demo deben ser lo bastante estables y legibles para compartirlos en una propuesta o conversación de una plataforma freelance sin exigir que el destinatario entienda WebBlueprint.
+
+## Documentación pública
+
+La documentación es pública y accesible directamente desde la experiencia de landing/navegación.
+
+El área pública de documentación crece junto con WebBlueprint y puede incluir:
+
+- conceptos del producto;
+- documentación de componentes;
+- documentación del sistema de diseño;
+- ejemplos de uso;
+- conceptos de aplicaciones soportadas;
+- comportamiento responsive;
+- conceptos del Compositor/exportación cuando corresponda.
+
+Los detalles sensibles/internos de implementación no tienen que exponerse únicamente porque la documentación sea pública.
+
+## Espacio de trabajo autenticado
+
+El Compositor de aplicaciones pertenece al espacio de trabajo autenticado.
+
+Los visitantes no autenticados pueden descubrir el producto, explorar conceptos de aplicaciones, ejecutar demos y leer documentación pública, pero no acceden al espacio del Compositor.
+
+La experiencia autenticada incluye progresivamente:
+
+- frontera de usuario/sesión;
+- Compositor de aplicaciones;
+- configuración de identidad de la aplicación;
+- configuración de marca/tema;
+- selección de preset;
+- selección de funciones/páginas;
+- revisión de navegación generada;
+- revisión de la aplicación;
+- capacidad de exportación/descarga.
+
+## Frontera de exportación
+
+La generación/descarga ZIP de una aplicación se expone únicamente desde el flujo autenticado del Compositor.
+
+La landing pública, el catálogo y las demos no exponen controles de exportación.
+
+### Nota de seguridad
+
+Durante la fase Blueprint actual, únicamente frontend, la autenticación y autorización pueden representarse mediante abstracciones mock/provider reemplazables, de forma que el modelo UX y de routing pueda construirse sin introducir un backend prematuramente.
+
+Un guard de ruta del lado cliente, por sí solo, **no** es una frontera de seguridad capaz de garantizar que los assets de exportación protegidos no puedan ser recuperados por un usuario determinado. Si WebBlueprint requiere posteriormente enforcement real de generación/descarga ZIP autenticada, la autorización debe validarse mediante un servicio/backend autenticado y confiable, o infraestructura protegida equivalente.
+
+Por tanto, la autenticación debe abstraerse detrás de una frontera reemplazable desde el principio en lugar de acoplarse directamente a componentes de página.
+
+## Modelo de rutas propuesto
+
+Dirección inicial:
+
+### Público
+
+- `/` — landing
+- `/apps` — catálogo público de aplicaciones
+- `/apps/:slug` — presentación/detalle de aplicación
+- `/demo/:slug/*` — demo pública navegable / URL compartible de propuesta
+- `/docs/*` — documentación pública
+- `/login` — entrada de inicio de sesión
+
+### Autenticado
+
+- `/composer/*` — espacio de trabajo del Compositor
+
+Solo se añadirán rutas adicionales de cuenta autenticada cuando sean necesarias.
+
+## Consecuencias arquitectónicas
+
+- los shells/navegaciones público y autenticado deben ser distinguibles;
+- el estado de autenticación debe proporcionarse mediante un provider/frontera a nivel de aplicación;
+- las páginas no deben implementar comprobaciones de login ad hoc;
+- la protección de rutas debe estar centralizada;
+- los presets/conceptos de aplicaciones se convierten en metadata reutilizable consumida tanto por la presentación pública como por el Compositor;
+- una definición de Pet Shop no debe duplicarse por separado para marketing, demo y selección del Compositor;
+- la navegación de demos públicas debe derivarse de la misma dirección de registro de aplicaciones/funciones utilizada por el Compositor;
+- las demos deben servir tanto para presentación pública general como para compartir propuestas comerciales directas;
+- las demos de propuesta útiles deben poder conservarse/promoverse como aplicaciones reutilizables del catálogo en lugar de convertirse en mockups desechables;
+- las acciones de exportación solo existen dentro de la experiencia autenticada del Compositor;
+- Style 1 continúa siendo la autoridad visual de la UI del producto, adaptada adecuadamente a landing pública y superficies del workspace;
+- todas las superficies permanecen mobile-first y responsive.
+
+## Principio de fuente de verdad
+
+Un concepto/preset de aplicación almacenado debe terminar alimentando todas las superficies relevantes del producto:
+
+```text
+Definición de aplicación / Preset
+        ↓
+Tarjeta del catálogo público
+        ↓
+Detalle público de aplicación
+        ↓
+Demo pública navegable / propuesta
+        ↓
+URL compartible con el cliente
+        ↓
+Selección de preset en el Compositor
+        ↓
+Configuración de funciones/páginas/navegación
+        ↓
+Exportación ZIP autenticada
+```
+
+Esto evita mantener representaciones separadas y divergentes del mismo concepto de aplicación.

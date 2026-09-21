@@ -1,159 +1,159 @@
-# WebBlueprint Initial Development Roadmap
+# Roadmap inicial de desarrollo de WebBlueprint
 
-Status: **Active**  
-Date: **2026-09-20**
+Estado: **Activo**  
+Fecha: **2026-09-20**
 
-This roadmap governs the initial path from an empty repository to the first reference-driven implementation. It is intentionally incremental and evolves only through documented decisions and evidence.
+Este roadmap gobierna el recorrido inicial desde un repositorio vacío hasta la primera implementación guiada por referencias. Es deliberadamente incremental y solo evoluciona mediante decisiones documentadas y evidencia.
 
-## U0 · Product Foundation
+## U0 · Fundación del producto
 
-### U0.0 · Governance and reference baseline — COMPLETE
+### U0.0 · Gobernanza y baseline de referencia — COMPLETADO
 
-Goal: preserve the decisions that implementation must obey.
+Objetivo: preservar las decisiones que la implementación debe obedecer.
 
-Delivered:
+Entregado:
 
-- project charter;
-- foundation ADR;
-- approved Style 1 baseline;
-- exact CORK archive fingerprint;
-- approved left-menu reference scope;
-- machine-readable initial page inventory;
-- initial roadmap.
+- definición inicial del proyecto;
+- ADR de fundación;
+- baseline visual Style 1 aprobado;
+- huella exacta del archivo CORK;
+- alcance aprobado de referencias con navegación lateral izquierda;
+- inventario inicial de páginas legible por máquina;
+- roadmap inicial.
 
-### U0.1 · React + Tailwind foundation — COMPLETE
+### U0.1 · Fundación React + Tailwind — COMPLETADO
 
-Goal: create the minimum runnable and verifiable WebBlueprint application.
+Objetivo: crear la aplicación mínima ejecutable y verificable de WebBlueprint.
 
-Delivered:
+Entregado:
 
-- React + TypeScript application bootstrap;
-- Tailwind CSS through the Vite integration;
-- React Router foundation;
-- strict TypeScript baseline;
-- ESLint baseline;
-- Vitest baseline;
-- production build;
-- mobile-first base styling;
-- repository `package-lock.json`;
-- reproducible `npm ci` CI gate;
-- typecheck + lint + test + build verification.
+- bootstrap de aplicación React + TypeScript;
+- Tailwind CSS mediante la integración de Vite;
+- fundación de React Router;
+- baseline estricto de TypeScript;
+- baseline de ESLint;
+- baseline de Vitest;
+- build de producción;
+- estilos base mobile-first;
+- `package-lock.json` del repositorio;
+- gate reproducible de CI con `npm ci`;
+- verificación de typecheck + lint + test + build.
 
-## U0.2 · Public product shell and authenticated Composer boundary — ACTIVE
+### U0.2 · Shell público del producto y límite autenticado del Compositor — COMPLETADO
 
-Goal: establish WebBlueprint as a real product with a public showcase and a distinct authenticated application-building workspace.
+Objetivo: establecer WebBlueprint como un producto real con una vitrina pública y un espacio autenticado diferenciado para construir aplicaciones.
 
-### Public surface
+#### Superficie pública
 
-Initial product routes/direction:
+Rutas/dirección iniciales del producto:
 
-- `/` — public landing page;
-- `/apps` — public application/solution catalog;
-- `/apps/:slug` — public application presentation/detail;
-- `/demo/:slug/*` — public navigable demo;
-- `/docs/*` — public documentation;
-- `/login` — user access entry.
+- `/` — landing pública;
+- `/apps` — catálogo público de aplicaciones/soluciones;
+- `/apps/:slug` — presentación/detalle público de una aplicación;
+- `/demo/:slug/*` — demo pública navegable;
+- `/docs/*` — documentación pública;
+- `/login` — acceso de usuario.
 
-Public catalog items are presented as applications/solutions, not as templates.
+Los elementos del catálogo público se presentan como aplicaciones/soluciones, no como plantillas.
 
-A public application entry may expose:
+Una aplicación pública puede exponer:
 
-- name;
-- description;
-- representative visual;
-- category;
-- capabilities;
-- demo action.
+- nombre;
+- descripción;
+- visual representativo;
+- categoría;
+- capacidades;
+- acción para abrir la demo.
 
-A visitor may navigate the demo pages belonging to an application concept but must not receive ZIP export controls from the public experience.
+Una persona puede navegar las páginas de demo que pertenecen a un concepto de aplicación, pero la experiencia pública no expone controles de exportación ZIP.
 
-### Authenticated surface
+#### Superficie autenticada
 
-- `/composer/*` — protected App Composer workspace.
+- `/composer/*` — espacio protegido del Compositor de aplicaciones.
 
-During the frontend-only phase, authentication is implemented behind a replaceable provider/adapter boundary with mock behavior where necessary. Page components must not contain ad-hoc authentication checks.
+Durante la fase solo frontend, la autenticación se implementa detrás de un límite reemplazable de proveedor/adaptador, con comportamiento mock cuando es necesario. Los componentes de página no contienen comprobaciones de autenticación ad hoc.
 
-Real enforcement of protected export/download is intentionally recognized as a trusted-service concern when WebBlueprint later requires production-grade authorization.
+La protección real de exportación/descarga se reconoce explícitamente como responsabilidad de un servicio confiable cuando WebBlueprint requiera autorización de producción.
 
-### U0.2 structural deliverables
+#### Entregables estructurales de U0.2
 
-- Style 1 public shell foundation;
-- Style 1 authenticated/workspace shell foundation;
-- mobile-first responsive navigation behavior;
-- public landing route;
-- public documentation route retained;
-- public application catalog foundation;
-- application definition/preset registry foundation;
-- public demo route foundation;
-- authentication/session abstraction;
-- centralized protected-route boundary;
-- login UX foundation;
-- App Composer route promoted from placeholder to authenticated first-class surface.
+- fundación del shell público Style 1;
+- fundación del shell autenticado/de trabajo Style 1;
+- comportamiento de navegación responsive mobile-first;
+- ruta de landing pública;
+- ruta de documentación pública preservada;
+- fundación del catálogo público de aplicaciones;
+- fundación del registro de definiciones/presets de aplicaciones;
+- fundación de rutas de demo pública;
+- abstracción de autenticación/sesión;
+- límite centralizado de rutas protegidas;
+- fundación UX del login;
+- promoción de la ruta del Compositor desde placeholder a superficie autenticada de primera clase.
 
-### Source-of-truth rule
+#### Regla de fuente de verdad
 
-An application definition/preset must evolve toward being the shared source used by:
+Una definición/preset de aplicación debe evolucionar hacia una fuente compartida utilizada por:
 
 ```text
-Application Definition / Preset
+Definición de aplicación / Preset
         ↓
-Public catalog
+Catálogo público
         ↓
-Public application detail
+Detalle público de aplicación
         ↓
-Public demo
+Demo pública
         ↓
-App Composer
+Compositor de aplicaciones
         ↓
-Generated navigation/features
+Navegación/capacidades generadas
         ↓
-Export
+Exportación
 ```
 
-The same Pet Shop, Fitness, CRM or other application concept must not be modeled independently for each surface.
+El mismo concepto Pet Shop, Fitness, CRM u otra aplicación no debe modelarse por separado para cada superficie.
 
-### U0.2 gate
+#### Gate de U0.2
 
-- public vs authenticated route boundaries are explicit;
-- Style 1 is respected;
-- mobile/tablet/desktop behavior exists from the first implementation;
-- navigation components are shared, never recreated per page;
-- authentication boundary is centralized and replaceable;
-- public demos do not expose export actions;
-- CI remains green.
+- los límites entre rutas públicas y autenticadas son explícitos;
+- se respeta Style 1;
+- existe comportamiento mobile/tablet/desktop desde la primera implementación;
+- los componentes de navegación son compartidos, nunca recreados por página;
+- el límite de autenticación es centralizado y reemplazable;
+- las demos públicas no exponen acciones de exportación;
+- CI permanece verde.
 
-## U0.3 · App Composer core
+### U0.3 · Núcleo del Compositor de aplicaciones — COMPLETADO
 
-Goal: make the Composer useful from the beginning rather than introducing it after the page catalog is complete.
+Objetivo: hacer útil el Compositor desde el inicio, en lugar de introducirlo cuando el catálogo de páginas ya estuviera completo.
 
-Initial Composer capabilities:
+Capacidades iniciales del Compositor:
 
-- application name;
-- description;
-- logo/branding input;
-- configurable theme/accent color;
-- application/preset selection;
-- manual feature/page selection;
-- navigation preview;
-- project configuration state;
-- generated `webblueprint.json`/manifest direction.
+- nombre de aplicación;
+- descripción;
+- entrada de logo/branding;
+- color de tema/acento configurable;
+- selección de aplicación/preset;
+- selección manual de capacidades/páginas;
+- vista previa de navegación;
+- estado de configuración del proyecto;
+- generación de `webblueprint.json`/manifest.
 
-The catalog may initially contain very few selectable capabilities. It grows automatically as WebBlueprint itself grows.
+El catálogo puede contener inicialmente pocas capacidades seleccionables. Crece automáticamente a medida que crece WebBlueprint.
 
-## U0.4 · Export Engine v0
+### U0.4 · Motor de exportación v0 — COMPLETADO
 
-Goal: prove early that WebBlueprint generates applications rather than merely displaying a component/page catalog.
+Objetivo: demostrar pronto que WebBlueprint genera aplicaciones y no se limita a mostrar un catálogo de componentes/páginas.
 
-Initial export proof:
+Prueba inicial de exportación:
 
 ```text
-App Composer
+Compositor de aplicaciones
      ↓
-Configuration / manifest
+Configuración / manifest
      ↓
-Dependency resolution
+Resolución de dependencias
      ↓
-Generated React project
+Proyecto React generado
      ↓
 ZIP
      ↓
@@ -163,77 +163,85 @@ npm run build
 PASS
 ```
 
-Requirements:
+Requisitos:
 
-- exported ZIP is a runnable React project;
-- only required/selected capabilities are included where supported;
-- generated branding/configuration is applied;
-- output contains enough metadata to identify how it was generated;
-- export architecture is testable and deterministic.
+- el ZIP exportado es un proyecto React ejecutable;
+- solo se incluyen las capacidades requeridas/seleccionadas cuando están soportadas;
+- se aplica el branding/configuración generados;
+- la salida contiene suficiente metadata para identificar cómo fue generada;
+- la arquitectura de exportación es comprobable y determinista.
 
-Public landing/catalog/demo routes do not expose export controls.
+Las rutas públicas de landing/catálogo/demo no exponen controles de exportación.
 
-## U0.5 · Living documentation and component gallery maturity
+### U0.5 · Documentación viva y madurez de la galería de componentes — COMPLETADO
 
-Documentation exists from the beginning and grows with implementation.
+La documentación existe desde el inicio y crece con la implementación.
 
-Every reusable component introduced during any increment must be documented as part of the same work.
+Cada componente reutilizable introducido durante cualquier incremento debe documentarse como parte del mismo trabajo.
 
-Component documentation includes as relevant:
+La documentación de componentes incluye, según corresponda:
 
-- purpose;
-- props/configuration;
-- variants;
-- states;
-- responsive behavior;
-- usage examples.
+- propósito;
+- props/configuración;
+- variantes;
+- estados;
+- comportamiento responsive;
+- ejemplos de uso.
 
-The `/components` area becomes the visual catalog of the owned component library rather than a separate after-the-fact documentation project.
+El área `/components` se convierte en el catálogo visual de la librería propia de componentes y no en un proyecto documental separado creado a posteriori.
 
-## U0.6 · Initial CD / EliasWorks publication
+### U0.6 · CD inicial / Publicación en EliasWorks — COMPLETADO
 
-Goal: keep the accepted `main` product state publicly demonstrable on the canonical WebBlueprint publication domain.
+Objetivo: mantener el estado aceptado de `main` públicamente demostrable en el dominio canónico de WebBlueprint.
 
-Canonical publication target:
+Objetivo canónico de publicación:
 
-- `https://eliasworks.uy`
+- `https://webblueprint.eliasworks.uy`
 
-Requirements:
+Contrato de entrega vigente:
 
-- merge to the deployment branch/main can produce a repeatable deployment to EliasWorks infrastructure;
-- deployed revision is traceable to a Git commit;
-- public landing is accessible from the EliasWorks publication surface;
-- public documentation is accessible;
-- public demos can be reached when application concepts exist;
-- direct deep links used in commercial proposals must survive direct navigation and refresh;
-- deployment remains mobile-first/responsive.
+```text
+push a main
+    ↓
+CI de calidad/build
+    ↓
+artefacto probado web-production
+    ↓
+FTP
+    ↓
+subdominio canónico
+    ↓
+smoke HTTP/deep links en producción
+```
 
-The exact path/subdomain and deployment mechanism under `eliasworks.uy` are selected and documented when EliasWorks hosting is wired. Render is not a canonical deployment target for WebBlueprint and must not appear in the production architecture.
+La aplicación se publica en el directorio físico `public_html/webblueprint/`, aislada de la aplicación Laravel que ocupa la raíz de `https://eliasworks.uy`.
 
-## U1 · CORK Reference Inventory and Classification
+Render no es un objetivo canónico de despliegue para WebBlueprint.
 
-The initial implementation catalog is derived only from these CORK non-RTL layout families:
+## U1 · Inventario y clasificación de referencias CORK — SIGUIENTE
+
+El catálogo inicial de implementación se deriva únicamente de estas familias CORK no RTL:
 
 - `collapsible-menu`;
 - `vertical-dark-menu`;
 - `vertical-light-menu`.
 
-### U1.1 · Functional page review
+### U1.1 · Revisión funcional de páginas
 
-Review all 107 unique reference filenames and classify each as:
+Revisar los 107 nombres de archivo de referencia únicos y clasificar cada uno como:
 
 - KEEP;
 - ADAPT;
 - MERGE;
 - DISCARD.
 
-Classification must explain the reason and identify likely WebBlueprint page/pattern ownership.
+La clasificación debe explicar la razón e identificar la probable propiedad de página/patrón dentro de WebBlueprint.
 
-### U1.2 · Component extraction map
+### U1.2 · Mapa de extracción de componentes
 
-For accepted views, identify reusable primitives/patterns before page implementation.
+Para las vistas aceptadas, identificar primitivas/patrones reutilizables antes de implementar páginas.
 
-Examples:
+Ejemplos:
 
 - AppShell;
 - Sidebar;
@@ -243,100 +251,100 @@ Examples:
 - Badge;
 - Dropdown;
 - Modal/Drawer;
-- form controls;
+- controles de formulario;
 - DataTable;
 - Pagination;
 - cards;
-- feedback/loading/empty/error states.
+- estados de feedback/loading/empty/error.
 
-Rule: when a required reusable component does not exist, implement it in the library first, document it, then consume it from the page.
+Regla: cuando un componente reutilizable necesario no exista, primero se implementa en la librería, se documenta y luego se consume desde la página.
 
-### U1.3 · Navigation and application-definition map
+### U1.3 · Mapa de navegación y definiciones de aplicación
 
-For accepted application views, define:
+Para las vistas de aplicación aceptadas, definir:
 
-- route;
-- menu label;
-- icon;
-- group;
-- ordering;
-- menu visibility;
-- nested/submenu relationship;
-- future permission metadata;
-- application/preset memberships where relevant.
+- ruta;
+- etiqueta de menú;
+- icono;
+- grupo;
+- orden;
+- visibilidad en menú;
+- relación anidada/submenú;
+- metadata futura de permisos;
+- pertenencia a aplicaciones/presets cuando corresponda.
 
-Routes, demo navigation and Composer navigation must converge on shared registry/source-of-truth metadata.
+Rutas, navegación de demos y navegación del Compositor deben converger en metadata compartida del registro/fuente de verdad.
 
-### U1.4 · Mock-data contract map
+### U1.4 · Mapa de contratos de datos mock
 
-For accepted data-driven views, define the UI-facing data shape and mock source.
+Para las vistas aceptadas impulsadas por datos, definir la forma de datos orientada a UI y la fuente mock.
 
-Pages consume provider/repository/hook/service boundaries rather than importing domain fixtures directly.
+Las páginas consumen límites de provider/repository/hook/service en lugar de importar fixtures de dominio directamente.
 
-## U2 · Reference-driven implementation
+## U2 · Implementación guiada por referencias
 
-Implementation proceeds by coherent families rather than by arbitrary page order.
+La implementación avanza por familias coherentes y no por un orden arbitrario de páginas.
 
-Each page increment must satisfy:
+Cada incremento de página debe satisfacer:
 
-- Style 1 visual baseline;
-- mobile-first behavior;
-- reuse of existing component library;
-- newly required reusable components added/documented first;
-- no page-local duplicate shell;
-- mock data externalized behind the chosen data boundary;
-- navigation/routing consistent with registry/source-of-truth direction;
-- inclusion in relevant public demo/application definitions when appropriate;
-- Composer/export metadata updated when the capability becomes selectable/exportable;
-- lint/build/test gates PASS.
+- baseline visual Style 1;
+- comportamiento mobile-first;
+- reutilización de la librería de componentes existente;
+- nuevos componentes reutilizables requeridos añadidos/documentados primero;
+- ningún shell duplicado a nivel de página;
+- datos mock externalizados detrás del límite de datos elegido;
+- navegación/routing coherente con la dirección del registro/fuente de verdad;
+- inclusión en las definiciones públicas de demo/aplicación relevantes cuando corresponda;
+- metadata de Compositor/exportación actualizada cuando la capacidad pase a ser seleccionable/exportable;
+- gates de lint/build/test en PASS.
 
-## U3 · Preset/Application Library Expansion
+## U3 · Expansión de la librería de presets/aplicaciones
 
-As useful views and capabilities become available:
+A medida que existan vistas y capacidades útiles:
 
-- build reusable application definitions/presets;
-- expose them publicly as applications/solutions;
-- attach representative imagery and descriptions;
-- make their demos navigable;
-- allow the same definitions to preselect Composer features/pages;
-- support import/export/versioning of preset definitions when justified.
+- construir definiciones/presets reutilizables de aplicaciones;
+- exponerlas públicamente como aplicaciones/soluciones;
+- añadir imágenes y descripciones representativas;
+- hacer navegables sus demos;
+- permitir que las mismas definiciones preseleccionen capacidades/páginas del Compositor;
+- soportar importación/exportación/versionado de definiciones de presets cuando esté justificado.
 
-Examples may include:
+Ejemplos posibles:
 
 - Pet Shop;
-- general E-commerce;
+- E-commerce general;
 - Fitness;
 - CRM;
 - Help Desk;
-- Logistics.
+- Logística.
 
-## U4 · Expansion beyond CORK
+## U4 · Expansión más allá de CORK
 
-After useful CORK coverage is complete:
+Después de completar una cobertura útil de CORK:
 
-- research missing application patterns;
-- compare real modern applications and established UX patterns;
-- identify gaps by application context;
-- add new views/components only from evidenced needs;
-- enrich the application/preset library;
-- keep documentation, demos, Composer metadata and export support synchronized.
+- investigar patrones de aplicación faltantes;
+- comparar aplicaciones modernas reales y patrones UX establecidos;
+- identificar brechas por contexto de aplicación;
+- añadir nuevas vistas/componentes únicamente a partir de necesidades evidenciadas;
+- enriquecer la librería de aplicaciones/presets;
+- mantener sincronizados documentación, demos, metadata del Compositor y soporte de exportación.
 
-## Permanent delivery rule
+## Regla permanente de entrega
 
-A new reusable capability is not considered fully integrated merely because one page renders it.
+Una nueva capacidad reutilizable no se considera completamente integrada solo porque una página la renderice.
 
-Depending on its role, completion should account for the relevant surfaces:
+Según su función, el cierre debe considerar las superficies relevantes:
 
 ```text
-Owned component
-+ documentation
-+ consuming page/pattern
-+ route/navigation metadata
-+ application/demo metadata
-+ Composer metadata
-+ export dependency metadata
-+ responsive behavior
-+ tests/CI evidence
+Componente propio
++ documentación
++ página/patrón consumidor
++ metadata de ruta/navegación
++ metadata de aplicación/demo
++ metadata del Compositor
++ metadata de dependencias de exportación
++ comportamiento responsive
++ evidencia de tests/CI
 ```
 
-Not every primitive requires every layer, but duplication or drifting product definitions are not acceptable.
+No todas las primitivas requieren todas las capas, pero no se aceptan duplicaciones ni definiciones de producto divergentes.

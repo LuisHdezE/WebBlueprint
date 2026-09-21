@@ -1,28 +1,28 @@
-# ADR-0004 · Canonical Publication Target
+# ADR-0004 · Destino canónico de publicación
 
-Status: **Accepted · publication address refined by ADR-0005**  
-Date: **2026-09-21**
+Estado: **Aceptado · dirección de publicación refinada por ADR-0005**  
+Fecha: **2026-09-21**
 
-## Decision
+## Decisión
 
-The canonical public publication family for WebBlueprint is EliasWorks infrastructure under:
+La familia canónica de publicación pública para WebBlueprint es la infraestructura de EliasWorks bajo:
 
 - `eliasworks.uy`
 
-ADR-0005 now fixes the production application itself at the independent subdomain `https://webblueprint.eliasworks.uy`.
+ADR-0005 fija ahora la propia aplicación de producción en el subdominio independiente `https://webblueprint.eliasworks.uy`.
 
-## Hosting audit recorded during U0.2
+## Auditoría de hosting registrada durante U0.2
 
-The current EliasWorks root site is not an empty static host. It is an existing Laravel application deployed from `LuisHdezE/erp_eliasworks`.
+El sitio raíz actual de EliasWorks no es un host estático vacío. Es una aplicación Laravel existente desplegada desde `LuisHdezE/erp_eliasworks`.
 
-The active deployment pattern observed in the EliasWorks repository is:
+El patrón activo de despliegue observado en el repositorio EliasWorks es:
 
 ```text
 GitHub main
     ↓
 GitHub Actions
     ↓
-PHP / Node build
+Build PHP / Node
     ↓
 FTP
     ↓
@@ -31,9 +31,9 @@ public_html/
 eliasworks.uy
 ```
 
-The same hosting account already has a proven pattern for separate Vite/React bundles. eFactura builds its WebApp and publishes the generated `dist/` bundle into a dedicated directory under `public_html/`.
+La misma cuenta de hosting ya dispone de un patrón probado para bundles Vite/React separados. eFactura compila su WebApp y publica el bundle `dist/` generado en un directorio dedicado bajo `public_html/`.
 
-The hosting stack also supports Apache-style SPA fallback through `.htaccess`. eFactura currently uses:
+El stack de hosting también soporta fallback SPA estilo Apache mediante `.htaccess`. eFactura utiliza actualmente:
 
 ```apache
 Options -MultiViews
@@ -43,31 +43,31 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.html [L]
 ```
 
-This provided the evidence needed to make WebBlueprint deep-link-ready before the final publication integration was selected.
+Esto proporcionó la evidencia necesaria para preparar WebBlueprint para deep links antes de seleccionar la integración final de publicación.
 
-## U0.2 portability decision
+## Decisión de portabilidad de U0.2
 
-U0.2 intentionally did not hardcode a deployment path.
+U0.2 deliberadamente no fijó una ruta de despliegue.
 
-WebBlueprint treats Vite's `BASE_URL` as the React Router basename. Therefore:
+WebBlueprint trata `BASE_URL` de Vite como basename de React Router. Por tanto:
 
-- a root/subdomain build keeps Vite base `/`;
-- a path deployment could build with a base such as `/webblueprint/`;
-- application routes remain defined relative to the application root;
-- the static bundle includes an Apache SPA fallback so direct proposal/demo URLs resolve to `index.html`.
+- un build en raíz/subdominio mantiene la base Vite `/`;
+- un despliegue bajo ruta podría compilar con una base como `/webblueprint/`;
+- las rutas de la aplicación permanecen definidas de forma relativa a la raíz de la aplicación;
+- el bundle estático incluye fallback SPA de Apache para que URLs directas de propuesta/demo resuelvan a `index.html`.
 
-U0.6 resolved the previously open publication choice in favor of the independent subdomain model recorded by ADR-0005.
+U0.6 resolvió la elección de publicación que permanecía abierta a favor del modelo de subdominio independiente registrado en ADR-0005.
 
-## Consequences
+## Consecuencias
 
-- Render is not a production target for WebBlueprint.
-- A temporary Render preview created during U0.2 remains non-canonical visual evidence only.
-- The existing EliasWorks root portfolio must not be overwritten by WebBlueprint.
-- Continuous delivery publishes accepted `main` revisions to the independent WebBlueprint subdomain infrastructure.
-- Public application/demo URLs must be stable enough to share in commercial proposals.
-- Direct deep links and browser refresh behavior must work on the EliasWorks hosting stack.
-- The final subdomain, FTP target and deployment contract are governed by ADR-0005 and U0.6.
+- Render no es un destino de producción de WebBlueprint.
+- El preview temporal de Render creado durante U0.2 permanece únicamente como evidencia visual no canónica.
+- WebBlueprint no debe sobrescribir el portafolio existente en la raíz de EliasWorks.
+- El despliegue continuo publica las revisiones aceptadas de `main` en la infraestructura del subdominio independiente de WebBlueprint.
+- Las URLs públicas de aplicaciones/demos deben ser suficientemente estables para compartirlas en propuestas comerciales.
+- Los deep links directos y el comportamiento de recarga del navegador deben funcionar en el stack de hosting de EliasWorks.
+- El subdominio final, destino FTP y contrato de despliegue están gobernados por ADR-0005 y U0.6.
 
-## Rationale
+## Justificación
 
-WebBlueprint is part of the EliasWorks public product surface, but it is operationally independent from the Laravel portfolio at the root domain. Its landing page, application catalog, documentation and navigable proposal demos therefore use their own subdomain while remaining under the EliasWorks domain family.
+WebBlueprint forma parte de la superficie pública de producto de EliasWorks, pero es operacionalmente independiente del portafolio Laravel en el dominio raíz. Su landing, catálogo de aplicaciones, documentación y demos navegables de propuestas utilizan por tanto su propio subdominio, permaneciendo dentro de la familia de dominios EliasWorks.

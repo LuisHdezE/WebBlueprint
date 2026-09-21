@@ -15,8 +15,7 @@ export function FoundationPage({ eyebrow, title, description }: FoundationPagePr
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">{description}</p>
           <div className="mt-8 rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-5 text-sm text-slate-600">
-            Foundation placeholder. Functional UI will be introduced incrementally through governed
-            components and features.
+            Placeholder de fundación. La interfaz funcional se incorpora de forma incremental mediante componentes y funciones gobernadas.
           </div>
         </div>
       </section>

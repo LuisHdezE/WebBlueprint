@@ -1,46 +1,58 @@
 import type { ApplicationDefinition } from '@/applications/application.types';
 
+const capabilityLabels: Readonly<Record<string, string>> = {
+  Dashboard: 'Panel',
+  Products: 'Productos',
+  Customers: 'Clientes',
+  Orders: 'Pedidos',
+  Inventory: 'Inventario',
+};
+
+export function getCapabilityLabel(capability: string) {
+  return capabilityLabels[capability] ?? capability;
+}
+
 export const applicationRegistry = [
   {
     id: 'pet-shop',
     slug: 'pet-shop',
     name: 'Pet Shop',
     summary:
-      'A responsive retail management concept for pet stores, combining products, customers, orders and inventory in one navigable experience.',
-    category: 'Retail',
+      'Concepto responsive de gestión comercial para tiendas de mascotas que integra productos, clientes, pedidos e inventario en una experiencia navegable.',
+    category: 'Comercio minorista',
     promoted: true,
     shellVariant: 'vertical-light-menu',
     capabilities: ['Dashboard', 'Products', 'Customers', 'Orders', 'Inventory'],
     demoPages: [
       {
         id: 'dashboard',
-        label: 'Dashboard',
+        label: 'Panel',
         path: 'dashboard',
-        description: 'Operational overview with the key signals a pet-store team needs at a glance.',
+        description: 'Resumen operativo con las señales clave que el equipo necesita consultar de un vistazo.',
       },
       {
         id: 'products',
-        label: 'Products',
+        label: 'Productos',
         path: 'products',
-        description: 'Product catalog and stock-oriented workspace.',
+        description: 'Catálogo de productos y espacio de trabajo orientado al stock.',
       },
       {
         id: 'customers',
-        label: 'Customers',
+        label: 'Clientes',
         path: 'customers',
-        description: 'Customer directory and relationship context.',
+        description: 'Directorio de clientes y contexto de la relación comercial.',
       },
       {
         id: 'orders',
-        label: 'Orders',
+        label: 'Pedidos',
         path: 'orders',
-        description: 'Order tracking and fulfillment-oriented workspace.',
+        description: 'Seguimiento de pedidos y espacio de trabajo orientado al cumplimiento.',
       },
       {
         id: 'inventory',
-        label: 'Inventory',
+        label: 'Inventario',
         path: 'inventory',
-        description: 'Inventory visibility and replenishment-oriented workspace.',
+        description: 'Visibilidad de inventario y espacio de trabajo orientado a la reposición.',
       },
     ],
   },

@@ -1,20 +1,24 @@
 import { Link } from 'react-router';
-import { componentDocumentation, livingDocumentationPrinciples } from '@/documentation/documentation.catalog';
+import {
+  componentDocumentation,
+  getDocumentationCategoryLabel,
+  livingDocumentationPrinciples,
+} from '@/documentation/documentation.catalog';
 
 const productContracts = [
   {
-    title: 'Public applications',
-    description: 'The registry powers the application catalog, detail pages and public demos.',
+    title: 'Aplicaciones públicas',
+    description: 'El registro alimenta el catálogo de aplicaciones, las páginas de detalle y las demos públicas.',
     source: 'src/applications/applicationRegistry.ts',
   },
   {
-    title: 'App Composer',
-    description: 'One persistent configuration flows through Application, Branding, Preset, Features, Pages, Navigation and Review.',
+    title: 'Compositor de aplicaciones',
+    description: 'Una única configuración persistente recorre Aplicación, Marca, Preset, Funciones, Páginas, Navegación y Revisión.',
     source: 'src/composer/ComposerWizard.tsx',
   },
   {
-    title: 'Export Engine v0',
-    description: 'A validated manifest becomes a deterministic React/Vite ZIP that is build-tested in CI.',
+    title: 'Motor de exportación',
+    description: 'Un manifest validado se convierte en un ZIP React/Vite determinista cuya compilación se prueba en CI.',
     source: 'src/export/export.engine.ts',
   },
 ] as const;
@@ -26,33 +30,33 @@ export function DocumentationPage() {
     <main className="mx-auto max-w-[1440px] px-4 py-8 sm:px-5 lg:px-6 lg:py-10">
       <section className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.13em] text-brand-600">Living documentation</p>
-          <h1 className="mt-2 max-w-3xl text-4xl font-semibold tracking-[-0.035em] text-slate-950 sm:text-5xl">Documentation follows the product.</h1>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.13em] text-brand-600">Documentación viva</p>
+          <h1 className="mt-2 max-w-3xl text-4xl font-semibold tracking-[-0.035em] text-slate-950 sm:text-5xl">La documentación avanza con el producto.</h1>
           <p className="mt-4 max-w-3xl text-base leading-7 text-slate-600">
-            WebBlueprint documents reusable contracts as they become real. This page is the public map of what exists today, not a promise list for code that has not been built.
+            WebBlueprint documenta contratos reutilizables cuando se vuelven reales. Esta página refleja lo que existe hoy, no una lista de promesas sobre código que todavía no se ha construido.
           </p>
           <div className="mt-5 flex flex-wrap gap-2">
             <Link className="rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700" to="/components">
-              Open component gallery
+              Abrir galería de componentes
             </Link>
             <Link className="rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50" to="/apps">
-              Browse applications
+              Explorar aplicaciones
             </Link>
           </div>
         </div>
 
         <aside className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <p className="text-xs font-semibold uppercase tracking-[0.1em] text-slate-400">Current inventory</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.1em] text-slate-400">Inventario actual</p>
           <div className="mt-4 grid grid-cols-2 gap-3">
-            <Metric label="Documented" value={componentDocumentation.length} />
+            <Metric label="Documentados" value={componentDocumentation.length} />
             <Metric label="Shells" value={shellCount} />
           </div>
-          <p className="mt-4 text-xs leading-5 text-slate-500">Inventory counts are derived from the same documentation catalog rendered by the component gallery.</p>
+          <p className="mt-4 text-xs leading-5 text-slate-500">Los conteos se derivan del mismo catálogo de documentación que renderiza la galería de componentes.</p>
         </aside>
       </section>
 
       <section className="mt-10">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-600">Product contracts</p>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-600">Contratos del producto</p>
         <div className="mt-3 grid gap-3 md:grid-cols-3">
           {productContracts.map((contract) => (
             <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm" key={contract.title}>
@@ -66,9 +70,9 @@ export function DocumentationPage() {
 
       <section className="mt-10 grid gap-6 lg:grid-cols-[320px_minmax(0,1fr)]">
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-600">Documentation rule</p>
-          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">Small, current and verifiable.</h2>
-          <p className="mt-2 text-sm leading-6 text-slate-600">A new reusable component earns documentation when it enters the codebase. Stage closure reconciles the catalog with reality.</p>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-600">Regla de documentación</p>
+          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">Pequeña, actual y verificable.</h2>
+          <p className="mt-2 text-sm leading-6 text-slate-600">Cada nuevo componente reutilizable se documenta al entrar en el código. El cierre de etapa reconcilia el catálogo con la realidad.</p>
         </div>
         <div className="grid gap-2 sm:grid-cols-2">
           {livingDocumentationPrinciples.map((principle, index) => (
@@ -83,17 +87,17 @@ export function DocumentationPage() {
       <section className="mt-10">
         <div className="flex items-end justify-between gap-4">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-600">Documented components</p>
-            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">Current reusable inventory</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-600">Componentes documentados</p>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">Inventario reutilizable actual</h2>
           </div>
-          <Link className="text-sm font-semibold text-brand-700 hover:text-brand-800" to="/components">See live examples →</Link>
+          <Link className="text-sm font-semibold text-brand-700 hover:text-brand-800" to="/components">Ver ejemplos en vivo →</Link>
         </div>
         <div className="mt-4 divide-y divide-slate-100 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
           {componentDocumentation.map((entry) => (
             <Link className="grid gap-2 p-4 transition hover:bg-slate-50 sm:grid-cols-[220px_1fr_auto] sm:items-center" key={entry.id} to={`/components#${entry.id}`}>
               <span className="font-semibold text-slate-900">{entry.name}</span>
               <span className="text-sm text-slate-600">{entry.summary}</span>
-              <span className="text-xs font-semibold text-brand-700">{entry.category}</span>
+              <span className="text-xs font-semibold text-brand-700">{getDocumentationCategoryLabel(entry.category)}</span>
             </Link>
           ))}
         </div>
