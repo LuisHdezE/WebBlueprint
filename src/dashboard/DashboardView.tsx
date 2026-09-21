@@ -14,7 +14,6 @@ export function DashboardView({ provider = mockDashboardDataProvider }: Dashboar
 
   useEffect(() => {
     let active = true;
-    setState({ status: 'loading' });
 
     provider
       .load()
@@ -77,7 +76,7 @@ function DashboardContent({ data }: { data: Extract<DashboardDataState, { status
         <article className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
           <p className="text-[11px] font-semibold uppercase tracking-[0.11em] text-brand-600">Ritmo semanal</p>
           <h3 className="mt-1 text-lg font-semibold tracking-tight text-slate-900">Pedidos procesados</h3>
-          <p className="mt-1 text-xs leading-5 text-slate-500">Resumen visual sin dependencia de una librería de charts.</p>
+          <p className="mt-1 text-xs leading-5 text-slate-500">Resumen visual sin dependencia de una librería de gráficos.</p>
 
           <div className="mt-5 flex h-40 items-end gap-2" aria-label="Pedidos procesados por día">
             {data.series.map((point) => (
