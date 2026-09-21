@@ -28,7 +28,7 @@ export function getDocumentationCategoryLabel(category: ComponentDocumentationEn
     case 'Data display':
       return 'Presentación de datos';
     case 'Feedback':
-      return 'Feedback';
+      return 'Mensajes de estado';
     default:
       return 'Shell';
   }
@@ -112,7 +112,7 @@ export const componentDocumentation: readonly ComponentDocumentationEntry[] = [
       { name: 'label', type: 'string', required: true, description: 'Texto visible del estado.' },
       { name: 'tone', type: "'success' | 'warning' | 'info' | 'neutral'", required: false, defaultValue: 'neutral', description: 'Tono semántico visual del estado.' },
     ],
-    variants: ['success', 'warning', 'info', 'neutral'],
+    variants: ['éxito', 'advertencia', 'información', 'neutral'],
     states: ['predeterminado'],
     example: '<StatusBadge label="Listo" tone="success" />',
   },
@@ -136,14 +136,14 @@ export const componentDocumentation: readonly ComponentDocumentationEntry[] = [
     category: 'Feedback',
     maturity: 'stable',
     sourcePath: 'src/components/feedback/InlineFeedback.tsx',
-    summary: 'Feedback contextual para estados de carga, vacío, advertencia y error sin recurrir a overlays.',
+    summary: 'Mensaje contextual para estados de carga, vacío, advertencia y error sin recurrir a overlays.',
     props: [
       { name: 'title', type: 'string', required: true, description: 'Título breve del estado.' },
       { name: 'message', type: 'string', required: true, description: 'Explicación o siguiente contexto para la persona usuaria.' },
       { name: 'tone', type: "'info' | 'warning' | 'error' | 'neutral'", required: false, defaultValue: 'neutral', description: 'Tono semántico del bloque.' },
     ],
-    variants: ['info', 'warning', 'error', 'neutral'],
-    states: ['status', 'alert en error'],
+    variants: ['información', 'advertencia', 'error', 'neutral'],
+    states: ['estado normal', 'alerta en error'],
     example: '<InlineFeedback title="Sin datos" message="Todavía no hay actividad." />',
   },
   {
