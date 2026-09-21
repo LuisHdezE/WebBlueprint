@@ -1,0 +1,85 @@
+name: Deploy WebBlueprint to EliasWorks
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: deploy-webblueprint-eliasworks
+  cancel-in-progress: true
+
+env:
+  PUBLIC_URL: https://webblueprint.eliasworks.uy
+
+jobs:
+  deploy:
+    name: Publish tested bundle and smoke production
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_branch == 'main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Download exact CI-tested bundle
+        uses: actions/download-artifact@v5
+        with:
+          name: web-production
+          path: dist
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      - name: Verify production artifact contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f dist/index.html
+          test -f dist/.htaccess
+          grep -Eq '(src|href)="/assets/' dist/index.html
+          if grep -q '/webblueprint/' dist/index.html; then
+            echo 'Production bundle must use subdomain-root paths, not /webblueprint/ path hosting.' >&2
+            exit 1
+          fi
+
+      - name: Deploy independent WebBlueprint site via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ftp.eliasworks.uy
+          username: luis@eliasworks.uy
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: 21
+          local-dir: dist/
+          server-dir: public_html/webblueprint/
+
+      - name: Smoke canonical subdomain and SPA deep links
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          check_url() {
+            local url="$1"
+            local output="$2"
+            curl \
+              --fail \
+              --silent \
+              --show-error \
+              --location \
+              --retry 6 \
+              --retry-delay 10 \
+              --retry-all-errors \
+              "$url" \
+              --output "$output"
+          }
+
+          check_url "$PUBLIC_URL/" /tmp/webblueprint-root.html
+          grep -q '<div id="root"></div>' /tmp/webblueprint-root.html
+
+          for path in apps docs components demo/pet-shop/dashboard; do
+            check_url "$PUBLIC_URL/$path" "/tmp/webblueprint-${path//\//-}.html"
+          done
