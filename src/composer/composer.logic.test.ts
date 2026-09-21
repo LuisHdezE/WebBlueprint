@@ -15,12 +15,22 @@ describe('composer core', () => {
     expect(deriveApplicationSlug('Gestión de Órdenes')).toBe('gestion-de-ordenes');
   });
 
-  it('applies a registered application as a Composer preset', () => {
+  it('applies a registered application as a Composer preset without replacing project identity', () => {
     const preset = applicationRegistry[0];
-    const configuration = applyPreset(createEmptyComposerConfiguration(), preset);
+    const current = createEmptyComposerConfiguration();
+    current.name = 'Cliente Demo';
+    current.slug = 'cliente-demo';
+    current.description = 'Propuesta personalizada';
+    current.branding.logoUrl = 'https://example.com/logo.svg';
+    current.branding.accentColor = '#7c3aed';
+
+    const configuration = applyPreset(current, preset);
 
     expect(configuration.presetId).toBe(preset.id);
-    expect(configuration.name).toBe(preset.name);
+    expect(configuration.name).toBe('Cliente Demo');
+    expect(configuration.slug).toBe('cliente-demo');
+    expect(configuration.description).toBe('Propuesta personalizada');
+    expect(configuration.branding).toEqual(current.branding);
     expect(configuration.shellVariant).toBe(preset.shellVariant);
     expect(configuration.featureIds).toHaveLength(preset.capabilities.length);
     expect(configuration.pageIds).toHaveLength(preset.demoPages.length);
