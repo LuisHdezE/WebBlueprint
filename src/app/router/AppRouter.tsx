@@ -1,25 +1,26 @@
 import { Navigate, Route, Routes } from 'react-router';
+import { ProtectedRoute } from '@/auth/ProtectedRoute';
+import { ApplicationDemoPage } from '@/pages/ApplicationDemoPage';
+import { ApplicationDetailPage } from '@/pages/ApplicationDetailPage';
+import { ApplicationsPage } from '@/pages/ApplicationsPage';
+import { ComposerPage } from '@/pages/ComposerPage';
 import { FoundationPage } from '@/pages/FoundationPage';
+import { LandingPage } from '@/pages/LandingPage';
+import { LoginPage } from '@/pages/LoginPage';
 
 export function AppRouter() {
   return (
     <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/apps" element={<ApplicationsPage />} />
+      <Route path="/apps/:slug" element={<ApplicationDetailPage />} />
+      <Route path="/demo/:slug/*" element={<ApplicationDemoPage />} />
       <Route
-        path="/"
-        element={
-          <FoundationPage
-            eyebrow="U0 · Foundation"
-            title="WebBlueprint is being built from the system outward."
-            description="React, Tailwind, mobile-first architecture, living documentation, reusable components, an App Composer, and an exportable application pipeline."
-          />
-        }
-      />
-      <Route
-        path="/docs"
+        path="/docs/*"
         element={
           <FoundationPage
             eyebrow="Documentation"
-            title="Living documentation starts here."
+            title="Living public documentation starts here."
             description="Every reusable component and governed pattern will be documented as it enters the library."
           />
         }
@@ -34,14 +35,13 @@ export function AppRouter() {
           />
         }
       />
+      <Route path="/login" element={<LoginPage />} />
       <Route
-        path="/composer"
+        path="/composer/*"
         element={
-          <FoundationPage
-            eyebrow="App Composer"
-            title="The application generator begins with the product."
-            description="Project identity, branding, features, navigation, manifest generation, and ZIP export will evolve here from the earliest increments."
-          />
+          <ProtectedRoute>
+            <ComposerPage />
+          </ProtectedRoute>
         }
       />
       <Route path="*" element={<Navigate to="/" replace />} />
