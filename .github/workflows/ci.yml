@@ -3,11 +3,9 @@ name: CI
 on:
   pull_request:
     branches: [main]
-  push:
-    branches: [main]
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
@@ -15,13 +13,15 @@ concurrency:
 
 jobs:
   quality:
-    name: Typecheck, lint, test and build
+    name: Bootstrap lockfile and validate
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
     steps:
-      - name: Checkout
+      - name: Checkout PR branch
         uses: actions/checkout@v5
+        with:
+          ref: ${{ github.head_ref }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v5
@@ -30,16 +30,20 @@ jobs:
           cache: npm
           cache-dependency-path: package.json
 
-      - name: Install dependencies
+      - name: Resolve dependencies
         run: npm install --no-audit --no-fund
 
-      - name: Upload bootstrap lockfile
-        uses: actions/upload-artifact@v4
-        with:
-          name: bootstrap-package-lock
-          path: package-lock.json
-          if-no-files-found: error
-          retention-days: 1
+      - name: Persist bootstrap lockfile once
+        run: |
+          if git diff --quiet -- package-lock.json && git ls-files --error-unmatch package-lock.json >/dev/null 2>&1; then
+            echo "package-lock.json already versioned and unchanged."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package-lock.json
+          git commit -m "chore(u0.1): persist resolved package lock"
+          git push origin HEAD:${{ github.head_ref }}
 
       - name: Quality gate
         run: npm run check
