@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { Link, NavLink, Outlet } from 'react-router';
 
 const navItems = [
@@ -13,6 +14,12 @@ function navClassName({ isActive }: { isActive: boolean }) {
 }
 
 export function PublicShell() {
+  const mobileMenuRef = useRef<HTMLDetailsElement>(null);
+
+  function closeMobileMenu() {
+    mobileMenuRef.current?.removeAttribute('open');
+  }
+
   return (
     <div className="min-h-dvh bg-slate-50 text-slate-800">
       <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur">
@@ -44,22 +51,22 @@ export function PublicShell() {
             </Link>
           </div>
 
-          <details className="relative md:hidden">
+          <details ref={mobileMenuRef} className="relative md:hidden">
             <summary className="cursor-pointer list-none rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 shadow-sm">
               Menu
             </summary>
             <div className="absolute right-0 mt-2 w-60 rounded-xl border border-slate-200 bg-white p-2 shadow-xl">
               <nav className="grid gap-1" aria-label="Mobile navigation">
                 {navItems.map((item) => (
-                  <NavLink key={item.to} className={navClassName} to={item.to}>
+                  <NavLink key={item.to} className={navClassName} to={item.to} onClick={closeMobileMenu}>
                     {item.label}
                   </NavLink>
                 ))}
                 <div className="my-1 border-t border-slate-100" />
-                <Link className="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100" to="/login">
+                <Link className="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100" to="/login" onClick={closeMobileMenu}>
                   Sign in
                 </Link>
-                <Link className="rounded-lg bg-brand-600 px-3 py-2 text-sm font-semibold text-white" to="/login">
+                <Link className="rounded-lg bg-brand-600 px-3 py-2 text-sm font-semibold text-white" to="/login" onClick={closeMobileMenu}>
                   App Composer
                 </Link>
               </nav>
