@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router';
-import { useSession } from '@/auth/SessionContext';
+import { useSession } from '@/auth/useSession';
 
 export function LoginPage() {
   const [displayName, setDisplayName] = useState('');

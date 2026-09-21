@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { useSession } from '@/auth/SessionContext';
+import { useSession } from '@/auth/useSession';
 
 export function ComposerPage() {
   const { user, signOut } = useSession();

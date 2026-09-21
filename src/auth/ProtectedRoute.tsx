@@ -1,6 +1,6 @@
 import { Navigate, useLocation } from 'react-router';
 import type { PropsWithChildren } from 'react';
-import { useSession } from '@/auth/SessionContext';
+import { useSession } from '@/auth/useSession';
 
 export function ProtectedRoute({ children }: PropsWithChildren) {
   const { isAuthenticated } = useSession();

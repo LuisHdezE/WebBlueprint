@@ -1,19 +1,7 @@
-import { createContext, useContext, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { PropsWithChildren } from 'react';
-
-type SessionUser = {
-  id: string;
-  displayName: string;
-};
-
-type SessionContextValue = {
-  user: SessionUser | null;
-  isAuthenticated: boolean;
-  signIn: (displayName: string) => void;
-  signOut: () => void;
-};
-
-const SessionContext = createContext<SessionContextValue | null>(null);
+import { SessionContext } from '@/auth/session.context';
+import type { SessionContextValue, SessionUser } from '@/auth/session.types';
 
 export function SessionProvider({ children }: PropsWithChildren) {
   const [user, setUser] = useState<SessionUser | null>(null);
@@ -37,14 +25,4 @@ export function SessionProvider({ children }: PropsWithChildren) {
   );
 
   return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;
-}
-
-export function useSession() {
-  const context = useContext(SessionContext);
-
-  if (!context) {
-    throw new Error('useSession must be used within SessionProvider.');
-  }
-
-  return context;
 }
