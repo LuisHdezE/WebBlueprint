@@ -28,7 +28,7 @@ describe('exported project runtime proof', () => {
       }
 
       execFileSync('npm', ['ci', '--no-audit', '--no-fund'], { cwd: directory, stdio: 'pipe' });
-      execFileSync('npm', ['run', 'build'], { cwd: directory, stdio: 'pipe' });
+      execFileSync('npm', ['run', 'build'], { cwd: directory, stdio: 'inherit' });
 
       expect(existsSync(join(directory, 'dist', 'index.html'))).toBe(true);
     } finally {
