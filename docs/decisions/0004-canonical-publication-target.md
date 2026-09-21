@@ -1,15 +1,15 @@
 # ADR-0004 · Canonical Publication Target
 
-Status: **Accepted**  
+Status: **Accepted · publication address refined by ADR-0005**  
 Date: **2026-09-21**
 
 ## Decision
 
-The canonical public publication target for WebBlueprint is:
+The canonical public publication family for WebBlueprint is EliasWorks infrastructure under:
 
-- `https://eliasworks.uy`
+- `eliasworks.uy`
 
-WebBlueprint production/publication architecture must be designed around EliasWorks infrastructure and the final governed path/subdomain selected under that domain.
+ADR-0005 now fixes the production application itself at the independent subdomain `https://webblueprint.eliasworks.uy`.
 
 ## Hosting audit recorded during U0.2
 
@@ -43,34 +43,31 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.html [L]
 ```
 
-This is sufficient evidence to make WebBlueprint deep-link-ready without selecting the final EliasWorks route yet.
+This provided the evidence needed to make WebBlueprint deep-link-ready before the final publication integration was selected.
 
 ## U0.2 portability decision
 
-U0.2 must not hardcode a deployment path.
+U0.2 intentionally did not hardcode a deployment path.
 
-WebBlueprint now treats Vite's `BASE_URL` as the React Router basename. Therefore:
+WebBlueprint treats Vite's `BASE_URL` as the React Router basename. Therefore:
 
-- a root/subdomain build can keep Vite base `/`;
-- a path deployment can build with a base such as `/webblueprint/`;
+- a root/subdomain build keeps Vite base `/`;
+- a path deployment could build with a base such as `/webblueprint/`;
 - application routes remain defined relative to the application root;
-- the static bundle includes an Apache SPA fallback so direct proposal/demo URLs can resolve to `index.html`.
+- the static bundle includes an Apache SPA fallback so direct proposal/demo URLs resolve to `index.html`.
 
-The exact public address remains intentionally undecided until the publication integration is governed. Candidates may include a path or subdomain under `eliasworks.uy`, but U0.2 does not bind the product to either one.
+U0.6 resolved the previously open publication choice in favor of the independent subdomain model recorded by ADR-0005.
 
 ## Consequences
 
 - Render is not a production target for WebBlueprint.
-- A temporary Render preview created during U0.2 is treated only as non-canonical visual evidence and must not influence the deployment architecture.
+- A temporary Render preview created during U0.2 remains non-canonical visual evidence only.
 - The existing EliasWorks root portfolio must not be overwritten by WebBlueprint.
-- Continuous delivery will eventually publish accepted `main` revisions to EliasWorks infrastructure.
+- Continuous delivery publishes accepted `main` revisions to the independent WebBlueprint subdomain infrastructure.
 - Public application/demo URLs must be stable enough to share in commercial proposals.
 - Direct deep links and browser refresh behavior must work on the EliasWorks hosting stack.
-- WebBlueprint builds must remain portable between a path and a subdomain under EliasWorks until the final publication address is selected.
-- The final path/subdomain, caching rules and FTP/CD wiring belong to the publication integration milestone rather than U0.2.
+- The final subdomain, FTP target and deployment contract are governed by ADR-0005 and U0.6.
 
 ## Rationale
 
-WebBlueprint is intended to be part of the EliasWorks public product surface. Its landing page, application catalog, documentation and navigable proposal demos are commercial-facing assets and therefore belong under the EliasWorks publication domain rather than an unrelated hosting-specific product URL.
-
-The hosting audit also shows that EliasWorks already has a working GitHub Actions → FTP deployment model and an established pattern for hosting independent frontend bundles without replacing the root portfolio. U0.2 therefore prepares WebBlueprint for that environment while preserving the freedom to choose the final EliasWorks address later.
+WebBlueprint is part of the EliasWorks public product surface, but it is operationally independent from the Laravel portfolio at the root domain. Its landing page, application catalog, documentation and navigable proposal demos therefore use their own subdomain while remaining under the EliasWorks domain family.
