@@ -86,7 +86,7 @@ export function ComponentsPage() {
               </div>
             </div>
             <div className="sm:col-span-2">
-              <InlineFeedback title="Estado controlado" message="Loading, empty y error se representan desde el contrato del provider sin acoplar la vista a fixtures." tone="info" />
+              <InlineFeedback title="Estado controlado" message="Carga, vacío y error se representan desde el contrato del provider sin acoplar la vista a fixtures." tone="info" />
             </div>
           </div>
 
