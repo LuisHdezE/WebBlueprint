@@ -1,67 +1,67 @@
-# ADR-0002 · U0.1 Frontend Toolchain
+# ADR-0002 · Toolchain frontend de U0.1
 
-Status: **Accepted**  
-Date: **2026-09-20**
+Estado: **Aceptado**  
+Fecha: **2026-09-20**
 
-## Decision
+## Decisión
 
-WebBlueprint begins implementation as a client-side React application using a deliberately small, supported toolchain:
+WebBlueprint comienza su implementación como una aplicación React del lado cliente utilizando un toolchain deliberadamente pequeño y soportado:
 
 - React 19.3.0
 - React DOM 19.3.0
-- React Router 8.4.0 in declarative SPA mode
+- React Router 8.4.0 en modo SPA declarativo
 - Vite 8.3.0
-- Tailwind CSS 4.3.3 through the official Vite plugin
+- Tailwind CSS 4.3.3 mediante el plugin oficial de Vite
 - TypeScript 6.0.3
 - ESLint 10 + typescript-eslint 8.70
 - Vitest 5.0.1
-- Node.js baseline: 22.22.3 or newer
+- baseline de Node.js: 22.22.3 o superior
 
-## Why TypeScript 6 instead of TypeScript 7
+## Por qué TypeScript 6 en lugar de TypeScript 7
 
-TypeScript 7 is available, but the current typescript-eslint support matrix declares TypeScript versions below 6.1 as supported. WebBlueprint prioritizes a supported quality toolchain over adopting a compiler major before the lint ecosystem formally supports it.
+TypeScript 7 está disponible, pero la matriz actual de soporte de typescript-eslint declara soportadas las versiones de TypeScript inferiores a 6.1. WebBlueprint prioriza un toolchain de calidad soportado antes que adoptar una versión major del compilador que el ecosistema lint todavía no soporta formalmente.
 
-This decision should be revisited when typescript-eslint officially supports TypeScript 7.
+Esta decisión debe revisarse cuando typescript-eslint soporte oficialmente TypeScript 7.
 
-## Application boundary
+## Frontera de la aplicación
 
-U0.1 remains frontend only. No backend, API, database, server-rendering framework, or domain integration is introduced.
+U0.1 permanece únicamente frontend. No se introduce backend, API, base de datos, framework de renderizado del lado servidor ni integración de dominio.
 
-The router exposes only foundation routes:
+El router expone únicamente rutas de fundación:
 
 - `/`
 - `/docs`
 - `/components`
 - `/composer`
 
-The pages are intentional placeholders. Their purpose is to validate the application skeleton without prematurely inventing CORK-derived views.
+Las páginas son placeholders intencionales. Su propósito es validar el esqueleto de la aplicación sin inventar prematuramente vistas derivadas de CORK.
 
-## Architecture direction
+## Dirección arquitectónica
 
-The source tree starts with explicit boundaries for:
+El árbol fuente comienza con fronteras explícitas para:
 
-- `app/` — application composition and routing;
-- `config/` — application-level configuration;
-- `pages/` — route-level composition;
-- `styles/` — global Tailwind entrypoint and baseline CSS.
+- `app/` — composición y routing de la aplicación;
+- `config/` — configuración a nivel de aplicación;
+- `pages/` — composición a nivel de ruta;
+- `styles/` — entrypoint global de Tailwind y CSS base.
 
-Additional boundaries such as `components/`, `features/`, `data/`, `shell/`, and generator/composer modules will be introduced only when their first real implementation requires them. Empty architectural folders are not committed.
+Fronteras adicionales como `components/`, `features/`, `data/`, `shell/` y módulos de generator/composer se introducirán únicamente cuando su primera implementación real las requiera. No se versionan carpetas arquitectónicas vacías.
 
 ## Quality gate
 
-A change is expected to pass:
+Se espera que cada cambio pase:
 
-1. TypeScript compilation/typecheck;
-2. ESLint with zero warnings;
+1. compilación/typecheck de TypeScript;
+2. ESLint con cero advertencias;
 3. Vitest;
-4. Vite production build.
+4. build de producción de Vite.
 
-GitHub Actions runs the same aggregate `npm run check` gate on pull requests and `main`.
+GitHub Actions ejecuta el mismo gate agregado `npm run check` en pull requests y `main`.
 
-## Responsive baseline
+## Baseline responsive
 
-The first rendered page uses mobile-first Tailwind classes. This is not the final Style 1 shell; it is only a compile/runtime proof that the approved responsive styling stack is active.
+La primera página renderizada utiliza clases Tailwind mobile-first. No es el shell final Style 1; es únicamente una prueba de compilación/runtime de que el stack aprobado de estilos responsive está activo.
 
-## Dependency policy
+## Política de dependencias
 
-Direct dependency versions are pinned for the bootstrap. A repository lockfile is required before U0.1 is considered fully closed; it will be generated from a successful dependency installation and committed as evidence of the resolved dependency graph.
+Las versiones de dependencias directas quedan fijadas durante el bootstrap. Se requiere un lockfile del repositorio antes de considerar U0.1 completamente cerrada; se generará a partir de una instalación exitosa de dependencias y se versionará como evidencia del grafo de dependencias resuelto.
