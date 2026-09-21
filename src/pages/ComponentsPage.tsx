@@ -39,7 +39,7 @@ export function ComponentsPage() {
         <p className="text-[11px] font-semibold uppercase tracking-[0.13em] text-brand-600">Galería de componentes</p>
         <h1 className="mt-2 max-w-3xl text-4xl font-semibold tracking-[-0.035em] text-slate-950 sm:text-5xl">Componentes reales, documentados donde viven.</h1>
         <p className="mt-4 max-w-3xl text-base leading-7 text-slate-600">
-          La galería comienza con las piezas reutilizables que ya alimentan WebBlueprint. Los ejemplos en vivo usan datos del registro real, no fixtures paralelos.
+          La galería comienza con las piezas reutilizables que ya alimentan WebBlueprint. Los ejemplos en vivo usan datos del registro real, no datos simulados paralelos.
         </p>
       </section>
 
@@ -86,7 +86,7 @@ export function ComponentsPage() {
               </div>
             </div>
             <div className="sm:col-span-2">
-              <InlineFeedback title="Estado controlado" message="Carga, vacío y error se representan desde el contrato del provider sin acoplar la vista a fixtures." tone="info" />
+              <InlineFeedback title="Estado controlado" message="Carga, vacío y error se representan desde el contrato de datos sin acoplar la vista a datos simulados concretos." tone="info" />
             </div>
           </div>
 
