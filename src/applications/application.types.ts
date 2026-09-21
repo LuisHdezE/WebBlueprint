@@ -1,3 +1,5 @@
+import type { LeftMenuVariant } from '@/shell/shell.types';
+
 export type DemoPageDefinition = {
   id: string;
   label: string;
@@ -12,6 +14,7 @@ export type ApplicationDefinition = {
   summary: string;
   category: string;
   promoted: boolean;
+  shellVariant: LeftMenuVariant;
   capabilities: readonly string[];
   demoPages: readonly DemoPageDefinition[];
 };
