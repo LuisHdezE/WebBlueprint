@@ -27,6 +27,12 @@ Alinear WebBlueprint con la convención oficial del proyecto antes de comenzar U
 - ADR históricos y ADR-0006 de convención de idioma disponibles en español;
 - documentación de referencia CORK, contrato de producción, roadmap y baseline visual Style 1 reconciliados en español.
 
+## Relación con PR #8
+
+PR #9 tiene `main` como base para ejecutar el CI gobernado del repositorio. Incluye el mismo estado final de los checkpoints U0.6 y ADR-0006 presentes en PR #8, además de la reconciliación transversal completa.
+
+PR #8 continúa abierta como cierre documental focalizado de U0.6 y no será mergeada sin aprobación explícita. Si #8 se integra primero, sus cambios superpuestos dejarán de formar parte del diff efectivo de #9 sin alterar el resultado funcional esperado.
+
 ## Excepción técnica deliberada
 
 `docs/reference/cork-v4-page-inventory.csv` conserva su esquema legible por máquina y sus valores técnicos en inglés (`reference_page`, `category`, `decision`, `REVIEW`, nombres originales de archivos CORK, etc.). No es texto de producto ni prosa documental para usuarios. Traducir esos identificadores antes de U1 introduciría deriva innecesaria en el artefacto que será usado para clasificación.
