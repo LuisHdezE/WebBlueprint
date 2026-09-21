@@ -1,11 +1,34 @@
 import { applicationRegistry } from '@/applications/applicationRegistry';
 import { ApplicationCard } from '@/components/applications/ApplicationCard';
 import { ApplicationPreview } from '@/components/applications/ApplicationPreview';
+import { ActivityFeed } from '@/components/data-display/ActivityFeed';
+import { MetricCard } from '@/components/data-display/MetricCard';
+import { StatusBadge } from '@/components/data-display/StatusBadge';
+import { InlineFeedback } from '@/components/feedback/InlineFeedback';
 import {
   componentDocumentation,
   getMaturityLabel,
 } from '@/documentation/documentation.catalog';
 import { leftMenuVariants } from '@/shell/shell.types';
+
+const sampleActivity = [
+  {
+    id: 'sample-1',
+    title: 'Pedido preparado',
+    detail: 'Listo para despacho desde el depósito principal.',
+    timeLabel: 'Hace 12 min',
+    statusLabel: 'Listo',
+    statusTone: 'success' as const,
+  },
+  {
+    id: 'sample-2',
+    title: 'Stock bajo',
+    detail: 'Una variante necesita revisión de inventario.',
+    timeLabel: 'Hace 28 min',
+    statusLabel: 'Revisar',
+    statusTone: 'warning' as const,
+  },
+];
 
 export function ComponentsPage() {
   const sampleApplication = applicationRegistry[0];
@@ -43,6 +66,36 @@ export function ComponentsPage() {
           </div>
         </section>
       ) : null}
+
+      <section className="mt-10">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-600">U2.1 · Dashboard</p>
+        <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">Primitivas operativas</h2>
+        <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">Estas piezas nacen del primer consumidor real de U2. No se implementan variantes adicionales hasta que otra vista las necesite.</p>
+
+        <div className="mt-4 grid gap-4 xl:grid-cols-2">
+          <div className="grid gap-3 sm:grid-cols-2">
+            <MetricCard label="Pedidos de hoy" value="126" note="+12 desde ayer" tone="positive" />
+            <MetricCard label="Pendientes" value="38" note="6 requieren revisión" tone="warning" />
+            <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:col-span-2">
+              <p className="text-xs font-semibold uppercase tracking-[0.1em] text-slate-400">StatusBadge</p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <StatusBadge label="Listo" tone="success" />
+                <StatusBadge label="Revisar" tone="warning" />
+                <StatusBadge label="Nuevo" tone="info" />
+                <StatusBadge label="Neutral" />
+              </div>
+            </div>
+            <div className="sm:col-span-2">
+              <InlineFeedback title="Estado controlado" message="Loading, empty y error se representan desde el contrato del provider sin acoplar la vista a fixtures." tone="info" />
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            <p className="text-xs font-semibold uppercase tracking-[0.1em] text-slate-400">ActivityFeed</p>
+            <div className="mt-3"><ActivityFeed items={sampleActivity} /></div>
+          </div>
+        </div>
+      </section>
 
       <section className="mt-10">
         <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-600">Variantes gobernadas</p>
