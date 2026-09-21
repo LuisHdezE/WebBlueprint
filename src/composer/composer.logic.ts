@@ -36,9 +36,6 @@ export function applyPreset(
 ): ComposerConfiguration {
   return {
     ...current,
-    name: preset.name,
-    slug: preset.slug,
-    description: preset.summary,
     presetId: preset.id,
     featureIds: getPresetFeatureIds(preset),
     pageIds: getPresetPageIds(preset),
