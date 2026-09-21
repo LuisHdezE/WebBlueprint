@@ -9,6 +9,7 @@ export const applicationRegistry = [
       'A responsive retail management concept for pet stores, combining products, customers, orders and inventory in one navigable experience.',
     category: 'Retail',
     promoted: true,
+    shellVariant: 'vertical-light-menu',
     capabilities: ['Dashboard', 'Products', 'Customers', 'Orders', 'Inventory'],
     demoPages: [
       {
