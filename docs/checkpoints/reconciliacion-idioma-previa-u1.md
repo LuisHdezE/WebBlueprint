@@ -1,6 +1,6 @@
 # Reconciliación de idioma previa a U1
 
-Estado: **IMPLEMENTACIÓN COMPLETA · CI FINAL PENDIENTE**
+Estado: **LISTO PARA REVISIÓN**
 
 ## Objetivo
 
@@ -71,6 +71,26 @@ Se revisaron explícitamente las superficies que contienen texto visible:
 
 El inglés preservado en estas superficies corresponde únicamente a términos técnicos necesarios, nombres de tecnologías, rutas, IDs, nombres de componentes o fragmentos de código.
 
+## Evidencia de calidad
+
+El HEAD de implementación y auditoría previo a este cierre documental fue:
+
+`cb20b1a9232e39e4e14c07298938e8893796472a`
+
+GitHub Actions CI #96, ejecución `35636725333`: **PASS**.
+
+Job `Typecheck, lint, test and build` (`106455846630`): **SUCCESS**.
+
+Pasaron:
+
+1. instalación de dependencias;
+2. quality gate completo;
+3. smoke del proyecto React exportado;
+4. verificación del fallback SPA desplegable;
+5. generación y subida del preview de la PR.
+
+Este commit de cierre solo reconcilia la evidencia documental. PR #9 solo puede salir de Draft si el CI vuelve a quedar verde sobre su HEAD exacto después de este commit.
+
 ## Criterios de cierre
 
 - superficies visibles del producto reconciliadas a español: **PASS**;
@@ -78,6 +98,7 @@ El inglés preservado en estas superficies corresponde únicamente a términos t
 - tests actualizados donde los mensajes visibles forman parte del contrato: **PASS**;
 - IDs y rutas estables preservados: **PASS**;
 - revisión final de textos residuales en inglés: **PASS**;
-- quality gate y smoke del proyecto exportado sobre el HEAD exacto: **PENDIENTE**.
+- quality gate y smoke del proyecto exportado sobre el HEAD de implementación: **PASS**;
+- promoción de PR #9 a Ready for review: condicionada únicamente a CI verde sobre este commit documental final.
 
-PR #9 permanece en Draft hasta obtener CI verde sobre el HEAD exacto y reconciliar aquí la evidencia final.
+Este checkpoint no autoriza merge. El merge requiere aprobación explícita del usuario.
