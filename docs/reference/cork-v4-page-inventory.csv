@@ -1,108 +1,108 @@
 reference_page,category,collapsible_menu,vertical_dark_menu,vertical_light_menu,decision,notes
-app-blog-create.html,applications,yes,yes,yes,REVIEW,
-app-blog-edit.html,applications,yes,yes,yes,REVIEW,
-app-blog-grid.html,applications,yes,yes,yes,REVIEW,
-app-blog-list.html,applications,yes,yes,yes,REVIEW,
-app-blog-post.html,applications,yes,yes,yes,REVIEW,
-app-calendar.html,applications,yes,yes,yes,REVIEW,
-app-chat.html,applications,yes,yes,yes,REVIEW,
-app-contacts.html,applications,yes,yes,yes,REVIEW,
-app-ecommerce-product-add.html,applications,yes,yes,yes,REVIEW,
-app-ecommerce-product-edit.html,applications,yes,yes,yes,REVIEW,
-app-ecommerce-product-list.html,applications,yes,yes,yes,REVIEW,
-app-ecommerce-product-shop.html,applications,yes,yes,yes,REVIEW,
-app-ecommerce-product.html,applications,yes,yes,yes,REVIEW,
-app-invoice-add.html,applications,yes,yes,yes,REVIEW,
-app-invoice-edit.html,applications,yes,yes,yes,REVIEW,
-app-invoice-list.html,applications,yes,yes,yes,REVIEW,
-app-invoice-preview.html,applications,yes,yes,yes,REVIEW,
-app-mailbox.html,applications,yes,yes,yes,REVIEW,
-app-notes.html,applications,yes,yes,yes,REVIEW,
-app-scrumboard.html,applications,yes,yes,yes,REVIEW,
-app-todoList.html,applications,yes,yes,yes,REVIEW,
-auth-boxed-2-step-verification.html,authentication,yes,yes,yes,REVIEW,
-auth-boxed-lockscreen.html,authentication,yes,yes,yes,REVIEW,
-auth-boxed-password-reset.html,authentication,yes,yes,yes,REVIEW,
-auth-boxed-signin.html,authentication,yes,yes,yes,REVIEW,
-auth-boxed-signup.html,authentication,yes,yes,yes,REVIEW,
-auth-cover-2-step-verification.html,authentication,yes,yes,yes,REVIEW,
-auth-cover-lockscreen.html,authentication,yes,yes,yes,REVIEW,
-auth-cover-password-reset.html,authentication,yes,yes,yes,REVIEW,
-auth-cover-signin.html,authentication,yes,yes,yes,REVIEW,
-auth-cover-signup.html,authentication,yes,yes,yes,REVIEW,
-charts-apex.html,charts,yes,yes,yes,REVIEW,
-component-accordion.html,components,yes,yes,yes,REVIEW,
-component-bootstrap-carousel.html,components,yes,yes,no,REVIEW,
-component-cards.html,components,yes,yes,yes,REVIEW,
-component-carousel.html,components,no,no,yes,REVIEW,
-component-drag-drop.html,components,yes,yes,yes,REVIEW,
-component-flags.html,components,yes,yes,yes,REVIEW,
-component-fonticons.html,components,yes,yes,yes,REVIEW,
-component-lightbox.html,components,yes,yes,yes,REVIEW,
-component-list-group.html,components,yes,yes,yes,REVIEW,
-component-media-object.html,components,yes,yes,yes,REVIEW,
-component-modal.html,components,yes,yes,yes,REVIEW,
-component-notifications.html,components,yes,yes,yes,REVIEW,
-component-pricing-table.html,components,yes,yes,yes,REVIEW,
-component-splide.html,components,yes,yes,yes,REVIEW,
-component-sweetalert.html,components,yes,yes,yes,REVIEW,
-component-tabs.html,components,yes,yes,yes,REVIEW,
-component-timeline.html,components,yes,yes,yes,REVIEW,
-element-alerts.html,elements,yes,yes,yes,REVIEW,
-element-avatar.html,elements,yes,yes,yes,REVIEW,
-element-badges.html,elements,yes,yes,yes,REVIEW,
-element-breadcrumbs.html,elements,yes,yes,yes,REVIEW,
-element-buttons-group.html,elements,yes,yes,yes,REVIEW,
-element-buttons.html,elements,yes,yes,yes,REVIEW,
-element-color-library.html,elements,yes,yes,yes,REVIEW,
-element-dropdown.html,elements,yes,yes,yes,REVIEW,
-element-infobox.html,elements,yes,yes,yes,REVIEW,
-element-loader.html,elements,yes,yes,yes,REVIEW,
-element-pagination.html,elements,yes,yes,yes,REVIEW,
-element-popovers.html,elements,yes,yes,yes,REVIEW,
-element-progressbar.html,elements,yes,yes,yes,REVIEW,
-element-search.html,elements,yes,yes,yes,REVIEW,
-element-tooltips.html,elements,yes,yes,yes,REVIEW,
-element-treeview.html,elements,yes,yes,yes,REVIEW,
-element-typography.html,elements,yes,yes,yes,REVIEW,
-form-autoComplete.html,forms,yes,yes,yes,REVIEW,
-form-bootstrap-basic.html,forms,yes,yes,yes,REVIEW,
-form-bootstrap-touchspin.html,forms,yes,yes,yes,REVIEW,
-form-checkbox.html,forms,yes,yes,yes,REVIEW,
-form-clipboard.html,forms,yes,yes,yes,REVIEW,
-form-date-time-picker.html,forms,yes,yes,yes,REVIEW,
-form-fileupload.html,forms,yes,yes,yes,REVIEW,
-form-input-group-basic.html,forms,yes,yes,yes,REVIEW,
-form-input-mask.html,forms,yes,yes,yes,REVIEW,
-form-layouts.html,forms,yes,yes,yes,REVIEW,
-form-markdown.html,forms,yes,yes,yes,REVIEW,
-form-maxlength.html,forms,yes,yes,yes,REVIEW,
-form-quill.html,forms,yes,yes,yes,REVIEW,
-form-radio.html,forms,yes,yes,yes,REVIEW,
-form-slider.html,forms,yes,yes,yes,REVIEW,
-form-switches.html,forms,yes,yes,yes,REVIEW,
-form-tagify.html,forms,yes,yes,yes,REVIEW,
-form-tom-select.html,forms,yes,yes,yes,REVIEW,
-form-validation.html,forms,yes,yes,yes,REVIEW,
-form-wizard.html,forms,yes,yes,yes,REVIEW,
-index.html,dashboards,yes,yes,yes,REVIEW,
-index2.html,dashboards,yes,yes,yes,REVIEW,
-layout-blank-page.html,layouts,yes,yes,yes,REVIEW,
-layout-boxed.html,layouts,no,yes,yes,REVIEW,
-layout-collapsible-menu.html,layouts,yes,yes,yes,REVIEW,
-layout-empty.html,layouts,yes,yes,yes,REVIEW,
-layout-full-width.html,layouts,yes,no,no,REVIEW,
-map-leaflet.html,maps,yes,yes,yes,REVIEW,
-pages-contact-us.html,pages,yes,yes,yes,REVIEW,
-pages-error404.html,pages,yes,yes,yes,REVIEW,
-pages-faq.html,pages,yes,yes,yes,REVIEW,
-pages-knowledge-base.html,pages,yes,yes,yes,REVIEW,
-pages-maintenence.html,pages,yes,yes,yes,REVIEW,
-table-basic.html,tables,yes,yes,yes,REVIEW,
-table-datatable-basic.html,tables,yes,yes,yes,REVIEW,
-table-datatable-custom.html,tables,yes,yes,yes,REVIEW,
-table-datatable-miscellaneous.html,tables,yes,yes,yes,REVIEW,
-table-datatable-striped-table.html,tables,yes,yes,yes,REVIEW,
-user-account-settings.html,user,yes,yes,yes,REVIEW,
-user-profile.html,user,yes,yes,yes,REVIEW,
-widgets.html,widgets,yes,yes,yes,REVIEW,
+app-blog-create.html,applications,yes,yes,yes,MERGE,Fusionar con BlogEditor; creación y edición comparten el mismo formulario configurable. Propiedad probable: aplicación Contenido/Blog.
+app-blog-edit.html,applications,yes,yes,yes,MERGE,Fusionar con BlogEditor; no justifica una vista separada respecto a creación. Propiedad probable: aplicación Contenido/Blog.
+app-blog-grid.html,applications,yes,yes,yes,MERGE,Fusionar con ContentCollection y una variante de vista en cuadrícula. Propiedad probable: aplicación Contenido/Blog.
+app-blog-list.html,applications,yes,yes,yes,MERGE,Fusionar con ContentCollection y una variante de vista en lista. Propiedad probable: aplicación Contenido/Blog.
+app-blog-post.html,applications,yes,yes,yes,ADAPT,Conservar como patrón diferenciado de detalle/lectura de contenido. Propiedad probable: aplicación Contenido/Blog.
+app-calendar.html,applications,yes,yes,yes,ADAPT,Capacidad diferenciada y reutilizable para agenda y planificación. Propiedad probable: aplicaciones con programación/agenda.
+app-chat.html,applications,yes,yes,yes,ADAPT,Capacidad diferenciada de conversación con lista de hilos y panel de mensajes. Propiedad probable: CRM/soporte/comunicación.
+app-contacts.html,applications,yes,yes,yes,ADAPT,Conservar como directorio de contactos reutilizable con búsqueda y detalle contextual. Propiedad probable: CRM/contactos.
+app-ecommerce-product-add.html,applications,yes,yes,yes,MERGE,Fusionar con ProductEditor; alta y edición comparten contrato de formulario. Propiedad probable: Comercio.
+app-ecommerce-product-edit.html,applications,yes,yes,yes,MERGE,Fusionar con ProductEditor; no requiere vista independiente de la creación. Propiedad probable: Comercio.
+app-ecommerce-product-list.html,applications,yes,yes,yes,ADAPT,Conservar como catálogo administrativo de productos basado en DataTable/List patterns. Propiedad probable: Comercio/Inventario.
+app-ecommerce-product-shop.html,applications,yes,yes,yes,ADAPT,Conservar como catálogo comercial navegable en cards/grid. Propiedad probable: Comercio.
+app-ecommerce-product.html,applications,yes,yes,yes,ADAPT,Conservar como detalle de producto reutilizable. Propiedad probable: Comercio.
+app-invoice-add.html,applications,yes,yes,yes,MERGE,"Fusionar con InvoiceEditor; creación y edición comparten líneas, totales y formulario. Propiedad probable: Facturación."
+app-invoice-edit.html,applications,yes,yes,yes,MERGE,Fusionar con InvoiceEditor; no justifica una vista separada. Propiedad probable: Facturación.
+app-invoice-list.html,applications,yes,yes,yes,ADAPT,"Conservar como listado operativo de documentos con filtros, estados y acciones. Propiedad probable: Facturación."
+app-invoice-preview.html,applications,yes,yes,yes,ADAPT,Conservar como vista de lectura/impresión de documento. Propiedad probable: Facturación.
+app-mailbox.html,applications,yes,yes,yes,ADAPT,Conservar como patrón de bandeja de entrada de tres paneles o equivalente responsive. Propiedad probable: Comunicación.
+app-notes.html,applications,yes,yes,yes,ADAPT,Conservar como notas organizables con búsqueda/etiquetas. Propiedad probable: Productividad.
+app-scrumboard.html,applications,yes,yes,yes,ADAPT,Conservar como tablero Kanban reutilizable con columnas y tarjetas. Propiedad probable: Proyectos/CRM/operaciones.
+app-todoList.html,applications,yes,yes,yes,ADAPT,Conservar como gestor de tareas compacto y reutilizable. Propiedad probable: Productividad/operaciones.
+auth-boxed-2-step-verification.html,authentication,yes,yes,yes,ADAPT,Conservar el flujo 2FA como capacidad autenticada; diseño adaptado a Style 1. Propiedad probable: Auth.
+auth-boxed-lockscreen.html,authentication,yes,yes,yes,ADAPT,Conservar bloqueo/reautenticación como flujo diferenciado. Propiedad probable: Auth.
+auth-boxed-password-reset.html,authentication,yes,yes,yes,ADAPT,Conservar recuperación de contraseña como flujo diferenciado. Propiedad probable: Auth.
+auth-boxed-signin.html,authentication,yes,yes,yes,MERGE,"Fusionar con LoginPage/AuthShell existente; la referencia informa composición, no una nueva ruta paralela."
+auth-boxed-signup.html,authentication,yes,yes,yes,ADAPT,Conservar registro como flujo diferenciado cuando el producto consumidor lo habilite. Propiedad probable: Auth.
+auth-cover-2-step-verification.html,authentication,yes,yes,yes,MERGE,"Fusionar con el mismo flujo 2FA; cover/boxed son variantes visuales, no capacidades distintas."
+auth-cover-lockscreen.html,authentication,yes,yes,yes,MERGE,Fusionar con el mismo flujo de bloqueo; cover/boxed son variantes de presentación.
+auth-cover-password-reset.html,authentication,yes,yes,yes,MERGE,Fusionar con el mismo flujo de recuperación; cover/boxed no justifican rutas duplicadas.
+auth-cover-signin.html,authentication,yes,yes,yes,MERGE,Fusionar con LoginPage/AuthShell existente como posible variante de composición.
+auth-cover-signup.html,authentication,yes,yes,yes,MERGE,"Fusionar con el mismo flujo de registro; la diferencia es de layout, no funcional."
+charts-apex.html,charts,yes,yes,yes,MERGE,Extraer primitivas Chart/ChartCard y ejemplos documentados; no crear una página de producto exclusiva para Apex.
+component-accordion.html,components,yes,yes,yes,MERGE,Extraer Accordion reutilizable y documentarlo en /components.
+component-bootstrap-carousel.html,components,yes,yes,no,DISCARD,Ejemplo dependiente de Bootstrap y redundante frente al patrón Carousel propio.
+component-cards.html,components,yes,yes,yes,MERGE,Extraer Card y composiciones de card reutilizables; documentar variantes.
+component-carousel.html,components,no,no,yes,MERGE,Fusionar en un Carousel propio configurable y agnóstico de librería.
+component-drag-drop.html,components,yes,yes,yes,MERGE,Extraer patrón DragDrop/Sortable reutilizable para listas y tableros.
+component-flags.html,components,yes,yes,yes,DISCARD,Catálogo de assets de banderas de bajo valor como vista; añadir iconografía solo cuando una necesidad real lo requiera.
+component-fonticons.html,components,yes,yes,yes,DISCARD,Demo de set de iconos del tema; WebBlueprint debe gobernar su propio sistema de iconografía.
+component-lightbox.html,components,yes,yes,yes,MERGE,Extraer Lightbox/MediaViewer reutilizable y documentado.
+component-list-group.html,components,yes,yes,yes,MERGE,Fusionar en primitivas List/ListItem con estados y acciones.
+component-media-object.html,components,yes,yes,yes,MERGE,Fusionar en patrón MediaItem/ListItem con avatar/thumbnail y contenido.
+component-modal.html,components,yes,yes,yes,MERGE,Extraer Modal/Dialog reusable con variantes y estados.
+component-notifications.html,components,yes,yes,yes,MERGE,Fusionar en Toast/NotificationCenter y estados de feedback.
+component-pricing-table.html,components,yes,yes,yes,MERGE,"Extraer PricingCard/PricingTable como composición reusable, no página obligatoria."
+component-splide.html,components,yes,yes,yes,MERGE,"Fusionar con Carousel propio; Splide es una implementación, no una capacidad de producto."
+component-sweetalert.html,components,yes,yes,yes,MERGE,Fusionar en Dialog/Confirm y feedback propio; evitar dependencia conceptual de SweetAlert.
+component-tabs.html,components,yes,yes,yes,MERGE,Extraer Tabs reutilizable y documentado.
+component-timeline.html,components,yes,yes,yes,MERGE,Extraer Timeline/ActivityFeed reutilizable.
+element-alerts.html,elements,yes,yes,yes,MERGE,Extraer Alert/InlineFeedback con variantes semánticas.
+element-avatar.html,elements,yes,yes,yes,MERGE,"Extraer Avatar con imagen, iniciales y fallback."
+element-badges.html,elements,yes,yes,yes,MERGE,Extraer Badge/StatusBadge con variantes gobernadas.
+element-breadcrumbs.html,elements,yes,yes,yes,MERGE,Extraer Breadcrumbs como patrón de navegación contextual.
+element-buttons-group.html,elements,yes,yes,yes,MERGE,Fusionar con ButtonGroup dentro del sistema de botones.
+element-buttons.html,elements,yes,yes,yes,MERGE,"Extraer Button con variantes, tamaños y estados."
+element-color-library.html,elements,yes,yes,yes,MERGE,Integrar como tokens de color y documentación de Style 1; no página funcional independiente.
+element-dropdown.html,elements,yes,yes,yes,MERGE,Extraer Dropdown/Menu reutilizable.
+element-infobox.html,elements,yes,yes,yes,MERGE,Fusionar en InfoCard/Callout reusable.
+element-loader.html,elements,yes,yes,yes,MERGE,Extraer LoadingIndicator/Skeleton según contexto.
+element-pagination.html,elements,yes,yes,yes,MERGE,Extraer Pagination reusable para tablas/listados.
+element-popovers.html,elements,yes,yes,yes,MERGE,Extraer Popover reutilizable.
+element-progressbar.html,elements,yes,yes,yes,MERGE,Extraer Progress/ProgressBar reusable.
+element-search.html,elements,yes,yes,yes,MERGE,Extraer SearchField/SearchBox reusable.
+element-tooltips.html,elements,yes,yes,yes,MERGE,Extraer Tooltip reutilizable.
+element-treeview.html,elements,yes,yes,yes,MERGE,Extraer TreeView reusable para jerarquías cuando un consumidor lo requiera.
+element-typography.html,elements,yes,yes,yes,MERGE,"Integrar jerarquía tipográfica en tokens/documentación de Style 1, no como página independiente."
+form-autoComplete.html,forms,yes,yes,yes,MERGE,Fusionar en ComboBox/Autocomplete reusable.
+form-bootstrap-basic.html,forms,yes,yes,yes,MERGE,Extraer controles base propios; descartar dependencia visual de Bootstrap.
+form-bootstrap-touchspin.html,forms,yes,yes,yes,MERGE,Fusionar en NumberInput/Stepper propio.
+form-checkbox.html,forms,yes,yes,yes,MERGE,Extraer Checkbox/CheckboxGroup reusable.
+form-clipboard.html,forms,yes,yes,yes,MERGE,Fusionar acción de copiar en Input/CopyButton reusable.
+form-date-time-picker.html,forms,yes,yes,yes,MERGE,Extraer DatePicker/DateTimePicker reusable.
+form-fileupload.html,forms,yes,yes,yes,MERGE,Extraer FileUpload/Dropzone reusable con estados.
+form-input-group-basic.html,forms,yes,yes,yes,MERGE,"Extraer InputGroup con prefijos, sufijos y acciones."
+form-input-mask.html,forms,yes,yes,yes,MERGE,Fusionar capacidad de máscara en TextField/Input adapters.
+form-layouts.html,forms,yes,yes,yes,MERGE,Extraer patrones FormLayout/FormSection; no mantener una página demo independiente.
+form-markdown.html,forms,yes,yes,yes,MERGE,Fusionar en RichTextEditor con variante Markdown cuando sea necesaria.
+form-maxlength.html,forms,yes,yes,yes,MERGE,Integrar contador de longitud como comportamiento de TextField/Textarea.
+form-quill.html,forms,yes,yes,yes,MERGE,Fusionar en RichTextEditor agnóstico de implementación.
+form-radio.html,forms,yes,yes,yes,MERGE,Extraer Radio/RadioGroup reusable.
+form-slider.html,forms,yes,yes,yes,MERGE,Extraer Slider/RangeInput reusable.
+form-switches.html,forms,yes,yes,yes,MERGE,Extraer Switch reusable.
+form-tagify.html,forms,yes,yes,yes,MERGE,Fusionar en TagInput reusable.
+form-tom-select.html,forms,yes,yes,yes,MERGE,Fusionar en Select/ComboBox reusable; Tom Select no es contrato de producto.
+form-validation.html,forms,yes,yes,yes,MERGE,Integrar estados y mensajes de validación en FormField y formularios reales.
+form-wizard.html,forms,yes,yes,yes,MERGE,Extraer Wizard/Stepper reusable; consumirlo en flujos reales como el Compositor.
+index.html,dashboards,yes,yes,yes,ADAPT,"Conservar como referencia de dashboard operativo compuesto por métricas, actividad y widgets reutilizables. Propiedad probable: patrón transversal Dashboard."
+index2.html,dashboards,yes,yes,yes,MERGE,Fusionar sus patrones útiles como variantes/configuración del Dashboard compuesto; evitar dos dashboards genéricos paralelos.
+layout-blank-page.html,layouts,yes,yes,yes,MERGE,Fusionar en PageCanvas/PageLayout mínimo; no exponer como demo independiente.
+layout-boxed.html,layouts,no,yes,yes,DISCARD,Layout boxed fuera del baseline visual gobernado y sin valor suficiente frente a los tres shells aprobados.
+layout-collapsible-menu.html,layouts,yes,yes,yes,MERGE,Ya está representado por el shell gobernado collapsible-menu; usar solo como referencia de comportamiento.
+layout-empty.html,layouts,yes,yes,yes,MERGE,Fusionar en PageCanvas/EmptyCanvas reusable para páginas sin contenido inicial.
+layout-full-width.html,layouts,yes,no,no,DISCARD,Contradice la regla de navegación izquierda para desktop/tablet y queda fuera del alcance aprobado.
+map-leaflet.html,maps,yes,yes,yes,ADAPT,Conservar capacidad de mapa como MapView agnóstico de proveedor y una vista de referencia cuando exista contexto geográfico.
+pages-contact-us.html,pages,yes,yes,yes,ADAPT,Conservar como patrón público de contacto/soporte con formulario y canales.
+pages-error404.html,pages,yes,yes,yes,ADAPT,Conservar como NotFound/ErrorPage reutilizable para routing.
+pages-faq.html,pages,yes,yes,yes,ADAPT,Conservar como patrón FAQ/ayuda reutilizable.
+pages-knowledge-base.html,pages,yes,yes,yes,ADAPT,Conservar como patrón de base de conocimiento con búsqueda y categorías.
+pages-maintenence.html,pages,yes,yes,yes,ADAPT,Conservar como MaintenancePage/estado de servicio reutilizable.
+table-basic.html,tables,yes,yes,yes,MERGE,Fusionar en Table/DataTable base; no página funcional independiente.
+table-datatable-basic.html,tables,yes,yes,yes,MERGE,"Fusionar en DataTable configurable con paginación, orden y filtros."
+table-datatable-custom.html,tables,yes,yes,yes,MERGE,Fusionar como variantes de columnas/celdas dentro de DataTable.
+table-datatable-miscellaneous.html,tables,yes,yes,yes,MERGE,Fusionar comportamientos útiles como opciones documentadas de DataTable.
+table-datatable-striped-table.html,tables,yes,yes,yes,MERGE,Fusionar el estilo striped como variante de Table/DataTable.
+user-account-settings.html,user,yes,yes,yes,ADAPT,"Conservar como AccountSettings reutilizable para perfil, preferencias y seguridad."
+user-profile.html,user,yes,yes,yes,ADAPT,Conservar como UserProfile/CustomerProfile genérico adaptable a consumidores.
+widgets.html,widgets,yes,yes,yes,MERGE,"Extraer MetricCard, StatCard y widgets reutilizables para Dashboard y páginas de resumen."
