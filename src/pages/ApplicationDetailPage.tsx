@@ -15,60 +15,60 @@ export function ApplicationDetailPage() {
   return (
     <main>
       <section className="border-b border-slate-200 bg-white">
-        <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:px-8 lg:py-20">
+        <div className="mx-auto grid max-w-[1440px] items-center gap-7 px-4 py-8 sm:px-5 lg:grid-cols-[0.8fr_1.2fr] lg:px-6 lg:py-10">
           <div>
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-blue-700">{application.category}</span>
-              <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">Public demo</span>
+            <div className="flex flex-wrap items-center gap-1.5">
+              <span className="rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.11em] text-brand-700">{application.category}</span>
+              <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700">Public demo</span>
             </div>
-            <h1 className="mt-5 text-4xl font-semibold tracking-[-0.03em] text-slate-950 sm:text-5xl">{application.name}</h1>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">{application.summary}</p>
+            <h1 className="mt-3 text-3xl font-semibold tracking-[-0.025em] text-slate-900 sm:text-4xl">{application.name}</h1>
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">{application.summary}</p>
 
-            <div className="mt-6 flex flex-wrap gap-2">
+            <div className="mt-4 flex flex-wrap gap-1.5">
               {application.capabilities.map((capability) => (
-                <span key={capability} className="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-600">
+                <span key={capability} className="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-medium text-slate-600">
                   {capability}
                 </span>
               ))}
             </div>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-5 flex flex-wrap gap-2">
               {firstDemoPage ? (
-                <Link className="inline-flex justify-center rounded-xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-slate-800" to={`/demo/${application.slug}/${firstDemoPage.path}`}>
+                <Link className="inline-flex justify-center rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-700" to={`/demo/${application.slug}/${firstDemoPage.path}`}>
                   Launch navigable demo
                 </Link>
               ) : null}
-              <Link className="inline-flex justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50" to="/apps">
+              <Link className="inline-flex justify-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:border-brand-200 hover:bg-brand-50" to="/apps">
                 Browse applications
               </Link>
             </div>
           </div>
 
-          <div className="rounded-[2rem] border border-slate-200 bg-slate-50 p-3 shadow-xl shadow-slate-200/60 sm:p-4">
+          <div className="rounded-2xl border border-brand-100 bg-brand-50/40 p-2.5 shadow-lg shadow-brand-100/30 sm:p-3">
             <ApplicationPreview application={application} />
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-18">
-        <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr]">
+      <section className="mx-auto max-w-[1440px] px-4 py-8 sm:px-5 lg:px-6 lg:py-10">
+        <div className="grid gap-6 lg:grid-cols-[0.65fr_1.35fr]">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.14em] text-blue-600">Inside the demo</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">A proposal you can actually navigate.</h2>
-            <p className="mt-4 text-sm leading-6 text-slate-600">
-              The pages below define the visible application experience. During this phase the data may be mock, while navigation, information architecture and responsive behavior represent the proposal honestly.
+            <p className="text-xs font-semibold uppercase tracking-[0.13em] text-brand-600">Inside the demo</p>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">A proposal you can actually navigate.</h2>
+            <p className="mt-2 text-sm leading-5 text-slate-600">
+              Mock data can stand in for the backend while navigation, information architecture and responsive behavior communicate the product clearly.
             </p>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-3 sm:grid-cols-2">
             {application.demoPages.map((page, index) => (
-              <article key={page.id} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <article key={page.id} className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
                 <div className="flex items-center justify-between gap-3">
-                  <span className="grid size-8 place-items-center rounded-lg bg-slate-100 text-xs font-semibold text-slate-600">{String(index + 1).padStart(2, '0')}</span>
-                  <Link className="text-xs font-semibold text-blue-700" to={`/demo/${application.slug}/${page.path}`}>Preview →</Link>
+                  <span className="grid size-7 place-items-center rounded-lg bg-brand-50 text-[11px] font-semibold text-brand-700">{String(index + 1).padStart(2, '0')}</span>
+                  <Link className="text-xs font-semibold text-brand-700" to={`/demo/${application.slug}/${page.path}`}>Preview →</Link>
                 </div>
-                <h3 className="mt-4 font-semibold text-slate-950">{page.label}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-600">{page.description}</p>
+                <h3 className="mt-3 font-semibold text-slate-900">{page.label}</h3>
+                <p className="mt-1.5 text-sm leading-5 text-slate-600">{page.description}</p>
               </article>
             ))}
           </div>

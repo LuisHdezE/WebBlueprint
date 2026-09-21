@@ -17,57 +17,57 @@ export function LoginPage() {
   }
 
   return (
-    <main className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[1fr_0.82fr] lg:px-8 lg:py-20">
-      <section className="rounded-[2rem] bg-slate-950 p-7 text-white sm:p-10 lg:p-12">
-        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-300">Private workspace</p>
-        <h1 className="mt-4 max-w-xl text-4xl font-semibold tracking-[-0.03em] sm:text-5xl">
-          Enter the workspace that turns demos into applications.
+    <main className="mx-auto grid max-w-[1240px] gap-5 px-4 py-8 sm:px-5 lg:grid-cols-[1fr_0.72fr] lg:px-6 lg:py-10">
+      <section className="rounded-2xl border border-brand-100 bg-brand-50 p-5 sm:p-6 lg:p-7">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.13em] text-brand-700">Private workspace</p>
+        <h1 className="mt-2.5 max-w-xl text-3xl font-semibold tracking-[-0.025em] text-slate-900 sm:text-4xl">
+          Turn a navigable demo into a configurable application.
         </h1>
-        <p className="mt-5 max-w-xl text-sm leading-7 text-slate-300 sm:text-base">
-          The public site is for discovery and navigable proposals. The App Composer is where authenticated users configure branding, presets, features, navigation and eventually export the generated React project.
+        <p className="mt-3 max-w-xl text-sm leading-6 text-slate-600">
+          The public site is for discovery and proposals. The App Composer is where authenticated users configure branding, presets, features, navigation and export.
         </p>
 
-        <div className="mt-8 grid gap-3 sm:grid-cols-2">
+        <div className="mt-5 grid gap-2 sm:grid-cols-2">
           {[
             'Choose an application preset',
             'Adjust branding and theme',
             'Select features and pages',
             'Generate the application ZIP',
           ].map((item) => (
-            <div key={item} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-slate-200">
+            <div key={item} className="rounded-xl border border-brand-100 bg-white/80 px-3 py-2.5 text-sm text-slate-700">
               {item}
             </div>
           ))}
         </div>
       </section>
 
-      <section className="self-center rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm sm:p-8 lg:p-10">
-        <div className="grid size-11 place-items-center rounded-xl bg-blue-600 text-sm font-bold text-white">WB</div>
-        <p className="mt-6 text-sm font-semibold uppercase tracking-[0.14em] text-blue-600">App Composer</p>
-        <h2 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">Sign in to continue</h2>
-        <p className="mt-3 text-sm leading-6 text-slate-600">
-          U0.2 uses a replaceable mock session provider. The login flow and protected-route boundary are real product structure; production identity will replace only the adapter.
+      <section className="self-center rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+        <div className="grid size-9 place-items-center rounded-lg bg-brand-600 text-xs font-bold text-white">WB</div>
+        <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.13em] text-brand-600">App Composer</p>
+        <h2 className="mt-1.5 text-2xl font-semibold tracking-tight text-slate-900">Sign in to continue</h2>
+        <p className="mt-2 text-sm leading-5 text-slate-600">
+          U0.2 uses a replaceable mock session provider. Production identity can replace the adapter without changing this UI flow.
         </p>
 
-        <form className="mt-7" onSubmit={handleSubmit}>
+        <form className="mt-5" onSubmit={handleSubmit}>
           <label className="text-sm font-medium text-slate-800" htmlFor="display-name">
             Display name
           </label>
           <input
             id="display-name"
-            className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+            className="mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-brand-500 focus:ring-4 focus:ring-brand-100"
             onChange={(event) => setDisplayName(event.target.value)}
             placeholder="Your name"
             required
             value={displayName}
           />
-          <button className="mt-4 w-full rounded-xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800" type="submit">
+          <button className="mt-3 w-full rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700" type="submit">
             Continue to App Composer
           </button>
         </form>
 
-        <div className="mt-6 border-t border-slate-100 pt-5">
-          <Link className="text-sm font-semibold text-blue-700 hover:text-blue-800" to="/">
+        <div className="mt-4 border-t border-slate-100 pt-4">
+          <Link className="text-sm font-semibold text-brand-700 hover:text-brand-800" to="/">
             ← Return to public site
           </Link>
         </div>
