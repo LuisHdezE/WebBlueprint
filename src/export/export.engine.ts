@@ -38,7 +38,7 @@ function assertExportableManifest(manifest: ComposerManifest) {
 }
 
 function createPackageJson(manifest: ComposerManifest) {
-  return JSON.stringify(
+  return `${JSON.stringify(
     {
       name: projectPackageName(manifest.application.slug),
       private: true,
@@ -55,7 +55,7 @@ function createPackageJson(manifest: ComposerManifest) {
     },
     null,
     2,
-  ) + '\n';
+  )}\n`;
 }
 
 function createPackageLock(manifest: ComposerManifest) {
@@ -70,7 +70,7 @@ function createPackageLock(manifest: ComposerManifest) {
     rootPackage.version = '0.1.0';
   }
 
-  return JSON.stringify(lock, null, 2) + '\n';
+  return `${JSON.stringify(lock, null, 2)}\n`;
 }
 
 function createGeneratedApplication(manifest: ComposerManifest) {
@@ -86,8 +86,9 @@ export function App() {
   const [activePageId, setActivePageId] = useState<string | null>(pages[0]?.id ?? null);
   const [collapsed, setCollapsed] = useState(false);
   const activePage = useMemo(() => pages.find((page) => page.id === activePageId) ?? pages[0], [activePageId, pages]);
-  const dark = application.navigation.shellVariant === 'vertical-dark-menu';
-  const collapsible = application.navigation.shellVariant === 'collapsible-menu';
+  const shellVariant = String(application.navigation.shellVariant);
+  const dark = shellVariant === 'vertical-dark-menu';
+  const collapsible = shellVariant === 'collapsible-menu';
   const shellStyle = { '--accent': application.branding.accentColor } as CSSProperties;
 
   return (
@@ -119,7 +120,13 @@ export function App() {
             <p>{activePage ? \`Route /\${activePage.path}\` : 'Choose pages in WebBlueprint to generate navigation.'}</p>
           </section>
           <section className="feature-grid">
-            {application.features.length > 0 ? application.features.map((feature) => <article className="feature-card" key={feature.id}><span>{feature.id}</span><strong>{feature.label}</strong><p>This capability was selected in App Composer and carried into the export manifest.</p></article>) : <article className="feature-card"><strong>Blank surface</strong><p>Add features in App Composer before exporting when the application needs them.</p></article>}
+            {application.features.length > 0 ? application.features.map((feature) => (
+              <article className="feature-card" key={feature.id}>
+                <span>{feature.id}</span>
+                <strong>{feature.label}</strong>
+                <p>This capability was selected in App Composer and carried into the export manifest.</p>
+              </article>
+            )) : <article className="feature-card"><strong>Blank surface</strong><p>Add features in App Composer before exporting when the application needs them.</p></article>}
           </section>
         </main>
       </div>
@@ -136,7 +143,7 @@ import './styles.css';
 createRoot(document.getElementById('root')!).render(<StrictMode><App /></StrictMode>);
 `;
 
-const styleSource = `:root { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #0f172a; background: #f8fafc; font-synthesis: none; }
+const styleSource = `:root { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #0f172a; background: #f8fafc; }
 * { box-sizing: border-box; }
 body { margin: 0; min-width: 320px; min-height: 100vh; }
 button { font: inherit; }
