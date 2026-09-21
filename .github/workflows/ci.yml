@@ -33,5 +33,12 @@ jobs:
       - name: Install dependencies
         run: npm install --no-audit --no-fund
 
+      - name: Emit bootstrap lockfile evidence
+        run: |
+          echo "LOCKFILE_GZIP_BASE64_BEGIN"
+          gzip -c package-lock.json | base64 -w 0
+          echo
+          echo "LOCKFILE_GZIP_BASE64_END"
+
       - name: Quality gate
         run: npm run check
