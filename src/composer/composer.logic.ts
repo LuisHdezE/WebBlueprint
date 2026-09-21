@@ -12,8 +12,8 @@ export const defaultAccentColor = '#2563eb';
 
 export function createEmptyComposerConfiguration(): ComposerConfiguration {
   return {
-    name: 'New Application',
-    slug: 'new-application',
+    name: 'Nueva aplicación',
+    slug: 'nueva-aplicacion',
     description: '',
     branding: {
       logoUrl: '',
@@ -47,15 +47,15 @@ export function validateComposerConfiguration(configuration: ComposerConfigurati
   const issues: string[] = [];
 
   if (!configuration.name.trim()) {
-    issues.push('Application name is required.');
+    issues.push('El nombre de la aplicación es obligatorio.');
   }
 
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(configuration.slug.trim())) {
-    issues.push('Slug must contain lowercase letters, numbers and single hyphens only.');
+    issues.push('El slug solo puede contener letras minúsculas, números y guiones simples.');
   }
 
   if (!/^#[0-9a-f]{6}$/i.test(configuration.branding.accentColor)) {
-    issues.push('Accent color must be a six-digit hexadecimal color.');
+    issues.push('El color de acento debe ser un hexadecimal de seis dígitos.');
   }
 
   return issues;
