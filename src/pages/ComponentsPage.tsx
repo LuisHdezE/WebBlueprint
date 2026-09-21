@@ -1,10 +1,14 @@
+import { useState } from 'react';
 import { applicationRegistry } from '@/applications/applicationRegistry';
+import type { DemoPageDefinition } from '@/applications/application.types';
 import { ApplicationCard } from '@/components/applications/ApplicationCard';
 import { ApplicationPreview } from '@/components/applications/ApplicationPreview';
 import { ActivityFeed } from '@/components/data-display/ActivityFeed';
+import { DataTable, type DataTableColumn } from '@/components/data-display/DataTable';
 import { MetricCard } from '@/components/data-display/MetricCard';
 import { StatusBadge } from '@/components/data-display/StatusBadge';
 import { InlineFeedback } from '@/components/feedback/InlineFeedback';
+import { SearchField } from '@/components/forms/SearchField';
 import {
   componentDocumentation,
   getMaturityLabel,
@@ -30,8 +34,33 @@ const sampleActivity = [
   },
 ];
 
+const demoPageColumns: readonly DataTableColumn<DemoPageDefinition>[] = [
+  {
+    id: 'label',
+    header: 'Página',
+    cell: (page) => <span className="font-semibold text-slate-900">{page.label}</span>,
+  },
+  {
+    id: 'group',
+    header: 'Grupo',
+    cell: (page) => page.group,
+  },
+  {
+    id: 'path',
+    header: 'Ruta',
+    cell: (page) => <span className="font-mono text-[11px] text-slate-500">/{page.path}</span>,
+  },
+];
+
 export function ComponentsPage() {
   const sampleApplication = applicationRegistry[0];
+  const [componentQuery, setComponentQuery] = useState('');
+  const normalizedQuery = componentQuery.trim().toLocaleLowerCase('es');
+  const filteredDemoPages: readonly DemoPageDefinition[] = sampleApplication
+    ? sampleApplication.demoPages.filter((page) =>
+        [page.label, page.group, page.path].some((value) => value.toLocaleLowerCase('es').includes(normalizedQuery)),
+      )
+    : [];
 
   return (
     <main className="mx-auto max-w-[1440px] px-4 py-8 sm:px-5 lg:px-6 lg:py-10">
@@ -93,6 +122,35 @@ export function ComponentsPage() {
           <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
             <p className="text-xs font-semibold uppercase tracking-[0.1em] text-slate-400">ActivityFeed</p>
             <div className="mt-3"><ActivityFeed items={sampleActivity} /></div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mt-10">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-600">U2.2 · Productos</p>
+        <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">Búsqueda y datos tabulares</h2>
+        <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+          SearchField y DataTable aparecen porque el catálogo administrativo ya los necesita. El ejemplo usa las páginas reales de Pet Shop como fuente compartida.
+        </p>
+
+        <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
+          <div className="max-w-xl">
+            <SearchField
+              id="component-demo-search"
+              label="Filtrar páginas de la demo"
+              onChange={setComponentQuery}
+              placeholder="Nombre, grupo o ruta"
+              value={componentQuery}
+            />
+          </div>
+          <div className="mt-4">
+            <DataTable
+              caption="Páginas registradas en la demo Pet Shop"
+              columns={demoPageColumns}
+              emptyMessage="No hay páginas que coincidan con la búsqueda."
+              getRowId={(page) => page.id}
+              rows={filteredDemoPages}
+            />
           </div>
         </div>
       </section>
