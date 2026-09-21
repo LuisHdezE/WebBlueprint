@@ -190,20 +190,25 @@ Component documentation includes as relevant:
 
 The `/components` area becomes the visual catalog of the owned component library rather than a separate after-the-fact documentation project.
 
-## U0.6 · Initial CD / Eliaswork publication
+## U0.6 · Initial CD / EliasWorks publication
 
-Goal: keep the accepted `main` product state publicly demonstrable.
+Goal: keep the accepted `main` product state publicly demonstrable on the canonical WebBlueprint publication domain.
+
+Canonical publication target:
+
+- `https://eliasworks.uy`
 
 Requirements:
 
-- merge to the deployment branch/main can produce a repeatable deployment;
+- merge to the deployment branch/main can produce a repeatable deployment to EliasWorks infrastructure;
 - deployed revision is traceable to a Git commit;
-- public landing is accessible;
+- public landing is accessible from the EliasWorks publication surface;
 - public documentation is accessible;
 - public demos can be reached when application concepts exist;
+- direct deep links used in commercial proposals must survive direct navigation and refresh;
 - deployment remains mobile-first/responsive.
 
-The concrete Eliaswork hosting target and deployment mechanism are documented when selected/configured.
+The exact path/subdomain and deployment mechanism under `eliasworks.uy` are selected and documented when EliasWorks hosting is wired. Render is not a canonical deployment target for WebBlueprint and must not appear in the production architecture.
 
 ## U1 · CORK Reference Inventory and Classification
 
