@@ -54,13 +54,19 @@ Una referencia `MERGE` debe desembocar en un componente, patrón o vista existen
 
 ## Evidencia de calidad
 
-HEAD previo a este cierre documental:
+HEAD de implementación U1:
 
 `c8b00528ec0b45e7773a05ed066a693ab4c32bab`
 
 GitHub Actions CI #101, ejecución `35642908005`: **PASS**.
 
-Pasaron:
+HEAD de cierre documental posterior:
+
+`c7da88d57cefb2e7df8b246f84616fbc3bf5d1ec`
+
+GitHub Actions CI #102, ejecución `35643001094`: **PASS**.
+
+En ambos casos pasaron:
 
 - instalación de dependencias;
 - quality gate completo;
@@ -68,7 +74,7 @@ Pasaron:
 - verificación del fallback SPA;
 - preview de PR.
 
-El diff previo al cierre contenía únicamente cinco archivos dentro de `docs/`: cuatro artefactos de referencia/checkpoint y el CSV clasificado. No se introdujo implementación de U2.
+El diff de U1 contiene únicamente archivos dentro de `docs/`. No se introdujo implementación de U2.
 
 ## Gate de cierre
 
@@ -79,6 +85,6 @@ El diff previo al cierre contenía únicamente cinco archivos dentro de `docs/`:
 - mapa de contratos mock: **PASS**;
 - implementación prematura de U2: **NO**;
 - CI sobre implementación U1: **PASS**;
-- CI final sobre este HEAD documental: **PENDIENTE**.
+- CI sobre cierre documental: **PASS**.
 
-PR #10 puede salir de Draft únicamente cuando el CI final quede verde sobre este commit exacto. El merge requiere aprobación explícita del usuario.
+Este commit solo registra la evidencia final. PR #10 puede pasar a Ready for review cuando CI permanezca verde sobre este HEAD exacto. El merge requiere aprobación explícita del usuario.
