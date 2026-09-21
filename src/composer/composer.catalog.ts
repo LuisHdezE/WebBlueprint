@@ -1,4 +1,4 @@
-import { applicationRegistry } from '@/applications/applicationRegistry';
+import { applicationRegistry, getCapabilityLabel } from '@/applications/applicationRegistry';
 import type { ApplicationDefinition } from '@/applications/application.types';
 import type { ComposerFeatureOption, ComposerPageOption } from '@/composer/composer.types';
 
@@ -31,7 +31,7 @@ function buildFeatureOptions(): readonly ComposerFeatureOption[] {
 
       features.set(id, {
         id,
-        label: capability,
+        label: getCapabilityLabel(capability),
         sourceApplicationIds: [application.id],
       });
     }
