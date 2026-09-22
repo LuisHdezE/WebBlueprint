@@ -3,6 +3,7 @@ import { getApplicationBySlug, getCapabilityLabel } from '@/applications/applica
 import type { ApplicationDefinition, DemoPageDefinition } from '@/applications/application.types';
 import { CustomerDirectoryView } from '@/customers/CustomerDirectoryView';
 import { DashboardView } from '@/dashboard/DashboardView';
+import { OrderListView } from '@/orders/OrderListView';
 import { ProductCatalogView } from '@/products/ProductCatalogView';
 import { LeftAppShell } from '@/shell/LeftAppShell';
 
@@ -73,6 +74,8 @@ export function ApplicationDemoPage() {
             <ProductCatalogView />
           ) : activePage.pageKey === 'customers' ? (
             <CustomerDirectoryView />
+          ) : activePage.pageKey === 'orders' ? (
+            <OrderListView />
           ) : (
             <GenericDemoWorkspace application={application} activePage={activePage} />
           )}
