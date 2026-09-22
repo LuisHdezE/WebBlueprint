@@ -11,7 +11,7 @@ export type DocumentationProp = {
 export type ComponentDocumentationEntry = {
   id: string;
   name: string;
-  category: 'Application display' | 'Data display' | 'Feedback' | 'Form' | 'Shell';
+  category: 'Application display' | 'Data display' | 'Feedback' | 'Form' | 'Identity' | 'Shell';
   maturity: 'stable';
   sourcePath: string;
   summary: string;
@@ -31,6 +31,8 @@ export function getDocumentationCategoryLabel(category: ComponentDocumentationEn
       return 'Mensajes de estado';
     case 'Form':
       return 'Formularios';
+    case 'Identity':
+      return 'Identidad';
     default:
       return 'Shell';
   }
@@ -85,6 +87,21 @@ export const componentDocumentation: readonly ComponentDocumentationEntry[] = [
     variants: ['predeterminada', 'compacta'],
     states: ['shell claro', 'shell oscuro'],
     example: '<ApplicationPreview application={application} compact />',
+  },
+  {
+    id: 'avatar',
+    name: 'Avatar',
+    category: 'Identity',
+    maturity: 'stable',
+    sourcePath: 'src/components/data-display/Avatar.tsx',
+    summary: 'Identidad compacta basada en iniciales para personas o entidades cuando todavía no existe una imagen de perfil.',
+    props: [
+      { name: 'name', type: 'string', required: true, description: 'Nombre utilizado para calcular hasta dos iniciales visibles.' },
+      { name: 'size', type: "'sm' | 'md'", required: false, defaultValue: 'md', description: 'Tamaño gobernado de la identidad compacta.' },
+    ],
+    variants: ['pequeño', 'mediano'],
+    states: ['una inicial', 'dos iniciales'],
+    example: '<Avatar name="Mariana Suárez" />',
   },
   {
     id: 'metric-card',
@@ -167,6 +184,24 @@ export const componentDocumentation: readonly ComponentDocumentationEntry[] = [
     variants: ['predeterminada'],
     states: ['vacío', 'con texto', 'foco'],
     example: '<SearchField id="query" label="Buscar" value={query} onChange={setQuery} />',
+  },
+  {
+    id: 'select-field',
+    name: 'SelectField',
+    category: 'Form',
+    maturity: 'stable',
+    sourcePath: 'src/components/forms/SelectField.tsx',
+    summary: 'Selector controlado y tipado para filtros compactos que comparten etiqueta y estilos de foco.',
+    props: [
+      { name: 'id', type: 'string', required: true, description: 'Identificador que conecta etiqueta y selector.' },
+      { name: 'label', type: 'string', required: true, description: 'Etiqueta visible del criterio de selección.' },
+      { name: 'value', type: 'Value', required: true, description: 'Valor controlado actual.' },
+      { name: 'options', type: 'readonly SelectFieldOption<Value>[]', required: true, description: 'Opciones tipadas disponibles para la selección.' },
+      { name: 'onChange', type: '(value: Value) => void', required: true, description: 'Notifica el nuevo valor seleccionado.' },
+    ],
+    variants: ['predeterminada'],
+    states: ['selección inicial', 'selección modificada', 'foco'],
+    example: '<SelectField id="status" label="Estado" value={status} options={options} onChange={setStatus} />',
   },
   {
     id: 'inline-feedback',

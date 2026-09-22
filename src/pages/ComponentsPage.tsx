@@ -4,11 +4,13 @@ import type { DemoPageDefinition } from '@/applications/application.types';
 import { ApplicationCard } from '@/components/applications/ApplicationCard';
 import { ApplicationPreview } from '@/components/applications/ApplicationPreview';
 import { ActivityFeed } from '@/components/data-display/ActivityFeed';
+import { Avatar } from '@/components/data-display/Avatar';
 import { DataTable, type DataTableColumn } from '@/components/data-display/DataTable';
 import { MetricCard } from '@/components/data-display/MetricCard';
 import { StatusBadge } from '@/components/data-display/StatusBadge';
 import { InlineFeedback } from '@/components/feedback/InlineFeedback';
 import { SearchField } from '@/components/forms/SearchField';
+import { SelectField, type SelectFieldOption } from '@/components/forms/SelectField';
 import {
   componentDocumentation,
   getMaturityLabel,
@@ -55,11 +57,25 @@ const demoPageColumns: readonly DataTableColumn<DemoPageDefinition>[] = [
 export function ComponentsPage() {
   const sampleApplication = applicationRegistry[0];
   const [componentQuery, setComponentQuery] = useState('');
+  const [selectedGroup, setSelectedGroup] = useState('all');
   const normalizedQuery = componentQuery.trim().toLocaleLowerCase('es');
+  const groupOptions: readonly SelectFieldOption<string>[] = sampleApplication
+    ? [
+        { value: 'all', label: 'Todos los grupos' },
+        ...Array.from(new Set(sampleApplication.demoPages.map((page) => page.group))).map((group) => ({
+          value: group,
+          label: group,
+        })),
+      ]
+    : [{ value: 'all', label: 'Todos los grupos' }];
   const filteredDemoPages: readonly DemoPageDefinition[] = sampleApplication
-    ? sampleApplication.demoPages.filter((page) =>
-        [page.label, page.group, page.path].some((value) => value.toLocaleLowerCase('es').includes(normalizedQuery)),
-      )
+    ? sampleApplication.demoPages.filter((page) => {
+        const matchesSearch = [page.label, page.group, page.path].some((value) =>
+          value.toLocaleLowerCase('es').includes(normalizedQuery),
+        );
+        const matchesGroup = selectedGroup === 'all' || page.group === selectedGroup;
+        return matchesSearch && matchesGroup;
+      })
     : [];
 
   return (
@@ -127,14 +143,14 @@ export function ComponentsPage() {
       </section>
 
       <section className="mt-10">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-600">U2.2 · Productos</p>
-        <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">Búsqueda y datos tabulares</h2>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-600">U2.2 → U2.3 · Reutilización real</p>
+        <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">Búsqueda, selección y datos tabulares</h2>
         <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-          SearchField y DataTable aparecen porque el catálogo administrativo ya los necesita. El ejemplo usa las páginas reales de Pet Shop como fuente compartida.
+          SearchField y DataTable nacieron con Productos. U2.3 los reutiliza para Clientes y extrae SelectField solo al aparecer un segundo consumidor del mismo patrón de selección.
         </p>
 
         <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-          <div className="max-w-xl">
+          <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_220px]">
             <SearchField
               id="component-demo-search"
               label="Filtrar páginas de la demo"
@@ -142,18 +158,43 @@ export function ComponentsPage() {
               placeholder="Nombre, grupo o ruta"
               value={componentQuery}
             />
+            <SelectField
+              id="component-demo-group"
+              label="Grupo"
+              onChange={setSelectedGroup}
+              options={groupOptions}
+              value={selectedGroup}
+            />
           </div>
           <div className="mt-4">
             <DataTable
               caption="Páginas registradas en la demo Pet Shop"
               columns={demoPageColumns}
-              emptyMessage="No hay páginas que coincidan con la búsqueda."
+              emptyMessage="No hay páginas que coincidan con los filtros."
               getRowId={(page) => page.id}
               rows={filteredDemoPages}
             />
           </div>
         </div>
       </section>
+
+      {sampleApplication ? (
+        <section className="mt-10">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-600">U2.3 · Clientes</p>
+          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">Identidad compacta</h2>
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+            Avatar aparece cuando el directorio necesita reconocer personas sin depender todavía de fotografías. Las iniciales se calculan desde el nombre recibido.
+          </p>
+          <div className="mt-4 flex flex-wrap items-center gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
+            <Avatar name={sampleApplication.name} />
+            <div>
+              <p className="text-sm font-semibold text-slate-900">{sampleApplication.name}</p>
+              <p className="mt-1 text-xs text-slate-500">Ejemplo conectado al registro real de aplicaciones</p>
+            </div>
+            <Avatar name={sampleApplication.name} size="sm" />
+          </div>
+        </section>
+      ) : null}
 
       <section className="mt-10">
         <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-600">Variantes gobernadas</p>
