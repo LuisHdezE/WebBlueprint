@@ -11,7 +11,7 @@ export type DocumentationProp = {
 export type ComponentDocumentationEntry = {
   id: string;
   name: string;
-  category: 'Application display' | 'Data display' | 'Feedback' | 'Shell';
+  category: 'Application display' | 'Data display' | 'Feedback' | 'Form' | 'Shell';
   maturity: 'stable';
   sourcePath: string;
   summary: string;
@@ -29,6 +29,8 @@ export function getDocumentationCategoryLabel(category: ComponentDocumentationEn
       return 'Presentación de datos';
     case 'Feedback':
       return 'Mensajes de estado';
+    case 'Form':
+      return 'Formularios';
     default:
       return 'Shell';
   }
@@ -129,6 +131,42 @@ export const componentDocumentation: readonly ComponentDocumentationEntry[] = [
     variants: ['lista operativa'],
     states: ['con elementos', 'vacío'],
     example: '<ActivityFeed items={activity} />',
+  },
+  {
+    id: 'data-table',
+    name: 'DataTable',
+    category: 'Data display',
+    maturity: 'stable',
+    sourcePath: 'src/components/data-display/DataTable.tsx',
+    summary: 'Tabla genérica responsive con columnas tipadas, identificador estable de fila y estado vacío integrado.',
+    props: [
+      { name: 'rows', type: 'readonly Row[]', required: true, description: 'Filas de datos que renderiza la tabla.' },
+      { name: 'columns', type: 'readonly DataTableColumn<Row>[]', required: true, description: 'Definición tipada de encabezados y celdas.' },
+      { name: 'getRowId', type: '(row: Row) => string', required: true, description: 'Obtiene una clave estable para cada fila.' },
+      { name: 'emptyMessage', type: 'string', required: false, description: 'Mensaje mostrado cuando no existen filas.' },
+      { name: 'caption', type: 'string', required: false, description: 'Descripción accesible del contenido tabular.' },
+    ],
+    variants: ['tabla operativa'],
+    states: ['con filas', 'vacío', 'desplazamiento horizontal en móvil'],
+    example: '<DataTable rows={rows} columns={columns} getRowId={(row) => row.id} />',
+  },
+  {
+    id: 'search-field',
+    name: 'SearchField',
+    category: 'Form',
+    maturity: 'stable',
+    sourcePath: 'src/components/forms/SearchField.tsx',
+    summary: 'Campo de búsqueda controlado con etiqueta visible y estilos de foco consistentes con Style 1.',
+    props: [
+      { name: 'id', type: 'string', required: true, description: 'Identificador que conecta etiqueta y campo.' },
+      { name: 'label', type: 'string', required: true, description: 'Etiqueta visible del criterio de búsqueda.' },
+      { name: 'value', type: 'string', required: true, description: 'Valor controlado actual.' },
+      { name: 'onChange', type: '(value: string) => void', required: true, description: 'Notifica el nuevo valor del campo.' },
+      { name: 'placeholder', type: 'string', required: false, defaultValue: 'Buscar…', description: 'Ayuda contextual dentro del campo.' },
+    ],
+    variants: ['predeterminada'],
+    states: ['vacío', 'con texto', 'foco'],
+    example: '<SearchField id="query" label="Buscar" value={query} onChange={setQuery} />',
   },
   {
     id: 'inline-feedback',
