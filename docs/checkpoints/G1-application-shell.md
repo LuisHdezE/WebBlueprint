@@ -19,7 +19,7 @@ Construir la primera superficie visual del nuevo WebBlueprint General UI Templat
 - [x] Router del General Template.
 - [x] Vistas todavía no construidas representadas por un estado pendiente navegable.
 - [x] Tokens de color de marca separados de superficies y colores semánticos.
-- [x] Selector mínimo con seis colores para validar `theme-safe by default` desde G1.
+- [x] Selector mínimo con nueve colores para validar `theme-safe by default` desde G1.
 - [x] Verde SERVAS como preset inicial, no como hardcode de producto.
 - [x] Código React.js + TypeScript + Tailwind CSS.
 - [x] Registro de navegación cubierto por test de unicidad y familias.
@@ -36,6 +36,14 @@ Feedback visual del usuario recibido el **2026-09-22**:
 - el color de marca no debe quedar soldado a un preset concreto;
 - la navegación completa debe seguir disponible y desplazable;
 - el drawer móvil debe conservar la navegación expandida incluso si el sidebar desktop estaba colapsado.
+
+Ajuste final solicitado en la misma revisión:
+
+- ampliar el selector rápido de tema de seis a nueve presets, añadiendo Turquesa, Cian y Rojo;
+- evitar que familias como Aplicaciones crezcan como listas planas cuando existan varios elementos de una misma categoría;
+- cuando dos o más rutas compartan el patrón visible `Categoría · Vista`, el sidebar debe agruparlas automáticamente bajo una lista desplegable `Categoría`;
+- dentro del desplegable solo se muestra el nombre de la vista, por ejemplo `Ecommerce → Productos / Tienda / Detalle / Editor`;
+- la agrupación es genérica para que futuras categorías se beneficien sin rediseñar el shell.
 
 El refinamiento mantiene intacto el alcance funcional de G1 y no reabre Pet Shop ni las áreas legacy congeladas.
 
@@ -74,7 +82,7 @@ Durante el incremento el gate detectó y obligó a corregir dos incompatibilidad
 G1 puede cerrarse visualmente cuando:
 
 - [ ] CI pasa sobre el HEAD final del refinamiento;
-- [x] el diff permanece limitado al shell y documentación de G1;
+- [x] el diff permanece limitado al shell, tema y documentación de G1;
 - [ ] la PR queda Ready for review;
 - [ ] el refinamiento es mergeado con aprobación explícita;
 - [ ] CI de `main` pasa;
