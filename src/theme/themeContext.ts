@@ -1,6 +1,15 @@
 import { createContext, useContext } from 'react';
 
-export type ThemeColorId = 'forest' | 'blue' | 'indigo' | 'violet' | 'orange' | 'rose';
+export type ThemeColorId =
+  | 'forest'
+  | 'blue'
+  | 'indigo'
+  | 'violet'
+  | 'orange'
+  | 'rose'
+  | 'teal'
+  | 'cyan'
+  | 'red';
 
 export interface ThemePreset {
   id: ThemeColorId;
@@ -79,6 +88,39 @@ export const themePresets: readonly ThemePreset[] = [
     primarySoft: '#fff1f2',
     primaryMuted: '#ffe4e6',
     primaryBorder: '#fda4af',
+    onPrimary: '#ffffff',
+  },
+  {
+    id: 'teal',
+    label: 'Turquesa',
+    primary: '#0f766e',
+    primaryHover: '#115e59',
+    primaryActive: '#134e4a',
+    primarySoft: '#f0fdfa',
+    primaryMuted: '#ccfbf1',
+    primaryBorder: '#5eead4',
+    onPrimary: '#ffffff',
+  },
+  {
+    id: 'cyan',
+    label: 'Cian',
+    primary: '#0e7490',
+    primaryHover: '#155e75',
+    primaryActive: '#164e63',
+    primarySoft: '#ecfeff',
+    primaryMuted: '#cffafe',
+    primaryBorder: '#67e8f9',
+    onPrimary: '#ffffff',
+  },
+  {
+    id: 'red',
+    label: 'Rojo',
+    primary: '#b91c1c',
+    primaryHover: '#991b1b',
+    primaryActive: '#7f1d1d',
+    primarySoft: '#fef2f2',
+    primaryMuted: '#fee2e2',
+    primaryBorder: '#fca5a5',
     onPrimary: '#ffffff',
   },
 ];
