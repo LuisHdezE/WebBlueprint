@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { AppIcon } from '@/components/AppIcon';
-import { useTheme } from '@/theme/ThemeProvider';
+import { useTheme } from '@/theme/themeContext';
 
 export function ThemeColorPicker() {
   const detailsRef = useRef<HTMLDetailsElement>(null);
@@ -11,7 +11,7 @@ export function ThemeColorPicker() {
     <details ref={detailsRef} className="relative">
       <summary
         aria-label="Cambiar color del tema"
-        className="flex size-8 cursor-pointer list-none items-center justify-center rounded-md text-[var(--theme-on-primary)]/85 transition hover:bg-white/10 hover:text-white"
+        className="flex size-8 cursor-pointer list-none items-center justify-center rounded-md text-white/85 transition hover:bg-white/10 hover:text-white"
       >
         <AppIcon className="size-[18px]" name="palette" />
       </summary>
