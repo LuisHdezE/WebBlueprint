@@ -160,7 +160,7 @@ export function TemplateSidebar({ collapsed, mobileOpen, onCloseMobile }: Templa
                       const groupIcon = entry.items[0]?.item.icon ?? section.icon;
 
                       return (
-                        <details key={entry.label} className="group/sidebar-category" open={groupHasActiveItem || undefined}>
+                        <details key={entry.label} className="group" open={groupHasActiveItem || undefined}>
                           <summary
                             className={`flex min-h-[30px] cursor-pointer list-none items-center gap-2 rounded-md px-2 py-1 text-[11.5px] font-semibold leading-tight transition-colors ${
                               groupHasActiveItem
@@ -170,10 +170,7 @@ export function TemplateSidebar({ collapsed, mobileOpen, onCloseMobile }: Templa
                           >
                             <AppIcon className="size-[14px] shrink-0" name={groupIcon} />
                             <span className="min-w-0 flex-1 truncate">{entry.label}</span>
-                            <AppIcon
-                              className="size-3 shrink-0 transition-transform group-open/sidebar-category:rotate-180"
-                              name="chevron-down"
-                            />
+                            <AppIcon className="size-3 shrink-0 transition-transform group-open:rotate-180" name="chevron-down" />
                           </summary>
 
                           <div className="ml-[13px] mt-0.5 space-y-0.5 border-l border-slate-100 pl-1.5">
