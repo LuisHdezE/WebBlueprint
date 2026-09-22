@@ -1,7 +1,8 @@
 # G1 · Application Shell
 
-Estado: **EN CIERRE**  
-Base: `main@88233e7c409d8707d794507525d4134542a1ebcc`
+Estado: **EN CIERRE VISUAL**  
+Base original: `main@88233e7c409d8707d794507525d4134542a1ebcc`  
+Base del refinamiento visual: `main@c508abdc5c1e3e9ce815cbd6efe81a0f71fb9ff3`
 
 ## Objetivo
 
@@ -23,6 +24,21 @@ Construir la primera superficie visual del nuevo WebBlueprint General UI Templat
 - [x] Código React.js + TypeScript + Tailwind CSS.
 - [x] Registro de navegación cubierto por test de unicidad y familias.
 
+## Refinamiento visual de cierre
+
+Feedback visual del usuario recibido el **2026-09-22**:
+
+- el sidebar completo debe acercarse al lenguaje visual de una navegación ERP/administrativa compacta;
+- eliminar cualquier tratamiento de numeración decorativa en la navegación del Blueprint;
+- mostrar encabezados de sección pequeños, sobrios y en mayúsculas;
+- usar filas de navegación densas con iconografía discreta;
+- el estado activo debe utilizar el color del tema mediante tokens, con fondo suave y acento lateral;
+- el color de marca no debe quedar soldado a un preset concreto;
+- la navegación completa debe seguir disponible y desplazable;
+- el drawer móvil debe conservar la navegación expandida incluso si el sidebar desktop estaba colapsado.
+
+El refinamiento mantiene intacto el alcance funcional de G1 y no reabre Pet Shop ni las áreas legacy congeladas.
+
 ## Fuera de alcance
 
 - componentes completos de G3/G4;
@@ -32,7 +48,7 @@ Construir la primera superficie visual del nuevo WebBlueprint General UI Templat
 - Composer, presets y exportación nuevos;
 - continuación de Pet Shop.
 
-## Evidencia de implementación
+## Evidencia de implementación inicial
 
 HEAD funcional validado: `78b51b7cfc355b4b2eb84a8dcce96d46e6f2bb6a`.
 
@@ -53,17 +69,16 @@ Durante el incremento el gate detectó y obligó a corregir dos incompatibilidad
 1. uso no soportado de `defaultOpen` en `<details>` bajo React 19;
 2. separación de `ThemeProvider` y contexto para cumplir `react-refresh/only-export-components`.
 
-## Gate de cierre
+## Gate de cierre visual
 
-G1 puede pasar a Ready for review cuando:
+G1 puede cerrarse visualmente cuando:
 
-- [ ] CI pasa sobre el HEAD documental final;
-- [x] el diff permanece limitado al shell, tema, router, navegación y documentación de G1;
-- [ ] la PR queda Ready for review.
+- [ ] CI pasa sobre el HEAD final del refinamiento;
+- [x] el diff permanece limitado al shell y documentación de G1;
+- [ ] la PR queda Ready for review;
+- [ ] el refinamiento es mergeado con aprobación explícita;
+- [ ] CI de `main` pasa;
+- [ ] el deploy canónico termina en SUCCESS;
+- [ ] el usuario revisa el resultado publicado en `https://webblueprint.eliasworks.uy`.
 
-Después del merge:
-
-1. CI de `main` debe pasar;
-2. el deploy canónico debe terminar en SUCCESS;
-3. se revisa el resultado en `https://webblueprint.eliasworks.uy`;
-4. no se inicia la siguiente vista hasta recibir la revisión visual del usuario.
+No se inicia G2 hasta completar este gate.
