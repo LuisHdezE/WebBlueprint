@@ -1,6 +1,7 @@
 import { NavLink, useLocation } from 'react-router';
 import { AppIcon } from '@/components/AppIcon';
 import { templateNavigation } from '@/config/templateNavigation';
+import type { TemplateNavigationItem } from '@/config/templateNavigation';
 
 interface TemplateSidebarProps {
   collapsed: boolean;
@@ -8,12 +9,77 @@ interface TemplateSidebarProps {
   onCloseMobile: () => void;
 }
 
+interface NavigationGroupItem {
+  item: TemplateNavigationItem;
+  label: string;
+}
+
+type NavigationEntry =
+  | { type: 'item'; item: TemplateNavigationItem }
+  | { type: 'group'; label: string; items: NavigationGroupItem[] };
+
 function itemClassName(isActive: boolean) {
   return `flex min-h-[30px] items-center gap-2 rounded-md border-l-2 px-2 py-1 text-[11.5px] font-medium leading-tight transition-colors ${
     isActive
       ? 'border-[var(--theme-primary)] bg-[var(--theme-primary-soft)] text-[var(--theme-primary-active)]'
       : 'border-transparent text-slate-600 hover:bg-[var(--theme-primary-soft)] hover:text-[var(--theme-primary)]'
   }`;
+}
+
+function splitCategory(label: string) {
+  const separator = ' · ';
+  const separatorIndex = label.indexOf(separator);
+
+  if (separatorIndex < 0) {
+    return null;
+  }
+
+  return {
+    category: label.slice(0, separatorIndex).trim(),
+    childLabel: label.slice(separatorIndex + separator.length).trim(),
+  };
+}
+
+function buildNavigationEntries(items: readonly TemplateNavigationItem[]): NavigationEntry[] {
+  const categoryCounts = new Map<string, number>();
+
+  items.forEach((item) => {
+    const category = splitCategory(item.label)?.category;
+    if (category) {
+      categoryCounts.set(category, (categoryCounts.get(category) ?? 0) + 1);
+    }
+  });
+
+  const renderedCategories = new Set<string>();
+  const entries: NavigationEntry[] = [];
+
+  items.forEach((item) => {
+    const parsed = splitCategory(item.label);
+    const category = parsed?.category;
+
+    if (!parsed || !category || (categoryCounts.get(category) ?? 0) < 2) {
+      entries.push({ type: 'item', item });
+      return;
+    }
+
+    if (renderedCategories.has(category)) {
+      return;
+    }
+
+    renderedCategories.add(category);
+    entries.push({
+      type: 'group',
+      label: category,
+      items: items.flatMap((candidate) => {
+        const candidateCategory = splitCategory(candidate.label);
+        return candidateCategory?.category === category
+          ? [{ item: candidate, label: candidateCategory.childLabel }]
+          : [];
+      }),
+    });
+  });
+
+  return entries;
 }
 
 export function TemplateSidebar({ collapsed, mobileOpen, onCloseMobile }: TemplateSidebarProps) {
@@ -42,6 +108,7 @@ export function TemplateSidebar({ collapsed, mobileOpen, onCloseMobile }: Templa
           {templateNavigation.map((section, sectionIndex) => {
             const hasActiveItem = section.items.some((item) => item.to === location.pathname);
             const collapsedTarget = section.items[0];
+            const navigationEntries = buildNavigationEntries(section.items);
 
             return (
               <section
@@ -74,17 +141,54 @@ export function TemplateSidebar({ collapsed, mobileOpen, onCloseMobile }: Templa
                   </div>
 
                   <div className="space-y-0.5">
-                    {section.items.map((item) => (
-                      <NavLink
-                        key={item.to}
-                        className={({ isActive }) => itemClassName(isActive)}
-                        to={item.to}
-                        onClick={onCloseMobile}
-                      >
-                        <AppIcon className="size-[14px] shrink-0" name={item.icon} />
-                        <span className="min-w-0 truncate">{item.label}</span>
-                      </NavLink>
-                    ))}
+                    {navigationEntries.map((entry) => {
+                      if (entry.type === 'item') {
+                        return (
+                          <NavLink
+                            key={entry.item.to}
+                            className={({ isActive }) => itemClassName(isActive)}
+                            to={entry.item.to}
+                            onClick={onCloseMobile}
+                          >
+                            <AppIcon className="size-[14px] shrink-0" name={entry.item.icon} />
+                            <span className="min-w-0 truncate">{entry.item.label}</span>
+                          </NavLink>
+                        );
+                      }
+
+                      const groupHasActiveItem = entry.items.some(({ item }) => item.to === location.pathname);
+                      const groupIcon = entry.items[0]?.item.icon ?? section.icon;
+
+                      return (
+                        <details key={entry.label} className="group" open={groupHasActiveItem || undefined}>
+                          <summary
+                            className={`flex min-h-[30px] cursor-pointer list-none items-center gap-2 rounded-md px-2 py-1 text-[11.5px] font-semibold leading-tight transition-colors ${
+                              groupHasActiveItem
+                                ? 'text-[var(--theme-primary-active)]'
+                                : 'text-slate-600 hover:bg-[var(--theme-primary-soft)] hover:text-[var(--theme-primary)]'
+                            }`}
+                          >
+                            <AppIcon className="size-[14px] shrink-0" name={groupIcon} />
+                            <span className="min-w-0 flex-1 truncate">{entry.label}</span>
+                            <AppIcon className="size-3 shrink-0 transition-transform group-open:rotate-180" name="chevron-down" />
+                          </summary>
+
+                          <div className="ml-[13px] mt-0.5 space-y-0.5 border-l border-slate-100 pl-1.5">
+                            {entry.items.map(({ item, label }) => (
+                              <NavLink
+                                key={item.to}
+                                className={({ isActive }) => itemClassName(isActive)}
+                                to={item.to}
+                                onClick={onCloseMobile}
+                              >
+                                <AppIcon className="size-[13px] shrink-0" name={item.icon} />
+                                <span className="min-w-0 truncate">{label}</span>
+                              </NavLink>
+                            ))}
+                          </div>
+                        </details>
+                      );
+                    })}
                   </div>
                 </div>
               </section>
