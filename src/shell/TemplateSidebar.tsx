@@ -94,7 +94,7 @@ export function TemplateSidebar({ collapsed, mobileOpen, onCloseMobile }: Templa
             }
 
             return (
-              <details key={section.label} className="group mb-1" defaultOpen={hasActiveItem}>
+              <details key={section.label} className="group mb-1" open={hasActiveItem || undefined}>
                 <summary
                   className={`flex min-h-8 cursor-pointer list-none items-center gap-2 rounded px-2 py-1.5 text-[11px] font-semibold uppercase tracking-[0.04em] transition ${
                     hasActiveItem
