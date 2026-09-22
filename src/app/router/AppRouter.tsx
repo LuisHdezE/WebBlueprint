@@ -6,20 +6,45 @@ import { ApplicationsPage } from '@/pages/ApplicationsPage';
 import { ComponentsPage } from '@/pages/ComponentsPage';
 import { ComposerPage } from '@/pages/ComposerPage';
 import { DocumentationPage } from '@/pages/DocumentationPage';
-import { LandingPage } from '@/pages/LandingPage';
 import { LoginPage } from '@/pages/LoginPage';
+import { TemplateOverviewPage } from '@/pages/TemplateOverviewPage';
+import { TemplatePlaceholderPage } from '@/pages/TemplatePlaceholderPage';
 import { PublicShell } from '@/shell/PublicShell';
+import { TemplateShell } from '@/shell/TemplateShell';
+
+const templateFamilies = [
+  'applications/*',
+  'components/*',
+  'elements/*',
+  'forms/*',
+  'tables/*',
+  'charts/*',
+  'widgets/*',
+  'maps/*',
+  'pages/*',
+  'user/*',
+  'authentication/*',
+  'layouts/*',
+  'documentation/*',
+] as const;
 
 export function AppRouter() {
   return (
     <Routes>
+      <Route element={<TemplateShell />}>
+        <Route index element={<Navigate to="/dashboard" replace />} />
+        <Route path="dashboard" element={<TemplateOverviewPage />} />
+        {templateFamilies.map((path) => (
+          <Route key={path} path={path} element={<TemplatePlaceholderPage />} />
+        ))}
+      </Route>
+
       <Route element={<PublicShell />}>
-        <Route index element={<LandingPage />} />
         <Route path="apps" element={<ApplicationsPage />} />
         <Route path="apps/:slug" element={<ApplicationDetailPage />} />
-        <Route path="docs/*" element={<DocumentationPage />} />
-        <Route path="components" element={<ComponentsPage />} />
         <Route path="login" element={<LoginPage />} />
+        <Route path="legacy/docs/*" element={<DocumentationPage />} />
+        <Route path="legacy/components" element={<ComponentsPage />} />
       </Route>
 
       <Route path="demo/:slug/*" element={<ApplicationDemoPage />} />
@@ -31,7 +56,7 @@ export function AppRouter() {
           </ProtectedRoute>
         }
       />
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
   );
 }
