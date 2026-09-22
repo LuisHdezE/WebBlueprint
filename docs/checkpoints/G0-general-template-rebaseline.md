@@ -31,6 +31,20 @@ Corregir la dirección del producto en una sola PR documental y dejar listo el i
 - `docs/roadmap/README.md`
 - `docs/checkpoints/G0-general-template-rebaseline.md`
 
+## Evidencia de CI
+
+CI #125, ejecución `35685525348`, pasó completamente sobre el HEAD documental previo `09dbac8a37861a338bcc64335decc5d5ff314f49`:
+
+- typecheck: PASS;
+- lint: PASS;
+- tests: PASS;
+- build: PASS;
+- smoke del proyecto React exportado: PASS;
+- fallback SPA: PASS;
+- preview de PR: PASS.
+
+Este commit registra únicamente la evidencia de cierre. El gate final exige CI verde sobre el HEAD exacto resultante de este documento.
+
 ## Gate de cierre
 
 G0 cierra cuando:
