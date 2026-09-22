@@ -3,6 +3,7 @@ import { DataTable, type DataTableColumn } from '@/components/data-display/DataT
 import { StatusBadge, type StatusBadgeTone } from '@/components/data-display/StatusBadge';
 import { InlineFeedback } from '@/components/feedback/InlineFeedback';
 import { SearchField } from '@/components/forms/SearchField';
+import { SelectField, type SelectFieldOption } from '@/components/forms/SelectField';
 import { mockProductsRepository } from '@/products/mockProductsRepository';
 import type {
   ProductFilter,
@@ -24,6 +25,13 @@ const stockTones: Record<ProductStockState, StatusBadgeTone> = {
   'low-stock': 'warning',
   'out-of-stock': 'neutral',
 };
+
+const stockOptions: readonly SelectFieldOption<ProductStockFilter>[] = [
+  { value: 'all', label: 'Todos' },
+  { value: 'in-stock', label: 'Disponible' },
+  { value: 'low-stock', label: 'Stock bajo' },
+  { value: 'out-of-stock', label: 'Sin stock' },
+];
 
 const productColumns: readonly DataTableColumn<ProductSummary>[] = [
   {
@@ -133,20 +141,13 @@ export function ProductCatalogView({ repository = mockProductsRepository }: Prod
             value={filter.search}
           />
 
-          <label className="grid gap-1.5" htmlFor="products-stock-filter">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500">Estado de inventario</span>
-            <select
-              className="h-10 rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none transition focus:border-brand-400 focus:ring-2 focus:ring-brand-100"
-              id="products-stock-filter"
-              onChange={(event) => setStockState(event.target.value as ProductStockFilter)}
-              value={filter.stockState}
-            >
-              <option value="all">Todos</option>
-              <option value="in-stock">Disponible</option>
-              <option value="low-stock">Stock bajo</option>
-              <option value="out-of-stock">Sin stock</option>
-            </select>
-          </label>
+          <SelectField
+            id="products-stock-filter"
+            label="Estado de inventario"
+            onChange={setStockState}
+            options={stockOptions}
+            value={filter.stockState}
+          />
 
           <button
             className="h-10 rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
