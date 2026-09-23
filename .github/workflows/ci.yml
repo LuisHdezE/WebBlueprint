@@ -39,6 +39,21 @@ jobs:
       - name: Automated QA gate
         run: npm run qa
 
+      - name: Browser QA gate
+        env:
+          QA_EVIDENCE_LABEL: preview
+        run: npm run qa:browser
+
+      - name: Upload browser QA evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-browser-qa-${{ github.run_id }}
+          path: qa-artifacts
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 7
+
       - name: Exported React project smoke
         run: WEBBLUEPRINT_EXPORT_SMOKE=1 npm run test:run -- src/export/export.integration.test.ts
 
