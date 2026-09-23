@@ -1,6 +1,8 @@
 # Authentication · Sign In v1
 
-Status: implementation candidate
+Status: deployed; acceptance pending QA
+
+QA status: PENDING
 
 ## Scope
 
@@ -38,6 +40,21 @@ The view follows a feature-first boundary:
 No user-facing content is hardcoded in the page component. Static demo content is supplied through `sign-in.view.json`, mapped at the infrastructure boundary, and exposed as `SignInViewDto`.
 
 The mock gateway uses explicit deterministic modes instead of magic usernames/passwords. A future HTTP/OIDC/Auth provider can replace it without changing `SignInPage`.
+
+## Mandatory QA evidence
+
+The view is not considered complete until all items below are PASS:
+
+- Automated view QA gate: PENDING until the QA-governance PR completes CI.
+- Architecture/data-boundary QA: covered by feature tests and the automated QA registry.
+- Production deep-link coverage for `/authentication/sign-in`: pending QA-governance deployment.
+- Functional runtime review: PENDING.
+- Visual Style 1 review: PENDING.
+- Responsive desktop/mobile review: PENDING.
+- Accessibility interaction review: PENDING.
+- Product-owner runtime acceptance: PENDING.
+
+CI and deployment success for PR #23 are evidence, but they are not recorded as QA PASS.
 
 ## Out of scope
 
