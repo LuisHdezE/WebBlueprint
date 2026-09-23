@@ -89,3 +89,31 @@ jobs:
             authentication/sign-in; do
             check_url "$PUBLIC_URL/$path" "/tmp/webblueprint-${path//\//-}.html"
           done
+
+      - name: Checkout QA scenarios at deployed SHA
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          path: qa-source
+
+      - name: Setup Node.js for runtime QA
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22.22.3
+
+      - name: Browser QA against production
+        working-directory: qa-source
+        env:
+          QA_BASE_URL: ${{ env.PUBLIC_URL }}
+          QA_EVIDENCE_LABEL: production
+        run: npm run qa:browser
+
+      - name: Upload production browser QA evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-production-browser-qa-${{ github.run_id }}
+          path: qa-source/qa-artifacts
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 14
