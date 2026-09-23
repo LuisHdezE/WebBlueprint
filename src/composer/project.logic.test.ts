@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { applyProjectPreset, createDefaultProject, moveProjectView, toggleProjectView } from '@/composer/project.logic';
+import {
+  applyProjectPreset,
+  createDefaultProject,
+  moveProjectView,
+  sanitizeProject,
+  toggleProjectView,
+} from '@/composer/project.logic';
 
 describe('project composer logic', () => {
   it('applies a preset as an editable view selection', () => {
@@ -32,5 +38,27 @@ describe('project composer logic', () => {
 
     project = toggleProjectView(project, '/dashboard');
     expect(project.views).toEqual(['/dashboard']);
+  });
+
+  it('keeps reusable UI libraries outside the application-view selection', () => {
+    const project = createDefaultProject();
+
+    expect(toggleProjectView(project, '/components/cards')).toEqual(project);
+    expect(toggleProjectView(project, '/elements/buttons')).toEqual(project);
+    expect(toggleProjectView(project, '/forms/basic-inputs')).toEqual(project);
+    expect(toggleProjectView(project, '/tables/basic')).toEqual(project);
+
+    const sanitized = sanitizeProject({
+      ...project,
+      views: [
+        '/dashboard',
+        '/components/cards',
+        '/elements/buttons',
+        '/forms/basic-inputs',
+        '/tables/basic',
+      ],
+    });
+
+    expect(sanitized.views).toEqual(['/dashboard']);
   });
 });
