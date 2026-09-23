@@ -80,6 +80,12 @@ jobs:
           check_url "$PUBLIC_URL/" /tmp/webblueprint-root.html
           grep -q '<div id="root"></div>' /tmp/webblueprint-root.html
 
-          for path in apps docs components demo/pet-shop/dashboard; do
+          # Every completed real view must stay in this runtime smoke contract.
+          for path in \
+            apps \
+            docs \
+            components \
+            demo/pet-shop/dashboard \
+            authentication/sign-in; do
             check_url "$PUBLIC_URL/$path" "/tmp/webblueprint-${path//\//-}.html"
           done
