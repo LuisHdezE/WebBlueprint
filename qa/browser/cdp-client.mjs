@@ -111,8 +111,12 @@ export async function launchChrome({ port = 9222 } = {}) {
       chromeBinary,
       webSocketDebuggerUrl,
       async stop() {
-        await stopProcess(processHandle);
-        removeProfile(profileDir);
+        try {
+          await stopProcess(processHandle);
+          removeProfile(profileDir);
+        } catch (error) {
+          console.warn(`Chrome cleanup warning: ${error instanceof Error ? error.message : String(error)}`);
+        }
       },
     };
   } catch (error) {
