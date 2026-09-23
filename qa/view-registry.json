@@ -9,6 +9,7 @@
       "contracts": "src/features/authentication/sign-in/application/contracts/signIn.contracts.ts",
       "content": "src/features/authentication/sign-in/infrastructure/sign-in.view.json",
       "checkpoint": "docs/checkpoints/V1-authentication-sign-in.md",
+      "browserQa": "qa/browser/authentication-sign-in.browser-qa.mjs",
       "tests": [
         "src/features/authentication/sign-in/application/signIn.usecases.test.ts",
         "src/features/authentication/sign-in/infrastructure/signIn.adapters.test.ts",
