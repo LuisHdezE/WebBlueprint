@@ -1,8 +1,8 @@
 # Authentication · Sign In v1
 
-Status: QA candidate; production acceptance pending
+Status: COMPLETE · production accepted
 
-QA status: PENDING
+QA status: PASS
 
 ## Scope
 
@@ -44,9 +44,7 @@ The mock gateway uses explicit deterministic modes instead of magic usernames/pa
 
 ## Mandatory QA evidence
 
-The view is not considered complete until all mandatory items are PASS.
-
-Evidence completed on the PR candidate:
+All mandatory QA items are PASS.
 
 - Automated architecture/data QA gate: PASS.
 - Feature/application/adapter/architecture tests: PASS.
@@ -56,20 +54,22 @@ Evidence completed on the PR candidate:
 - Browser mobile responsive/layout checks: PASS after QA discovered and corrected two defects: the promotional hero preceding the form and the password-visibility control overlapping the field.
 - Style 1 technical visual review of generated desktop/mobile evidence: PASS.
 - Browser runtime exception/unhandled-rejection checks: PASS.
-- Browser report: 27 checks PASS, 0 failures.
+- Preview browser report: 27 checks PASS, 0 failures.
 - Export regression smoke: PASS.
-- Production deep-link coverage for `/authentication/sign-in`: PASS from the mandatory-QA governance deployment.
+- Production deep-link coverage for `/authentication/sign-in`: PASS.
+- Browser-QA candidate merged through PR #25 at merge commit `437fa89050a24c02595c9adfe53a1cbfd7d7b139`.
+- Main-branch CI #161 on the merged production candidate: PASS.
+- EliasWorks deployment #88 on the same merged SHA: PASS.
+- Browser QA against `https://webblueprint.eliasworks.uy/authentication/sign-in`: PASS.
+- Production browser report: 27 checks PASS, 0 failures.
+- Production desktop/mobile screenshot review: PASS.
+- Product-owner runtime/visual acceptance: PASS, explicitly approved on 2026-09-23.
 
-Still required before final QA PASS:
+### Final QA verdict
 
-- Merge of the browser-QA candidate after explicit approval.
-- Main-branch CI/browser QA on the exact merged production candidate.
-- EliasWorks deployment of that candidate.
-- Browser QA against `https://webblueprint.eliasworks.uy/authentication/sign-in`.
-- Production screenshot/evidence review.
-- Product-owner runtime/visual acceptance.
+`PASS`
 
-Therefore the overall `QA status` remains `PENDING` by design.
+The Sign In view is formally closed as the first completed real catalog view and may now serve as the quality reference for the remaining Authentication views. Any later regression reopens QA for the affected scope.
 
 ## Out of scope
 
