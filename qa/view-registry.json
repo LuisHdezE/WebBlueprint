@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "1.0",
+  "views": [
+    {
+      "id": "authentication.sign-in",
+      "route": "authentication/sign-in",
+      "presentation": "src/features/authentication/sign-in/presentation/SignInPage.tsx",
+      "dto": "src/features/authentication/sign-in/application/dtos/signIn.dto.ts",
+      "contracts": "src/features/authentication/sign-in/application/contracts/signIn.contracts.ts",
+      "content": "src/features/authentication/sign-in/infrastructure/sign-in.view.json",
+      "checkpoint": "docs/checkpoints/V1-authentication-sign-in.md",
+      "tests": [
+        "src/features/authentication/sign-in/application/signIn.usecases.test.ts",
+        "src/features/authentication/sign-in/infrastructure/signIn.adapters.test.ts",
+        "src/features/authentication/sign-in/signIn.architecture.test.ts"
+      ]
+    }
+  ]
+}
