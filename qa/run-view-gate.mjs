@@ -44,7 +44,7 @@ const deployment = read('.github/workflows/deploy-eliasworks.yml');
 
 for (const view of registry.views ?? []) {
   const label = view.id ?? 'unnamed-view';
-  const requiredFields = ['route', 'presentation', 'dto', 'contracts', 'content', 'checkpoint'];
+  const requiredFields = ['route', 'presentation', 'dto', 'contracts', 'content', 'checkpoint', 'browserQa'];
 
   for (const field of requiredFields) {
     assert(typeof view[field] === 'string' && view[field].length > 0, `${label}: missing registry field '${field}'.`);
@@ -57,6 +57,7 @@ for (const view of registry.views ?? []) {
   const contracts = read(view.contracts);
   const contentSource = read(view.content);
   const checkpoint = read(view.checkpoint);
+  const browserScenario = read(view.browserQa);
 
   assert(
     router.includes(`path=\"${view.route}\"`),
@@ -79,6 +80,7 @@ for (const view of registry.views ?? []) {
   assert(/Dto\b/.test(dto), `${label}: DTO boundary file must define DTO types.`);
   assert(/interface\s+\w+Provider\b|interface\s+\w+Gateway\b/.test(contracts), `${label}: contracts file must expose provider/gateway ports.`);
   assert(checkpoint.includes('QA status:'), `${label}: checkpoint must declare an explicit QA status.`);
+  assert(browserScenario.includes('runBrowserQa'), `${label}: browser QA scenario must export runBrowserQa.`);
 
   let content;
   try {
