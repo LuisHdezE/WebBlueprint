@@ -15,6 +15,7 @@
     "test": "vitest",
     "test:run": "vitest run",
     "qa": "node qa/run-view-gate.mjs",
+    "qa:browser": "node qa/run-browser-gate.mjs",
     "check": "npm run typecheck && npm run lint && npm run test:run && npm run build"
   },
   "dependencies": {
