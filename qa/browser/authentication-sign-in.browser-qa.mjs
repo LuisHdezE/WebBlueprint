@@ -55,6 +55,8 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
   const targetUrl = `${normalizeBaseUrl(baseUrl)}/authentication/sign-in`;
   const checks = [];
   const failures = [];
+  let chrome;
+  let cdp;
 
   function check(name, passed, details = undefined) {
     checks.push({ name, status: passed ? 'PASS' : 'FAIL', details });
@@ -63,13 +65,13 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
 
   mkdirSync(artifactDir, { recursive: true });
 
-  const response = await fetch(targetUrl, { redirect: 'follow' });
-  check('Deep link responds successfully', response.ok, { status: response.status, url: response.url });
-
-  const chrome = await launchChrome();
-  const cdp = await connectCdp(chrome.webSocketDebuggerUrl);
-
   try {
+    const response = await fetch(targetUrl, { redirect: 'follow' });
+    check('Deep link responds successfully', response.ok, { status: response.status, url: response.url });
+
+    chrome = await launchChrome();
+    cdp = await connectCdp(chrome.webSocketDebuggerUrl);
+
     await cdp.send('Page.enable');
     await cdp.send('Runtime.enable');
     await cdp.send('Page.addScriptToEvaluateOnNewDocument', {
@@ -107,9 +109,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
         hasEmail: email instanceof HTMLInputElement,
         hasPassword: password instanceof HTMLInputElement,
         hasSubmit: submit instanceof HTMLButtonElement,
-        emailType: email instanceof HTMLInputElement ? email.type : null,
         emailAutocomplete: email instanceof HTMLInputElement ? email.autocomplete : null,
-        passwordType: password instanceof HTMLInputElement ? password.type : null,
         passwordAutocomplete: password instanceof HTMLInputElement ? password.autocomplete : null,
         emailLabel: document.querySelector('label[for="sign-in-email"]')?.textContent?.trim() ?? null,
         passwordLabel: document.querySelector('label[for="sign-in-password"]')?.textContent?.trim() ?? null,
@@ -149,13 +149,21 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     const secondKeyboardFocus = await evaluate(cdp, `document.activeElement?.id ?? null`);
     check('Keyboard sequence reaches password field', secondKeyboardFocus === 'sign-in-password', { activeElement: secondKeyboardFocus });
 
-    await click(cdp, 'button[type="button"]');
+    const toggleBefore = await evaluate(cdp, `document.querySelector('button[aria-controls="sign-in-password"]')?.getAttribute('aria-pressed')`);
+    await click(cdp, 'button[aria-controls="sign-in-password"]');
     await waitFor(cdp, `document.querySelector('#sign-in-password')?.getAttribute('type') === 'text'`);
-    const passwordShown = await evaluate(cdp, `document.querySelector('#sign-in-password')?.getAttribute('type') === 'text'`);
-    check('Show password control reveals password', passwordShown === true);
-    await click(cdp, 'button[type="button"]');
+    const toggleShown = await evaluate(cdp, `({
+      type: document.querySelector('#sign-in-password')?.getAttribute('type'),
+      pressed: document.querySelector('button[aria-controls="sign-in-password"]')?.getAttribute('aria-pressed'),
+    })`);
+    check('Show password control exposes state accessibly', toggleBefore === 'false' && toggleShown.type === 'text' && toggleShown.pressed === 'true', { toggleBefore, ...toggleShown });
+    await click(cdp, 'button[aria-controls="sign-in-password"]');
     await waitFor(cdp, `document.querySelector('#sign-in-password')?.getAttribute('type') === 'password'`);
-    check('Show password control restores masked password', await evaluate(cdp, `document.querySelector('#sign-in-password')?.getAttribute('type') === 'password'`));
+    const toggleHidden = await evaluate(cdp, `({
+      type: document.querySelector('#sign-in-password')?.getAttribute('type'),
+      pressed: document.querySelector('button[aria-controls="sign-in-password"]')?.getAttribute('aria-pressed'),
+    })`);
+    check('Show password control restores masked state', toggleHidden.type === 'password' && toggleHidden.pressed === 'false', toggleHidden);
 
     await evaluate(cdp, `document.querySelector('form')?.requestSubmit()`);
     await waitFor(cdp, `document.querySelectorAll('[role="alert"]').length >= 2`);
@@ -210,33 +218,56 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     check('Happy path reaches semantic success feedback', successState.hasStatus === true && successState.emailInvalid === 'false' && successState.passwordInvalid === 'false', successState);
     await captureScreenshot(cdp, join(artifactDir, 'sign-in-desktop-success.png'));
 
+    const desktopRuntimeErrors = await evaluate(cdp, `window.__webBlueprintQaErrors ?? []`);
+    check('Desktop has no runtime exceptions or unhandled rejections', Array.isArray(desktopRuntimeErrors) && desktopRuntimeErrors.length === 0, { runtimeErrors: desktopRuntimeErrors });
+
     await setViewport(cdp, mobileViewport);
     await navigate(cdp, targetUrl);
     await waitFor(cdp, `document.querySelector('#sign-in-email') instanceof HTMLInputElement`);
     const mobileStructure = await evaluate(cdp, `(() => {
       const card = document.querySelector('main')?.firstElementChild;
       const sections = card ? [...card.querySelectorAll(':scope > section')] : [];
-      const firstRect = sections[0]?.getBoundingClientRect();
-      const secondRect = sections[1]?.getBoundingClientRect();
+      const hero = sections[0];
+      const formSection = sections[1];
       const emailRect = document.querySelector('#sign-in-email')?.getBoundingClientRect();
+      const passwordRect = document.querySelector('#sign-in-password')?.getBoundingClientRect();
+      const toggleRect = document.querySelector('button[aria-controls="sign-in-password"]')?.getBoundingClientRect();
+      const titleRect = document.querySelector('#sign-in-title')?.getBoundingClientRect();
+      const submitRect = document.querySelector('button[type="submit"]')?.getBoundingClientRect();
+      const rectanglesOverlap = (a, b) => Boolean(a && b && a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top);
       return {
-        stacked: Boolean(firstRect && secondRect && firstRect.bottom <= secondRect.top + 2),
+        heroHidden: Boolean(hero && getComputedStyle(hero).display === 'none'),
+        formVisible: Boolean(formSection && getComputedStyle(formSection).display !== 'none'),
         noHorizontalOverflow: document.documentElement.scrollWidth <= window.innerWidth + 1,
         emailInsideViewport: Boolean(emailRect && emailRect.left >= 0 && emailRect.right <= window.innerWidth + 1),
+        passwordInsideViewport: Boolean(passwordRect && passwordRect.left >= 0 && passwordRect.right <= window.innerWidth + 1),
+        toggleDoesNotOverlapPassword: Boolean(passwordRect && toggleRect && !rectanglesOverlap(passwordRect, toggleRect)),
+        primaryFlowVisible: Boolean(titleRect && submitRect && titleRect.top >= 0 && submitRect.bottom <= window.innerHeight + 1),
         viewportWidth: window.innerWidth,
+        viewportHeight: window.innerHeight,
         documentWidth: document.documentElement.scrollWidth,
+        titleTop: titleRect?.top ?? null,
+        submitBottom: submitRect?.bottom ?? null,
+        passwordBottom: passwordRect?.bottom ?? null,
+        toggleTop: toggleRect?.top ?? null,
       };
     })()`);
-    check('Mobile layout stacks panels', mobileStructure.stacked, mobileStructure);
+    check('Mobile prioritizes authentication instead of the marketing hero', mobileStructure.heroHidden && mobileStructure.formVisible, mobileStructure);
+    check('Mobile primary Sign In flow is visible in the initial viewport', mobileStructure.primaryFlowVisible, mobileStructure);
+    check('Mobile password visibility control does not overlap the field', mobileStructure.toggleDoesNotOverlapPassword, mobileStructure);
     check('Mobile has no horizontal overflow', mobileStructure.noHorizontalOverflow, mobileStructure);
-    check('Mobile form controls stay inside viewport', mobileStructure.emailInsideViewport, mobileStructure);
+    check('Mobile form controls stay inside viewport', mobileStructure.emailInsideViewport && mobileStructure.passwordInsideViewport, mobileStructure);
     await captureScreenshot(cdp, join(artifactDir, 'sign-in-mobile-initial.png'));
 
-    const runtimeErrors = await evaluate(cdp, `window.__webBlueprintQaErrors ?? []`);
-    check('No browser runtime exceptions or unhandled rejections', Array.isArray(runtimeErrors) && runtimeErrors.length === 0, { runtimeErrors });
+    const mobileRuntimeErrors = await evaluate(cdp, `window.__webBlueprintQaErrors ?? []`);
+    check('Mobile has no runtime exceptions or unhandled rejections', Array.isArray(mobileRuntimeErrors) && mobileRuntimeErrors.length === 0, { runtimeErrors: mobileRuntimeErrors });
+  } catch (error) {
+    check('Browser scenario completes without infrastructure/runtime exception', false, {
+      error: error instanceof Error ? error.stack ?? error.message : String(error),
+    });
   } finally {
-    cdp.close();
-    chrome.stop();
+    cdp?.close();
+    if (chrome) await chrome.stop();
   }
 
   const report = {
