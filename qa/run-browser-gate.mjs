@@ -1,4 +1,5 @@
 import { spawn } from 'node:child_process';
+import { once } from 'node:events';
 import { existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -32,9 +33,14 @@ async function waitForUrl(url, timeoutMs = 15_000) {
 }
 
 async function startLocalPreview() {
+  const viteCli = resolve(root, 'node_modules/vite/bin/vite.js');
+  if (!existsSync(viteCli)) {
+    throw new Error(`Vite CLI not found at ${viteCli}. Run npm ci before browser QA.`);
+  }
+
   previewProcess = spawn(
-    process.platform === 'win32' ? 'npm.cmd' : 'npm',
-    ['run', 'preview', '--', '--host', '127.0.0.1', '--port', '4173'],
+    process.execPath,
+    [viteCli, 'preview', '--host', '127.0.0.1', '--port', '4173'],
     { cwd: root, stdio: ['ignore', 'pipe', 'pipe'] },
   );
 
@@ -47,6 +53,24 @@ async function startLocalPreview() {
 
   await waitForUrl(localBaseUrl);
   return localBaseUrl;
+}
+
+async function stopLocalPreview() {
+  if (!previewProcess || previewProcess.exitCode !== null) return;
+
+  previewProcess.kill('SIGTERM');
+  await Promise.race([
+    once(previewProcess, 'exit'),
+    sleep(2_000),
+  ]);
+
+  if (previewProcess.exitCode === null) {
+    previewProcess.kill('SIGKILL');
+    await Promise.race([
+      once(previewProcess, 'exit'),
+      sleep(1_000),
+    ]);
+  }
 }
 
 async function main() {
@@ -95,9 +119,7 @@ async function main() {
 try {
   await main();
 } finally {
-  if (previewProcess && !previewProcess.killed) {
-    previewProcess.kill('SIGTERM');
-  }
+  await stopLocalPreview();
   if (process.exitCode && previewOutput) {
     console.error('Preview output:\n' + previewOutput);
   }
