@@ -5,8 +5,10 @@ import { ApplicationDetailPage } from '@/pages/ApplicationDetailPage';
 import { ApplicationsPage } from '@/pages/ApplicationsPage';
 import { ComponentsPage } from '@/pages/ComponentsPage';
 import { ComposerPage } from '@/pages/ComposerPage';
+import { ComposerPreviewPage } from '@/pages/ComposerPreviewPage';
 import { DocumentationPage } from '@/pages/DocumentationPage';
 import { LoginPage } from '@/pages/LoginPage';
+import { TemplateComposerPage } from '@/pages/TemplateComposerPage';
 import { TemplateOverviewPage } from '@/pages/TemplateOverviewPage';
 import { TemplatePlaceholderPage } from '@/pages/TemplatePlaceholderPage';
 import { PublicShell } from '@/shell/PublicShell';
@@ -34,6 +36,7 @@ export function AppRouter() {
       <Route element={<TemplateShell />}>
         <Route index element={<Navigate to="/dashboard" replace />} />
         <Route path="dashboard" element={<TemplateOverviewPage />} />
+        <Route path="composer" element={<TemplateComposerPage />} />
         {templateFamilies.map((path) => (
           <Route key={path} path={path} element={<TemplatePlaceholderPage />} />
         ))}
@@ -47,9 +50,10 @@ export function AppRouter() {
         <Route path="legacy/components" element={<ComponentsPage />} />
       </Route>
 
+      <Route path="preview" element={<ComposerPreviewPage />} />
       <Route path="demo/:slug/*" element={<ApplicationDemoPage />} />
       <Route
-        path="composer/*"
+        path="legacy/composer/*"
         element={
           <ProtectedRoute>
             <ComposerPage />

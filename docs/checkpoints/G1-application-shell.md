@@ -1,8 +1,9 @@
 # G1 · Application Shell
 
-Estado: **EN CIERRE VISUAL**  
+Estado: **CERRADO**  
 Base original: `main@88233e7c409d8707d794507525d4134542a1ebcc`  
-Base del refinamiento visual: `main@c508abdc5c1e3e9ce815cbd6efe81a0f71fb9ff3`
+Base del refinamiento visual: `main@c508abdc5c1e3e9ce815cbd6efe81a0f71fb9ff3`  
+Cierre final: `main@0343eeeea99b392104cbe2cf2c10f9bb15a9f42e`
 
 ## Objetivo
 
@@ -47,46 +48,31 @@ Ajuste final solicitado en la misma revisión:
 
 El refinamiento mantiene intacto el alcance funcional de G1 y no reabre Pet Shop ni las áreas legacy congeladas.
 
-## Fuera de alcance
+## Fuera de alcance de G1
 
-- componentes completos de G3/G4;
+- componentes completos posteriores;
 - formularios, tablas y aplicaciones finales;
 - lógica de negocio;
-- Theme Builder avanzado;
-- Composer, presets y exportación nuevos;
-- continuación de Pet Shop.
+- Composer, presets y exportación, que pasan a G2.
 
-## Evidencia de implementación inicial
+## Evidencia de cierre
 
-HEAD funcional validado: `78b51b7cfc355b4b2eb84a8dcce96d46e6f2bb6a`.
-
-CI #132, ejecución `35687279917`: **PASS**.
-
-Pasaron:
-
-- typecheck;
-- lint;
-- tests;
-- build;
-- smoke del proyecto React exportado;
-- fallback SPA;
-- preview de PR.
-
-Durante el incremento el gate detectó y obligó a corregir dos incompatibilidades reales sin relajar reglas:
-
-1. uso no soportado de `defaultOpen` en `<details>` bajo React 19;
-2. separación de `ThemeProvider` y contexto para cumplir `react-refresh/only-export-components`.
+- PR #17: refinamiento ERP del sidebar, mergeada.
+- PR #18: agrupación de categorías + paleta de nueve colores, mergeada.
+- HEAD final de G1: `0343eeeea99b392104cbe2cf2c10f9bb15a9f42e`.
+- CI #140, ejecución `35799592444`: **SUCCESS**.
+- Deploy #67, ejecución `35799638927`: **SUCCESS**.
+- Destino canónico: `https://webblueprint.eliasworks.uy`.
+- Revisión visual del usuario: **APROBADA** el 2026-09-22.
 
 ## Gate de cierre visual
 
-G1 puede cerrarse visualmente cuando:
+- [x] CI pasa sobre el HEAD final del refinamiento.
+- [x] el diff permanece limitado al shell, tema y documentación de G1.
+- [x] la PR queda Ready for review.
+- [x] el refinamiento es mergeado con aprobación explícita.
+- [x] CI de `main` pasa.
+- [x] el deploy canónico termina en SUCCESS.
+- [x] el usuario revisa y aprueba el resultado publicado.
 
-- [ ] CI pasa sobre el HEAD final del refinamiento;
-- [x] el diff permanece limitado al shell, tema y documentación de G1;
-- [ ] la PR queda Ready for review;
-- [ ] el refinamiento es mergeado con aprobación explícita;
-- [ ] CI de `main` pasa;
-- [ ] el deploy canónico termina en SUCCESS;
-- [ ] el usuario revisa el resultado publicado en `https://webblueprint.eliasworks.uy`.
-
-No se inicia G2 hasta completar este gate.
+G1 queda cerrado. El trabajo conductor continúa en **G2 · Composer Foundation**.

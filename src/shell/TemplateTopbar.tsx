@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import { AppIcon } from '@/components/AppIcon';
 import { ThemeColorPicker } from '@/theme/ThemeColorPicker';
 
@@ -48,6 +49,13 @@ export function TemplateTopbar({ sidebarCollapsed, onToggleSidebar, onOpenMobile
         </div>
 
         <div className="ml-auto flex items-center gap-0.5">
+          <Link
+            className="mr-1 flex h-8 items-center gap-1.5 rounded-md bg-white/10 px-2.5 text-[10px] font-semibold text-white/90 transition hover:bg-white/15 hover:text-white"
+            to="/composer"
+          >
+            <AppIcon className="size-3.5" name="components" />
+            <span className="hidden lg:inline">Composer</span>
+          </Link>
           <ThemeColorPicker />
           <button
             aria-label="Notificaciones"
