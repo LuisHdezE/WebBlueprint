@@ -2,6 +2,8 @@ import { templateNavigation } from '@/config/templateNavigation';
 import type { ProjectViewDefinition } from '@/composer/project.types';
 
 const separator = ' · ';
+const reusableLibrarySections = new Set(['Componentes', 'Elementos', 'Formularios', 'Tablas']);
+const selectableNavigation = templateNavigation.filter((section) => !reusableLibrarySections.has(section.label));
 
 function splitCategory(label: string) {
   const index = label.indexOf(separator);
@@ -19,7 +21,7 @@ function toViewId(path: string) {
   return path.replace(/^\//, '').replace(/[^a-z0-9]+/gi, '.').replace(/^\.+|\.+$/g, '').toLowerCase();
 }
 
-export const projectViewCatalog: readonly ProjectViewDefinition[] = templateNavigation.flatMap((section) =>
+export const projectViewCatalog: readonly ProjectViewDefinition[] = selectableNavigation.flatMap((section) =>
   section.items.map((item) => {
     const parsed = splitCategory(item.label);
     return {
@@ -39,7 +41,7 @@ export function getProjectView(path: string) {
 }
 
 export function getProjectViewsBySection() {
-  return templateNavigation.map((section) => ({
+  return selectableNavigation.map((section) => ({
     label: section.label,
     icon: section.icon,
     views: projectViewCatalog.filter((view) => view.section === section.label),
