@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   quality:
-    name: Typecheck, lint, test and build
+    name: Typecheck, lint, test, QA and build
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -35,6 +35,9 @@ jobs:
 
       - name: Quality gate
         run: npm run check
+
+      - name: Automated QA gate
+        run: npm run qa
 
       - name: Exported React project smoke
         run: WEBBLUEPRINT_EXPORT_SMOKE=1 npm run test:run -- src/export/export.integration.test.ts
