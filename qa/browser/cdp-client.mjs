@@ -1,4 +1,5 @@
 import { spawn } from 'node:child_process';
+import { once } from 'node:events';
 import { accessSync, constants, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -48,6 +49,33 @@ async function waitForDebugTarget(port, timeoutMs = 10_000) {
   throw new Error(`Chrome DevTools endpoint did not become ready.${lastError ? ` ${String(lastError)}` : ''}`);
 }
 
+async function stopProcess(processHandle) {
+  if (!processHandle || processHandle.exitCode !== null) return;
+
+  processHandle.kill('SIGTERM');
+  await Promise.race([
+    once(processHandle, 'exit'),
+    sleep(2_000),
+  ]);
+
+  if (processHandle.exitCode === null) {
+    processHandle.kill('SIGKILL');
+    await Promise.race([
+      once(processHandle, 'exit'),
+      sleep(1_000),
+    ]);
+  }
+}
+
+function removeProfile(profileDir) {
+  rmSync(profileDir, {
+    recursive: true,
+    force: true,
+    maxRetries: 5,
+    retryDelay: 100,
+  });
+}
+
 export async function launchChrome({ port = 9222 } = {}) {
   const chromeBinary = findChromeBinary();
   const profileDir = mkdtempSync(join(tmpdir(), 'webblueprint-qa-chrome-'));
@@ -82,14 +110,14 @@ export async function launchChrome({ port = 9222 } = {}) {
     return {
       chromeBinary,
       webSocketDebuggerUrl,
-      stop() {
-        if (!processHandle.killed) processHandle.kill('SIGTERM');
-        rmSync(profileDir, { recursive: true, force: true });
+      async stop() {
+        await stopProcess(processHandle);
+        removeProfile(profileDir);
       },
     };
   } catch (error) {
-    if (!processHandle.killed) processHandle.kill('SIGTERM');
-    rmSync(profileDir, { recursive: true, force: true });
+    await stopProcess(processHandle);
+    removeProfile(profileDir);
     throw new Error(`${error instanceof Error ? error.message : String(error)}\nChrome stderr:\n${stderr}`);
   }
 }
