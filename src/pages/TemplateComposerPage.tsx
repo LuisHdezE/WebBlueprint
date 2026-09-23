@@ -209,7 +209,9 @@ export function TemplateComposerPage() {
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-slate-400">3 · Vistas</p>
                 <h2 className="mt-1 text-base font-semibold text-slate-900">Selecciona la superficie real del proyecto</h2>
-                <p className="mt-1 text-xs leading-5 text-slate-500">Las 96 vistas del catálogo maestro permanecen disponibles, agrupadas por familia.</p>
+                <p className="mt-1 text-xs leading-5 text-slate-500">
+                  Aquí solo se seleccionan vistas de aplicación. Componentes, Elementos, Formularios y Tablas permanecen en el catálogo como biblioteca reutilizable para construir esas vistas.
+                </p>
               </div>
               <span className="text-xs font-semibold text-[var(--theme-primary)]">{project.views.length} seleccionadas</span>
             </div>
