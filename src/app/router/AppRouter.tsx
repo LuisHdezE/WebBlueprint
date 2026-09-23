@@ -1,5 +1,8 @@
 import { Navigate, Route, Routes } from 'react-router';
 import { ProtectedRoute } from '@/auth/ProtectedRoute';
+import { JsonSignInContentProvider } from '@/features/authentication/sign-in/infrastructure/JsonSignInContentProvider';
+import { MockSignInGateway } from '@/features/authentication/sign-in/infrastructure/MockSignInGateway';
+import { SignInPage } from '@/features/authentication/sign-in/presentation/SignInPage';
 import { ApplicationDemoPage } from '@/pages/ApplicationDemoPage';
 import { ApplicationDetailPage } from '@/pages/ApplicationDetailPage';
 import { ApplicationsPage } from '@/pages/ApplicationsPage';
@@ -13,6 +16,9 @@ import { TemplateOverviewPage } from '@/pages/TemplateOverviewPage';
 import { TemplatePlaceholderPage } from '@/pages/TemplatePlaceholderPage';
 import { PublicShell } from '@/shell/PublicShell';
 import { TemplateShell } from '@/shell/TemplateShell';
+
+const signInContentProvider = new JsonSignInContentProvider();
+const signInGateway = new MockSignInGateway();
 
 const templateFamilies = [
   'applications/*',
@@ -33,6 +39,11 @@ const templateFamilies = [
 export function AppRouter() {
   return (
     <Routes>
+      <Route
+        path="authentication/sign-in"
+        element={<SignInPage contentProvider={signInContentProvider} gateway={signInGateway} />}
+      />
+
       <Route element={<TemplateShell />}>
         <Route index element={<Navigate to="/dashboard" replace />} />
         <Route path="dashboard" element={<TemplateOverviewPage />} />
