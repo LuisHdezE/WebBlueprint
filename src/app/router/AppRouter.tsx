@@ -8,7 +8,7 @@ import { ComposerPage } from '@/pages/ComposerPage';
 import { ComposerPreviewPage } from '@/pages/ComposerPreviewPage';
 import { DocumentationPage } from '@/pages/DocumentationPage';
 import { LoginPage } from '@/pages/LoginPage';
-import { TemplateComposerPage } from '@/pages/TemplateComposerPage';
+import { TemplateComposerExportPage } from '@/pages/TemplateComposerExportPage';
 import { TemplateOverviewPage } from '@/pages/TemplateOverviewPage';
 import { TemplatePlaceholderPage } from '@/pages/TemplatePlaceholderPage';
 import { PublicShell } from '@/shell/PublicShell';
@@ -36,7 +36,7 @@ export function AppRouter() {
       <Route element={<TemplateShell />}>
         <Route index element={<Navigate to="/dashboard" replace />} />
         <Route path="dashboard" element={<TemplateOverviewPage />} />
-        <Route path="composer" element={<TemplateComposerPage />} />
+        <Route path="composer" element={<TemplateComposerExportPage />} />
         {templateFamilies.map((path) => (
           <Route key={path} path={path} element={<TemplatePlaceholderPage />} />
         ))}
