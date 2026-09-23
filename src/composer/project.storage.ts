@@ -1,10 +1,11 @@
 import { createDefaultProject, sanitizeProject } from '@/composer/project.logic';
 import type { BlueprintProjectManifest } from '@/composer/project.types';
 import { themePresets } from '@/theme/themeContext';
+import type { ThemeColorId } from '@/theme/themeContext';
 
 export const projectStorageKey = 'webblueprint.project.v1';
 
-function isThemeColor(value: unknown) {
+function isThemeColor(value: unknown): value is ThemeColorId {
   return typeof value === 'string' && themePresets.some((preset) => preset.id === value);
 }
 
