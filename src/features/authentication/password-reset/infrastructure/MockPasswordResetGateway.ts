@@ -9,7 +9,9 @@ export type MockPasswordResetMode = 'success' | 'unavailable';
 export class MockPasswordResetGateway implements PasswordResetGateway {
   constructor(private readonly mode: MockPasswordResetMode = 'success') {}
 
-  async requestReset(_request: PasswordResetRequestDto): Promise<PasswordResetResultDto> {
+  async requestReset(request: PasswordResetRequestDto): Promise<PasswordResetResultDto> {
+    void request;
+
     if (this.mode === 'unavailable') {
       return { status: 'failure', reason: 'unavailable' };
     }
