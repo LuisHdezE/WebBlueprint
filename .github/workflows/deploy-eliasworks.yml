@@ -86,7 +86,8 @@ jobs:
             docs \
             components \
             demo/pet-shop/dashboard \
-            authentication/sign-in; do
+            authentication/sign-in \
+            authentication/password-reset; do
             check_url "$PUBLIC_URL/$path" "/tmp/webblueprint-${path//\//-}.html"
           done
 

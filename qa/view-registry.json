@@ -15,6 +15,21 @@
         "src/features/authentication/sign-in/infrastructure/signIn.adapters.test.ts",
         "src/features/authentication/sign-in/signIn.architecture.test.ts"
       ]
+    },
+    {
+      "id": "authentication.password-reset",
+      "route": "authentication/password-reset",
+      "presentation": "src/features/authentication/password-reset/presentation/PasswordResetPage.tsx",
+      "dto": "src/features/authentication/password-reset/application/dtos/passwordReset.dto.ts",
+      "contracts": "src/features/authentication/password-reset/application/contracts/passwordReset.contracts.ts",
+      "content": "src/features/authentication/password-reset/infrastructure/password-reset.view.json",
+      "checkpoint": "docs/checkpoints/V2-authentication-password-reset.md",
+      "browserQa": "qa/browser/authentication-password-reset.browser-qa.mjs",
+      "tests": [
+        "src/features/authentication/password-reset/application/passwordReset.usecases.test.ts",
+        "src/features/authentication/password-reset/infrastructure/passwordReset.adapters.test.ts",
+        "src/features/authentication/password-reset/passwordReset.architecture.test.ts"
+      ]
     }
   ]
 }
