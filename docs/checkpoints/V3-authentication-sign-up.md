@@ -1,8 +1,8 @@
 # Authentication · Sign Up v1
 
-Status: IMPLEMENTED · preview QA pending
+Status: IMPLEMENTED · preview QA passed
 
-QA status: PENDING
+QA status: PASS
 
 ## Scope
 
@@ -58,24 +58,40 @@ Application validation requires a name, valid email, minimum password length, ma
 - Password confirmation and terms checkbox state never cross the gateway boundary.
 - A future HTTP/OIDC/Auth provider can replace the gateway without changing Presentation.
 
-## Mandatory QA plan
+## Preview QA evidence
 
-The candidate must pass the full repository pipeline before this checkpoint can be promoted from `PENDING` to `PASS`:
+The first PR run, CI #179 on implementation HEAD `0937264c523ff3b8bed90c4786eaf2aca455c4db`, correctly failed at TypeScript because `exactOptionalPropertyTypes` rejected clearing optional validation fields with explicit `undefined`. The DTO state contract was corrected without weakening compiler settings or bypassing the gate.
 
-- TypeScript/typecheck;
-- ESLint with zero warnings allowed;
-- unit and architecture tests;
-- production build;
-- automated architecture/data QA registry gate;
-- Sign In and Password Reset browser regression;
-- Sign Up browser QA;
-- desktop 1365×611 initial and success states without vertical scroll;
-- desktop/mobile horizontal-overflow checks;
-- keyboard focus and accessibility associations;
-- runtime exception/unhandled-rejection checks;
-- exported React project smoke;
-- deployable SPA fallback;
-- visual inspection of exact-head browser evidence.
+CI #180 on corrected implementation HEAD `bb135cd989136ba3f1f7b47f49ab628f19f1f134`: PASS.
+
+- TypeScript/typecheck: PASS.
+- ESLint with zero warnings allowed: PASS.
+- Test files: 21 passed, 1 intentionally skipped integration test in the normal suite.
+- Tests: 56 passed, 1 intentionally skipped integration test in the normal suite.
+- Production build: PASS.
+- Automated architecture/data QA gate: PASS with 3 registered real views.
+- Sign In browser regression: 27 checks PASS.
+- Password Reset browser regression: 23 checks PASS.
+- Sign Up browser QA: 28 checks PASS.
+- Desktop 1365×611 complete initial view without vertical scroll: PASS.
+- Desktop 1365×611 semantic success state without vertical scroll: PASS.
+- Desktop two-panel layout and horizontal-overflow assertions: PASS.
+- Required, invalid-email, short-password, password-mismatch and terms validation assertions: PASS.
+- Keyboard-visible focus and accessible field/error associations: PASS.
+- Success feedback avoids echoing submitted identifiers or password: PASS.
+- Mobile hero suppression, registration flow and horizontal-overflow assertions: PASS.
+- Runtime exception/unhandled-rejection checks: PASS.
+- Browser QA evidence artifact upload: PASS.
+- Exported React project smoke: PASS.
+- Deployable SPA fallback: PASS.
+- PR preview artifact: PASS.
+- Technical visual review of exact-head desktop initial, desktop success and mobile screenshots: PASS.
+
+### Current QA verdict
+
+`PASS`
+
+The Sign Up candidate is technically accepted for preview. Product-owner runtime/visual acceptance remains PENDING and must be explicit after this revision is merged and deployed to EliasWorks.
 
 ## Out of scope
 
