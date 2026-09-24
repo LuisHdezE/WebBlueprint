@@ -10,7 +10,7 @@ import {
   waitFor,
 } from './cdp-client.mjs';
 
-const desktopViewport = { width: 1440, height: 900, deviceScaleFactor: 1, mobile: false };
+const desktopViewport = { width: 1365, height: 611, deviceScaleFactor: 1, mobile: false };
 const mobileViewport = { width: 390, height: 844, deviceScaleFactor: 1, mobile: true };
 
 function normalizeBaseUrl(baseUrl) {
@@ -87,6 +87,9 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       const submit = document.querySelector('button[type="submit"]');
       const firstRect = sections[0]?.getBoundingClientRect();
       const secondRect = sections[1]?.getBoundingClientRect();
+      const cardRect = card?.getBoundingClientRect();
+      const privacyLink = [...document.querySelectorAll('a')].find((link) => new URL(link.href).pathname === '/pages/privacy-policy');
+      const legalRect = privacyLink?.parentElement?.getBoundingClientRect();
       const cardStyle = card ? getComputedStyle(card) : null;
       return {
         labelledBy: main?.getAttribute('aria-labelledby') ?? null,
@@ -100,6 +103,9 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
         cardShadow: cardStyle?.boxShadow ?? 'none',
         twoColumn: Boolean(firstRect && secondRect && Math.abs(firstRect.top - secondRect.top) <= 2 && firstRect.right <= secondRect.left + 2),
         noHorizontalOverflow: document.documentElement.scrollWidth <= window.innerWidth + 1,
+        noVerticalOverflow: document.documentElement.scrollHeight <= window.innerHeight + 1,
+        cardInsideViewport: Boolean(cardRect && cardRect.top >= 0 && cardRect.bottom <= window.innerHeight + 1),
+        legalInsideViewport: Boolean(legalRect && legalRect.bottom <= window.innerHeight + 1),
       };
     })()`);
 
@@ -111,6 +117,11 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     check('Theme token is resolved', desktopStructure.primary.length > 0, desktopStructure);
     check('Desktop uses the intended two-panel layout', desktopStructure.twoColumn, desktopStructure);
     check('Desktop has no horizontal overflow', desktopStructure.noHorizontalOverflow, desktopStructure);
+    check(
+      'Desktop 1365x611 fits the complete initial view without vertical scroll',
+      desktopStructure.noVerticalOverflow && desktopStructure.cardInsideViewport && desktopStructure.legalInsideViewport,
+      desktopStructure,
+    );
     await captureScreenshot(cdp, join(artifactDir, 'password-reset-desktop-initial.png'));
 
     await evaluate(cdp, `(() => {
@@ -153,6 +164,20 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     })()`);
     check('Happy path reaches semantic success feedback', successState.hasStatus && successState.invalid === 'false', successState);
     check('Success feedback does not echo the submitted account identifier', !successState.text.includes(validEmail), successState);
+
+    const successViewport = await evaluate(cdp, `(() => {
+      const card = document.querySelector('main')?.firstElementChild;
+      const cardRect = card?.getBoundingClientRect();
+      return {
+        noVerticalOverflow: document.documentElement.scrollHeight <= window.innerHeight + 1,
+        cardInsideViewport: Boolean(cardRect && cardRect.top >= 0 && cardRect.bottom <= window.innerHeight + 1),
+      };
+    })()`);
+    check(
+      'Desktop success state also fits 1365x611 without vertical scroll',
+      successViewport.noVerticalOverflow && successViewport.cardInsideViewport,
+      successViewport,
+    );
 
     const navigationContracts = await evaluate(cdp, `(() => {
       const links = [...document.querySelectorAll('a')].map((link) => new URL(link.href).pathname);
