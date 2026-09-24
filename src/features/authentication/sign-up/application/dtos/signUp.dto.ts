@@ -103,11 +103,11 @@ export type SignUpValidationErrorCode =
   | 'terms-required';
 
 export interface SignUpValidationErrorsDto {
-  fullName?: SignUpValidationErrorCode;
-  email?: SignUpValidationErrorCode;
-  password?: SignUpValidationErrorCode;
-  confirmPassword?: SignUpValidationErrorCode;
-  acceptTerms?: SignUpValidationErrorCode;
+  fullName?: SignUpValidationErrorCode | undefined;
+  email?: SignUpValidationErrorCode | undefined;
+  password?: SignUpValidationErrorCode | undefined;
+  confirmPassword?: SignUpValidationErrorCode | undefined;
+  acceptTerms?: SignUpValidationErrorCode | undefined;
 }
 
 export type SignUpFailureReasonDto = 'unavailable';
