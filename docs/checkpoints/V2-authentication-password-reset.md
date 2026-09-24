@@ -1,8 +1,8 @@
 # Authentication · Password Reset v1
 
-Status: IMPLEMENTED · visual density revision in progress
+Status: IMPLEMENTED · compact revision preview QA passed
 
-QA status: PENDING
+QA status: PASS
 
 ## Scope
 
@@ -56,32 +56,34 @@ The pre-revision implementation passed its technical gates before product-owner 
 - Production browser QA: Sign In 27 checks PASS; Password Reset 21 checks PASS.
 - Canonical subdomain and SPA deep-link smoke: PASS.
 
-Those results remain valid historical evidence for functionality, architecture, deployment and the previous responsive contract. They do not satisfy the newly added 1365×611 no-scroll visual requirement.
+Those results remain valid historical evidence for functionality, architecture, deployment and the previous responsive contract. They do not replace the compact-revision QA below.
 
-## Current mandatory QA gate
+## Compact revision QA evidence
 
-The visual-density revision is not accepted until the exact candidate HEAD passes all of the following again:
+Preview candidate CI #174 on implementation HEAD `e411051c9d1bff961a49751cbe86b6cfec5f917c`: PASS.
 
-- TypeScript/typecheck.
-- ESLint with zero warnings allowed.
-- Automated test suite.
-- Production build.
-- Automated architecture/data QA gate.
-- Sign In browser regression.
-- Password Reset functional/accessibility/runtime QA.
-- Password Reset desktop 1365×611 complete-view no-scroll assertion.
-- Password Reset desktop 1365×611 success-state no-scroll assertion.
-- Mobile responsive QA.
-- Browser QA evidence artifact upload.
-- Exported React project smoke.
-- Deployable SPA fallback check.
-- Technical visual review of generated desktop/mobile evidence.
+- TypeScript/typecheck: PASS.
+- ESLint with zero warnings allowed: PASS.
+- Automated tests and production build: PASS.
+- Automated architecture/data QA gate: PASS.
+- Sign In browser regression: PASS.
+- Password Reset browser QA: 23 checks PASS.
+- Desktop 1365×611 complete initial view without vertical scroll: PASS.
+- Desktop 1365×611 semantic success state without vertical scroll: PASS.
+- Desktop horizontal-overflow and two-panel layout assertions: PASS.
+- Mobile recovery-flow visibility and horizontal-overflow assertions: PASS.
+- Runtime exception/unhandled-rejection checks: PASS.
+- Browser QA evidence artifact upload: PASS.
+- Exported React project smoke: PASS.
+- Deployable SPA fallback: PASS.
+- PR preview artifact: PASS.
+- Technical visual review of exact implementation-head desktop initial, desktop success and mobile screenshots: PASS.
 
 ### Current QA verdict
 
-`PENDING`
+`PASS`
 
-Product-owner visual acceptance is reopened and must be explicit after the compact revision is deployed and reviewed.
+The compact revision is technically accepted for preview. Product-owner runtime/visual acceptance remains PENDING and must be explicit after this revision is merged and deployed to EliasWorks.
 
 ## Out of scope
 
