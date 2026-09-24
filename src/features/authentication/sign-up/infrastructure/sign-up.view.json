@@ -1,0 +1,93 @@
+{
+  "branding": {
+    "mark": "WB",
+    "name": "WebBlueprint",
+    "logoUrl": null,
+    "contextLabel": "Registro seguro"
+  },
+  "hero": {
+    "eyebrow": "Empieza con una base clara",
+    "title": "Crea tu acceso sin fricción.",
+    "description": "Un flujo de registro limpio, tipado y preparado para conectarse después al proveedor de identidad de tu aplicación.",
+    "highlights": [
+      {
+        "id": "typed-boundary",
+        "title": "Datos tipados",
+        "description": "Formulario, validación y comando de registro mantienen responsabilidades separadas."
+      },
+      {
+        "id": "replaceable-provider",
+        "title": "Proveedor reemplazable",
+        "description": "La vista no conoce APIs ni persistencia y puede adoptar un servicio real sin reescribirse."
+      },
+      {
+        "id": "responsive-first",
+        "title": "Responsive desde origen",
+        "description": "La composición conserva foco y legibilidad desde móvil hasta escritorio compacto."
+      }
+    ]
+  },
+  "form": {
+    "eyebrow": "Nueva cuenta",
+    "title": "Crear cuenta",
+    "description": "Completa tus datos para preparar el acceso.",
+    "fullName": {
+      "label": "Nombre completo",
+      "placeholder": "Ada Lovelace",
+      "autocomplete": "name"
+    },
+    "email": {
+      "label": "Correo electrónico",
+      "placeholder": "nombre@empresa.com",
+      "autocomplete": "email"
+    },
+    "password": {
+      "label": "Contraseña",
+      "placeholder": "Crea una contraseña",
+      "autocomplete": "new-password"
+    },
+    "confirmPassword": {
+      "label": "Confirmar contraseña",
+      "placeholder": "Repite la contraseña",
+      "autocomplete": "new-password"
+    },
+    "passwordHint": "Usa al menos 8 caracteres.",
+    "terms": {
+      "prefix": "Acepto los",
+      "termsLabel": "Términos",
+      "termsHref": "/pages/terms-of-service",
+      "connector": "y la",
+      "privacyLabel": "Política de privacidad",
+      "privacyHref": "/pages/privacy-policy"
+    },
+    "submitLabel": "Crear cuenta",
+    "submittingLabel": "Preparando cuenta...",
+    "backToSignIn": {
+      "prompt": "¿Ya tienes una cuenta?",
+      "label": "Volver a iniciar sesión",
+      "href": "/authentication/sign-in"
+    },
+    "validation": {
+      "fullNameRequired": "El nombre completo es obligatorio.",
+      "emailRequired": "El correo electrónico es obligatorio.",
+      "emailInvalid": "Introduce un correo electrónico válido.",
+      "passwordRequired": "La contraseña es obligatoria.",
+      "passwordTooShort": "La contraseña debe tener al menos 8 caracteres.",
+      "passwordMinLength": 8,
+      "confirmPasswordRequired": "Confirma la contraseña.",
+      "passwordsMismatch": "Las contraseñas deben coincidir.",
+      "termsRequired": "Debes aceptar los términos y la política de privacidad."
+    },
+    "feedback": {
+      "successTitle": "Registro preparado",
+      "successMessage": "El flujo de demostración se completó y está listo para conectarse a un proveedor de identidad real.",
+      "unavailable": "No se pudo completar el registro en este momento. Inténtalo nuevamente."
+    }
+  },
+  "legal": {
+    "privacyLabel": "Privacidad",
+    "privacyHref": "/pages/privacy-policy",
+    "termsLabel": "Términos",
+    "termsHref": "/pages/terms-of-service"
+  }
+}
