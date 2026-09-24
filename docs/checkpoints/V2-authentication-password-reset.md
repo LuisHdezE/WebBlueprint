@@ -1,14 +1,18 @@
 # Authentication · Password Reset v1
 
-Status: IMPLEMENTED · compact revision preview QA passed
+Status: IMPLEMENTED · FINAL ACCEPTED
 
 QA status: PASS
+
+Product-owner acceptance: APPROVED on 2026-09-24
 
 ## Scope
 
 This checkpoint replaces only `/authentication/password-reset` with a real standalone authentication view. Sign In remains unchanged and continues to be the accepted reference. Sign Up, 2FA, lock-screen and the remaining authentication routes stay as placeholders until reviewed individually.
 
 The feature was merged through PR #27 and deployed successfully to EliasWorks at merge SHA `36e8b4513e067e7c3546fe09e5e54380a41ac075`. Product-owner runtime review then reopened the visual gate because the desktop composition used too much vertical whitespace and required scrolling in a 1365×611 viewport.
+
+The compact visual revision was merged through PR #29 at merge SHA `3708df907055d5b1b597931fae6c4fec1a4a1d66`, deployed successfully to EliasWorks, passed post-merge CI and production browser QA, and was explicitly accepted by the product owner on 2026-09-24.
 
 ## Architecture
 
@@ -62,28 +66,33 @@ Those results remain valid historical evidence for functionality, architecture, 
 
 Preview candidate CI #174 on implementation HEAD `e411051c9d1bff961a49751cbe86b6cfec5f917c`: PASS.
 
-- TypeScript/typecheck: PASS.
-- ESLint with zero warnings allowed: PASS.
-- Automated tests and production build: PASS.
-- Automated architecture/data QA gate: PASS.
-- Sign In browser regression: PASS.
-- Password Reset browser QA: 23 checks PASS.
+Final PR CI #175 on exact HEAD `1940ce089e34372dbaf82062c655bf9d0abe4dba`: PASS.
+
+Post-merge main CI #176 on exact merge SHA `3708df907055d5b1b597931fae6c4fec1a4a1d66`: PASS.
+
+EliasWorks deployment #103 on the same merge SHA: PASS.
+
+Production browser QA after the compact revision:
+
+- Sign In regression: 27 checks PASS.
+- Password Reset: 23 checks PASS.
 - Desktop 1365×611 complete initial view without vertical scroll: PASS.
 - Desktop 1365×611 semantic success state without vertical scroll: PASS.
 - Desktop horizontal-overflow and two-panel layout assertions: PASS.
 - Mobile recovery-flow visibility and horizontal-overflow assertions: PASS.
 - Runtime exception/unhandled-rejection checks: PASS.
-- Browser QA evidence artifact upload: PASS.
-- Exported React project smoke: PASS.
-- Deployable SPA fallback: PASS.
-- PR preview artifact: PASS.
-- Technical visual review of exact implementation-head desktop initial, desktop success and mobile screenshots: PASS.
+- Canonical subdomain and SPA deep-link smoke: PASS.
+- Production browser QA evidence artifact upload: PASS.
 
 ### Current QA verdict
 
 `PASS`
 
-The compact revision is technically accepted for preview. Product-owner runtime/visual acceptance remains PENDING and must be explicit after this revision is merged and deployed to EliasWorks.
+### Product-owner verdict
+
+`APPROVED`
+
+The compact Password Reset view is technically validated, deployed to EliasWorks and explicitly accepted by the product owner. V2 is closed. No additional Password Reset changes are required unless the product owner reopens this checkpoint later.
 
 ## Out of scope
 
