@@ -1,5 +1,8 @@
 import { Navigate, Route, Routes } from 'react-router';
 import { ProtectedRoute } from '@/auth/ProtectedRoute';
+import { JsonPasswordResetContentProvider } from '@/features/authentication/password-reset/infrastructure/JsonPasswordResetContentProvider';
+import { MockPasswordResetGateway } from '@/features/authentication/password-reset/infrastructure/MockPasswordResetGateway';
+import { PasswordResetPage } from '@/features/authentication/password-reset/presentation/PasswordResetPage';
 import { JsonSignInContentProvider } from '@/features/authentication/sign-in/infrastructure/JsonSignInContentProvider';
 import { MockSignInGateway } from '@/features/authentication/sign-in/infrastructure/MockSignInGateway';
 import { SignInPage } from '@/features/authentication/sign-in/presentation/SignInPage';
@@ -17,6 +20,8 @@ import { TemplatePlaceholderPage } from '@/pages/TemplatePlaceholderPage';
 import { PublicShell } from '@/shell/PublicShell';
 import { TemplateShell } from '@/shell/TemplateShell';
 
+const passwordResetContentProvider = new JsonPasswordResetContentProvider();
+const passwordResetGateway = new MockPasswordResetGateway();
 const signInContentProvider = new JsonSignInContentProvider();
 const signInGateway = new MockSignInGateway();
 
@@ -42,6 +47,15 @@ export function AppRouter() {
       <Route
         path="authentication/sign-in"
         element={<SignInPage contentProvider={signInContentProvider} gateway={signInGateway} />}
+      />
+      <Route
+        path="authentication/password-reset"
+        element={
+          <PasswordResetPage
+            contentProvider={passwordResetContentProvider}
+            gateway={passwordResetGateway}
+          />
+        }
       />
 
       <Route element={<TemplateShell />}>
