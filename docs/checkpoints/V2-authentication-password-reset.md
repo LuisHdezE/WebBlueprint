@@ -1,8 +1,10 @@
 # Authentication · Password Reset v1
 
-Status: IMPLEMENTED · preview QA passed
+Status: IMPLEMENTED · production QA passed · product-owner acceptance pending
 
 QA status: PASS
+
+Product-owner acceptance: PENDING
 
 ## Scope
 
@@ -42,7 +44,7 @@ The view follows the same feature-first boundary accepted for Sign In:
 
 ## Mandatory QA evidence
 
-Preview candidate CI #165 on exact feature HEAD `5e8568781ea16f146a2774c932dd05fab7b6bae0`: PASS.
+Final PR candidate CI #166 on exact feature HEAD `00f4bd74358d4d91bed550195c6c2610684274ab`: PASS.
 
 - TypeScript/typecheck: PASS.
 - ESLint with zero warnings allowed: PASS.
@@ -57,11 +59,25 @@ Preview candidate CI #165 on exact feature HEAD `5e8568781ea16f146a2774c932dd05f
 - Deployable SPA fallback check: PASS.
 - PR preview artifact build/upload: PASS.
 
+### Merge and production evidence
+
+- PR #27 merged from exact approved HEAD `00f4bd74358d4d91bed550195c6c2610684274ab`.
+- Merge commit / current production candidate: `36e8b4513e067e7c3546fe09e5e54380a41ac075`.
+- Main-branch CI #167 on the merged SHA: PASS.
+- The exact CI-tested `web-production` bundle was consumed by deployment, not rebuilt independently.
+- EliasWorks deployment #94 on the same merged SHA: PASS.
+- Canonical subdomain and SPA deep-link smoke: PASS, including `/authentication/password-reset`.
+- Browser QA against `https://webblueprint.eliasworks.uy`: PASS.
+- Production Sign In regression: PASS, 27 checks.
+- Production Password Reset QA: PASS, 21 checks.
+- Production browser QA gate: PASS for both registered real views.
+- Production browser evidence artifact upload: PASS.
+
 ### Current QA verdict
 
-`PASS`
+`TECHNICAL PASS · PRODUCT-OWNER ACCEPTANCE PENDING`
 
-This verdict covers the PR preview candidate. Production acceptance remains a separate post-merge gate after the exact merged SHA deploys to EliasWorks.
+The implementation, merged main SHA, deployment and production browser QA are all green. The view is not yet formally closed as a completed catalog view because explicit product-owner runtime/visual acceptance has not been recorded. No later Authentication view should use this checkpoint as formally closed until that approval is given.
 
 ## Out of scope
 
