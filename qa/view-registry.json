@@ -30,6 +30,21 @@
         "src/features/authentication/password-reset/infrastructure/passwordReset.adapters.test.ts",
         "src/features/authentication/password-reset/passwordReset.architecture.test.ts"
       ]
+    },
+    {
+      "id": "authentication.sign-up",
+      "route": "authentication/sign-up",
+      "presentation": "src/features/authentication/sign-up/presentation/SignUpPage.tsx",
+      "dto": "src/features/authentication/sign-up/application/dtos/signUp.dto.ts",
+      "contracts": "src/features/authentication/sign-up/application/contracts/signUp.contracts.ts",
+      "content": "src/features/authentication/sign-up/infrastructure/sign-up.view.json",
+      "checkpoint": "docs/checkpoints/V3-authentication-sign-up.md",
+      "browserQa": "qa/browser/authentication-sign-up.browser-qa.mjs",
+      "tests": [
+        "src/features/authentication/sign-up/application/signUp.usecases.test.ts",
+        "src/features/authentication/sign-up/infrastructure/signUp.adapters.test.ts",
+        "src/features/authentication/sign-up/signUp.architecture.test.ts"
+      ]
     }
   ]
 }
