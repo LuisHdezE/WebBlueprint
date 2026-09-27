@@ -22,6 +22,8 @@ import { ComponentShowcasePage, type ComponentShowcaseKind } from '@/features/co
 import { ElementShowcasePage, type ElementShowcaseKind } from '@/features/elements/presentation/ElementShowcasePage';
 import { BlankPage, ContactPage, EmptyPage, FaqPage, KnowledgeBasePage, MaintenancePage, NotFoundPage, ServerErrorPage } from '@/features/pages/presentation/PublicSystemPages';
 import { JsonBlogContentProvider } from '@/features/applications/blog/infrastructure/JsonBlogContentProvider';
+import { JsonCalendarContentProvider } from '@/features/applications/calendar/infrastructure/JsonCalendarContentProvider';
+import { CalendarPage } from '@/features/applications/calendar/presentation/CalendarPage';
 import { BlogEditorPage } from '@/features/applications/blog/presentation/BlogEditorPage';
 import { BlogGridPage } from '@/features/applications/blog/presentation/BlogGridPage';
 import { BlogListPage } from '@/features/applications/blog/presentation/BlogListPage';
@@ -51,6 +53,7 @@ const twoFactorGateway = new MockTwoFactorGateway();
 const lockScreenContentProvider = new JsonLockScreenContentProvider();
 const lockScreenGateway = new MockLockScreenGateway();
 const blogContentProvider = new JsonBlogContentProvider();
+const calendarContentProvider = new JsonCalendarContentProvider();
 
 const templateFamilies = [
   'applications/*', 'components/*', 'elements/*', 'forms/*', 'tables/*', 'charts/*', 'widgets/*', 'maps/*', 'pages/*', 'user/*', 'authentication/*', 'layouts/*', 'documentation/*',
@@ -106,6 +109,7 @@ export function AppRouter() {
         <Route path="applications/blog/grid" element={<BlogGridPage contentProvider={blogContentProvider} />} />
         <Route path="applications/blog/post" element={<BlogPostPage contentProvider={blogContentProvider} />} />
         <Route path="applications/blog/editor" element={<BlogEditorPage contentProvider={blogContentProvider} />} />
+        <Route path="applications/calendar" element={<CalendarPage contentProvider={calendarContentProvider} />} />
         {componentRoutes.map((component) => <Route key={component.path} path={component.path} element={<ComponentShowcasePage description={component.description} kind={component.kind} title={component.title} />} />)}
         {elementRoutes.map((element) => <Route key={element.path} path={element.path} element={<ElementShowcasePage description={element.description} kind={element.kind} title={element.title} />} />)}
         <Route path="pages/contact" element={<ContactPage />} /><Route path="pages/faq" element={<FaqPage />} /><Route path="pages/knowledge-base" element={<KnowledgeBasePage />} /><Route path="pages/maintenance" element={<MaintenancePage />} /><Route path="pages/not-found" element={<NotFoundPage />} /><Route path="pages/server-error" element={<ServerErrorPage />} /><Route path="pages/blank" element={<BlankPage />} /><Route path="pages/empty" element={<EmptyPage />} />
