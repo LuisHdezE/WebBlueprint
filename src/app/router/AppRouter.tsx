@@ -18,6 +18,7 @@ import { LockScreenPage } from '@/features/authentication/lock-screen/presentati
 import { AccountSettingsPage } from '@/features/user/presentation/AccountSettingsPage';
 import { UserProfilePage } from '@/features/user/presentation/UserProfilePage';
 import { MapViewPage } from '@/features/maps/presentation/MapViewPage';
+import { BlankPage, ContactPage, EmptyPage, FaqPage, KnowledgeBasePage, MaintenancePage, NotFoundPage, ServerErrorPage } from '@/features/pages/presentation/PublicSystemPages';
 import { ApplicationDemoPage } from '@/pages/ApplicationDemoPage';
 import { ApplicationDetailPage } from '@/pages/ApplicationDetailPage';
 import { ApplicationsPage } from '@/pages/ApplicationsPage';
@@ -73,6 +74,14 @@ export function AppRouter() {
         <Route path="dashboard" element={<TemplateOverviewPage />} />
         <Route path="composer" element={<TemplateComposerExportPage />} />
         <Route path="maps" element={<MapViewPage />} />
+        <Route path="pages/contact" element={<ContactPage />} />
+        <Route path="pages/faq" element={<FaqPage />} />
+        <Route path="pages/knowledge-base" element={<KnowledgeBasePage />} />
+        <Route path="pages/maintenance" element={<MaintenancePage />} />
+        <Route path="pages/not-found" element={<NotFoundPage />} />
+        <Route path="pages/server-error" element={<ServerErrorPage />} />
+        <Route path="pages/blank" element={<BlankPage />} />
+        <Route path="pages/empty" element={<EmptyPage />} />
         <Route path="user/profile" element={<UserProfilePage />} />
         <Route path="user/account-settings" element={<AccountSettingsPage />} />
         {templateFamilies.map((path) => (
