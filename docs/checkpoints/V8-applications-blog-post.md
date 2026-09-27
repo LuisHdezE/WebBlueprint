@@ -18,4 +18,4 @@ Third real view in the Applications family: `/applications/blog/post`.
 - Browser QA validates deep link, structured article rendering, shell and responsive overflow.
 - Production deployment smoke includes the article deep link.
 
-QA status: PENDING CI AND BROWSER QA
+QA status: PASS — CI #225 (`36319766694`) on implementation HEAD `f973f3133f0ef4ad16a0896accf9d63a744dcf93`: Quality Gate, Automated QA Gate, Browser QA Gate, exported React smoke and deployable SPA fallback all passed.
