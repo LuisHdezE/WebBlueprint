@@ -21,6 +21,8 @@ import { MapViewPage } from '@/features/maps/presentation/MapViewPage';
 import { ComponentShowcasePage, type ComponentShowcaseKind } from '@/features/components/presentation/ComponentShowcasePage';
 import { ElementShowcasePage, type ElementShowcaseKind } from '@/features/elements/presentation/ElementShowcasePage';
 import { BlankPage, ContactPage, EmptyPage, FaqPage, KnowledgeBasePage, MaintenancePage, NotFoundPage, ServerErrorPage } from '@/features/pages/presentation/PublicSystemPages';
+import { JsonBlogContentProvider } from '@/features/applications/blog/infrastructure/JsonBlogContentProvider';
+import { BlogListPage } from '@/features/applications/blog/presentation/BlogListPage';
 import { ApplicationDemoPage } from '@/pages/ApplicationDemoPage';
 import { ApplicationDetailPage } from '@/pages/ApplicationDetailPage';
 import { ApplicationsPage } from '@/pages/ApplicationsPage';
@@ -45,6 +47,7 @@ const twoFactorContentProvider = new JsonTwoFactorContentProvider();
 const twoFactorGateway = new MockTwoFactorGateway();
 const lockScreenContentProvider = new JsonLockScreenContentProvider();
 const lockScreenGateway = new MockLockScreenGateway();
+const blogContentProvider = new JsonBlogContentProvider();
 
 const templateFamilies = [
   'applications/*',
@@ -111,6 +114,7 @@ export function AppRouter() {
         <Route path="dashboard" element={<TemplateOverviewPage />} />
         <Route path="composer" element={<TemplateComposerExportPage />} />
         <Route path="maps" element={<MapViewPage />} />
+        <Route path="applications/blog/list" element={<BlogListPage contentProvider={blogContentProvider} />} />
         {componentRoutes.map((component) => <Route key={component.path} path={component.path} element={<ComponentShowcasePage description={component.description} kind={component.kind} title={component.title} />} />)}
         {elementRoutes.map((element) => <Route key={element.path} path={element.path} element={<ElementShowcasePage description={element.description} kind={element.kind} title={element.title} />} />)}
         <Route path="pages/contact" element={<ContactPage />} />
