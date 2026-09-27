@@ -12,10 +12,20 @@ This increment promotes `authentication/lock-screen` from the CORK placeholder t
 - Route: `/authentication/lock-screen`
 - QA: registry entry, Vitest architecture/adapter/use-case tests, browser QA and production smoke route.
 
-## Acceptance evidence
+## QA and production evidence
 
-Status: `IMPLEMENTED · QA PASSED`
+Status: `IMPLEMENTED · FINAL ACCEPTED`
 
 QA status: PASS
 
-Local implementation gate, CI #191 and preview browser QA are PASS. Browser QA covers Sign In 27/27, Password Reset 23/23, Sign Up 28/28, Two Factor 29/29 and Lock Screen 25/25. Production deployment and owner acceptance remain pending explicit approval of the PR HEAD.
+- Local implementation gate: PASS (`npm run check`, 28 test files, 104 tests, build).
+- Automated view gate: PASS (5 registered real views).
+- Export smoke: PASS.
+- Preview browser QA: Sign In 27/27, Password Reset 23/23, Sign Up 28/28, Two Factor 29/29 and Lock Screen 25/25.
+- Merge commit in `main`: `7a8c7f8125b5547032e7edeeb9b5b03a62dfa77e`.
+- CI post-merge #195: PASS.
+- Deploy run #122: PASS.
+- Production smoke HTTP and deployed browser QA: PASS for all five views, including Lock Screen 25/25.
+- Canonical route: https://webblueprint.eliasworks.uy/authentication/lock-screen
+
+Production acceptance remains pending explicit owner approval of this closure PR.
