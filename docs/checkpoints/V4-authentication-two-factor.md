@@ -1,6 +1,6 @@
 # V4 · Authentication · Verificación 2FA
 
-Estado: IMPLEMENTED · QA de preview aprobado
+Estado: IMPLEMENTED · FINAL ACCEPTED
 
 QA status: PASS
 
@@ -46,8 +46,25 @@ CI #185 sobre el HEAD de implementación `00c6159d2859f3d3cfaa62a23bfaf037776f5a
 
 Las pruebas de casos de uso cubren validación antes del gateway, ceros iniciales, configuración inválida, resultados y excepciones. Las pruebas de adaptadores cubren mapper y los cuatro modos deterministas. El escenario de navegador registrado cubre validación, envío, éxito, teclado, navegación, escritorio, móvil y errores de runtime. Los modos de fallo del gateway se prueban de forma automatizada fuera de la ruta canónica de éxito.
 
-## Aceptación final
+## Evidencia de integración y producción
 
-PENDIENTE de merge autorizado, CI de main, despliegue canónico, QA de producción y aceptación visual/funcional explícita de Luis.
+- PR de implementación: [#33](https://github.com/LuisHdezE/WebBlueprint/pull/33).
+- HEAD aprobado: `f33a6582e596c355f4927d25ddd5eef96b6707da`.
+- Merge commit en `main`: `befd00f7df2360e253549e8d14758f81623f421a`.
+- CI post-merge #187: PASS sobre el merge commit.
+- Despliegue #114 a EliasWorks: PASS sobre el mismo commit.
+- Ruta canónica: https://webblueprint.eliasworks.uy/authentication/two-factor.
+- Smoke HTTP de las cuatro rutas Auth: PASS.
+- QA de navegador en producción: Sign In 27/27, Password Reset 23/23, Sign Up 28/28 y Two Factor 29/29.
+- Capturas de preview revisadas: escritorio inicial/success a 1365×611 y móvil inicial/success a 390×844, sin scroll ni overflow horizontal.
+- Aceptación visual y funcional del propietario: APROBADA por Luis el 2026-09-26.
+
+### Aceptación final
+
+`APPROVED`
+
+V4 queda aceptada y cerrada como vista Auth implementada. El flujo sigue siendo una demostración sin TOTP real, sesión, persistencia ni envío de códigos.
+
+Lock Screen y selección/exportación final permanecen fuera de este incremento.
 
 Lock Screen y selección/exportación final permanecen fuera de este incremento.
