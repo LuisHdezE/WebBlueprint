@@ -117,6 +117,20 @@
         "src/features/applications/blog/infrastructure/blog.adapters.test.ts",
         "src/features/applications/blog/blog.architecture.test.ts"
       ]
+    },
+    {
+      "id": "applications.blog-editor",
+      "route": "applications/blog/editor",
+      "presentation": "src/features/applications/blog/presentation/BlogEditorPage.tsx",
+      "dto": "src/features/applications/blog/application/blog.dto.ts",
+      "contracts": "src/features/applications/blog/application/blog.contracts.ts",
+      "content": "src/features/applications/blog/infrastructure/blog-editor.view.json",
+      "checkpoint": "docs/checkpoints/V9-applications-blog-editor.md",
+      "browserQa": "qa/browser/applications-blog-editor.browser-qa.mjs",
+      "tests": [
+        "src/features/applications/blog/infrastructure/blog.adapters.test.ts",
+        "src/features/applications/blog/blog.architecture.test.ts"
+      ]
     }
   ]
 }
