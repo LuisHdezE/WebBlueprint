@@ -10,9 +10,9 @@ const locations: readonly MapLocation[] = [
 ];
 
 export function MapViewPage() {
-  const [selectedLocationId, setSelectedLocationId] = useState(locations[0].id);
+  const [selectedLocationId, setSelectedLocationId] = useState(locations[0]!.id);
   const selectLocation = useCallback((locationId: string) => setSelectedLocationId(locationId), []);
-  const selected = locations.find((location) => location.id === selectedLocationId) ?? locations[0];
+  const selected = locations.find((location) => location.id === selectedLocationId) ?? locations[0]!;
 
   return (
     <PageShell
