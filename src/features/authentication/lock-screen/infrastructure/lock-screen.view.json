@@ -1,0 +1,10 @@
+{
+  "branding": { "mark": "WB", "name": "WebBlueprint", "logoUrl": null, "contextLabel": "Protección de sesión" },
+  "hero": { "eyebrow": "Tu espacio sigue protegido", "title": "Retoma el control en un instante.", "description": "El bloqueo de sesión mantiene tu información fuera de miradas ajenas cuando te alejas de tu pantalla.", "highlights": [
+    { "id": "private", "title": "Privacidad primero", "description": "Tu sesión permanece protegida mientras no estás delante del dispositivo." },
+    { "id": "familiar", "title": "Acceso familiar", "description": "Vuelve con la misma cuenta y conserva el contexto de tu trabajo." },
+    { "id": "simple", "title": "Un gesto sencillo", "description": "Confirma tu contraseña para continuar donde lo dejaste." }
+  ] },
+  "form": { "eyebrow": "Sesión bloqueada", "title": "Desbloquea tu sesión", "description": "Confirma tu identidad para volver a WebBlueprint.", "identity": { "name": "Lucía Hernández", "detail": "lucia@webblueprint.dev", "initials": "LH" }, "password": { "label": "Contraseña", "placeholder": "Escribe tu contraseña", "autocomplete": "current-password" }, "passwordHint": "Usa la contraseña de tu cuenta para continuar.", "demoNotice": "Modo demostración: cualquier contraseña no vacía completa el flujo. No se desbloqueará una sesión real.", "submitLabel": "Desbloquear sesión", "submittingLabel": "Desbloqueando...", "backToSignIn": { "prompt": "¿No eres tú?", "label": "Iniciar sesión con otra cuenta", "href": "/authentication/sign-in" }, "validation": { "passwordRequired": "Introduce tu contraseña para continuar." }, "feedback": { "successTitle": "Sesión desbloqueada", "successMessage": "La demostración terminó correctamente. No se ha reanudado una sesión real.", "invalidPassword": "La contraseña no es válida. Compruébala e inténtalo de nuevo.", "unavailable": "No se pudo desbloquear la sesión. Inténtalo nuevamente." } },
+  "legal": { "privacyLabel": "Privacidad", "privacyHref": "/pages/privacy-policy", "termsLabel": "Términos", "termsHref": "/pages/terms-of-service" }
+}

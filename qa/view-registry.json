@@ -60,6 +60,21 @@
         "src/features/authentication/two-factor/infrastructure/twoFactor.adapters.test.ts",
         "src/features/authentication/two-factor/twoFactor.architecture.test.ts"
       ]
+    },
+    {
+      "id": "authentication.lock-screen",
+      "route": "authentication/lock-screen",
+      "presentation": "src/features/authentication/lock-screen/presentation/LockScreenPage.tsx",
+      "dto": "src/features/authentication/lock-screen/application/dtos/lockScreen.dto.ts",
+      "contracts": "src/features/authentication/lock-screen/application/contracts/lockScreen.contracts.ts",
+      "content": "src/features/authentication/lock-screen/infrastructure/lock-screen.view.json",
+      "checkpoint": "docs/checkpoints/V5-authentication-lock-screen.md",
+      "browserQa": "qa/browser/authentication-lock-screen.browser-qa.mjs",
+      "tests": [
+        "src/features/authentication/lock-screen/application/lockScreen.usecases.test.ts",
+        "src/features/authentication/lock-screen/infrastructure/lockScreen.adapters.test.ts",
+        "src/features/authentication/lock-screen/lockScreen.architecture.test.ts"
+      ]
     }
   ]
 }
