@@ -18,4 +18,4 @@ Second real view in the Applications family: `/applications/blog/grid`.
 - Browser QA covers deep link, shared post count, search behavior, shell and responsive overflow.
 - Production deployment smoke includes the Grid deep link.
 
-QA status: PENDING CI AND BROWSER QA
+QA status: PASS — CI #222 (`36294551217`) on implementation HEAD `fb2b86d610fd49e587b5e7b4e71b9170a90af78e`: Quality Gate, Automated QA Gate, Browser QA Gate, exported React smoke and deployable SPA fallback all passed.
