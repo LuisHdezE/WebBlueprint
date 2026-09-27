@@ -39,7 +39,7 @@ export function UserProfilePage() {
               </div>
             ))}
           </div>
-        </SurfaceCard>
+         </SurfaceCard>
 
         <SurfaceCard>
           <div className="flex items-center gap-2">
@@ -53,7 +53,7 @@ export function UserProfilePage() {
        </SurfaceCard>
       </div>
 
-      <section className="mt-3 rounded-md border border-slate-200 bg-white p-5">
+      <SurfaceCard className="mt-3">
         <div className="flex items-center justify-between gap-3">
           <div>
             <h2 className="text-[13px] font-semibold text-slate-900">Actividad reciente</h2>
