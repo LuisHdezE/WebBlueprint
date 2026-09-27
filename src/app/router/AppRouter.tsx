@@ -18,6 +18,7 @@ import { LockScreenPage } from '@/features/authentication/lock-screen/presentati
 import { AccountSettingsPage } from '@/features/user/presentation/AccountSettingsPage';
 import { UserProfilePage } from '@/features/user/presentation/UserProfilePage';
 import { MapViewPage } from '@/features/maps/presentation/MapViewPage';
+import { ComponentShowcasePage, type ComponentShowcaseKind } from '@/features/components/presentation/ComponentShowcasePage';
 import { BlankPage, ContactPage, EmptyPage, FaqPage, KnowledgeBasePage, MaintenancePage, NotFoundPage, ServerErrorPage } from '@/features/pages/presentation/PublicSystemPages';
 import { ApplicationDemoPage } from '@/pages/ApplicationDemoPage';
 import { ApplicationDetailPage } from '@/pages/ApplicationDetailPage';
@@ -60,6 +61,21 @@ const templateFamilies = [
   'documentation/*',
 ] as const;
 
+
+const componentRoutes: readonly { path: string; kind: ComponentShowcaseKind; title: string; description: string }[] = [
+  { path: 'components/accordion', kind: 'accordion', title: 'Accordion', description: 'Contenido expandible para organizar información por secciones.' },
+  { path: 'components/cards', kind: 'cards', title: 'Cards', description: 'Superficies compactas para resumir entidades y estados.' },
+  { path: 'components/carousel', kind: 'carousel', title: 'Carousel', description: 'Presentación secuencial de contenido destacado.' },
+  { path: 'components/drag-drop', kind: 'drag-drop', title: 'Drag & Drop', description: 'Zonas de arrastre y elementos movibles.' },
+  { path: 'components/lightbox', kind: 'lightbox', title: 'Lightbox', description: 'Vista enfocada para imágenes o contenido visual.' },
+  { path: 'components/lists', kind: 'lists', title: 'Listas', description: 'Colecciones densas y legibles de información.' },
+  { path: 'components/modal-dialog', kind: 'modal-dialog', title: 'Modal y Dialog', description: 'Interacciones que requieren atención contextual.' },
+  { path: 'components/notifications', kind: 'notifications', title: 'Notificaciones', description: 'Mensajes de resultado, atención y contexto.' },
+  { path: 'components/pricing', kind: 'pricing', title: 'Pricing', description: 'Comparación de planes y opciones comerciales.' },
+  { path: 'components/tabs', kind: 'tabs', title: 'Tabs', description: 'Alternancia de contenido relacionado sin cambiar de ruta.' },
+  { path: 'components/timeline', kind: 'timeline', title: 'Timeline', description: 'Secuencia visual de eventos y progreso.' },
+] as const;
+
 export function AppRouter() {
   return (
     <Routes>
@@ -74,6 +90,7 @@ export function AppRouter() {
         <Route path="dashboard" element={<TemplateOverviewPage />} />
         <Route path="composer" element={<TemplateComposerExportPage />} />
         <Route path="maps" element={<MapViewPage />} />
+        {componentRoutes.map((component) => <Route key={component.path} path={component.path} element={<ComponentShowcasePage description={component.description} kind={component.kind} title={component.title} />} />)}
         <Route path="pages/contact" element={<ContactPage />} />
         <Route path="pages/faq" element={<FaqPage />} />
         <Route path="pages/knowledge-base" element={<KnowledgeBasePage />} />
