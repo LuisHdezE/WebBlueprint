@@ -15,6 +15,8 @@ import { TwoFactorPage } from '@/features/authentication/two-factor/presentation
 import { JsonLockScreenContentProvider } from '@/features/authentication/lock-screen/infrastructure/JsonLockScreenContentProvider';
 import { MockLockScreenGateway } from '@/features/authentication/lock-screen/infrastructure/MockLockScreenGateway';
 import { LockScreenPage } from '@/features/authentication/lock-screen/presentation/LockScreenPage';
+import { AccountSettingsPage } from '@/features/user/presentation/AccountSettingsPage';
+import { UserProfilePage } from '@/features/user/presentation/UserProfilePage';
 import { ApplicationDemoPage } from '@/pages/ApplicationDemoPage';
 import { ApplicationDetailPage } from '@/pages/ApplicationDetailPage';
 import { ApplicationsPage } from '@/pages/ApplicationsPage';
@@ -35,7 +37,6 @@ const signInContentProvider = new JsonSignInContentProvider();
 const signInGateway = new MockSignInGateway();
 const signUpContentProvider = new JsonSignUpContentProvider();
 const signUpGateway = new MockSignUpGateway();
-
 const twoFactorContentProvider = new JsonTwoFactorContentProvider();
 const twoFactorGateway = new MockTwoFactorGateway();
 const lockScreenContentProvider = new JsonLockScreenContentProvider();
@@ -60,37 +61,18 @@ const templateFamilies = [
 export function AppRouter() {
   return (
     <Routes>
-      <Route
-        path="authentication/sign-in"
-        element={<SignInPage contentProvider={signInContentProvider} gateway={signInGateway} />}
-      />
-      <Route
-        path="authentication/sign-up"
-        element={<SignUpPage contentProvider={signUpContentProvider} gateway={signUpGateway} />}
-      />
-      <Route
-        path="authentication/password-reset"
-        element={
-          <PasswordResetPage
-            contentProvider={passwordResetContentProvider}
-            gateway={passwordResetGateway}
-          />
-        }
-      />
-
-      <Route
-        path="authentication/two-factor"
-        element={<TwoFactorPage contentProvider={twoFactorContentProvider} gateway={twoFactorGateway} />}
-      />
-      <Route
-        path="authentication/lock-screen"
-        element={<LockScreenPage contentProvider={lockScreenContentProvider} gateway={lockScreenGateway} />}
-      />
+      <Route path="authentication/sign-in" element={<SignInPage contentProvider={signInContentProvider} gateway={signInGateway} />} />
+      <Route path="authentication/sign-up" element={<SignUpPage contentProvider={signUpContentProvider} gateway={signUpGateway} />} />
+      <Route path="authentication/password-reset" element={<PasswordResetPage contentProvider={passwordResetContentProvider} gateway={passwordResetGateway} />} />
+      <Route path="authentication/two-factor" element={<TwoFactorPage contentProvider={twoFactorContentProvider} gateway={twoFactorGateway} />} />
+      <Route path="authentication/lock-screen" element={<LockScreenPage contentProvider={lockScreenContentProvider} gateway={lockScreenGateway} />} />
 
       <Route element={<TemplateShell />}>
         <Route index element={<Navigate to="/dashboard" replace />} />
         <Route path="dashboard" element={<TemplateOverviewPage />} />
         <Route path="composer" element={<TemplateComposerExportPage />} />
+        <Route path="user/profile" element={<UserProfilePage />} />
+        <Route path="user/account-settings" element={<AccountSettingsPage />} />
         {templateFamilies.map((path) => (
           <Route key={path} path={path} element={<TemplatePlaceholderPage />} />
         ))}
@@ -106,14 +88,7 @@ export function AppRouter() {
 
       <Route path="preview" element={<ComposerPreviewPage />} />
       <Route path="demo/:slug/*" element={<ApplicationDemoPage />} />
-      <Route
-        path="legacy/composer/*"
-        element={
-          <ProtectedRoute>
-            <ComposerPage />
-          </ProtectedRoute>
-        }
-      />
+      <Route path="legacy/composer/*" element={<ProtectedRoute><ComposerPage /></ProtectedRoute>} />
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
   );
