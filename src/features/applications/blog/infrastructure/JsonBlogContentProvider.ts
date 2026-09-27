@@ -1,8 +1,9 @@
 import rawListView from './blog-list.view.json';
 import rawGridView from './blog-grid.view.json';
 import rawPostView from './blog-post.view.json';
+import rawEditorView from './blog-editor.view.json';
 import type { BlogContentProvider } from '../application/blog.contracts';
-import type { BlogArticleBlockDto, BlogCollectionViewDto, BlogGridViewDto, BlogListViewDto, BlogPostDto, BlogPostViewDto } from '../application/blog.dto';
+import type { BlogArticleBlockDto, BlogCollectionViewDto, BlogEditorViewDto, BlogGridViewDto, BlogListViewDto, BlogPostDto, BlogPostViewDto } from '../application/blog.dto';
 
 const statuses: readonly BlogPostDto['status'][] = ['Publicado', 'Borrador', 'Programado'];
 const blockTypes: readonly BlogArticleBlockDto['type'][] = ['lead', 'heading', 'paragraph', 'quote'];
@@ -46,6 +47,20 @@ function mapPostView(value: unknown, posts: readonly BlogPostDto[]): BlogPostVie
   return { title: view.title as string, description: view.description as string, breadcrumbs: view.breadcrumbs as string[], dateLabel: view.dateLabel as string, readTimeLabel: view.readTimeLabel as string, post, content: view.content as BlogArticleBlockDto[] };
 }
 
+function mapEditorView(value: unknown, postView: BlogPostViewDto): BlogEditorViewDto {
+  if (!value || typeof value !== 'object') throw new Error('Invalid blog editor content.');
+  const view = value as Record<string, unknown>;
+  for (const key of ['title','description','postId','titleLabel','excerptLabel','categoryLabel','statusLabel','contentLabel','previewLabel','blockTypeLabel','blockTextLabel']) if (typeof view[key] !== 'string' || !view[key]) throw new Error(`Invalid blog editor field: ${key}`);
+  if (!hasBreadcrumbs(view)) throw new Error('Invalid blog editor breadcrumbs.');
+  if (view.postId !== postView.post.id) throw new Error('Blog editor must reference the canonical article post.');
+  if (!Array.isArray(view.categories) || !view.categories.every((item) => typeof item === 'string')) throw new Error('Invalid blog editor categories.');
+  if (!Array.isArray(view.statuses) || !view.statuses.every((item) => statuses.includes(item as BlogPostDto['status']))) throw new Error('Invalid blog editor statuses.');
+  if (!Array.isArray(view.blockTypes) || !view.blockTypes.every((item) => blockTypes.includes(item as BlogArticleBlockDto['type']))) throw new Error('Invalid blog editor block types.');
+  const labels = view.blockTypeLabels as Record<string, unknown>;
+  if (!labels || typeof labels !== 'object' || !blockTypes.every((type) => typeof labels[type] === 'string')) throw new Error('Invalid blog editor block labels.');
+  return { ...(value as Omit<BlogEditorViewDto,'post'|'content'>), post: postView.post, content: postView.content };
+}
+
 const canonicalPosts = (() => {
   const value = rawListView as Record<string, unknown>;
   if (!Array.isArray(value.posts) || !value.posts.every(isPost)) throw new Error('Invalid canonical blog posts.');
@@ -56,7 +71,9 @@ export class JsonBlogContentProvider implements BlogContentProvider {
   private readonly listView = mapCollectionView(rawListView, canonicalPosts);
   private readonly gridView = mapCollectionView(rawGridView, canonicalPosts);
   private readonly postView = mapPostView(rawPostView, canonicalPosts);
+  private readonly editorView = mapEditorView(rawEditorView, this.postView);
   getListView(): BlogListViewDto { return this.listView; }
   getGridView(): BlogGridViewDto { return this.gridView; }
   getPostView(): BlogPostViewDto { return this.postView; }
+  getEditorView(): BlogEditorViewDto { return this.editorView; }
 }
