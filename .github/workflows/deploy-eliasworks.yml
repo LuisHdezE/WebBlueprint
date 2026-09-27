@@ -93,7 +93,8 @@ jobs:
             authentication/lock-screen \
             applications/blog/list \
             applications/blog/grid \
-            applications/blog/post; do
+            applications/blog/post \
+            applications/blog/editor; do
             check_url "$PUBLIC_URL/$path" "/tmp/webblueprint-${path//\//-}.html"
           done
 
