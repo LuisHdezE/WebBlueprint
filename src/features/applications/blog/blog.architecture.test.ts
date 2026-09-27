@@ -12,6 +12,8 @@ describe('blog architecture', () => {
   it('keeps the explicit route before the applications wildcard', () => {
     const router = readFileSync('src/app/router/AppRouter.tsx', 'utf8');
     expect(router.indexOf('path="applications/blog/list"')).toBeGreaterThan(-1);
-    expect(router.indexOf('path="applications/blog/list"')).toBeLessThan(router.indexOf("'applications/*'"));
+    const wildcardRouteIndex = router.indexOf('templateFamilies.map');
+    expect(wildcardRouteIndex).toBeGreaterThan(-1);
+    expect(router.indexOf('path="applications/blog/list"')).toBeLessThan(wildcardRouteIndex);
   });
 });
