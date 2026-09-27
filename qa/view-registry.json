@@ -45,6 +45,21 @@
         "src/features/authentication/sign-up/infrastructure/signUp.adapters.test.ts",
         "src/features/authentication/sign-up/signUp.architecture.test.ts"
       ]
+    },
+    {
+      "id": "authentication.two-factor",
+      "route": "authentication/two-factor",
+      "presentation": "src/features/authentication/two-factor/presentation/TwoFactorPage.tsx",
+      "dto": "src/features/authentication/two-factor/application/dtos/twoFactor.dto.ts",
+      "contracts": "src/features/authentication/two-factor/application/contracts/twoFactor.contracts.ts",
+      "content": "src/features/authentication/two-factor/infrastructure/two-factor.view.json",
+      "checkpoint": "docs/checkpoints/V4-authentication-two-factor.md",
+      "browserQa": "qa/browser/authentication-two-factor.browser-qa.mjs",
+      "tests": [
+        "src/features/authentication/two-factor/application/twoFactor.usecases.test.ts",
+        "src/features/authentication/two-factor/infrastructure/twoFactor.adapters.test.ts",
+        "src/features/authentication/two-factor/twoFactor.architecture.test.ts"
+      ]
     }
   ]
 }

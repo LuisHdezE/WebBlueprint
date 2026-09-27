@@ -9,6 +9,9 @@ import { SignInPage } from '@/features/authentication/sign-in/presentation/SignI
 import { JsonSignUpContentProvider } from '@/features/authentication/sign-up/infrastructure/JsonSignUpContentProvider';
 import { MockSignUpGateway } from '@/features/authentication/sign-up/infrastructure/MockSignUpGateway';
 import { SignUpPage } from '@/features/authentication/sign-up/presentation/SignUpPage';
+import { JsonTwoFactorContentProvider } from '@/features/authentication/two-factor/infrastructure/JsonTwoFactorContentProvider';
+import { MockTwoFactorGateway } from '@/features/authentication/two-factor/infrastructure/MockTwoFactorGateway';
+import { TwoFactorPage } from '@/features/authentication/two-factor/presentation/TwoFactorPage';
 import { ApplicationDemoPage } from '@/pages/ApplicationDemoPage';
 import { ApplicationDetailPage } from '@/pages/ApplicationDetailPage';
 import { ApplicationsPage } from '@/pages/ApplicationsPage';
@@ -29,6 +32,9 @@ const signInContentProvider = new JsonSignInContentProvider();
 const signInGateway = new MockSignInGateway();
 const signUpContentProvider = new JsonSignUpContentProvider();
 const signUpGateway = new MockSignUpGateway();
+
+const twoFactorContentProvider = new JsonTwoFactorContentProvider();
+const twoFactorGateway = new MockTwoFactorGateway();
 
 const templateFamilies = [
   'applications/*',
@@ -65,6 +71,11 @@ export function AppRouter() {
             gateway={passwordResetGateway}
           />
         }
+      />
+
+      <Route
+        path="authentication/two-factor"
+        element={<TwoFactorPage contentProvider={twoFactorContentProvider} gateway={twoFactorGateway} />}
       />
 
       <Route element={<TemplateShell />}>
