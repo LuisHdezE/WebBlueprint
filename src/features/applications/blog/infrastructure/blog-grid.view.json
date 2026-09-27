@@ -1,0 +1,15 @@
+{
+  "title": "Blog · Cuadrícula",
+  "description": "Explora el mismo contenido editorial en una composición visual pensada para descubrimiento y escaneo rápido.",
+  "breadcrumbs": ["Aplicaciones", "Blog", "Cuadrícula"],
+  "searchLabel": "Buscar publicaciones",
+  "searchPlaceholder": "Buscar por título, resumen o autor…",
+  "categoryLabel": "Categoría",
+  "allCategoriesLabel": "Todas las categorías",
+  "resultSingularLabel": "publicación",
+  "resultPluralLabel": "publicaciones",
+  "dateLabel": "Fecha",
+  "readTimeLabel": "Lectura",
+  "emptyTitle": "No encontramos publicaciones",
+  "emptyDescription": "Prueba con otro término o cambia la categoría seleccionada."
+}
