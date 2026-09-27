@@ -89,6 +89,20 @@
         "src/features/applications/blog/infrastructure/blog.adapters.test.ts",
         "src/features/applications/blog/blog.architecture.test.ts"
       ]
+    },
+    {
+      "id": "applications.blog-grid",
+      "route": "applications/blog/grid",
+      "presentation": "src/features/applications/blog/presentation/BlogGridPage.tsx",
+      "dto": "src/features/applications/blog/application/blog.dto.ts",
+      "contracts": "src/features/applications/blog/application/blog.contracts.ts",
+      "content": "src/features/applications/blog/infrastructure/blog-grid.view.json",
+      "checkpoint": "docs/checkpoints/V7-applications-blog-grid.md",
+      "browserQa": "qa/browser/applications-blog-grid.browser-qa.mjs",
+      "tests": [
+        "src/features/applications/blog/infrastructure/blog.adapters.test.ts",
+        "src/features/applications/blog/blog.architecture.test.ts"
+      ]
     }
   ]
 }
