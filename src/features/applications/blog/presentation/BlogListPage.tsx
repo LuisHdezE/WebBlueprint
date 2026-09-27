@@ -26,15 +26,15 @@ export function BlogListPage({ contentProvider }: { contentProvider: BlogContent
   }, [category, query, view.posts]);
 
   return (
-    <PageShell breadcrumbs={[{ label: 'Aplicaciones' }, { label: 'Blog' }, { label: 'Lista' }]} description={view.description} title={view.title}>
+    <PageShell breadcrumbs={view.breadcrumbs.map((label) => ({ label }))} description={view.description} title={view.title}>
       <SurfaceCard>
         <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_220px]">
           <SearchField id="blog-search" label={view.searchLabel} onChange={setQuery} placeholder={view.searchPlaceholder} value={query} />
-          <SelectField id="blog-category" label="Categoría" onChange={setCategory} value={category} options={[{ value: 'all', label: view.allCategoriesLabel }, ...categories.map((item) => ({ value: item, label: item }))]} />
+          <SelectField id="blog-category" label={view.categoryLabel} onChange={setCategory} value={category} options={[{ value: 'all', label: view.allCategoriesLabel }, ...categories.map((item) => ({ value: item, label: item }))]} />
         </div>
       </SurfaceCard>
 
-      <div aria-live="polite" className="mt-3 text-[11px] font-medium text-slate-500">{posts.length} {posts.length === 1 ? 'publicación' : 'publicaciones'}</div>
+      <div aria-live="polite" className="mt-3 text-[11px] font-medium text-slate-500">{posts.length} {posts.length === 1 ? view.resultSingularLabel : view.resultPluralLabel}</div>
       <div className="mt-2 space-y-2">
         {posts.map((post) => (
           <SurfaceCard className="!p-0" key={post.id}>
@@ -52,8 +52,8 @@ export function BlogListPage({ contentProvider }: { contentProvider: BlogContent
                 </div>
               </div>
               <dl className="grid grid-cols-2 gap-x-5 gap-y-1 border-t border-slate-100 pt-3 text-[10px] lg:min-w-48 lg:border-l lg:border-t-0 lg:pl-5 lg:pt-0">
-                <dt className="text-slate-400">Fecha</dt><dd className="text-right font-medium text-slate-600">{post.publishedAt}</dd>
-                <dt className="text-slate-400">Lectura</dt><dd className="text-right font-medium text-slate-600">{post.readTime}</dd>
+                <dt className="text-slate-400">{view.dateLabel}</dt><dd className="text-right font-medium text-slate-600">{post.publishedAt}</dd>
+                <dt className="text-slate-400">{view.readTimeLabel}</dt><dd className="text-right font-medium text-slate-600">{post.readTime}</dd>
               </dl>
             </article>
           </SurfaceCard>
