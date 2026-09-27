@@ -17,4 +17,4 @@ Fourth real Blog view: `/applications/blog/editor`.
 - Browser QA validates controlled editing, live preview, desktop/mobile and overflow.
 - Production smoke includes the editor route.
 
-QA status: PENDING CI AND BROWSER QA
+QA status: PASS — CI #229 (`36323127663`) on implementation HEAD `f353d0fea22288dde0bd6e380497587a4f5446ff`: Quality Gate, Automated QA Gate, Browser QA Gate, exported React smoke and deployable SPA fallback all passed.
