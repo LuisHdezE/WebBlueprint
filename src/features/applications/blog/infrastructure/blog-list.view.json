@@ -1,0 +1,21 @@
+{
+  "title": "Blog · Lista",
+  "description": "Gestiona publicaciones, borradores y contenido programado desde una vista editorial compacta.",
+  "breadcrumbs": ["Aplicaciones", "Blog", "Lista"],
+  "searchLabel": "Buscar publicaciones",
+  "searchPlaceholder": "Buscar por título, resumen o autor…",
+  "categoryLabel": "Categoría",
+  "allCategoriesLabel": "Todas las categorías",
+  "resultSingularLabel": "publicación",
+  "resultPluralLabel": "publicaciones",
+  "dateLabel": "Fecha",
+  "readTimeLabel": "Lectura",
+  "emptyTitle": "No encontramos publicaciones",
+  "emptyDescription": "Prueba con otro término o cambia la categoría seleccionada.",
+  "posts": [
+    {"id":"post-001","title":"Diseñar productos que crecen sin perder claridad","excerpt":"Principios para sostener una experiencia coherente mientras aumentan módulos, equipos y casos de uso.","category":"Diseño","status":"Publicado","publishedAt":"24 sep 2026","readTime":"6 min","author":{"name":"Sofía Méndez","role":"Product Design"}},
+    {"id":"post-002","title":"Una arquitectura frontend preparada para cambiar","excerpt":"Cómo separar contenido, contratos y presentación para evolucionar interfaces sin acoplar cada pantalla.","category":"Ingeniería","status":"Publicado","publishedAt":"21 sep 2026","readTime":"8 min","author":{"name":"Mateo Silva","role":"Frontend Engineering"}},
+    {"id":"post-003","title":"El sistema visual también es infraestructura","excerpt":"Tokens, componentes y documentación convierten decisiones visuales en una base reutilizable.","category":"Producto","status":"Programado","publishedAt":"30 sep 2026","readTime":"5 min","author":{"name":"Elena Torres","role":"Design Systems"}},
+    {"id":"post-004","title":"Qué documentar antes de entregar una interfaz","excerpt":"Una guía breve para que decisiones, estados y contratos sobrevivan al traspaso entre equipos.","category":"Procesos","status":"Borrador","publishedAt":"Sin publicar","readTime":"4 min","author":{"name":"Daniel Costa","role":"Product Operations"}}
+  ]
+}
