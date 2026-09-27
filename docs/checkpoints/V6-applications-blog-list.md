@@ -17,4 +17,4 @@ First real view in the Applications family: `/applications/blog/list`.
 - Browser QA covers deep-link response, shell presence, governed post count, search, empty state and responsive overflow.
 - Production deployment smoke includes the new deep link.
 
-QA status: PENDING CI AND BROWSER QA
+QA status: PASS — CI #219 (`36294216502`) on implementation HEAD `7a276327c7bb4d7d04f8e9a1ec14184459108540`: Quality Gate, Automated QA Gate, Browser QA Gate, exported React smoke and deployable SPA fallback all passed.
