@@ -1,0 +1,17 @@
+{
+  "title": "Blog · Artículo",
+  "description": "Vista editorial de lectura con jerarquía clara, contexto del autor y contenido estructurado.",
+  "breadcrumbs": ["Aplicaciones", "Blog", "Artículo"],
+  "postId": "post-001",
+  "dateLabel": "Publicado",
+  "readTimeLabel": "Tiempo de lectura",
+  "content": [
+    {"type":"lead","text":"Cuando un producto crece, la complejidad no aparece de golpe. Se acumula en pequeñas decisiones que dejan de compartir una misma lógica."},
+    {"type":"heading","text":"La claridad también necesita arquitectura"},
+    {"type":"paragraph","text":"Una interfaz sostenible separa las decisiones que cambian con frecuencia de aquellas que deben permanecer estables. El contenido, los contratos y la presentación evolucionan mejor cuando cada capa tiene una responsabilidad reconocible."},
+    {"type":"quote","text":"Reutilizar no significa repetir menos código a cualquier precio; significa conservar una sola decisión cuando varias vistas necesitan expresar la misma idea."},
+    {"type":"heading","text":"Diseñar para el siguiente cambio"},
+    {"type":"paragraph","text":"Los componentes compartidos funcionan como acuerdos. Reducen variaciones accidentales, hacen visibles los patrones del producto y permiten que nuevas pantallas hereden comportamiento probado en lugar de reconstruirlo."},
+    {"type":"paragraph","text":"La documentación completa el circuito: explica por qué existe cada frontera y convierte una solución puntual en conocimiento que el siguiente incremento puede reutilizar."}
+  ]
+}

@@ -3,3 +3,5 @@ export interface BlogPostDto { id: string; title: string; excerpt: string; categ
 export interface BlogCollectionViewDto { title: string; description: string; breadcrumbs: readonly string[]; searchLabel: string; searchPlaceholder: string; categoryLabel: string; allCategoriesLabel: string; resultSingularLabel: string; resultPluralLabel: string; dateLabel: string; readTimeLabel: string; emptyTitle: string; emptyDescription: string; posts: readonly BlogPostDto[]; }
 export type BlogListViewDto = BlogCollectionViewDto;
 export type BlogGridViewDto = BlogCollectionViewDto;
+export interface BlogArticleBlockDto { type: 'lead' | 'heading' | 'paragraph' | 'quote'; text: string; }
+export interface BlogPostViewDto { title: string; description: string; breadcrumbs: readonly string[]; dateLabel: string; readTimeLabel: string; post: BlogPostDto; content: readonly BlogArticleBlockDto[]; }

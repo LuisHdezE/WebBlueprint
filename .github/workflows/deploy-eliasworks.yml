@@ -92,7 +92,8 @@ jobs:
             authentication/password-reset \
             authentication/lock-screen \
             applications/blog/list \
-            applications/blog/grid; do
+            applications/blog/grid \
+            applications/blog/post; do
             check_url "$PUBLIC_URL/$path" "/tmp/webblueprint-${path//\//-}.html"
           done
 

@@ -24,6 +24,7 @@ import { BlankPage, ContactPage, EmptyPage, FaqPage, KnowledgeBasePage, Maintena
 import { JsonBlogContentProvider } from '@/features/applications/blog/infrastructure/JsonBlogContentProvider';
 import { BlogGridPage } from '@/features/applications/blog/presentation/BlogGridPage';
 import { BlogListPage } from '@/features/applications/blog/presentation/BlogListPage';
+import { BlogPostPage } from '@/features/applications/blog/presentation/BlogPostPage';
 import { ApplicationDemoPage } from '@/pages/ApplicationDemoPage';
 import { ApplicationDetailPage } from '@/pages/ApplicationDetailPage';
 import { ApplicationsPage } from '@/pages/ApplicationsPage';
@@ -102,6 +103,7 @@ export function AppRouter() {
         <Route path="maps" element={<MapViewPage />} />
         <Route path="applications/blog/list" element={<BlogListPage contentProvider={blogContentProvider} />} />
         <Route path="applications/blog/grid" element={<BlogGridPage contentProvider={blogContentProvider} />} />
+        <Route path="applications/blog/post" element={<BlogPostPage contentProvider={blogContentProvider} />} />
         {componentRoutes.map((component) => <Route key={component.path} path={component.path} element={<ComponentShowcasePage description={component.description} kind={component.kind} title={component.title} />} />)}
         {elementRoutes.map((element) => <Route key={element.path} path={element.path} element={<ElementShowcasePage description={element.description} kind={element.kind} title={element.title} />} />)}
         <Route path="pages/contact" element={<ContactPage />} /><Route path="pages/faq" element={<FaqPage />} /><Route path="pages/knowledge-base" element={<KnowledgeBasePage />} /><Route path="pages/maintenance" element={<MaintenancePage />} /><Route path="pages/not-found" element={<NotFoundPage />} /><Route path="pages/server-error" element={<ServerErrorPage />} /><Route path="pages/blank" element={<BlankPage />} /><Route path="pages/empty" element={<EmptyPage />} />
