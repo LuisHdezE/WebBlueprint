@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 import { AppIcon } from '@/components/AppIcon';
+import { SurfaceCard } from '@/components/layout/SurfaceCard';
 import { PageShell } from '@/shell/PageShell';
 import { LeafletMap, type MapLocation } from '../leaflet/LeafletMap';
 
@@ -21,7 +22,7 @@ export function MapViewPage() {
       title="Map View"
     >
       <div className="grid gap-3 xl:grid-cols-[minmax(0,1.55fr)_minmax(270px,0.45fr)]">
-        <section className="overflow-hidden rounded-md border border-slate-200 bg-white">
+        <SurfaceCard className="overflow-hidden p-0">
           <div className="flex flex-col gap-2 border-b border-slate-100 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[var(--theme-primary)]">Leaflet + OpenStreetMap</p>
@@ -30,9 +31,9 @@ export function MapViewPage() {
             <span className="rounded-full bg-[var(--theme-primary-soft)] px-2.5 py-1 text-[10px] font-semibold text-[var(--theme-primary)]">{locations.length} puntos</span>
           </div>
           <LeafletMap locations={locations} onSelectLocation={selectLocation} selectedLocationId={selectedLocationId} />
-        </section>
+        </SurfaceCard>
 
-        <aside className="rounded-md border border-slate-200 bg-white p-4">
+        <SurfaceCard className="p-4">
           <div className="flex items-center gap-2">
             <div className="grid size-8 place-items-center rounded-md bg-[var(--theme-primary-soft)] text-[var(--theme-primary)]"><AppIcon className="size-4" name="map" /></div>
             <div>
@@ -61,7 +62,7 @@ export function MapViewPage() {
             <p className="mt-1 text-sm font-semibold text-slate-900">{selected.name}</p>
             <p className="mt-1 text-[11px] leading-4 text-slate-500">{selected.description}</p>
           </div>
-        </aside>
+        </SurfaceCard>
       </div>
     </PageShell>
   );

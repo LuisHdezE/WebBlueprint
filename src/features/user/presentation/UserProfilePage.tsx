@@ -1,4 +1,6 @@
 import { AppIcon } from '@/components/AppIcon';
+import { KeyValueList } from '@/components/data-display/KeyValueList';
+import { SurfaceCard } from '@/components/layout/SurfaceCard';
 import { PageShell } from '@/shell/PageShell';
 
 const activity = [
@@ -16,7 +18,7 @@ export function UserProfilePage() {
       title="Perfil de usuario"
     >
       <div className="grid gap-3 xl:grid-cols-[minmax(0,1.35fr)_minmax(280px,0.65fr)]">
-        <section className="rounded-md border border-slate-200 bg-white p-5">
+        <SurfaceCard>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
             <div aria-hidden="true" className="grid size-20 shrink-0 place-items-center rounded-full bg-[var(--theme-primary-soft)] text-2xl font-semibold text-[var(--theme-primary)]">LH</div>
             <div className="min-w-0">
@@ -37,9 +39,9 @@ export function UserProfilePage() {
               </div>
             ))}
           </div>
-        </section>
+         </SurfaceCard>
 
-        <section className="rounded-md border border-slate-200 bg-white p-5">
+        <SurfaceCard>
           <div className="flex items-center gap-2">
             <div className="grid size-8 place-items-center rounded-md bg-[var(--theme-primary-soft)] text-[var(--theme-primary)]"><AppIcon className="size-4" name="settings" /></div>
             <div>
@@ -47,18 +49,11 @@ export function UserProfilePage() {
               <p className="mt-0.5 text-[11px] text-slate-500">Estado de la cuenta y seguridad.</p>
             </div>
           </div>
-          <dl className="mt-5 space-y-3">
-            {[['Último acceso', 'Hoy, 09:38'], ['Sesiones activas', '2 dispositivos'], ['Autenticación', '2FA habilitado'], ['Perfil público', 'Visible para el equipo']].map(([label, value]) => (
-              <div key={label} className="flex items-center justify-between gap-3 border-b border-slate-100 pb-3 last:border-0 last:pb-0">
-                <dt className="text-[11px] text-slate-500">{label}</dt>
-                <dd className="text-right text-[11px] font-semibold text-slate-800">{value}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+          <div className="mt-5"><KeyValueList items={[['Último acceso', 'Hoy, 09:38'], ['Sesiones activas', '2 dispositivos'], ['Autenticación', '2FA habilitado'], ['Perfil público', 'Visible para el equipo']]} /></div>
+       </SurfaceCard>
       </div>
 
-      <section className="mt-3 rounded-md border border-slate-200 bg-white p-5">
+      <SurfaceCard className="mt-3">
         <div className="flex items-center justify-between gap-3">
           <div>
             <h2 className="text-[13px] font-semibold text-slate-900">Actividad reciente</h2>
@@ -74,7 +69,7 @@ export function UserProfilePage() {
             </div>
           ))}
         </div>
-      </section>
+      </SurfaceCard>
     </PageShell>
   );
 }
