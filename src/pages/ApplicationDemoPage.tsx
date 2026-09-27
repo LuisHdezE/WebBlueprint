@@ -4,6 +4,7 @@ import type { ApplicationDefinition, DemoPageDefinition } from '@/applications/a
 import { CustomerDirectoryView } from '@/customers/CustomerDirectoryView';
 import { DashboardView } from '@/dashboard/DashboardView';
 import { OrderListView } from '@/orders/OrderListView';
+import { InventoryView } from '@/inventory/InventoryView';
 import { ProductCatalogView } from '@/products/ProductCatalogView';
 import { LeftAppShell } from '@/shell/LeftAppShell';
 
@@ -76,6 +77,8 @@ export function ApplicationDemoPage() {
             <CustomerDirectoryView />
           ) : activePage.pageKey === 'orders' ? (
             <OrderListView />
+          ) : activePage.pageKey === 'inventory' ? (
+            <InventoryView />
           ) : (
             <GenericDemoWorkspace application={application} activePage={activePage} />
           )}
