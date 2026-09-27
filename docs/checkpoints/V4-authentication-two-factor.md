@@ -1,8 +1,8 @@
 # V4 · Authentication · Verificación 2FA
 
-Estado: IMPLEMENTED · pendiente de QA de preview
+Estado: IMPLEMENTED · QA de preview aprobado
 
-QA status: PENDING
+QA status: PASS
 
 ## Alcance
 
@@ -33,7 +33,16 @@ Sustituye únicamente `/authentication/two-factor` por una vista real independie
 
 ## QA y evidencia
 
-Pendiente de registrar resultados de typecheck, lint, tests, build, gate de arquitectura, QA de navegador, revisión visual y export smoke sobre el HEAD final de la PR.
+CI #185 sobre el HEAD de implementación `00c6159d2859f3d3cfaa62a23bfaf037776f5ac6`: PASS.
+
+- Typecheck, lint, 24 archivos de tests / 86 tests y build: PASS.
+- La integración de exportación se omite en la suite normal y se ejecutó aparte mediante export smoke: PASS.
+- Gate de arquitectura/datos: PASS con 4 vistas registradas.
+- Navegador: Sign In 27/27, Password Reset 23/23, Sign Up 28/28 y Two Factor 29/29.
+- Navegación y fallback SPA: PASS.
+- Revisión visual técnica de capturas CI: escritorio inicial/success en 1365×611 y móvil inicial/success en 390×844: PASS.
+- Evidencia: https://github.com/LuisHdezE/WebBlueprint/actions/runs/36283476463.
+- CI se ejecuta de nuevo sobre el commit documental final; su resultado se registra en la PR #33 antes de solicitar merge.
 
 Las pruebas de casos de uso cubren validación antes del gateway, ceros iniciales, configuración inválida, resultados y excepciones. Las pruebas de adaptadores cubren mapper y los cuatro modos deterministas. El escenario de navegador registrado cubre validación, envío, éxito, teclado, navegación, escritorio, móvil y errores de runtime. Los modos de fallo del gateway se prueban de forma automatizada fuera de la ruta canónica de éxito.
 
