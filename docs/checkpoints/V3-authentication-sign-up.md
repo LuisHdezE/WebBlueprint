@@ -1,8 +1,10 @@
 # Authentication · Sign Up v1
 
-Status: IMPLEMENTED · preview QA passed
+Status: IMPLEMENTED · FINAL ACCEPTED
 
 QA status: PASS
+
+Aceptación visual y funcional del propietario: APROBADA el 2026-09-25 (America/Montevideo).
 
 ## Scope
 
@@ -87,11 +89,32 @@ CI #180 on corrected implementation HEAD `bb135cd989136ba3f1f7b47f49ab628f19f1f1
 - PR preview artifact: PASS.
 - Technical visual review of exact-head desktop initial, desktop success and mobile screenshots: PASS.
 
+## Evidencia de integración y producción
+
+- PR de implementación: [#31](https://github.com/LuisHdezE/WebBlueprint/pull/31).
+- HEAD aprobado y validado por CI #181: `023894410008772ca1d13382ec2e8ab653218543`.
+- Commit de integración en `main`: `e7f2fe58ce6c63d8c950040941fd79fc03e6bb2c`.
+- [CI #182 posterior al merge](https://github.com/LuisHdezE/WebBlueprint/actions/runs/36089983341): PASS sobre ese commit.
+- [Despliegue #109 a EliasWorks](https://github.com/LuisHdezE/WebBlueprint/actions/runs/36090043846), intento 2: PASS sobre el mismo commit.
+- Ruta canónica: https://webblueprint.eliasworks.uy/authentication/sign-up.
+- QA de navegador en producción: Sign In 27/27, Password Reset 23/23 y Sign Up 28/28.
+- Escritorio 1365×611: estados inicial y success completos sin scroll vertical.
+- Móvil: formulario visible, controles dentro del viewport y sin overflow horizontal.
+- Revisión técnica de capturas de producción de escritorio inicial, escritorio success y móvil: PASS.
+
+El primer intento del despliegue publicó correctamente y Sign Up pasó sus 28 comprobaciones. El gate global falló porque el endpoint DevTools de Chrome no llegó a estar disponible al iniciar los escenarios de Sign In y Password Reset. Se reejecutó el job sobre el mismo commit, sin modificar código ni relajar el gate; el segundo intento validó las tres vistas.
+
 ### Current QA verdict
 
 `PASS`
 
-The Sign Up candidate is technically accepted for preview. Product-owner runtime/visual acceptance remains PENDING and must be explicit after this revision is merged and deployed to EliasWorks.
+### Aceptación del propietario
+
+`APPROVED`
+
+Luis aprobó explícitamente la revisión visual y funcional en producción el 2026-09-25, después de compartir una captura del estado «Registro preparado» con el tema rojo aplicado. La vista V3 queda aceptada. El registro sigue siendo una demostración sin creación real de cuentas.
+
+La siguiente vista propuesta es V4 · Verificación 2FA (`/authentication/two-factor`), como incremento independiente tras integrar este cierre documental.
 
 ## Out of scope
 
