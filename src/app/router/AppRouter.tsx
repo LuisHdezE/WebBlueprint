@@ -19,6 +19,7 @@ import { AccountSettingsPage } from '@/features/user/presentation/AccountSetting
 import { UserProfilePage } from '@/features/user/presentation/UserProfilePage';
 import { MapViewPage } from '@/features/maps/presentation/MapViewPage';
 import { ComponentShowcasePage, type ComponentShowcaseKind } from '@/features/components/presentation/ComponentShowcasePage';
+import { ElementShowcasePage, type ElementShowcaseKind } from '@/features/elements/presentation/ElementShowcasePage';
 import { BlankPage, ContactPage, EmptyPage, FaqPage, KnowledgeBasePage, MaintenancePage, NotFoundPage, ServerErrorPage } from '@/features/pages/presentation/PublicSystemPages';
 import { ApplicationDemoPage } from '@/pages/ApplicationDemoPage';
 import { ApplicationDetailPage } from '@/pages/ApplicationDetailPage';
@@ -76,6 +77,26 @@ const componentRoutes: readonly { path: string; kind: ComponentShowcaseKind; tit
   { path: 'components/timeline', kind: 'timeline', title: 'Timeline', description: 'Secuencia visual de eventos y progreso.' },
 ] as const;
 
+
+const elementRoutes: readonly { path: string; kind: ElementShowcaseKind; title: string; description: string }[] = [
+  { path: 'elements/alerts', kind: 'alerts', title: 'Alerts', description: 'Mensajes de información, éxito, aviso y error.' },
+  { path: 'elements/avatars', kind: 'avatars', title: 'Avatares', description: 'Identidad visual para personas y equipos.' },
+  { path: 'elements/badges', kind: 'badges', title: 'Badges', description: 'Etiquetas compactas para estado y clasificación.' },
+  { path: 'elements/breadcrumbs', kind: 'breadcrumbs', title: 'Breadcrumbs', description: 'Orientación jerárquica dentro de la navegación.' },
+  { path: 'elements/buttons', kind: 'buttons', title: 'Botones', description: 'Acciones primarias, secundarias, destructivas y deshabilitadas.' },
+  { path: 'elements/colors', kind: 'colors', title: 'Colores', description: 'Paleta semántica y tokens activos del tema.' },
+  { path: 'elements/dropdowns', kind: 'dropdowns', title: 'Dropdowns', description: 'Menús compactos para acciones relacionadas.' },
+  { path: 'elements/info-boxes', kind: 'info-boxes', title: 'Info Boxes', description: 'Bloques breves de contexto y ayuda.' },
+  { path: 'elements/loaders', kind: 'loaders', title: 'Loaders', description: 'Indicadores para estados de carga.' },
+  { path: 'elements/pagination', kind: 'pagination', title: 'Pagination', description: 'Navegación entre páginas de resultados.' },
+  { path: 'elements/popovers', kind: 'popovers', title: 'Popovers', description: 'Contenido contextual asociado a un control.' },
+  { path: 'elements/progress', kind: 'progress', title: 'Progress', description: 'Avance cuantificable de tareas y procesos.' },
+  { path: 'elements/search', kind: 'search', title: 'Search', description: 'Entrada reutilizable para filtrar contenido.' },
+  { path: 'elements/tooltips', kind: 'tooltips', title: 'Tooltips', description: 'Ayuda breve accesible sobre controles.' },
+  { path: 'elements/tree-view', kind: 'tree-view', title: 'Tree View', description: 'Estructuras jerárquicas expandibles.' },
+  { path: 'elements/typography', kind: 'typography', title: 'Tipografía', description: 'Jerarquía, lectura y estilos de texto.' },
+] as const;
+
 export function AppRouter() {
   return (
     <Routes>
@@ -91,6 +112,7 @@ export function AppRouter() {
         <Route path="composer" element={<TemplateComposerExportPage />} />
         <Route path="maps" element={<MapViewPage />} />
         {componentRoutes.map((component) => <Route key={component.path} path={component.path} element={<ComponentShowcasePage description={component.description} kind={component.kind} title={component.title} />} />)}
+        {elementRoutes.map((element) => <Route key={element.path} path={element.path} element={<ElementShowcasePage description={element.description} kind={element.kind} title={element.title} />} />)}
         <Route path="pages/contact" element={<ContactPage />} />
         <Route path="pages/faq" element={<FaqPage />} />
         <Route path="pages/knowledge-base" element={<KnowledgeBasePage />} />
