@@ -17,6 +17,7 @@ import { MockLockScreenGateway } from '@/features/authentication/lock-screen/inf
 import { LockScreenPage } from '@/features/authentication/lock-screen/presentation/LockScreenPage';
 import { AccountSettingsPage } from '@/features/user/presentation/AccountSettingsPage';
 import { UserProfilePage } from '@/features/user/presentation/UserProfilePage';
+import { MapViewPage } from '@/features/maps/presentation/MapViewPage';
 import { ApplicationDemoPage } from '@/pages/ApplicationDemoPage';
 import { ApplicationDetailPage } from '@/pages/ApplicationDetailPage';
 import { ApplicationsPage } from '@/pages/ApplicationsPage';
@@ -71,6 +72,7 @@ export function AppRouter() {
         <Route index element={<Navigate to="/dashboard" replace />} />
         <Route path="dashboard" element={<TemplateOverviewPage />} />
         <Route path="composer" element={<TemplateComposerExportPage />} />
+        <Route path="maps" element={<MapViewPage />} />
         <Route path="user/profile" element={<UserProfilePage />} />
         <Route path="user/account-settings" element={<AccountSettingsPage />} />
         {templateFamilies.map((path) => (
