@@ -18,4 +18,10 @@ describe('blog content adapter', () => {
     expect(provider.getPostView().post).toBe(provider.getListView().posts[0]);
     expect(provider.getPostView().content.some((block) => block.type === 'quote')).toBe(true);
   });
+  it('reuses canonical article data in editor', () => {
+    const provider = new JsonBlogContentProvider();
+    expect(provider.getEditorView().post).toBe(provider.getPostView().post);
+    expect(provider.getEditorView().content).toBe(provider.getPostView().content);
+    expect(provider.getEditorView().blockTypes).toEqual(['lead','heading','paragraph','quote']);
+  });
 });

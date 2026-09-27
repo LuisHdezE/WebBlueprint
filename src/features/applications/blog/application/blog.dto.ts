@@ -5,3 +5,4 @@ export type BlogListViewDto = BlogCollectionViewDto;
 export type BlogGridViewDto = BlogCollectionViewDto;
 export interface BlogArticleBlockDto { type: 'lead' | 'heading' | 'paragraph' | 'quote'; text: string; }
 export interface BlogPostViewDto { title: string; description: string; breadcrumbs: readonly string[]; dateLabel: string; readTimeLabel: string; post: BlogPostDto; content: readonly BlogArticleBlockDto[]; }
+export interface BlogEditorViewDto { title: string; description: string; breadcrumbs: readonly string[]; titleLabel: string; excerptLabel: string; categoryLabel: string; statusLabel: string; contentLabel: string; previewLabel: string; blockTypeLabel: string; blockTextLabel: string; categories: readonly string[]; statuses: readonly BlogPostDto['status'][]; blockTypes: readonly BlogArticleBlockDto['type'][]; blockTypeLabels: Readonly<Record<BlogArticleBlockDto['type'], string>>; post: BlogPostDto; content: readonly BlogArticleBlockDto[]; }

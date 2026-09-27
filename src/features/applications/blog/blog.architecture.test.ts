@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 
 describe('blog architecture', () => {
   it('keeps governed content out of presentation', () => {
-    for (const file of ['BlogListPage.tsx', 'BlogGridPage.tsx', 'BlogPostPage.tsx', 'BlogArticleContent.tsx']) {
+    for (const file of ['BlogListPage.tsx', 'BlogGridPage.tsx', 'BlogPostPage.tsx', 'BlogArticleContent.tsx', 'BlogEditorPage.tsx']) {
       const presentation = readFileSync(`src/features/applications/blog/presentation/${file}`, 'utf8');
       expect(presentation).not.toContain('.json');
       expect(presentation).not.toContain('infrastructure/');
@@ -19,8 +19,12 @@ describe('blog architecture', () => {
     const post = readFileSync('src/features/applications/blog/presentation/BlogPostPage.tsx', 'utf8');
     expect(post).toContain('BlogPostAuthor'); expect(post).toContain('BlogPostStatus'); expect(post).toContain('BlogArticleContent');
   });
+  it('reuses article rendering and metadata in editor preview', () => {
+    const editor = readFileSync('src/features/applications/blog/presentation/BlogEditorPage.tsx', 'utf8');
+    for (const shared of ['TextField','TextAreaField','SelectField','BlogPostAuthor','BlogPostStatus','BlogArticleContent']) expect(editor).toContain(shared);
+  });
   it('keeps explicit blog routes before the applications wildcard', () => {
     const router = readFileSync('src/app/router/AppRouter.tsx', 'utf8'); const wildcardRouteIndex = router.indexOf('templateFamilies.map'); expect(wildcardRouteIndex).toBeGreaterThan(-1);
-    for (const route of ['applications/blog/list', 'applications/blog/grid', 'applications/blog/post']) { expect(router.indexOf(`path="${route}"`)).toBeGreaterThan(-1); expect(router.indexOf(`path="${route}"`)).toBeLessThan(wildcardRouteIndex); }
+    for (const route of ['applications/blog/list', 'applications/blog/grid', 'applications/blog/post', 'applications/blog/editor']) { expect(router.indexOf(`path="${route}"`)).toBeGreaterThan(-1); expect(router.indexOf(`path="${route}"`)).toBeLessThan(wildcardRouteIndex); }
   });
 });

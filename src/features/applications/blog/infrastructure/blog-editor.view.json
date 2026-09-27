@@ -1,0 +1,18 @@
+{
+  "title":"Blog · Editor",
+  "description":"Edita la publicación usando el mismo modelo de contenido estructurado que alimenta la vista de artículo.",
+  "breadcrumbs":["Aplicaciones","Blog","Editor"],
+  "postId":"post-001",
+  "titleLabel":"Título",
+  "excerptLabel":"Resumen",
+  "categoryLabel":"Categoría",
+  "statusLabel":"Estado",
+  "contentLabel":"Contenido",
+  "previewLabel":"Vista previa",
+  "blockTypeLabel":"Tipo de bloque",
+  "blockTextLabel":"Texto del bloque",
+  "categories":["Diseño","Ingeniería","Producto","Procesos"],
+  "statuses":["Publicado","Borrador","Programado"],
+  "blockTypes":["lead","heading","paragraph","quote"],
+  "blockTypeLabels":{"lead":"Introducción","heading":"Encabezado","paragraph":"Párrafo","quote":"Cita"}
+}

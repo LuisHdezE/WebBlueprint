@@ -22,6 +22,7 @@ import { ComponentShowcasePage, type ComponentShowcaseKind } from '@/features/co
 import { ElementShowcasePage, type ElementShowcaseKind } from '@/features/elements/presentation/ElementShowcasePage';
 import { BlankPage, ContactPage, EmptyPage, FaqPage, KnowledgeBasePage, MaintenancePage, NotFoundPage, ServerErrorPage } from '@/features/pages/presentation/PublicSystemPages';
 import { JsonBlogContentProvider } from '@/features/applications/blog/infrastructure/JsonBlogContentProvider';
+import { BlogEditorPage } from '@/features/applications/blog/presentation/BlogEditorPage';
 import { BlogGridPage } from '@/features/applications/blog/presentation/BlogGridPage';
 import { BlogListPage } from '@/features/applications/blog/presentation/BlogListPage';
 import { BlogPostPage } from '@/features/applications/blog/presentation/BlogPostPage';
@@ -104,6 +105,7 @@ export function AppRouter() {
         <Route path="applications/blog/list" element={<BlogListPage contentProvider={blogContentProvider} />} />
         <Route path="applications/blog/grid" element={<BlogGridPage contentProvider={blogContentProvider} />} />
         <Route path="applications/blog/post" element={<BlogPostPage contentProvider={blogContentProvider} />} />
+        <Route path="applications/blog/editor" element={<BlogEditorPage contentProvider={blogContentProvider} />} />
         {componentRoutes.map((component) => <Route key={component.path} path={component.path} element={<ComponentShowcasePage description={component.description} kind={component.kind} title={component.title} />} />)}
         {elementRoutes.map((element) => <Route key={element.path} path={element.path} element={<ElementShowcasePage description={element.description} kind={element.kind} title={element.title} />} />)}
         <Route path="pages/contact" element={<ContactPage />} /><Route path="pages/faq" element={<FaqPage />} /><Route path="pages/knowledge-base" element={<KnowledgeBasePage />} /><Route path="pages/maintenance" element={<MaintenancePage />} /><Route path="pages/not-found" element={<NotFoundPage />} /><Route path="pages/server-error" element={<ServerErrorPage />} /><Route path="pages/blank" element={<BlankPage />} /><Route path="pages/empty" element={<EmptyPage />} />
