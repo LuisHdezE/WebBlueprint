@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { AppIcon } from '@/components/AppIcon';
+import { AppIcon, type AppIconName } from '@/components/AppIcon';
 import { EmptyState } from '@/components/feedback/EmptyState';
 import { StatusPanel } from '@/components/feedback/StatusPanel';
 import { TextAreaField } from '@/components/forms/TextAreaField';
@@ -7,11 +7,13 @@ import { TextField } from '@/components/forms/TextField';
 import { SurfaceCard } from '@/components/layout/SurfaceCard';
 import { PageShell } from '@/shell/PageShell';
 
+const channels: readonly [string, string, AppIconName][] = [['Soporte', 'soporte@webblueprint.dev', 'help'], ['Ventas', 'ventas@webblueprint.dev', 'apps'], ['Horario', 'Lun–Vie · 09:00–18:00', 'dashboard']];
+
 export function ContactPage() {
   return <PageShell breadcrumbs={[{ label: 'Páginas' }, { label: 'Contacto' }]} description="Encuentra al equipo correcto y envía una solicitud con el contexto necesario." title="Contacto">
     <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(300px,0.7fr)]">
       <SurfaceCard><h2 className="text-[13px] font-semibold text-slate-900">Envíanos un mensaje</h2><p className="mt-1 text-[11px] text-slate-500">Normalmente respondemos en menos de un día hábil.</p><div className="mt-5 grid gap-4 sm:grid-cols-2"><TextField label="Nombre" placeholder="Tu nombre" /><TextField label="Correo" placeholder="tu@correo.com" type="email" /></div><div className="mt-4"><TextAreaField label="Mensaje" placeholder="¿En qué podemos ayudarte?" /></div><button className="mt-4 rounded-md bg-[var(--theme-primary)] px-3 py-2 text-[11px] font-semibold text-white hover:bg-[var(--theme-primary-hover)]" type="button">Enviar mensaje</button></SurfaceCard>
-      <SurfaceCard><h2 className="text-[13px] font-semibold text-slate-900">Canales de atención</h2><div className="mt-4 space-y-3">{[['Soporte', 'soporte@webblueprint.dev', 'help' as const], ['Ventas', 'ventas@webblueprint.dev', 'apps' as const], ['Horario', 'Lun–Vie · 09:00–18:00', 'dashboard' as const]].map(([label, value, icon]) => <div key={label} className="flex items-center gap-3 rounded-md border border-slate-100 bg-slate-50/60 p-3"><div className="grid size-8 place-items-center rounded-md bg-[var(--theme-primary-soft)] text-[var(--theme-primary)]"><AppIcon className="size-4" name={icon} /></div><div><p className="text-[10px] font-semibold uppercase tracking-[0.06em] text-slate-400">{label}</p><p className="mt-1 text-[11px] font-medium text-slate-700">{value}</p></div></div>)}</div></SurfaceCard>
+      <SurfaceCard><h2 className="text-[13px] font-semibold text-slate-900">Canales de atención</h2><div className="mt-4 space-y-3">{channels.map(([label, value, icon]) => <div key={label} className="flex items-center gap-3 rounded-md border border-slate-100 bg-slate-50/60 p-3"><div className="grid size-8 place-items-center rounded-md bg-[var(--theme-primary-soft)] text-[var(--theme-primary)]"><AppIcon className="size-4" name={icon} /></div><div><p className="text-[10px] font-semibold uppercase tracking-[0.06em] text-slate-400">{label}</p><p className="mt-1 text-[11px] font-medium text-slate-700">{value}</p></div></div>)}</div></SurfaceCard>
     </div>
   </PageShell>;
 }
