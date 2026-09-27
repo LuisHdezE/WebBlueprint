@@ -89,7 +89,8 @@ jobs:
             authentication/sign-in \
             authentication/sign-up \
             authentication/two-factor \
-            authentication/password-reset; do
+            authentication/password-reset \
+            authentication/lock-screen; do
             check_url "$PUBLIC_URL/$path" "/tmp/webblueprint-${path//\//-}.html"
           done
 

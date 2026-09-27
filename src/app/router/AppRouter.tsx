@@ -12,6 +12,9 @@ import { SignUpPage } from '@/features/authentication/sign-up/presentation/SignU
 import { JsonTwoFactorContentProvider } from '@/features/authentication/two-factor/infrastructure/JsonTwoFactorContentProvider';
 import { MockTwoFactorGateway } from '@/features/authentication/two-factor/infrastructure/MockTwoFactorGateway';
 import { TwoFactorPage } from '@/features/authentication/two-factor/presentation/TwoFactorPage';
+import { JsonLockScreenContentProvider } from '@/features/authentication/lock-screen/infrastructure/JsonLockScreenContentProvider';
+import { MockLockScreenGateway } from '@/features/authentication/lock-screen/infrastructure/MockLockScreenGateway';
+import { LockScreenPage } from '@/features/authentication/lock-screen/presentation/LockScreenPage';
 import { ApplicationDemoPage } from '@/pages/ApplicationDemoPage';
 import { ApplicationDetailPage } from '@/pages/ApplicationDetailPage';
 import { ApplicationsPage } from '@/pages/ApplicationsPage';
@@ -35,6 +38,8 @@ const signUpGateway = new MockSignUpGateway();
 
 const twoFactorContentProvider = new JsonTwoFactorContentProvider();
 const twoFactorGateway = new MockTwoFactorGateway();
+const lockScreenContentProvider = new JsonLockScreenContentProvider();
+const lockScreenGateway = new MockLockScreenGateway();
 
 const templateFamilies = [
   'applications/*',
@@ -76,6 +81,10 @@ export function AppRouter() {
       <Route
         path="authentication/two-factor"
         element={<TwoFactorPage contentProvider={twoFactorContentProvider} gateway={twoFactorGateway} />}
+      />
+      <Route
+        path="authentication/lock-screen"
+        element={<LockScreenPage contentProvider={lockScreenContentProvider} gateway={lockScreenGateway} />}
       />
 
       <Route element={<TemplateShell />}>
