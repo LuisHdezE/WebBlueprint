@@ -131,6 +131,20 @@
         "src/features/applications/blog/infrastructure/blog.adapters.test.ts",
         "src/features/applications/blog/blog.architecture.test.ts"
       ]
+    },
+    {
+      "id": "applications.calendar",
+      "route": "applications/calendar",
+      "presentation": "src/features/applications/calendar/presentation/CalendarPage.tsx",
+      "dto": "src/features/applications/calendar/application/calendar.dto.ts",
+      "contracts": "src/features/applications/calendar/application/calendar.contracts.ts",
+      "content": "src/features/applications/calendar/infrastructure/calendar.view.json",
+      "checkpoint": "docs/checkpoints/V10-applications-calendar.md",
+      "browserQa": "qa/browser/applications-calendar.browser-qa.mjs",
+      "tests": [
+        "src/features/applications/calendar/infrastructure/calendar.adapters.test.ts",
+        "src/features/applications/calendar/calendar.architecture.test.ts"
+      ]
     }
   ]
 }
