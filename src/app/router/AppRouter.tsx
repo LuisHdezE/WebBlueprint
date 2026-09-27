@@ -22,6 +22,7 @@ import { ComponentShowcasePage, type ComponentShowcaseKind } from '@/features/co
 import { ElementShowcasePage, type ElementShowcaseKind } from '@/features/elements/presentation/ElementShowcasePage';
 import { BlankPage, ContactPage, EmptyPage, FaqPage, KnowledgeBasePage, MaintenancePage, NotFoundPage, ServerErrorPage } from '@/features/pages/presentation/PublicSystemPages';
 import { JsonBlogContentProvider } from '@/features/applications/blog/infrastructure/JsonBlogContentProvider';
+import { BlogGridPage } from '@/features/applications/blog/presentation/BlogGridPage';
 import { BlogListPage } from '@/features/applications/blog/presentation/BlogListPage';
 import { ApplicationDemoPage } from '@/pages/ApplicationDemoPage';
 import { ApplicationDetailPage } from '@/pages/ApplicationDetailPage';
@@ -50,21 +51,8 @@ const lockScreenGateway = new MockLockScreenGateway();
 const blogContentProvider = new JsonBlogContentProvider();
 
 const templateFamilies = [
-  'applications/*',
-  'components/*',
-  'elements/*',
-  'forms/*',
-  'tables/*',
-  'charts/*',
-  'widgets/*',
-  'maps/*',
-  'pages/*',
-  'user/*',
-  'authentication/*',
-  'layouts/*',
-  'documentation/*',
+  'applications/*', 'components/*', 'elements/*', 'forms/*', 'tables/*', 'charts/*', 'widgets/*', 'maps/*', 'pages/*', 'user/*', 'authentication/*', 'layouts/*', 'documentation/*',
 ] as const;
-
 
 const componentRoutes: readonly { path: string; kind: ComponentShowcaseKind; title: string; description: string }[] = [
   { path: 'components/accordion', kind: 'accordion', title: 'Accordion', description: 'Contenido expandible para organizar información por secciones.' },
@@ -79,7 +67,6 @@ const componentRoutes: readonly { path: string; kind: ComponentShowcaseKind; tit
   { path: 'components/tabs', kind: 'tabs', title: 'Tabs', description: 'Alternancia de contenido relacionado sin cambiar de ruta.' },
   { path: 'components/timeline', kind: 'timeline', title: 'Timeline', description: 'Secuencia visual de eventos y progreso.' },
 ] as const;
-
 
 const elementRoutes: readonly { path: string; kind: ElementShowcaseKind; title: string; description: string }[] = [
   { path: 'elements/alerts', kind: 'alerts', title: 'Alerts', description: 'Mensajes de información, éxito, aviso y error.' },
@@ -108,42 +95,23 @@ export function AppRouter() {
       <Route path="authentication/password-reset" element={<PasswordResetPage contentProvider={passwordResetContentProvider} gateway={passwordResetGateway} />} />
       <Route path="authentication/two-factor" element={<TwoFactorPage contentProvider={twoFactorContentProvider} gateway={twoFactorGateway} />} />
       <Route path="authentication/lock-screen" element={<LockScreenPage contentProvider={lockScreenContentProvider} gateway={lockScreenGateway} />} />
-
       <Route element={<TemplateShell />}>
         <Route index element={<Navigate to="/dashboard" replace />} />
         <Route path="dashboard" element={<TemplateOverviewPage />} />
         <Route path="composer" element={<TemplateComposerExportPage />} />
         <Route path="maps" element={<MapViewPage />} />
         <Route path="applications/blog/list" element={<BlogListPage contentProvider={blogContentProvider} />} />
+        <Route path="applications/blog/grid" element={<BlogGridPage contentProvider={blogContentProvider} />} />
         {componentRoutes.map((component) => <Route key={component.path} path={component.path} element={<ComponentShowcasePage description={component.description} kind={component.kind} title={component.title} />} />)}
         {elementRoutes.map((element) => <Route key={element.path} path={element.path} element={<ElementShowcasePage description={element.description} kind={element.kind} title={element.title} />} />)}
-        <Route path="pages/contact" element={<ContactPage />} />
-        <Route path="pages/faq" element={<FaqPage />} />
-        <Route path="pages/knowledge-base" element={<KnowledgeBasePage />} />
-        <Route path="pages/maintenance" element={<MaintenancePage />} />
-        <Route path="pages/not-found" element={<NotFoundPage />} />
-        <Route path="pages/server-error" element={<ServerErrorPage />} />
-        <Route path="pages/blank" element={<BlankPage />} />
-        <Route path="pages/empty" element={<EmptyPage />} />
-        <Route path="user/profile" element={<UserProfilePage />} />
-        <Route path="user/account-settings" element={<AccountSettingsPage />} />
-        {templateFamilies.map((path) => (
-          <Route key={path} path={path} element={<TemplatePlaceholderPage />} />
-        ))}
+        <Route path="pages/contact" element={<ContactPage />} /><Route path="pages/faq" element={<FaqPage />} /><Route path="pages/knowledge-base" element={<KnowledgeBasePage />} /><Route path="pages/maintenance" element={<MaintenancePage />} /><Route path="pages/not-found" element={<NotFoundPage />} /><Route path="pages/server-error" element={<ServerErrorPage />} /><Route path="pages/blank" element={<BlankPage />} /><Route path="pages/empty" element={<EmptyPage />} />
+        <Route path="user/profile" element={<UserProfilePage />} /><Route path="user/account-settings" element={<AccountSettingsPage />} />
+        {templateFamilies.map((path) => <Route key={path} path={path} element={<TemplatePlaceholderPage />} />)}
       </Route>
-
       <Route element={<PublicShell />}>
-        <Route path="apps" element={<ApplicationsPage />} />
-        <Route path="apps/:slug" element={<ApplicationDetailPage />} />
-        <Route path="login" element={<LoginPage />} />
-        <Route path="legacy/docs/*" element={<DocumentationPage />} />
-        <Route path="legacy/components" element={<ComponentsPage />} />
+        <Route path="apps" element={<ApplicationsPage />} /><Route path="apps/:slug" element={<ApplicationDetailPage />} /><Route path="login" element={<LoginPage />} /><Route path="legacy/docs/*" element={<DocumentationPage />} /><Route path="legacy/components" element={<ComponentsPage />} />
       </Route>
-
-      <Route path="preview" element={<ComposerPreviewPage />} />
-      <Route path="demo/:slug/*" element={<ApplicationDemoPage />} />
-      <Route path="legacy/composer/*" element={<ProtectedRoute><ComposerPage /></ProtectedRoute>} />
-      <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      <Route path="preview" element={<ComposerPreviewPage />} /><Route path="demo/:slug/*" element={<ApplicationDemoPage />} /><Route path="legacy/composer/*" element={<ProtectedRoute><ComposerPage /></ProtectedRoute>} /><Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
   );
 }
