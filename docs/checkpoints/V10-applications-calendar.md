@@ -17,4 +17,4 @@ Real Calendar view at `/applications/calendar`.
 - Browser QA covers month grid, event filtering, mobile agenda and overflow.
 - Production smoke includes the calendar route.
 
-QA status: PENDING CI AND BROWSER QA
+QA status: PASS — CI #232 (`36326203522`) on implementation HEAD `20774cb6c7d02febe705f1e4aad7aa9488865d12`: Quality Gate, Automated QA Gate, Browser QA Gate, exported React smoke and deployable SPA fallback all passed.
