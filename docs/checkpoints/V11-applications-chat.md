@@ -17,4 +17,4 @@ Real Chat view at `/applications/chat`.
 - Browser QA covers search, selected thread, local composition, mobile and overflow.
 - Production smoke includes the chat route.
 
-QA status: PENDING CI AND BROWSER QA
+QA status: PASS — CI #236 (`36359000007`) on implementation HEAD `2a0f42b482d75b685b8aba5826de3aedef927395`: Quality Gate, Automated QA Gate, Browser QA Gate, exported React smoke and deployable SPA fallback all passed.
