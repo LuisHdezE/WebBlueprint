@@ -1,0 +1,1 @@
+import { StatusBadge } from '@/components/data-display/StatusBadge';import type { ProductStatusDto } from '../application/ecommerce.dto';const tones={Publicado:'success',Borrador:'neutral',Agotado:'warning'} as const;export function ProductStatus({status}:{status:ProductStatusDto}){return <StatusBadge label={status} tone={tones[status]}/>}
