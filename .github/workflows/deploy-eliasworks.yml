@@ -95,7 +95,8 @@ jobs:
             applications/blog/grid \
             applications/blog/post \
             applications/blog/editor \
-            applications/calendar; do
+            applications/calendar \
+            applications/chat; do
             check_url "$PUBLIC_URL/$path" "/tmp/webblueprint-${path//\//-}.html"
           done
 

@@ -145,6 +145,20 @@
         "src/features/applications/calendar/infrastructure/calendar.adapters.test.ts",
         "src/features/applications/calendar/calendar.architecture.test.ts"
       ]
+    },
+    {
+      "id": "applications.chat",
+      "route": "applications/chat",
+      "presentation": "src/features/applications/chat/presentation/ChatPage.tsx",
+      "dto": "src/features/applications/chat/application/chat.dto.ts",
+      "contracts": "src/features/applications/chat/application/chat.contracts.ts",
+      "content": "src/features/applications/chat/infrastructure/chat.view.json",
+      "checkpoint": "docs/checkpoints/V11-applications-chat.md",
+      "browserQa": "qa/browser/applications-chat.browser-qa.mjs",
+      "tests": [
+        "src/features/applications/chat/infrastructure/chat.adapters.test.ts",
+        "src/features/applications/chat/chat.architecture.test.ts"
+      ]
     }
   ]
 }

@@ -1,0 +1,18 @@
+{
+  "title":"Chat",
+  "description":"Conversaciones de equipo en una interfaz maestro-detalle clara y adaptable.",
+  "breadcrumbs":["Aplicaciones","Chat"],
+  "searchLabel":"Buscar conversaciones",
+  "searchPlaceholder":"Nombre o mensaje…",
+  "conversationsLabel":"Conversaciones",
+  "onlineLabel":"En línea",
+  "offlineLabel":"Desconectado",
+  "messagePlaceholder":"Escribe un mensaje…",
+  "sendLabel":"Enviar",
+  "conversations":[
+    {"id":"conv-001","participant":{"id":"person-001","name":"Sofía Méndez","role":"Product Design","online":true},"preview":"Te comparto la última revisión del flujo.","lastActivity":"10:42","unreadCount":2,"messages":[{"id":"msg-001","senderId":"person-001","text":"Revisé el flujo de onboarding y simplifiqué dos pasos.","time":"10:31","direction":"incoming"},{"id":"msg-002","senderId":"me","text":"Perfecto. ¿La versión ya está lista para revisión?","time":"10:35","direction":"outgoing"},{"id":"msg-003","senderId":"person-001","text":"Sí, te comparto la última revisión del flujo.","time":"10:42","direction":"incoming"}]},
+    {"id":"conv-002","participant":{"id":"person-002","name":"Mateo Silva","role":"Frontend Engineering","online":true},"preview":"El build de la rama quedó verde.","lastActivity":"09:18","unreadCount":0,"messages":[{"id":"msg-004","senderId":"person-002","text":"El build de la rama quedó verde. También revisé el responsive.","time":"09:18","direction":"incoming"}]},
+    {"id":"conv-003","participant":{"id":"person-003","name":"Elena Torres","role":"Design Systems","online":false},"preview":"Mañana documento las variantes nuevas.","lastActivity":"Ayer","unreadCount":0,"messages":[{"id":"msg-005","senderId":"me","text":"¿Podemos cerrar las variantes del componente esta semana?","time":"16:04","direction":"outgoing"},{"id":"msg-006","senderId":"person-003","text":"Sí. Mañana documento las variantes nuevas.","time":"16:12","direction":"incoming"}]},
+    {"id":"conv-004","participant":{"id":"person-004","name":"Daniel Costa","role":"Product Operations","online":false},"preview":"Quedaron tres pendientes para el próximo ciclo.","lastActivity":"Lun","unreadCount":1,"messages":[{"id":"msg-007","senderId":"person-004","text":"Quedaron tres pendientes para el próximo ciclo. Los dejé priorizados.","time":"14:20","direction":"incoming"}]}
+  ]
+}

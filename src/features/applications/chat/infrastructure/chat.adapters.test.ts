@@ -1,0 +1,2 @@
+import { describe,expect,it } from 'vitest'; import { JsonChatContentProvider } from './JsonChatContentProvider';
+describe('chat content adapter',()=>{it('exposes governed conversations and messages',()=>{const view=new JsonChatContentProvider().getView();expect(view.conversations).toHaveLength(4);const [firstConversation]=view.conversations;expect(firstConversation.messages).toHaveLength(3);expect(view.conversations.filter(c=>c.participant.online)).toHaveLength(2);});});
