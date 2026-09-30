@@ -1,0 +1,3 @@
+export type ContactStatusDto='Activo'|'Ausente'|'Invitado';
+export interface ContactDto { id:string; name:string; role:string; company:string; email:string; phone:string; location:string; status:ContactStatusDto; tags:readonly string[]; lastActivity:string; note:string; }
+export interface ContactsViewDto { title:string; description:string; breadcrumbs:readonly string[]; searchLabel:string; searchPlaceholder:string; contactsLabel:string; detailsLabel:string; emailLabel:string; phoneLabel:string; locationLabel:string; companyLabel:string; lastActivityLabel:string; tagsLabel:string; noteLabel:string; contacts:readonly [ContactDto,...ContactDto[]]; }
