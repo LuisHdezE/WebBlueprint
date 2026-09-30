@@ -1,0 +1,7 @@
+[
+{"id":"product-001","sku":"WB-1001","name":"Auriculares Studio","category":"Audio","price":"USD 129","stock":24,"status":"Publicado","summary":"Auriculares inalámbricos de perfil limpio para trabajo y ocio.","featured":true},
+{"id":"product-002","sku":"WB-1002","name":"Teclado Compact","category":"Accesorios","price":"USD 89","stock":12,"status":"Publicado","summary":"Teclado compacto de escritorio con distribución minimalista.","featured":true},
+{"id":"product-003","sku":"WB-1003","name":"Lámpara Focus","category":"Hogar","price":"USD 64","stock":0,"status":"Agotado","summary":"Lámpara regulable pensada para escritorios y lectura.","featured":false},
+{"id":"product-004","sku":"WB-1004","name":"Mochila Transit","category":"Accesorios","price":"USD 74","stock":18,"status":"Publicado","summary":"Mochila urbana con compartimento acolchado para portátil.","featured":false},
+{"id":"product-005","sku":"WB-1005","name":"Soporte Desk","category":"Oficina","price":"USD 39","stock":8,"status":"Borrador","summary":"Soporte ajustable para elevar portátil o tablet.","featured":false}
+]
