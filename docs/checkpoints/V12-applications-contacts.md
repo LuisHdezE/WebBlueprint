@@ -16,4 +16,4 @@ Real Contacts view at `/applications/contacts`.
 - Browser QA covers search, selection, mobile and overflow.
 - Production smoke includes the contacts route.
 
-QA status: PENDING CI AND BROWSER QA
+QA status: PASS — CI #239 (`36662374840`) on implementation HEAD `b7769eb34185b73ef415c4c76438d1696cfedf28`: Quality Gate, Automated QA Gate, Browser QA Gate, exported React smoke and deployable SPA fallback all passed.
