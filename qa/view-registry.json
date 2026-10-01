@@ -173,6 +173,20 @@
         "src/features/applications/contacts/infrastructure/contacts.adapters.test.ts",
         "src/features/applications/contacts/contacts.architecture.test.ts"
       ]
+    },
+    {
+      "id": "applications.ecommerce-products",
+      "route": "applications/ecommerce/products",
+      "presentation": "src/features/applications/ecommerce/presentation/ProductsPage.tsx",
+      "dto": "src/features/applications/ecommerce/application/ecommerce.dto.ts",
+      "contracts": "src/features/applications/ecommerce/application/ecommerce.contracts.ts",
+      "content": "src/features/applications/ecommerce/infrastructure/products.view.json",
+      "checkpoint": "docs/checkpoints/V13-applications-ecommerce-products.md",
+      "browserQa": "qa/browser/applications-ecommerce-products.browser-qa.mjs",
+      "tests": [
+        "src/features/applications/ecommerce/infrastructure/ecommerce.adapters.test.ts",
+        "src/features/applications/ecommerce/ecommerce.architecture.test.ts"
+      ]
     }
   ]
 }
