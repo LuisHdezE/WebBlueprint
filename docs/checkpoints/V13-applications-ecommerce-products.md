@@ -16,4 +16,4 @@ Real product-management view at `/applications/ecommerce/products`.
 - Browser QA covers search, category filtering, mobile and overflow.
 - Production smoke includes the products route.
 
-QA status: PENDING CI AND BROWSER QA
+QA status: PASS — CI #244 (`36819853975`) on implementation HEAD `65db8246042b6bc65da6bc11d1ef6bcce6f5f74f`: Quality Gate, Automated QA Gate, Browser QA Gate, exported React smoke and deployable SPA fallback all passed.
