@@ -17,4 +17,4 @@ Commercial shop surface at `/applications/ecommerce/shop`, built on the canonica
 - Browser QA covers deep link, desktop/mobile, search, category filtering, four commercial products, draft exclusion, out-of-stock behavior and horizontal overflow.
 - Production smoke includes `applications/ecommerce/shop`.
 
-QA status: PENDING — implementation gate must pass on the final V14 HEAD before merge approval is requested.
+QA status: PASS — CI #247 (`36877762042`) on implementation HEAD `73ba2b4bf4c9a7ee1bbe393d6c7be7ab76fe2a09`: Quality Gate, Automated QA Gate, Browser QA Gate, exported React smoke and deployable SPA fallback all passed.
