@@ -1,0 +1,1 @@
+export interface ShopViewDto{title:string;description:string;breadcrumbs:readonly string[];searchLabel:string;searchPlaceholder:string;categoryLabel:string;allCategoriesLabel:string;featuredLabel:string;availableLabel:string;outOfStockLabel:string}
