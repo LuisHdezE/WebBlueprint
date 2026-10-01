@@ -28,6 +28,8 @@ import { JsonChatContentProvider } from '@/features/applications/chat/infrastruc
 import { ChatPage } from '@/features/applications/chat/presentation/ChatPage';
 import { JsonContactsContentProvider } from '@/features/applications/contacts/infrastructure/JsonContactsContentProvider';
 import { ContactsPage } from '@/features/applications/contacts/presentation/ContactsPage';
+import { JsonEcommerceCatalogProvider } from '@/features/applications/ecommerce/infrastructure/JsonEcommerceCatalogProvider';
+import { ProductsPage } from '@/features/applications/ecommerce/presentation/ProductsPage';
 import { BlogEditorPage } from '@/features/applications/blog/presentation/BlogEditorPage';
 import { BlogGridPage } from '@/features/applications/blog/presentation/BlogGridPage';
 import { BlogListPage } from '@/features/applications/blog/presentation/BlogListPage';
@@ -60,6 +62,7 @@ const blogContentProvider = new JsonBlogContentProvider();
 const calendarContentProvider = new JsonCalendarContentProvider();
 const chatContentProvider = new JsonChatContentProvider();
 const contactsContentProvider = new JsonContactsContentProvider();
+const ecommerceCatalogProvider = new JsonEcommerceCatalogProvider();
 
 const templateFamilies = [
   'applications/*', 'components/*', 'elements/*', 'forms/*', 'tables/*', 'charts/*', 'widgets/*', 'maps/*', 'pages/*', 'user/*', 'authentication/*', 'layouts/*', 'documentation/*',
@@ -118,6 +121,7 @@ export function AppRouter() {
         <Route path="applications/calendar" element={<CalendarPage contentProvider={calendarContentProvider} />} />
         <Route path="applications/chat" element={<ChatPage contentProvider={chatContentProvider} />} />
         <Route path="applications/contacts" element={<ContactsPage contentProvider={contactsContentProvider} />} />
+        <Route path="applications/ecommerce/products" element={<ProductsPage catalogProvider={ecommerceCatalogProvider} />} />
         {componentRoutes.map((component) => <Route key={component.path} path={component.path} element={<ComponentShowcasePage description={component.description} kind={component.kind} title={component.title} />} />)}
         {elementRoutes.map((element) => <Route key={element.path} path={element.path} element={<ElementShowcasePage description={element.description} kind={element.kind} title={element.title} />} />)}
         <Route path="pages/contact" element={<ContactPage />} /><Route path="pages/faq" element={<FaqPage />} /><Route path="pages/knowledge-base" element={<KnowledgeBasePage />} /><Route path="pages/maintenance" element={<MaintenancePage />} /><Route path="pages/not-found" element={<NotFoundPage />} /><Route path="pages/server-error" element={<ServerErrorPage />} /><Route path="pages/blank" element={<BlankPage />} /><Route path="pages/empty" element={<EmptyPage />} />
