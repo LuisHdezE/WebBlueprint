@@ -7,7 +7,7 @@ describe('inventory demo adapter', () => {
     expect(dashboard.title).toBe('Inventario');
     expect(dashboard.breadcrumbs).toEqual(['Aplicaciones', 'Inventario', 'Dashboard']);
     expect(dashboard.metrics).toHaveLength(8);
-    expect(dashboard.queue).toHaveLength(4);
+    expect(dashboard.queue).toHaveLength(8);
     expect(dashboard.metrics.map((metric) => metric.id)).toContain('pending-evaluation');
     expect(dashboard.metrics.map((metric) => metric.id)).toContain('sale-ready-parts');
     expect(dashboard.metrics.every((metric) => Boolean(metric.icon))).toBe(true);
