@@ -36,7 +36,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       pagination: document.querySelector('[data-data-table-pagination]')?.textContent,
       icons: document.querySelectorAll('[data-inventory-metrics] article svg').length,
       overflow: document.documentElement.scrollWidth > innerWidth
-    })()`);
+    })`);
     check('Inventory title is rendered', desktop.title === 'Inventario', desktop);
     check('Eight operational KPIs render', desktop.metrics.length === 8, desktop);
     check('Every KPI renders a semantic icon', desktop.icons === 8, desktop);
@@ -58,7 +58,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       const page2 = [...document.querySelectorAll('[data-data-table-pagination] button')].find((button) => button.textContent === '2'); page2?.click();
       await new Promise((resolve) => setTimeout(resolve, 50));
       return { searchedRows, searchedText, selected, page: document.querySelector('[data-data-table-pagination]')?.parentElement?.textContent, rowsOnPage2: document.querySelectorAll('[data-inventory-queue] tbody tr').length };
-    })`);
+    })()`);
     check('DataTable search narrows the queue', interactions.searchedRows === 1 && interactions.searchedText?.includes('Galaxy A52'), interactions);
     check('DataTable row selection updates counter', interactions.selected === '1 seleccionados', interactions);
     check('DataTable pagination reaches second page', interactions.page?.includes('Página 2 de 2') && interactions.rowsOnPage2 === 3, interactions);
