@@ -14,56 +14,64 @@
       "label": "Dispositivos registrados",
       "value": 248,
       "note": "Inventario físico identificado",
-      "tone": "neutral"
+      "tone": "neutral",
+      "icon": "device"
     },
     {
       "id": "pending-evaluation",
       "label": "Pendientes de evaluación",
       "value": 31,
       "note": "12 con prioridad alta",
-      "tone": "warning"
+      "tone": "warning",
+      "icon": "help"
     },
     {
       "id": "donor-devices",
       "label": "Equipos donantes",
       "value": 86,
       "note": "Fuente de repuestos recuperables",
-      "tone": "neutral"
+      "tone": "neutral",
+      "icon": "device"
     },
     {
       "id": "waiting-dismantling",
       "label": "Esperando desarme",
       "value": 18,
       "note": "Siguiente cola operacional",
-      "tone": "warning"
+      "tone": "warning",
+      "icon": "wrench"
     },
     {
       "id": "extracted-parts",
       "label": "Repuestos extraídos",
       "value": 642,
       "note": "Unidades físicas registradas",
-      "tone": "positive"
+      "tone": "positive",
+      "icon": "package"
     },
     {
       "id": "awaiting-testing",
       "label": "Pendientes de prueba",
       "value": 57,
       "note": "Aún no elegibles para venta",
-      "tone": "warning"
+      "tone": "warning",
+      "icon": "settings"
     },
     {
       "id": "sale-ready-parts",
       "label": "Listos para venta",
       "value": 214,
       "note": "Probados y clasificados",
-      "tone": "positive"
+      "tone": "positive",
+      "icon": "check-circle"
     },
     {
       "id": "refurbished-devices",
       "label": "Reacondicionados",
       "value": 23,
       "note": "14 disponibles para venta",
-      "tone": "positive"
+      "tone": "positive",
+      "icon": "wrench"
     }
   ],
   "queue": [
