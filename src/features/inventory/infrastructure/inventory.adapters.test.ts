@@ -14,7 +14,7 @@ describe('inventory demo adapter', () => {
 
   it('keeps operational queue identities stable and unique', () => {
     const queue = new JsonInventoryDemoProvider().getDashboard().queue;
-    expect(new Set(queue.map((item) => item.id).size).toBe(queue.length);
+    expect(new Set(queue.map((item) => item.id)).size).toBe(queue.length);
     expect(queue.some((item) => item.actionLabel === 'Iniciar desarme')).toBe(true);
     expect(queue.some((item) => item.actionLabel === 'Evaluar dispositivo')).toBe(true);
   });
