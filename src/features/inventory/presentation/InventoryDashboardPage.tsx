@@ -37,7 +37,7 @@ export function InventoryDashboardPage({ provider }: { provider: InventoryDemoPr
           <DataTable
             caption="Cola operacional de inventario"
             columns={queueColumns}
-            filters={dashboard.queueFilters.map((filter) => ({ ...filter, value: (item) => String(item[filter.id]) }))}
+            filters={dashboard.queueFilters.map((filter): DataTableFilter<InventoryQueueItemDto> => ({ ...filter, value: (item) => String(item[filter.id]) }))}
             getRowId={(item) => item.id}
             initialPageSize={5}
             pageSizeOptions={[5, 10, 25]}
