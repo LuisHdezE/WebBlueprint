@@ -32,10 +32,12 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       metrics: [...document.querySelectorAll('[data-inventory-metrics] article')].map((node) => node.textContent),
       queue: document.querySelector('[data-inventory-queue]')?.textContent,
       rows: document.querySelectorAll('[data-inventory-queue] tbody tr').length,
+      icons: document.querySelectorAll('[data-inventory-metrics] article svg').length,
       overflow: document.documentElement.scrollWidth > innerWidth
     })`);
     check('Inventory title is rendered', desktop.title === 'Inventario', desktop);
     check('Eight operational KPIs render', desktop.metrics.length === 8, desktop);
+    check('Every KPI renders a semantic icon', desktop.icons === 8, desktop);
     check('Inventory flow KPIs are visible', desktop.metrics.some((text) => text.includes('Pendientes de evaluación')) && desktop.metrics.some((text) => text.includes('Listos para venta')), desktop);
     check('Operational queue renders four actions', desktop.rows === 4 && desktop.queue?.includes('Iniciar desarme') && desktop.queue?.includes('Evaluar dispositivo'), desktop);
     check('Desktop has no page overflow', !desktop.overflow, desktop);
@@ -46,10 +48,12 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     await waitFor(cdp, "document.querySelectorAll('[data-inventory-metrics] article').length===8");
     const mobile = await evaluate(cdp, `({
       metrics: document.querySelectorAll('[data-inventory-metrics] article').length,
+      icons: document.querySelectorAll('[data-inventory-metrics] article svg').length,
       queue: Boolean(document.querySelector('[data-inventory-queue]')),
       overflow: document.documentElement.scrollWidth > innerWidth
     })`);
     check('Mobile preserves all KPIs', mobile.metrics === 8, mobile);
+    check('Mobile preserves KPI icons', mobile.icons === 8, mobile);
     check('Mobile preserves operational queue', mobile.queue, mobile);
     check('Mobile page avoids horizontal overflow', !mobile.overflow, mobile);
     await shot('inventory-dashboard-mobile.png');
