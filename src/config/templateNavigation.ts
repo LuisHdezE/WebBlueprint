@@ -19,6 +19,13 @@ export const templateNavigation: readonly TemplateNavigationSection[] = [
     items: [{ label: 'Dashboard', to: '/dashboard', icon: 'dashboard' }],
   },
   {
+    label: 'Inventario',
+    icon: 'apps',
+    items: [
+      { label: 'Inventario · Dashboard', to: '/apps/inventory/dashboard', icon: 'dashboard' },
+    ],
+  },
+  {
     label: 'Aplicaciones',
     icon: 'apps',
     items: [
