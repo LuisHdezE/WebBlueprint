@@ -32,6 +32,8 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       metrics: [...document.querySelectorAll('[data-inventory-metrics] article')].map((node) => node.textContent),
       queue: document.querySelector('[data-inventory-queue]')?.textContent,
       rows: document.querySelectorAll('[data-inventory-queue] tbody tr').length,
+      total: document.querySelector('[data-data-table-count]')?.textContent,
+      pagination: document.querySelector('[data-data-table-pagination]')?.textContent,
       icons: document.querySelectorAll('[data-inventory-metrics] article svg').length,
       overflow: document.documentElement.scrollWidth > innerWidth
     })`);
@@ -39,7 +41,27 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     check('Eight operational KPIs render', desktop.metrics.length === 8, desktop);
     check('Every KPI renders a semantic icon', desktop.icons === 8, desktop);
     check('Inventory flow KPIs are visible', desktop.metrics.some((text) => text.includes('Pendientes de evaluación')) && desktop.metrics.some((text) => text.includes('Listos para venta')), desktop);
-    check('Operational queue renders four actions', desktop.rows === 4 && desktop.queue?.includes('Iniciar desarme') && desktop.queue?.includes('Evaluar dispositivo'), desktop);
+    check('Operational queue renders first paginated slice', desktop.rows === 5 && desktop.total?.includes('8 de 8') && desktop.pagination?.includes('2'), desktop);
+    const interactions = await evaluate(cdp, `(async () => {
+      const search = document.querySelector('#data-table-search');
+      const setValue = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+      setValue.call(search, 'Galaxy A52'); search.dispatchEvent(new Event('input', { bubbles: true }));
+      await new Promise((resolve) => setTimeout(resolve, 50));
+      const searchedRows = document.querySelectorAll('[data-inventory-queue] tbody tr').length;
+      const searchedText = document.querySelector('[data-inventory-queue] tbody')?.textContent;
+      document.querySelector('button[type="button"]:last-of-type');
+      const reset = [...document.querySelectorAll('button')].find((button) => button.textContent === 'Restablecer'); reset?.click();
+      await new Promise((resolve) => setTimeout(resolve, 50));
+      const firstRowCheck = document.querySelector('[data-inventory-queue] tbody input[type="checkbox"]'); firstRowCheck?.click();
+      await new Promise((resolve) => setTimeout(resolve, 50));
+      const selected = document.querySelector('[data-data-table-selected]')?.textContent;
+      const page2 = [...document.querySelectorAll('[data-data-table-pagination] button')].find((button) => button.textContent === '2'); page2?.click();
+      await new Promise((resolve) => setTimeout(resolve, 50));
+      return { searchedRows, searchedText, selected, page: document.querySelector('[data-data-table-pagination]')?.parentElement?.textContent, rowsOnPage2: document.querySelectorAll('[data-inventory-queue] tbody tr').length };
+    })`);
+    check('DataTable search narrows the queue', interactions.searchedRows === 1 && interactions.searchedText?.includes('Galaxy A52'), interactions);
+    check('DataTable row selection updates counter', interactions.selected === '1 seleccionados', interactions);
+    check('DataTable pagination reaches second page', interactions.page?.includes('Página 2 de 2') && interactions.rowsOnPage2 === 3, interactions);
     check('Desktop has no page overflow', !desktop.overflow, desktop);
     await shot('inventory-dashboard-desktop.png');
 
