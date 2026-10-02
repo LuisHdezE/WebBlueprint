@@ -5,7 +5,7 @@ import type { InventoryDashboardDto } from '../application/inventory.dto';
 export class JsonInventoryDemoProvider implements InventoryDemoProvider {
   getDashboard(): InventoryDashboardDto {
     const dashboard = rawDashboard as InventoryDashboardDto;
-    if (!dashboard.title || !dashboard.breadcrumbs.length || !dashboard.metrics.length || !dashboard.queue.length) {
+    if (!dashboard.title || !dashboard.breadcrumbs.length || !dashboard.metrics.length || !dashboard.queue.length || !dashboard.analytics?.trend.series.length || !dashboard.analytics.distribution.segments.length || !dashboard.analytics.funnel.stages.length) {
       throw new Error('Inventory dashboard demo data is incomplete.');
     }
     return dashboard;

@@ -187,5 +187,192 @@
         }
       ]
     }
-  ]
+  ],
+  "analytics": {
+    "trend": {
+      "title": "Flujo de inventario",
+      "description": "Movimiento operativo de los últimos siete días.",
+      "periodLabel": "Últimos 7 días",
+      "series": [
+        {
+          "id": "intake",
+          "label": "Ingresados",
+          "tone": "brand",
+          "points": [
+            {
+              "label": "Lun",
+              "value": 8
+            },
+            {
+              "label": "Mar",
+              "value": 11
+            },
+            {
+              "label": "Mié",
+              "value": 9
+            },
+            {
+              "label": "Jue",
+              "value": 14
+            },
+            {
+              "label": "Vie",
+              "value": 12
+            },
+            {
+              "label": "Sáb",
+              "value": 16
+            },
+            {
+              "label": "Dom",
+              "value": 13
+            }
+          ]
+        },
+        {
+          "id": "extracted",
+          "label": "Repuestos extraídos",
+          "tone": "info",
+          "points": [
+            {
+              "label": "Lun",
+              "value": 18
+            },
+            {
+              "label": "Mar",
+              "value": 22
+            },
+            {
+              "label": "Mié",
+              "value": 19
+            },
+            {
+              "label": "Jue",
+              "value": 27
+            },
+            {
+              "label": "Vie",
+              "value": 24
+            },
+            {
+              "label": "Sáb",
+              "value": 31
+            },
+            {
+              "label": "Dom",
+              "value": 29
+            }
+          ]
+        },
+        {
+          "id": "ready",
+          "label": "Listos para venta",
+          "tone": "success",
+          "points": [
+            {
+              "label": "Lun",
+              "value": 7
+            },
+            {
+              "label": "Mar",
+              "value": 9
+            },
+            {
+              "label": "Mié",
+              "value": 10
+            },
+            {
+              "label": "Jue",
+              "value": 12
+            },
+            {
+              "label": "Vie",
+              "value": 11
+            },
+            {
+              "label": "Sáb",
+              "value": 15
+            },
+            {
+              "label": "Dom",
+              "value": 17
+            }
+          ]
+        }
+      ]
+    },
+    "distribution": {
+      "title": "Distribución operativa",
+      "description": "Dispositivos activos por destino o cola de trabajo.",
+      "centerLabel": "Activos",
+      "segments": [
+        {
+          "id": "pending",
+          "label": "Pendientes de evaluación",
+          "value": 31,
+          "tone": "warning"
+        },
+        {
+          "id": "donor",
+          "label": "Equipos donantes",
+          "value": 86,
+          "tone": "brand"
+        },
+        {
+          "id": "dismantling",
+          "label": "Esperando desarme",
+          "value": 18,
+          "tone": "info"
+        },
+        {
+          "id": "refurbish",
+          "label": "Reacondicionamiento",
+          "value": 23,
+          "tone": "success"
+        },
+        {
+          "id": "hold",
+          "label": "En espera",
+          "value": 12,
+          "tone": "neutral"
+        }
+      ]
+    },
+    "funnel": {
+      "title": "Embudo operativo",
+      "description": "Cohorte de los últimos 30 días desde ingreso hasta inventario listo.",
+      "stages": [
+        {
+          "id": "intake",
+          "label": "Ingresados",
+          "value": 74,
+          "note": "Base de la cohorte"
+        },
+        {
+          "id": "evaluated",
+          "label": "Evaluados",
+          "value": 61,
+          "note": "82% del ingreso"
+        },
+        {
+          "id": "processed",
+          "label": "Procesados",
+          "value": 49,
+          "note": "Desarme o reacondicionamiento"
+        },
+        {
+          "id": "tested",
+          "label": "Probados",
+          "value": 38,
+          "note": "Componentes y equipos verificados"
+        },
+        {
+          "id": "ready",
+          "label": "Listos",
+          "value": 31,
+          "note": "Elegibles para inventario comercial"
+        }
+      ]
+    }
+  }
 }

@@ -42,6 +42,58 @@ export interface InventoryQueueFilterDto {
   options: readonly InventoryQueueFilterOptionDto[];
 }
 
+export interface InventoryTrendPointDto {
+  label: string;
+  value: number;
+}
+
+export interface InventoryTrendSeriesDto {
+  id: string;
+  label: string;
+  tone: 'brand' | 'info' | 'success';
+  points: readonly InventoryTrendPointDto[];
+}
+
+export interface InventoryTrendAnalyticsDto {
+  title: string;
+  description: string;
+  periodLabel: string;
+  series: readonly InventoryTrendSeriesDto[];
+}
+
+export interface InventoryDistributionSegmentDto {
+  id: string;
+  label: string;
+  value: number;
+  tone: 'brand' | 'info' | 'success' | 'warning' | 'neutral';
+}
+
+export interface InventoryDistributionAnalyticsDto {
+  title: string;
+  description: string;
+  centerLabel: string;
+  segments: readonly InventoryDistributionSegmentDto[];
+}
+
+export interface InventoryFunnelStageDto {
+  id: string;
+  label: string;
+  value: number;
+  note: string;
+}
+
+export interface InventoryFunnelAnalyticsDto {
+  title: string;
+  description: string;
+  stages: readonly InventoryFunnelStageDto[];
+}
+
+export interface InventoryAnalyticsDto {
+  trend: InventoryTrendAnalyticsDto;
+  distribution: InventoryDistributionAnalyticsDto;
+  funnel: InventoryFunnelAnalyticsDto;
+}
+
 export interface InventoryDashboardDto {
   title: string;
   description: string;
@@ -49,6 +101,7 @@ export interface InventoryDashboardDto {
   attentionTitle: string;
   attentionDescription: string;
   metrics: readonly InventoryMetricDto[];
+  analytics: InventoryAnalyticsDto;
   queue: readonly InventoryQueueItemDto[];
   queueFilters: readonly InventoryQueueFilterDto[];
 }

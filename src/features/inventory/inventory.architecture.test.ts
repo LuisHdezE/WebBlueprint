@@ -12,7 +12,15 @@ describe('inventory foundation architecture', () => {
 
   it('reuses blueprint primitives instead of duplicating them', () => {
     const page = readFileSync('src/features/inventory/presentation/InventoryDashboardPage.tsx', 'utf8');
-    for (const primitive of ['DataTable', 'MetricCard', 'StatusBadge', 'SurfaceCard', 'PageShell']) expect(page).toContain(primitive);
+    for (const primitive of ['DataTable', 'DonutChartCard', 'FunnelChartCard', 'MetricCard', 'StatusBadge', 'SurfaceCard', 'TrendChartCard', 'PageShell']) expect(page).toContain(primitive);
+  });
+
+  it('keeps analytics drawing inside shared primitives', () => {
+    const page = readFileSync('src/features/inventory/presentation/InventoryDashboardPage.tsx', 'utf8');
+    expect(page).not.toContain('<svg');
+    expect(page).toContain('dashboard.analytics.trend');
+    expect(page).toContain('dashboard.analytics.distribution');
+    expect(page).toContain('dashboard.analytics.funnel');
   });
 
   it('uses the shared DataTable for the operational queue', () => {
