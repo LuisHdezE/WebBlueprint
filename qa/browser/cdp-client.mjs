@@ -3,6 +3,7 @@ import { once } from 'node:events';
 import { accessSync, constants, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { createServer } from 'node:net';
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -27,7 +28,31 @@ function findChromeBinary() {
   throw new Error(`Chromium/Chrome executable not found. Checked: ${candidates.join(', ')}`);
 }
 
-async function waitForDebugTarget(port, timeoutMs = 10_000) {
+
+async function findAvailablePort() {
+  return new Promise((resolve, reject) => {
+    const server = createServer();
+    server.unref();
+    server.once('error', reject);
+    server.listen({ host: '127.0.0.1', port: 0 }, () => {
+      const address = server.address();
+      const port = typeof address === 'object' && address ? address.port : null;
+      server.close((error) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+        if (!port) {
+          reject(new Error('Unable to reserve a Chrome DevTools port.'));
+          return;
+        }
+        resolve(port);
+      });
+    });
+  });
+}
+
+async function waitForDebugTarget(port, timeoutMs = 15_000) {
   const startedAt = Date.now();
   let lastError;
 
@@ -76,8 +101,9 @@ function removeProfile(profileDir) {
   });
 }
 
-export async function launchChrome({ port = 9222 } = {}) {
+export async function launchChrome({ port } = {}) {
   const chromeBinary = findChromeBinary();
+  const debugPort = port ?? await findAvailablePort();
   const profileDir = mkdtempSync(join(tmpdir(), 'webblueprint-qa-chrome-'));
   const processHandle = spawn(
     chromeBinary,
@@ -93,7 +119,7 @@ export async function launchChrome({ port = 9222 } = {}) {
       '--metrics-recording-only',
       '--no-first-run',
       `--remote-debugging-address=127.0.0.1`,
-      `--remote-debugging-port=${port}`,
+      `--remote-debugging-port=${debugPort}`,
       `--user-data-dir=${profileDir}`,
       'about:blank',
     ],
@@ -106,7 +132,7 @@ export async function launchChrome({ port = 9222 } = {}) {
   });
 
   try {
-    const webSocketDebuggerUrl = await waitForDebugTarget(port);
+    const webSocketDebuggerUrl = await waitForDebugTarget(debugPort);
     return {
       chromeBinary,
       webSocketDebuggerUrl,
