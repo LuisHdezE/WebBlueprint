@@ -1,7 +1,9 @@
 import rawProducts from './products.catalog.json';
 import rawProductsView from './products.view.json';
 import rawShopView from './shop.view.json';
+import rawDetailView from './detail.view.json';
 import type { EcommerceCatalogProvider } from '../application/ecommerce.contracts';
+import type { ProductDetailViewDto } from '../application/detail.dto';
 import type { ProductDto, ProductsViewDto } from '../application/ecommerce.dto';
 import type { ShopViewDto } from '../application/shop.dto';
 
@@ -33,6 +35,13 @@ export class JsonEcommerceCatalogProvider implements EcommerceCatalogProvider {
     assertBreadcrumbs(view, 'products');
     const categories = [...new Set(products.map((product) => product.category))];
     return { ...rawProductsView, categories, products } as ProductsViewDto;
+  }
+  getProductDetailView(): ProductDetailViewDto {
+    const view = rawDetailView as Record<string, unknown>;
+    assertStringFields(view, ['title', 'description', 'productId', 'skuLabel', 'categoryLabel', 'stockLabel', 'featuredLabel', 'relatedProductsLabel'], 'detail');
+    assertBreadcrumbs(view, 'detail');
+    if (!products.some((product) => product.id === rawDetailView.productId)) throw new Error('Detail product must exist in the canonical ecommerce catalog.');
+    return rawDetailView as ProductDetailViewDto;
   }
   getShopView(): ShopViewDto {
     const view = rawShopView as Record<string, unknown>;

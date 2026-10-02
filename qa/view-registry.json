@@ -201,6 +201,20 @@
         "src/features/applications/ecommerce/infrastructure/ecommerce.adapters.test.ts",
         "src/features/applications/ecommerce/ecommerce.architecture.test.ts"
       ]
+    },
+    {
+      "id": "applications.ecommerce-detail",
+      "route": "applications/ecommerce/detail",
+      "presentation": "src/features/applications/ecommerce/presentation/ProductDetailPage.tsx",
+      "dto": "src/features/applications/ecommerce/application/detail.dto.ts",
+      "contracts": "src/features/applications/ecommerce/application/ecommerce.contracts.ts",
+      "content": "src/features/applications/ecommerce/infrastructure/detail.view.json",
+      "checkpoint": "docs/checkpoints/V15-applications-ecommerce-detail.md",
+      "browserQa": "qa/browser/applications-ecommerce-detail.browser-qa.mjs",
+      "tests": [
+        "src/features/applications/ecommerce/infrastructure/ecommerce.adapters.test.ts",
+        "src/features/applications/ecommerce/ecommerce.architecture.test.ts"
+      ]
     }
   ]
 }
