@@ -10,6 +10,7 @@ describe('inventory demo adapter', () => {
     expect(dashboard.queue).toHaveLength(4);
     expect(dashboard.metrics.map((metric) => metric.id)).toContain('pending-evaluation');
     expect(dashboard.metrics.map((metric) => metric.id)).toContain('sale-ready-parts');
+    expect(dashboard.metrics.every((metric) => Boolean(metric.icon))).toBe(true);
   });
 
   it('keeps operational queue identities stable and unique', () => {
