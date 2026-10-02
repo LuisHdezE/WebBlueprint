@@ -20,4 +20,4 @@ The deterministic demo dataset represents physical devices moving through evalua
 - Browser QA: deep link, 8 KPIs, operational queue, desktop/mobile and horizontal-overflow checks.
 - Deployment smoke: `apps/inventory/dashboard`.
 
-QA status: PENDING — full gate must pass on the final I1 HEAD before merge approval is requested.
+QA status: PASS — CI #253 passed Quality gate, Automated QA, Browser QA, exported React project smoke, SPA fallback and PR build preview on I1 HEAD `a889dccef242805036b344f17f69314ce4a0215e`. Final merge remains subject to a green CI run on this checkpoint commit and explicit approval of the exact PR HEAD.
