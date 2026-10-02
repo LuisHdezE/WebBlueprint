@@ -33,7 +33,12 @@ const bulletByTone = {
 export function DonutChartCard({ title, description, centerLabel = 'Total', segments }: DonutChartCardProps) {
   const total = segments.reduce((sum, segment) => sum + segment.value, 0);
   const circumference = 2 * Math.PI * 44;
-  let offset = 0;
+  const arcs = segments.map((segment, index) => {
+    const length = total > 0 ? (segment.value / total) * circumference : 0;
+    const previousValue = segments.slice(0, index).reduce((sum, item) => sum + item.value, 0);
+    const currentOffset = total > 0 ? (previousValue / total) * circumference : 0;
+    return { segment, length, currentOffset };
+  });
 
   return <SurfaceCard className="h-full">
     <div data-analytics-widget="donut">
@@ -44,23 +49,18 @@ export function DonutChartCard({ title, description, centerLabel = 'Total', segm
         <div className="relative h-44 w-44">
           <svg aria-label={title} className="h-full w-full -rotate-90" role="img" viewBox="0 0 120 120">
             <circle className="stroke-slate-100" cx="60" cy="60" fill="none" r="44" strokeWidth="14" />
-            {segments.map((segment) => {
-              const length = total > 0 ? (segment.value / total) * circumference : 0;
-              const currentOffset = offset;
-              offset += length;
-              return <circle
-                className={strokeByTone[segment.tone]}
-                cx="60"
-                cy="60"
-                fill="none"
-                key={segment.id}
-                r="44"
-                strokeDasharray={`${length} ${circumference - length}`}
-                strokeDashoffset={-currentOffset}
-                strokeLinecap="butt"
-                strokeWidth="14"
-              />;
-            })}
+            {arcs.map(({ segment, length, currentOffset }) => <circle
+              className={strokeByTone[segment.tone]}
+              cx="60"
+              cy="60"
+              fill="none"
+              key={segment.id}
+              r="44"
+              strokeDasharray={`${length} ${circumference - length}`}
+              strokeDashoffset={-currentOffset}
+              strokeLinecap="butt"
+              strokeWidth="14"
+            />)}
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
             <span className="text-xs font-medium text-slate-400">{centerLabel}</span>
