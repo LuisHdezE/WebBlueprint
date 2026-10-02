@@ -12,6 +12,7 @@ describe('templateNavigation', () => {
   it('exposes the complete G1 master navigation families', () => {
     expect(templateNavigation.map((section) => section.label)).toEqual([
       'General',
+      'Inventario',
       'Aplicaciones',
       'Componentes',
       'Elementos',
@@ -24,6 +25,6 @@ describe('templateNavigation', () => {
       'Layouts',
       'Documentación',
     ]);
-    expect(templateRouteItems).toHaveLength(96);
+    expect(templateRouteItems).toHaveLength(97);
   });
 });
