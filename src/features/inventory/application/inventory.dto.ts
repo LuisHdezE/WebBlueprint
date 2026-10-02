@@ -30,6 +30,18 @@ export interface InventoryQueueItemDto {
   priority: 'High' | 'Normal';
 }
 
+export interface InventoryQueueFilterOptionDto {
+  value: string;
+  label: string;
+}
+
+export interface InventoryQueueFilterDto {
+  id: 'status' | 'priority';
+  label: string;
+  allLabel: string;
+  options: readonly InventoryQueueFilterOptionDto[];
+}
+
 export interface InventoryDashboardDto {
   title: string;
   description: string;
@@ -38,4 +50,5 @@ export interface InventoryDashboardDto {
   attentionDescription: string;
   metrics: readonly InventoryMetricDto[];
   queue: readonly InventoryQueueItemDto[];
+  queueFilters: readonly InventoryQueueFilterDto[];
 }
