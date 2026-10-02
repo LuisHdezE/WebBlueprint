@@ -4,7 +4,7 @@ import { StatusBadge } from '@/components/data-display/StatusBadge';
 import { SurfaceCard } from '@/components/layout/SurfaceCard';
 import { PageShell } from '@/shell/PageShell';
 import type { InventoryDemoProvider } from '../application/inventory.contracts';
-import type { InventoryDeviceListItemDto, InventoryDevicesViewDto } from '../application/devices.dto';
+import type { InventoryDeviceListItemDto } from '../application/devices.dto';
 
 function optionLabel(options: readonly { value: string; label: string }[], value: string) {
   return options.find((option) => option.value === value)?.label ?? value;
