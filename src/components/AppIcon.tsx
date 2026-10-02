@@ -8,6 +8,7 @@ export type AppIconName =
   | 'chevron-down'
   | 'components'
   | 'dashboard'
+  | 'device'
   | 'document'
   | 'forms'
   | 'help'
@@ -16,11 +17,14 @@ export type AppIconName =
   | 'map'
   | 'menu'
   | 'palette'
+  | 'package'
   | 'pages'
   | 'search'
   | 'settings'
   | 'table'
   | 'user'
+  | 'wrench'
+  | 'check-circle'
   | 'widgets';
 
 const iconPaths: Record<AppIconName, ReactNode> = {
@@ -30,6 +34,7 @@ const iconPaths: Record<AppIconName, ReactNode> = {
   chart: <path d="M4 19V9m5 10V5m5 14v-7m5 7V3" />,
   'chevron-down': <path d="m7 10 5 5 5-5" />,
   components: <path d="m12 2 8 4.5v9L12 20l-8-4.5v-9L12 2Zm0 0v9m8-4.5-8 4.5m-8-4.5 8 4.5" />,
+  device: <><rect x="6" y="2" width="12" height="20" rx="2" /><path d="M10 18h4" /></>,
   dashboard: <path d="M4 4h7v7H4V4Zm9 0h7v4h-7V4ZM4 13h7v7H4v-7Zm9-3h7v10h-7V10Z" />,
   document: <path d="M6 2h8l4 4v16H6V2Zm8 0v5h5M9 12h6m-6 4h6" />,
   forms: <path d="M5 3h14v18H5V3Zm3 5h8M8 12h8m-8 4h5" />,
@@ -39,11 +44,14 @@ const iconPaths: Record<AppIconName, ReactNode> = {
   map: <path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Zm6-3v15m6-12v15" />,
   menu: <path d="M4 7h16M4 12h16M4 17h16" />,
   palette: <path d="M12 3a9 9 0 1 0 0 18h1.5a1.5 1.5 0 0 0 0-3H12a2 2 0 0 1 0-4h2a7 7 0 0 0 0-14h-2Zm-4 6h.01m3-3h.01m4 1h.01m2 4h.01" />,
+  package: <path d="m4 7 8-4 8 4v10l-8 4-8-4V7Zm0 0 8 4 8-4m-8 4v10" />,
   pages: <path d="M4 4h16v16H4V4Zm0 5h16M9 9v11" />,
   search: <path d="m21 21-4.3-4.3m2.3-5.2a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z" />,
   settings: <path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm7-3.5 2-1-2-3-2.2.5L15 7l-.2-2.3h-3.6L11 7 9.2 8.5 7 8 5 11l2 1-2 1 2 3 2.2-.5L11 17l.2 2.3h3.6L15 17l1.8-1.5L19 16l2-3-2-1Z" />,
   table: <path d="M3 5h18v14H3V5Zm0 4h18M8 5v14m6-14v14" />,
   user: <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 9a7 7 0 0 1 14 0" />,
+  wrench: <path d="M14.5 6.5a4 4 0 0 0-5-4.8l2.4 2.4-2.8 2.8-2.4-2.4a4 4 0 0 0 4.8 5L19 17l-2 2-7.5-7.5a4 4 0 0 1-5-4.8" />,
+  'check-circle': <path d="M21 11a9 9 0 1 1-4.9-8M9 11l2 2 7-7" />,
   widgets: <path d="M4 4h7v5H4V4Zm9 0h7v8h-7V4ZM4 11h7v9H4v-9Zm9 3h7v6h-7v-6Z" />,
 };
 
