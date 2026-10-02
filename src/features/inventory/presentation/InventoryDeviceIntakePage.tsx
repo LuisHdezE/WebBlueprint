@@ -70,9 +70,9 @@ export function InventoryDeviceIntakePage({ provider }: { provider: InventoryDem
         <SurfaceCard>
           <h2 className="text-base font-semibold text-slate-950">{view.conditionSectionTitle}</h2>
           <div className="mt-4 grid gap-4 md:grid-cols-3">
-            <SelectField id="device-powers-on" label={view.fields.powersOn} onChange={(value) => setField('powersOn', value as DevicePowerState)} options={view.options.powersOn} value={form.powersOn} />
-            <SelectField id="device-condition" label={view.fields.physicalCondition} onChange={(value) => setField('physicalCondition', value as DevicePhysicalCondition)} options={view.options.physicalCondition} value={form.physicalCondition} />
-            <SelectField id="device-lock" label={view.fields.accountLock} onChange={(value) => setField('accountLock', value as DeviceAccountLock)} options={view.options.accountLock} value={form.accountLock} />
+            <SelectField id="device-powers-on" label={view.fields.powersOn} onChange={(value) => setField('powersOn', value)} options={view.options.powersOn} value={form.powersOn} />
+            <SelectField id="device-condition" label={view.fields.physicalCondition} onChange={(value) => setField('physicalCondition', value)} options={view.options.physicalCondition} value={form.physicalCondition} />
+            <SelectField id="device-lock" label={view.fields.accountLock} onChange={(value) => setField('accountLock', value)} options={view.options.accountLock} value={form.accountLock} />
           </div>
         </SurfaceCard>
 
@@ -87,7 +87,7 @@ export function InventoryDeviceIntakePage({ provider }: { provider: InventoryDem
         <SurfaceCard>
           <h2 className="text-base font-semibold text-slate-950">{view.routingSectionTitle}</h2>
           <div className="mt-4 grid gap-4">
-            <SelectField id="device-destination" label={view.fields.destination} onChange={(value) => setField('destination', value as DeviceDestination)} options={view.options.destination} value={form.destination} />
+            <SelectField id="device-destination" label={view.fields.destination} onChange={(value) => setField('destination', value)} options={view.options.destination} value={form.destination} />
             <TextAreaField id="device-notes" label={view.fields.notes} onChange={(value) => setField('notes', value)} placeholder={view.placeholders.notes} value={form.notes} />
           </div>
         </SurfaceCard>
