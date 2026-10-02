@@ -98,7 +98,8 @@ jobs:
             applications/calendar \
             applications/chat \
             applications/contacts \
-            applications/ecommerce/products; do
+            applications/ecommerce/products \
+            applications/ecommerce/shop; do
             check_url "$PUBLIC_URL/$path" "/tmp/webblueprint-${path//\//-}.html"
           done
 

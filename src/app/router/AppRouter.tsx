@@ -30,6 +30,7 @@ import { JsonContactsContentProvider } from '@/features/applications/contacts/in
 import { ContactsPage } from '@/features/applications/contacts/presentation/ContactsPage';
 import { JsonEcommerceCatalogProvider } from '@/features/applications/ecommerce/infrastructure/JsonEcommerceCatalogProvider';
 import { ProductsPage } from '@/features/applications/ecommerce/presentation/ProductsPage';
+import { ShopPage } from '@/features/applications/ecommerce/presentation/ShopPage';
 import { BlogEditorPage } from '@/features/applications/blog/presentation/BlogEditorPage';
 import { BlogGridPage } from '@/features/applications/blog/presentation/BlogGridPage';
 import { BlogListPage } from '@/features/applications/blog/presentation/BlogListPage';
@@ -122,6 +123,7 @@ export function AppRouter() {
         <Route path="applications/chat" element={<ChatPage contentProvider={chatContentProvider} />} />
         <Route path="applications/contacts" element={<ContactsPage contentProvider={contactsContentProvider} />} />
         <Route path="applications/ecommerce/products" element={<ProductsPage catalogProvider={ecommerceCatalogProvider} />} />
+        <Route path="applications/ecommerce/shop" element={<ShopPage catalogProvider={ecommerceCatalogProvider} />} />
         {componentRoutes.map((component) => <Route key={component.path} path={component.path} element={<ComponentShowcasePage description={component.description} kind={component.kind} title={component.title} />} />)}
         {elementRoutes.map((element) => <Route key={element.path} path={element.path} element={<ElementShowcasePage description={element.description} kind={element.kind} title={element.title} />} />)}
         <Route path="pages/contact" element={<ContactPage />} /><Route path="pages/faq" element={<FaqPage />} /><Route path="pages/knowledge-base" element={<KnowledgeBasePage />} /><Route path="pages/maintenance" element={<MaintenancePage />} /><Route path="pages/not-found" element={<NotFoundPage />} /><Route path="pages/server-error" element={<ServerErrorPage />} /><Route path="pages/blank" element={<BlankPage />} /><Route path="pages/empty" element={<EmptyPage />} />
