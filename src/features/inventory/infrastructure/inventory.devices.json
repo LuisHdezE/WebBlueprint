@@ -371,6 +371,12 @@
     "cancelLabel": "Volver a dispositivos",
     "demoNotice": "Vista demo: el registro valida la interacción, pero no persiste datos en un backend.",
     "successTitle": "Ingreso preparado",
-    "successMessage": "El dispositivo quedó preparado para continuar con su evaluación dentro del flujo demo."
+    "successMessage": "El dispositivo quedó preparado para continuar con su evaluación dentro del flujo demo.",
+    "defaults": {
+      "powersOn": "Unknown",
+      "physicalCondition": "Good",
+      "accountLock": "Unknown",
+      "destination": "Pending Evaluation"
+    }
   }
 }
