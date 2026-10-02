@@ -1,6 +1,9 @@
 import { DataTable, type DataTableColumn, type DataTableFilter } from '@/components/data-display/DataTable';
+import { DonutChartCard } from '@/components/data-display/DonutChartCard';
+import { FunnelChartCard } from '@/components/data-display/FunnelChartCard';
 import { MetricCard } from '@/components/data-display/MetricCard';
 import { StatusBadge } from '@/components/data-display/StatusBadge';
+import { TrendChartCard } from '@/components/data-display/TrendChartCard';
 import { SurfaceCard } from '@/components/layout/SurfaceCard';
 import { PageShell } from '@/shell/PageShell';
 import type { InventoryDemoProvider } from '../application/inventory.contracts';
@@ -21,6 +24,30 @@ export function InventoryDashboardPage({ provider }: { provider: InventoryDemoPr
   return <PageShell breadcrumbs={dashboard.breadcrumbs.map((label) => ({ label }))} description={dashboard.description} title={dashboard.title}>
     <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4" data-inventory-metrics>
       {dashboard.metrics.map((metric) => <MetricCard icon={metric.icon} key={metric.id} label={metric.label} note={metric.note} tone={metric.tone} value={String(metric.value)} />)}
+    </div>
+
+    <div className="mt-6 grid gap-4 xl:grid-cols-3" data-inventory-analytics>
+      <div className="xl:col-span-2">
+        <TrendChartCard
+          description={dashboard.analytics.trend.description}
+          periodLabel={dashboard.analytics.trend.periodLabel}
+          series={dashboard.analytics.trend.series}
+          title={dashboard.analytics.trend.title}
+        />
+      </div>
+      <DonutChartCard
+        centerLabel={dashboard.analytics.distribution.centerLabel}
+        description={dashboard.analytics.distribution.description}
+        segments={dashboard.analytics.distribution.segments}
+        title={dashboard.analytics.distribution.title}
+      />
+      <div className="xl:col-span-3">
+        <FunnelChartCard
+          description={dashboard.analytics.funnel.description}
+          stages={dashboard.analytics.funnel.stages}
+          title={dashboard.analytics.funnel.title}
+        />
+      </div>
     </div>
 
     <div className="mt-6">
