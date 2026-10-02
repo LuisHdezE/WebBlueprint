@@ -1,8 +1,19 @@
+import { DataTable, type DataTableColumn, type DataTableFilter } from '@/components/data-display/DataTable';
 import { MetricCard } from '@/components/data-display/MetricCard';
 import { StatusBadge } from '@/components/data-display/StatusBadge';
 import { SurfaceCard } from '@/components/layout/SurfaceCard';
 import { PageShell } from '@/shell/PageShell';
 import type { InventoryDemoProvider } from '../application/inventory.contracts';
+import type { InventoryQueueItemDto } from '../application/inventory.dto';
+
+const queueColumns: readonly DataTableColumn<InventoryQueueItemDto>[] = [
+  { id: 'id', header: 'ID', cell: (item) => <span className="font-mono text-xs font-semibold text-slate-500">{item.id}</span>, sortable: true, sortValue: (item) => item.id, searchValue: (item) => item.id },
+  { id: 'device', header: 'Dispositivo', cell: (item) => <span className="font-medium text-slate-900">{item.deviceLabel}</span>, sortable: true, sortValue: (item) => item.deviceLabel, searchValue: (item) => item.deviceLabel },
+  { id: 'context', header: 'Contexto', cell: (item) => item.context, searchValue: (item) => item.context },
+  { id: 'status', header: 'Estado', cell: (item) => <StatusBadge label={item.status} tone={item.statusTone} />, sortable: true, sortValue: (item) => item.status, searchValue: (item) => item.status },
+  { id: 'priority', header: 'Prioridad', cell: (item) => item.priority, sortable: true, sortValue: (item) => item.priority, searchValue: (item) => item.priority },
+  { id: 'action', header: 'Próxima acción', align: 'right', cell: (item) => <span className="font-semibold text-brand-600">{item.actionLabel}</span>, searchValue: (item) => item.actionLabel },
+];
 
 export function InventoryDashboardPage({ provider }: { provider: InventoryDemoProvider }) {
   const dashboard = provider.getDashboard();
@@ -20,23 +31,22 @@ export function InventoryDashboardPage({ provider }: { provider: InventoryDemoPr
             <h2 className="mt-1 text-lg font-semibold text-slate-950">{dashboard.attentionTitle}</h2>
             <p className="mt-1 max-w-2xl text-sm text-slate-500">{dashboard.attentionDescription}</p>
           </div>
-          <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">{dashboard.queue.length} acciones</span>
         </div>
 
-        <div className="mt-5 overflow-x-auto" data-inventory-queue>
-          <table className="w-full min-w-[720px] text-left text-sm">
-            <thead><tr className="border-b border-slate-200 text-xs text-slate-400"><th className="pb-3 font-medium">ID</th><th className="pb-3 font-medium">Dispositivo</th><th className="pb-3 font-medium">Contexto</th><th className="pb-3 font-medium">Estado</th><th className="pb-3 font-medium">Prioridad</th><th className="pb-3 text-right font-medium">Próxima acción</th></tr></thead>
-            <tbody>
-              {dashboard.queue.map((item) => <tr className="border-b border-slate-100 last:border-0" key={item.id}>
-                <td className="py-3 font-mono text-xs font-semibold text-slate-500">{item.id}</td>
-                <td className="py-3 font-medium text-slate-900">{item.deviceLabel}</td>
-                <td className="py-3 text-slate-500">{item.context}</td>
-                <td className="py-3"><StatusBadge label={item.status} tone={item.statusTone} /></td>
-                <td className="py-3 text-slate-600">{item.priority}</td>
-                <td className="py-3 text-right font-semibold text-brand-600">{item.actionLabel}</td>
-              </tr>)}
-            </tbody>
-          </table>
+        <div className="mt-5" data-inventory-queue>
+          <DataTable
+            caption="Cola operacional de inventario"
+            columns={queueColumns}
+            filters={dashboard.queueFilters.map((filter): DataTableFilter<InventoryQueueItemDto> => ({ ...filter, value: (item) => String(item[filter.id]) }))}
+            getRowId={(item) => item.id}
+            initialPageSize={5}
+            pageSizeOptions={[5, 10, 25]}
+            rows={dashboard.queue}
+            searchLabel="Buscar en la cola"
+            searchPlaceholder="ID, dispositivo, estado o acción…"
+            searchable
+            selectable
+          />
         </div>
       </SurfaceCard>
     </div>

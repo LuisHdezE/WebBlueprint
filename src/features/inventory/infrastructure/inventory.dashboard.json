@@ -110,6 +110,82 @@
       "status": "Refurbish",
       "statusTone": "success",
       "priority": "Normal"
+    },
+    {
+      "id": "DEV-0274",
+      "deviceLabel": "Xiaomi Redmi Note 11 128 GB",
+      "context": "Ingreso pendiente de diagnóstico inicial",
+      "actionLabel": "Evaluar dispositivo",
+      "status": "Pending Evaluation",
+      "statusTone": "warning",
+      "priority": "Normal"
+    },
+    {
+      "id": "DON-0135",
+      "deviceLabel": "Samsung Galaxy S20 FE 128 GB",
+      "context": "Donante clasificado y listo para banco",
+      "actionLabel": "Iniciar desarme",
+      "status": "Waiting",
+      "statusTone": "info",
+      "priority": "High"
+    },
+    {
+      "id": "DON-0131",
+      "deviceLabel": "iPhone 8 64 GB",
+      "context": "Pantalla extraída; faltan cámaras y vibrador",
+      "actionLabel": "Continuar desarme",
+      "status": "Partially Dismantled",
+      "statusTone": "info",
+      "priority": "Normal"
+    },
+    {
+      "id": "REF-0021",
+      "deviceLabel": "Samsung Galaxy S21 128 GB",
+      "context": "Pruebas finales pendientes antes de inventario",
+      "actionLabel": "Continuar reacondicionamiento",
+      "status": "Refurbish",
+      "statusTone": "success",
+      "priority": "Normal"
+    }
+  ],
+  "queueFilters": [
+    {
+      "id": "status",
+      "label": "Estado",
+      "allLabel": "Todos los estados",
+      "options": [
+        {
+          "value": "Pending Evaluation",
+          "label": "Pendiente evaluación"
+        },
+        {
+          "value": "Waiting",
+          "label": "Esperando"
+        },
+        {
+          "value": "Partially Dismantled",
+          "label": "Desarme parcial"
+        },
+        {
+          "value": "Refurbish",
+          "label": "Reacondicionar"
+        }
+      ]
+    },
+    {
+      "id": "priority",
+      "label": "Prioridad",
+      "allLabel": "Todas las prioridades",
+      "options": [
+        {
+          "value": "High",
+          "label": "Alta"
+        },
+        {
+          "value": "Normal",
+          "label": "Normal"
+        }
+      ]
     }
   ]
 }
