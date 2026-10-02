@@ -36,7 +36,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       pagination: document.querySelector('[data-data-table-pagination]')?.textContent,
       icons: document.querySelectorAll('[data-inventory-metrics] article svg').length,
       overflow: document.documentElement.scrollWidth > innerWidth
-    })`);
+    })()`);
     check('Inventory title is rendered', desktop.title === 'Inventario', desktop);
     check('Eight operational KPIs render', desktop.metrics.length === 8, desktop);
     check('Every KPI renders a semantic icon', desktop.icons === 8, desktop);
