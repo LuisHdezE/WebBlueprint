@@ -9,7 +9,7 @@ export function InventoryDashboardPage({ provider }: { provider: InventoryDemoPr
 
   return <PageShell breadcrumbs={dashboard.breadcrumbs.map((label) => ({ label }))} description={dashboard.description} title={dashboard.title}>
     <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4" data-inventory-metrics>
-      {dashboard.metrics.map((metric) => <MetricCard key={metric.id} label={metric.label} note={metric.note} tone={metric.tone} value={String(metric.value)} />)}
+      {dashboard.metrics.map((metric) => <MetricCard icon={metric.icon} key={metric.id} label={metric.label} note={metric.note} tone={metric.tone} value={String(metric.value)} />)}
     </div>
 
     <div className="mt-6">
