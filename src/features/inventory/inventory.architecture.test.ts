@@ -20,7 +20,9 @@ describe('inventory foundation architecture', () => {
     expect(page).not.toContain('<table');
     expect(page).toContain('searchable');
     expect(page).toContain('selectable');
-    expect(page).toContain('queueFilters');
+    expect(page).toContain('dashboard.queueFilters');
+    expect(page).not.toContain("value: 'Pending Evaluation'");
+    expect(page).not.toContain("value: 'Partially Dismantled'");
   });
 
   it('keeps inventory behind an application provider boundary', () => {
