@@ -201,6 +201,20 @@
         "src/features/applications/ecommerce/infrastructure/ecommerce.adapters.test.ts",
         "src/features/applications/ecommerce/ecommerce.architecture.test.ts"
       ]
+    },
+    {
+      "id": "inventory.dashboard",
+      "route": "apps/inventory/dashboard",
+      "presentation": "src/features/inventory/presentation/InventoryDashboardPage.tsx",
+      "dto": "src/features/inventory/application/inventory.dto.ts",
+      "contracts": "src/features/inventory/application/inventory.contracts.ts",
+      "content": "src/features/inventory/infrastructure/inventory.dashboard.json",
+      "checkpoint": "docs/checkpoints/I1-inventory-dashboard.md",
+      "browserQa": "qa/browser/inventory-dashboard.browser-qa.mjs",
+      "tests": [
+        "src/features/inventory/infrastructure/inventory.adapters.test.ts",
+        "src/features/inventory/inventory.architecture.test.ts"
+      ]
     }
   ]
 }
