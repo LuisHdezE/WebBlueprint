@@ -96,10 +96,10 @@ export interface InventoryDeviceIntakeViewDto {
     destination: DeviceDestination;
   };
   options: {
-    powersOn: readonly InventoryFilterOptionDto[];
-    physicalCondition: readonly InventoryFilterOptionDto[];
-    accountLock: readonly InventoryFilterOptionDto[];
-    destination: readonly InventoryFilterOptionDto[];
+    powersOn: readonly { value: DevicePowerState; label: string }[];
+    physicalCondition: readonly { value: DevicePhysicalCondition; label: string }[];
+    accountLock: readonly { value: DeviceAccountLock; label: string }[];
+    destination: readonly { value: DeviceDestination; label: string }[];
   };
   submitLabel: string;
   cancelLabel: string;
