@@ -89,6 +89,12 @@ export interface InventoryDeviceIntakeViewDto {
     acquisitionCost: string;
     notes: string;
   };
+  defaults: {
+    powersOn: DevicePowerState;
+    physicalCondition: DevicePhysicalCondition;
+    accountLock: DeviceAccountLock;
+    destination: DeviceDestination;
+  };
   options: {
     powersOn: readonly InventoryFilterOptionDto[];
     physicalCondition: readonly InventoryFilterOptionDto[];
