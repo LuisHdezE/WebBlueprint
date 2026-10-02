@@ -15,28 +15,6 @@ const queueColumns: readonly DataTableColumn<InventoryQueueItemDto>[] = [
   { id: 'action', header: 'Próxima acción', align: 'right', cell: (item) => <span className="font-semibold text-brand-600">{item.actionLabel}</span>, searchValue: (item) => item.actionLabel },
 ];
 
-const queueFilters: readonly DataTableFilter<InventoryQueueItemDto>[] = [
-  {
-    id: 'status',
-    label: 'Estado',
-    allLabel: 'Todos los estados',
-    options: [
-      { value: 'Pending Evaluation', label: 'Pendiente evaluación' },
-      { value: 'Waiting', label: 'Esperando' },
-      { value: 'Partially Dismantled', label: 'Desarme parcial' },
-      { value: 'Refurbish', label: 'Reacondicionar' },
-    ],
-    value: (item) => item.status,
-  },
-  {
-    id: 'priority',
-    label: 'Prioridad',
-    allLabel: 'Todas las prioridades',
-    options: [{ value: 'High', label: 'Alta' }, { value: 'Normal', label: 'Normal' }],
-    value: (item) => item.priority,
-  },
-];
-
 export function InventoryDashboardPage({ provider }: { provider: InventoryDemoProvider }) {
   const dashboard = provider.getDashboard();
 
@@ -59,7 +37,7 @@ export function InventoryDashboardPage({ provider }: { provider: InventoryDemoPr
           <DataTable
             caption="Cola operacional de inventario"
             columns={queueColumns}
-            filters={queueFilters}
+            filters={dashboard.queueFilters.map((filter) => ({ ...filter, value: (item) => String(item[filter.id]) }))}
             getRowId={(item) => item.id}
             initialPageSize={5}
             pageSizeOptions={[5, 10, 25]}
