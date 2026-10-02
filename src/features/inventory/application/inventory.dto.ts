@@ -1,3 +1,4 @@
+import type { AppIconName } from '@/components/AppIcon';
 import type { StatusBadgeTone } from '@/components/data-display/StatusBadge';
 
 export type InventoryWorkflowStatus =
@@ -16,6 +17,7 @@ export interface InventoryMetricDto {
   value: number;
   note: string;
   tone: 'positive' | 'neutral' | 'warning';
+  icon: AppIconName;
 }
 
 export interface InventoryQueueItemDto {
