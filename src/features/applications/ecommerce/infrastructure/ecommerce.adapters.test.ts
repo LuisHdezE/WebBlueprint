@@ -22,4 +22,14 @@ describe('ecommerce catalog adapter', () => {
     expect(products.filter((product) => product.status !== 'Borrador')).toHaveLength(4);
     expect(products.filter((product) => product.status === 'Agotado')).toHaveLength(1);
   });
+
+  it('resolves product detail configuration against the canonical catalog', () => {
+    const provider = new JsonEcommerceCatalogProvider();
+    const products = provider.getProducts();
+    const view = provider.getProductDetailView();
+    expect(view.title).toBe('Detalle del producto');
+    expect(view.breadcrumbs).toEqual(['Aplicaciones', 'Ecommerce', 'Detalle']);
+    expect(products.some((product) => product.id === view.productId)).toBe(true);
+    expect(provider.getProducts()).toBe(products);
+  });
 });
