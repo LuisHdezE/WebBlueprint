@@ -35,11 +35,14 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       total: document.querySelector('[data-data-table-count]')?.textContent,
       pagination: document.querySelector('[data-data-table-pagination]')?.textContent,
       icons: document.querySelectorAll('[data-inventory-metrics] article svg').length,
+      analytics: [...document.querySelectorAll('[data-inventory-analytics] [data-analytics-widget]')].map((node) => node.getAttribute('data-analytics-widget')),
+      funnelStages: document.querySelectorAll('[data-inventory-analytics] [data-funnel-stage]').length,
       overflow: document.documentElement.scrollWidth > innerWidth
     })`);
     check('Inventory title is rendered', desktop.title === 'Inventario', desktop);
     check('Eight operational KPIs render', desktop.metrics.length === 8, desktop);
     check('Every KPI renders a semantic icon', desktop.icons === 8, desktop);
+    check('Dashboard renders all analytics widgets', desktop.analytics.length === 3 && desktop.analytics.includes('trend') && desktop.analytics.includes('donut') && desktop.analytics.includes('funnel') && desktop.funnelStages === 5, desktop);
     check('Inventory flow KPIs are visible', desktop.metrics.some((text) => text.includes('Pendientes de evaluación')) && desktop.metrics.some((text) => text.includes('Listos para venta')), desktop);
     check('Operational queue renders first paginated slice', desktop.rows === 5 && desktop.total?.includes('8 de 8') && desktop.pagination?.includes('2'), desktop);
     const interactions = await evaluate(cdp, `(async () => {
@@ -72,10 +75,12 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       metrics: document.querySelectorAll('[data-inventory-metrics] article').length,
       icons: document.querySelectorAll('[data-inventory-metrics] article svg').length,
       queue: Boolean(document.querySelector('[data-inventory-queue]')),
+      analytics: document.querySelectorAll('[data-inventory-analytics] [data-analytics-widget]').length,
       overflow: document.documentElement.scrollWidth > innerWidth
     })`);
     check('Mobile preserves all KPIs', mobile.metrics === 8, mobile);
     check('Mobile preserves KPI icons', mobile.icons === 8, mobile);
+    check('Mobile preserves analytics widgets', mobile.analytics === 3, mobile);
     check('Mobile preserves operational queue', mobile.queue, mobile);
     check('Mobile page avoids horizontal overflow', !mobile.overflow, mobile);
     await shot('inventory-dashboard-mobile.png');
