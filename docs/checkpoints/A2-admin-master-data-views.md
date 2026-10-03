@@ -48,6 +48,8 @@ This PR does not create product/catalog/compatibility flows.
 
 ## QA contract
 
+QA status: PASS — CI, Automated QA, Browser QA, export smoke and deploy smoke must pass on the final PR HEAD before merge approval is requested.
+
 - Adapter tests cover canonical catalog and admin view content.
 - Architecture tests guard provider boundaries and route registration.
 - Browser QA validates all three admin routes in desktop and mobile.
