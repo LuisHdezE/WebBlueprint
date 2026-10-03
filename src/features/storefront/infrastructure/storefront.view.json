@@ -1,0 +1,84 @@
+{
+  "shell": {
+    "storeName": "Elias Store Demo",
+    "storeTagline": "Repuestos y celulares usados con flujo comercial reusable.",
+    "announcement": "Storefront demo separado del panel administrativo. Sin ventas reales ni integración de pago.",
+    "logoText": "ES",
+    "searchPlaceholder": "Buscar repuestos, modelos o celulares usados…",
+    "primaryNav": [
+      { "id": "home", "label": "Inicio", "href": "/store" },
+      { "id": "products", "label": "Productos", "href": "/store/products" },
+      { "id": "spare-parts", "label": "Repuestos", "href": "/store/spare-parts" },
+      { "id": "used-phones", "label": "Celulares usados", "href": "/store/used-phones" },
+      { "id": "brands", "label": "Marcas", "href": "/store/brands" }
+    ],
+    "categoryNav": [
+      { "id": "displays", "label": "Displays", "href": "/store/categories/displays" },
+      { "id": "batteries", "label": "Baterías", "href": "/store/categories/batteries" },
+      { "id": "charge-connectors", "label": "Conectores", "href": "/store/categories/charge-connectors" },
+      { "id": "accessories", "label": "Accesorios", "href": "/store/categories/accessories" }
+    ],
+    "utilityNav": [
+      { "id": "account", "label": "Mi cuenta", "href": "/store/account" },
+      { "id": "favorites", "label": "Favoritos", "href": "/store/favorites" },
+      { "id": "cart", "label": "Carrito", "href": "/store/cart" }
+    ],
+    "footerColumns": [
+      {
+        "id": "shop",
+        "title": "Comprar",
+        "links": [
+          { "id": "footer-products", "label": "Productos", "href": "/store/products" },
+          { "id": "footer-spare-parts", "label": "Repuestos", "href": "/store/spare-parts" },
+          { "id": "footer-used-phones", "label": "Celulares usados", "href": "/store/used-phones" }
+        ]
+      },
+      {
+        "id": "support",
+        "title": "Soporte",
+        "links": [
+          { "id": "footer-shipping", "label": "Envíos", "href": "/store/shipping" },
+          { "id": "footer-contact", "label": "Contacto", "href": "/store/contact" },
+          { "id": "footer-warranty", "label": "Garantía demo", "href": "/store/warranty" }
+        ]
+      }
+    ],
+    "support": {
+      "whatsappLabel": "Consultar por WhatsApp",
+      "whatsappHref": "/store/contact",
+      "serviceArea": "Montevideo y zona metropolitana demo"
+    }
+  },
+  "home": {
+    "eyebrow": "Tienda online demo",
+    "title": "Storefront comercial separado del panel administrativo",
+    "description": "Base pública para navegar productos, repuestos y celulares usados sin heredar sidebar, tablas ni estética de dashboard.",
+    "primarySearchPlaceholder": "Ej. iPhone 13, batería, display OLED…",
+    "ctas": [
+      { "label": "Ver productos", "href": "/store/products", "variant": "primary" },
+      { "label": "Consultar por WhatsApp", "href": "/store/contact", "variant": "secondary" }
+    ],
+    "trustMetrics": [
+      { "id": "catalog", "label": "Catálogo preparado", "value": "Demo" },
+      { "id": "checkout", "label": "Checkout futuro", "value": "Pendiente" },
+      { "id": "payments", "label": "Pagos reales", "value": "No integrado" }
+    ],
+    "featureTiles": [
+      {
+        "id": "commercial-shell",
+        "title": "Shell comercial",
+        "description": "Header, búsqueda, categorías, cuenta, favoritos, carrito y footer público."
+      },
+      {
+        "id": "admin-separated",
+        "title": "Separado del admin",
+        "description": "La tienda no usa TemplateShell, sidebar ni layout de dashboard."
+      },
+      {
+        "id": "ready-for-catalog",
+        "title": "Listo para catálogo",
+        "description": "El siguiente bloque puede conectar productos, categorías y filtros públicos."
+      }
+    ]
+  }
+}
