@@ -8,6 +8,7 @@ describe('storefront architecture', () => {
     const listing = readFileSync('src/features/storefront/presentation/StorefrontProductListingPage.tsx', 'utf8');
     const detail = readFileSync('src/features/storefront/presentation/StorefrontProductDetailPage.tsx', 'utf8');
     const cart = readFileSync('src/features/storefront/presentation/StorefrontCartPage.tsx', 'utf8');
+    const contact = readFileSync('src/features/storefront/presentation/StorefrontContactPage.tsx', 'utf8');
     const checkout = readFileSync('src/features/storefront/presentation/StorefrontCheckoutPage.tsx', 'utf8');
     const identity = readFileSync('src/features/storefront/presentation/StorefrontCustomerIdentityPage.tsx', 'utf8');
     const favorites = readFileSync('src/features/storefront/presentation/StorefrontFavoritesPage.tsx', 'utf8');
@@ -22,6 +23,7 @@ describe('storefront architecture', () => {
     expect(listing).not.toContain('.json');
     expect(detail).not.toContain('.json');
     expect(cart).not.toContain('.json');
+    expect(contact).not.toContain('.json');
     expect(checkout).not.toContain('.json');
     expect(identity).not.toContain('.json');
     expect(favorites).not.toContain('.json');
@@ -32,6 +34,7 @@ describe('storefront architecture', () => {
     expect(detail).toContain('provider.getProductDetailView()');
     expect(detail).toContain('provider.getProductDetailBySlug(slug)');
     expect(cart).toContain('provider.getCartView()');
+    expect(contact).toContain('provider.getContactView()');
     expect(checkout).toContain('provider.getCheckoutView()');
     expect(identity).toContain('provider.getCustomerIdentityView()');
     expect(favorites).toContain('provider.getFavoritesView()');
@@ -64,6 +67,7 @@ describe('storefront architecture', () => {
     const listing = readFileSync('src/features/storefront/presentation/StorefrontProductListingPage.tsx', 'utf8');
     const detail = readFileSync('src/features/storefront/presentation/StorefrontProductDetailPage.tsx', 'utf8');
     const cart = readFileSync('src/features/storefront/presentation/StorefrontCartPage.tsx', 'utf8');
+    const contact = readFileSync('src/features/storefront/presentation/StorefrontContactPage.tsx', 'utf8');
     const checkout = readFileSync('src/features/storefront/presentation/StorefrontCheckoutPage.tsx', 'utf8');
     const identity = readFileSync('src/features/storefront/presentation/StorefrontCustomerIdentityPage.tsx', 'utf8');
     const favorites = readFileSync('src/features/storefront/presentation/StorefrontFavoritesPage.tsx', 'utf8');
@@ -73,6 +77,7 @@ describe('storefront architecture', () => {
     expect(router).toContain('StorefrontProductListingPage');
     expect(router).toContain('StorefrontProductDetailPage');
     expect(router).toContain('StorefrontCartPage');
+    expect(router).toContain('StorefrontContactPage');
     expect(router).toContain('StorefrontCheckoutPage');
     expect(router).toContain('StorefrontCustomerIdentityPage');
     expect(router).toContain('StorefrontFavoritesPage');
@@ -81,6 +86,7 @@ describe('storefront architecture', () => {
     expect(listing).not.toContain('JsonEcommerceCatalogProvider');
     expect(detail).not.toContain('JsonEcommerceCatalogProvider');
     expect(cart).not.toContain('JsonEcommerceCatalogProvider');
+    expect(contact).not.toContain('JsonEcommerceCatalogProvider');
     expect(checkout).not.toContain('JsonEcommerceCatalogProvider');
     expect(identity).not.toContain('JsonEcommerceCatalogProvider');
     expect(favorites).not.toContain('JsonEcommerceCatalogProvider');
@@ -329,6 +335,30 @@ describe('storefront architecture', () => {
     expect(favorites).not.toContain('sessionStorage');
     expect(favorites).not.toContain('fetch(');
     expect(navigation).toContain("to: '/store/favorites'");
+  });
+
+  it('renders contact landing skeleton without messaging API or client persistence', () => {
+    const dto = readFileSync('src/features/storefront/application/storefront.dto.ts', 'utf8');
+    const contracts = readFileSync('src/features/storefront/application/storefront.contracts.ts', 'utf8');
+    const provider = readFileSync('src/features/storefront/infrastructure/JsonStorefrontProvider.ts', 'utf8');
+    const contact = readFileSync('src/features/storefront/presentation/StorefrontContactPage.tsx', 'utf8');
+    const shell = readFileSync('src/shell/StorefrontShell.tsx', 'utf8');
+    const navigation = readFileSync('src/config/templateNavigation.ts', 'utf8');
+
+    expect(dto).toContain('StorefrontContactViewDto');
+    expect(dto).toContain('StorefrontContactChannelDto');
+    expect(contracts).toContain('getContactView');
+    expect(provider).toContain('getContactView()');
+    expect(provider).toContain("import rawContact from './storefront.contact.json'");
+    expect(contact).toContain('data-storefront-contact');
+    expect(contact).toContain('data-storefront-contact-channels');
+    expect(contact).toContain('data-storefront-contact-service');
+    expect(contact).not.toContain('localStorage');
+    expect(contact).not.toContain('sessionStorage');
+    expect(contact).not.toContain('fetch(');
+    expect(contact).not.toContain('https://wa.me');
+    expect(shell).toContain('shell.floatingAction.href');
+    expect(navigation).toContain("to: '/store/contact'");
   });
 
 });

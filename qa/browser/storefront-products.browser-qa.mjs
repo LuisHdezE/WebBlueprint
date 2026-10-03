@@ -10,6 +10,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
   const favoritesUrl = `${base}/store/favorites`;
   const checkoutUrl = `${base}/store/checkout`;
   const shippingUrl = `${base}/store/shipping`;
+  const contactUrl = `${base}/store/contact`;
   const signInUrl = `${base}/store/account/sign-in`;
   const registerUrl = `${base}/store/account/register`;
   const checks = [], failures = [];
@@ -37,6 +38,8 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     check('Storefront checkout deep link responds successfully', checkoutResponse.ok, { status: checkoutResponse.status, checkoutUrl });
     const shippingResponse = await fetch(shippingUrl);
     check('Storefront shipping deep link responds successfully', shippingResponse.ok, { status: shippingResponse.status, shippingUrl });
+    const contactResponse = await fetch(contactUrl);
+    check('Storefront contact deep link responds successfully', contactResponse.ok, { status: contactResponse.status, contactUrl });
     const signInResponse = await fetch(signInUrl);
     check('Storefront customer sign-in deep link responds successfully', signInResponse.ok, { status: signInResponse.status, signInUrl });
     const registerResponse = await fetch(registerUrl);
@@ -208,6 +211,27 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     check('Storefront shipping desktop avoids horizontal overflow', !shipping.overflow, shipping);
     await shot('storefront-shipping-desktop.png');
 
+    await navigate(cdp, contactUrl);
+    await waitFor(cdp, "Boolean(document.querySelector('[data-storefront-contact]'))");
+    const contact = await evaluate(cdp, `({
+      shell: Boolean(document.querySelector('[data-storefront-shell]')),
+      page: Boolean(document.querySelector('[data-storefront-contact]')),
+      title: document.querySelector('[data-storefront-contact] h1')?.textContent ?? '',
+      channels: document.querySelectorAll('[data-storefront-contact-channels] article').length,
+      disabledButtons: document.querySelectorAll('[data-storefront-contact-channels] button:disabled').length,
+      service: document.querySelector('[data-storefront-contact-service]')?.textContent ?? '',
+      notices: document.querySelector('[data-storefront-contact-notices]')?.textContent ?? '',
+      floatingHref: document.querySelector('[data-storefront-floating-action]')?.getAttribute('href') ?? '',
+      overflow: document.documentElement.scrollWidth > innerWidth
+    })`);
+    check('Storefront contact renders inside storefront shell', contact.shell && contact.page, contact);
+    check('Storefront contact renders provider-driven channels', contact.title.includes('Hablemos antes de confirmar') && contact.channels === 2, contact);
+    check('Storefront contact blocks real messaging in B10', contact.disabledButtons === 2 && contact.notices.includes('Sin API de mensajería') && contact.notices.includes('Sin formulario enviado'), contact);
+    check('Storefront floating WhatsApp action resolves to contact landing', contact.floatingHref === '/store/contact', contact);
+    check('Storefront contact service area and hours render', contact.service.includes('Montevideo') && contact.service.includes('Lunes a viernes'), contact);
+    check('Storefront contact desktop avoids horizontal overflow', !contact.overflow, contact);
+    await shot('storefront-contact-desktop.png');
+
     await navigate(cdp, signInUrl);
     await waitFor(cdp, "Boolean(document.querySelector('[data-storefront-customer-identity]'))");
     const signIn = await evaluate(cdp, `({
@@ -321,6 +345,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       favoritesUrl,
       checkoutUrl,
       shippingUrl,
+      contactUrl,
       signInUrl,
       registerUrl,
       generatedAt: new Date().toISOString(),
