@@ -8,6 +8,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
   const detailUrl = `${base}/store/products/iphone-13-display-oled`;
   const cartUrl = `${base}/store/cart`;
   const checkoutUrl = `${base}/store/checkout`;
+  const shippingUrl = `${base}/store/shipping`;
   const signInUrl = `${base}/store/account/sign-in`;
   const registerUrl = `${base}/store/account/register`;
   const checks = [], failures = [];
@@ -31,6 +32,8 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     check('Storefront cart deep link responds successfully', cartResponse.ok, { status: cartResponse.status, cartUrl });
     const checkoutResponse = await fetch(checkoutUrl);
     check('Storefront checkout deep link responds successfully', checkoutResponse.ok, { status: checkoutResponse.status, checkoutUrl });
+    const shippingResponse = await fetch(shippingUrl);
+    check('Storefront shipping deep link responds successfully', shippingResponse.ok, { status: shippingResponse.status, shippingUrl });
     const signInResponse = await fetch(signInUrl);
     check('Storefront customer sign-in deep link responds successfully', signInResponse.ok, { status: signInResponse.status, signInUrl });
     const registerResponse = await fetch(registerUrl);
@@ -277,6 +280,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       detailUrl,
       cartUrl,
       checkoutUrl,
+      shippingUrl,
       signInUrl,
       registerUrl,
       generatedAt: new Date().toISOString(),
