@@ -119,11 +119,16 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
           setter.call(el, value);
           el.dispatchEvent(new Event('input', { bubbles: true }));
         }
-        function clickByText(text) {
+        function clickByText(text, root = document) {
           const expected = String(text ?? '').trim();
-          const button = [...document.querySelectorAll('button')].find((candidate) => candidate.textContent?.trim().includes(expected));
+          const button = [...root.querySelectorAll('button')].find((candidate) => candidate.textContent?.trim().includes(expected));
           if (!button) throw new Error('Missing button ' + expected);
           button.click();
+        }
+        function clickDialogButton(text) {
+          const dialog = document.querySelector('[role="dialog"]');
+          if (!dialog) throw new Error('Missing dialog for ' + text);
+          clickByText(text, dialog);
         }
         function search(value) { input('#data-table-search', value); }
         function tableText() { return document.querySelector('[${scenario.marker}]')?.textContent ?? ''; }
@@ -134,7 +139,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
         await sleep();
         const createOpenedModal = hasDialog();
         ${scenario.fillScript}
-        clickByText(document.querySelector('[data-master-data-form] button[type="submit"]')?.textContent?.trim() ?? '');
+        clickDialogButton(document.querySelector('[data-master-data-form] button[type="submit"]')?.textContent?.trim() ?? '');
         await sleep();
         search(${JSON.stringify(scenario.createName)});
         await sleep();
@@ -144,7 +149,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
         await sleep();
         const editOpenedModal = hasDialog();
         ${scenario.editScript}
-        clickByText(document.querySelector('[data-master-data-form] button[type="submit"]')?.textContent?.trim() ?? '');
+        clickDialogButton(document.querySelector('[data-master-data-form] button[type="submit"]')?.textContent?.trim() ?? '');
         await sleep();
         search(${JSON.stringify(scenario.updateName)});
         await sleep();
@@ -153,14 +158,14 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
         clickByText('Desactivar');
         await sleep();
         const deactivateOpenedModal = hasDialog();
-        clickByText('Desactivar');
+        clickDialogButton('Desactivar');
         await sleep();
         const disabledText = bodyText();
 
         clickByText('Eliminar');
         await sleep();
         const deleteOpenedModal = hasDialog();
-        clickByText('Eliminar');
+        clickDialogButton('Eliminar');
         await sleep();
         const deletedText = tableText();
 
