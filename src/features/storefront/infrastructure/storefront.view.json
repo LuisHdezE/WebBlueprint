@@ -277,6 +277,22 @@
             "alt": "Teléfono móvil usado en vitrina comercial",
             "objectPosition": "center"
           }
+        },
+        {
+          "id": "product-charge-connector",
+          "title": "Conector de carga Xiaomi Redmi Note",
+          "subtitle": "Repuesto demo para compatibilidad futura",
+          "priceLabel": "UYU 890",
+          "compareLabel": "Costo repuesto nuevo: UYU 520",
+          "badgeLabel": "Conector",
+          "href": "/store/products/xiaomi-redmi-charge-connector",
+          "compatibilityLabel": "Compatible: Redmi Note demo",
+          "stockLabel": "Stock demo: 7",
+          "image": {
+            "src": "https://images.unsplash.com/photo-1585060544812-6b45742d762f?auto=format&fit=crop&w=900&q=80",
+            "alt": "Equipo y accesorios de carga sobre escritorio",
+            "objectPosition": "center"
+          }
         }
       ]
     },
