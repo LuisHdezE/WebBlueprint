@@ -53,7 +53,7 @@ export function StorefrontProductDetailPage({ provider }: { provider: Storefront
         <aside className="rounded-2xl border border-black/10 bg-white p-5 shadow-sm lg:sticky lg:top-24 lg:self-start" data-storefront-product-buy-box>
           <p className="text-[11px] font-black uppercase tracking-[0.12em] text-slate-500">{detail.eyebrow}</p>
           <div className="mt-3 flex flex-wrap gap-2">
-            <span className="rounded-full bg-slate-950 px-2.5 py-1 text-[10px] font-black text-white">{product.badgeLabel}</span>
+            <span className="rounded-full bg-[var(--storefront-primary)] px-2.5 py-1 text-[10px] font-black text-[var(--storefront-on-primary)]">{product.badgeLabel}</span>
             <span className="rounded-full bg-[#f7f2ea] px-2.5 py-1 text-[10px] font-black text-slate-700">{product.stockLabel}</span>
           </div>
           <h1 className="mt-3 text-3xl font-black tracking-[-0.035em] text-slate-950">{product.title}</h1>
@@ -71,7 +71,7 @@ export function StorefrontProductDetailPage({ provider }: { provider: Storefront
           </div>
 
           <div className="mt-4 grid gap-2" data-storefront-product-actions>
-            <Link className="rounded-full bg-slate-950 px-4 py-2.5 text-center text-xs font-black text-white transition hover:bg-slate-800" to="/store/contact">
+            <Link className="rounded-full bg-[var(--storefront-primary)] px-4 py-2.5 text-center text-xs font-black text-[var(--storefront-on-primary)] transition hover:bg-[var(--storefront-primary-strong)]" to="/store/contact">
               Consultar disponibilidad
             </Link>
             <button className="rounded-full border border-black/10 bg-white px-4 py-2.5 text-xs font-black text-slate-400" disabled type="button">

@@ -54,6 +54,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       searchInputs: document.querySelectorAll('[data-storefront-product-listing] input[type="search"]').length,
       sortControls: document.querySelectorAll('[data-storefront-product-listing] select').length,
       productCards: document.querySelectorAll('[data-storefront-listing-product-card]').length,
+      productImages: [...document.querySelectorAll('[data-storefront-listing-product-image]')].filter((image) => image.getAttribute('src')?.startsWith('https://') && image.getAttribute('alt')).length,
       productText: document.querySelector('[data-storefront-product-listing]')?.textContent ?? '',
       headingFontPx: parseFloat(getComputedStyle(document.querySelector('[data-storefront-product-listing] h1')).fontSize),
       firstCardTop: document.querySelector('[data-storefront-listing-product-card]')?.getBoundingClientRect().top ?? 9999,
@@ -67,6 +68,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     check('Storefront product listing hero renders', desktop.title.includes('Productos preparados'), desktop);
     check('Storefront product listing exposes visual filters', desktop.filters === 4 && desktop.searchInputs >= 1 && desktop.sortControls === 1, desktop);
     check('Storefront product listing renders demo products', desktop.productCards === 6 && desktop.productText.includes('Display OLED iPhone 13'), desktop);
+    check('Storefront product listing renders provider-driven images', desktop.productImages === 6, desktop);
     check('Storefront product listing shows replacement cost labels', desktop.productText.includes('Costo repuesto nuevo'), desktop);
     check('Storefront product listing states non-transactional scope', desktop.notice.includes('Listado visual') && desktop.notice.includes('incrementos posteriores'), desktop);
     check('Storefront product listing has no add-to-cart behavior yet', desktop.addToCartButtons === 0, desktop);

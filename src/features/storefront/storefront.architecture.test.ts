@@ -235,4 +235,28 @@ describe('storefront architecture', () => {
     });
   });
 
+  it('keeps Storefront theme and images provider-driven', () => {
+    const dto = readFileSync('src/features/storefront/application/storefront.dto.ts', 'utf8');
+    const data = readFileSync('src/features/storefront/infrastructure/storefront.view.json', 'utf8');
+    const home = readFileSync('src/features/storefront/presentation/StorefrontHomePage.tsx', 'utf8');
+    const listing = readFileSync('src/features/storefront/presentation/StorefrontProductListingPage.tsx', 'utf8');
+    const shell = readFileSync('src/shell/StorefrontShell.tsx', 'utf8');
+
+    expect(dto).toContain('StorefrontThemeDto');
+    expect(dto).toContain('StorefrontMediaDto');
+    expect(dto).toContain('StorefrontHeroBannerDto');
+    expect(dto).toContain('StorefrontFloatingActionDto');
+    expect(data).toContain('"heroBanners"');
+    expect(data).toContain('"floatingAction"');
+    expect(home).toContain('home.heroBanners');
+    expect(home).toContain('activeBanner.image.src');
+    expect(home).toContain('product.image.src');
+    expect(listing).toContain('product.image.src');
+    expect(shell).toContain('shell.theme.primary');
+    expect(shell).toContain('shell.floatingAction');
+    expect(home).not.toContain('images.unsplash.com');
+    expect(listing).not.toContain('images.unsplash.com');
+    expect(shell).not.toContain('#25D366');
+  });
+
 });

@@ -9,9 +9,15 @@ function ProductCard({ product }: { product: StorefrontProductCardDto }) {
       <div className="grid min-h-28 content-between bg-[#f7f2ea] p-4">
         <div className="flex items-start justify-between gap-2">
           <span className="rounded-full bg-white px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.08em] text-slate-700 shadow-sm">{product.badgeLabel}</span>
-          <span className="rounded-full bg-slate-950 px-2.5 py-1 text-[10px] font-black text-white">{product.stockLabel}</span>
+          <span className="rounded-full bg-[var(--storefront-primary)] px-2.5 py-1 text-[10px] font-black text-[var(--storefront-on-primary)]">{product.stockLabel}</span>
         </div>
-        <div className="mt-5 h-14 rounded-xl border border-black/10 bg-white/70" aria-hidden="true" />
+        <img
+          alt={product.image.alt}
+          className="mt-3 h-28 w-full rounded-xl object-cover"
+          data-storefront-listing-product-image
+          src={product.image.src}
+          style={{ objectPosition: product.image.objectPosition ?? 'center' }}
+        />
       </div>
       <div className="grid gap-3 p-4">
         <div>
@@ -23,7 +29,7 @@ function ProductCard({ product }: { product: StorefrontProductCardDto }) {
           {product.compareLabel ? <p className="text-[11px] font-bold text-slate-500">{product.compareLabel}</p> : null}
         </div>
         <p className="rounded-xl bg-slate-50 px-3 py-2 text-[11px] font-bold text-slate-600">{product.compatibilityLabel}</p>
-        <Link className="rounded-full border border-black/10 px-4 py-2 text-center text-xs font-black text-slate-950 transition hover:border-slate-950" to={product.href}>
+        <Link className="rounded-full border border-black/10 px-4 py-2 text-center text-xs font-black text-slate-950 transition hover:border-[var(--storefront-primary)]" to={product.href}>
           Ver ficha
         </Link>
       </div>
@@ -55,7 +61,7 @@ export function StorefrontProductListingPage({ provider }: { provider: Storefron
           <label className="grid gap-1.5">
             <span className="text-[10px] font-black uppercase tracking-[0.08em] text-slate-500">Búsqueda visual</span>
             <input
-              className="h-10 rounded-xl border border-black/10 bg-[#f7f2ea] px-3 text-sm font-semibold text-slate-900 outline-none placeholder:text-slate-400 focus:border-slate-900 focus:ring-4 focus:ring-slate-950/10"
+              className="h-10 rounded-xl border border-black/10 bg-[#f7f2ea] px-3 text-sm font-semibold text-slate-900 outline-none placeholder:text-slate-400 focus:border-[var(--storefront-primary)] focus:ring-4 focus:ring-[var(--storefront-primary-soft)]"
               placeholder={listing.searchPlaceholder}
               type="search"
             />
@@ -63,7 +69,7 @@ export function StorefrontProductListingPage({ provider }: { provider: Storefron
 
           <label className="grid gap-1.5">
             <span className="text-[10px] font-black uppercase tracking-[0.08em] text-slate-500">Orden visual</span>
-            <select className="h-10 rounded-xl border border-black/10 bg-white px-3 text-sm font-bold text-slate-900 outline-none focus:border-slate-900">
+            <select className="h-10 rounded-xl border border-black/10 bg-white px-3 text-sm font-bold text-slate-900 outline-none focus:border-[var(--storefront-primary)]">
               {listing.sortOptions.map((option) => (
                 <option key={option.id}>{option.label}</option>
               ))}
@@ -75,7 +81,7 @@ export function StorefrontProductListingPage({ provider }: { provider: Storefron
               <legend className="text-sm font-black text-slate-950">{filter.title}</legend>
               <div className="grid gap-1.5">
                 {filter.options.map((option) => (
-                  <label key={option.id} className="grid cursor-pointer gap-0.5 rounded-xl border border-black/10 p-2.5 text-xs transition hover:border-slate-950">
+                  <label key={option.id} className="grid cursor-pointer gap-0.5 rounded-xl border border-black/10 p-2.5 text-xs transition hover:border-[var(--storefront-primary)]">
                     <span className="flex items-center gap-2 font-bold text-slate-800">
                       <input className="size-3.5 accent-slate-950" name={filter.id} type="radio" />
                       {option.label}

@@ -34,7 +34,7 @@ export function StorefrontCheckoutPage({ provider }: StorefrontCheckoutPageProps
               </p>
             </div>
             <div className="flex flex-col gap-2 sm:flex-row">
-              <Link className="rounded-full bg-slate-950 px-4 py-2.5 text-center text-xs font-black text-white" to={checkout.authGate.signInHref}>
+              <Link className="rounded-full bg-[var(--storefront-primary)] px-4 py-2.5 text-center text-xs font-black text-[var(--storefront-on-primary)]" to={checkout.authGate.signInHref}>
                 {checkout.authGate.signInLabel}
               </Link>
               <Link className="rounded-full border border-slate-300 bg-white px-4 py-2.5 text-center text-xs font-black text-slate-800" to={checkout.authGate.signUpHref}>

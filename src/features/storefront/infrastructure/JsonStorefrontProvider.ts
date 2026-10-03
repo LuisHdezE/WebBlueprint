@@ -18,8 +18,12 @@ export class JsonStorefrontProvider implements StorefrontProvider {
       !view.shell?.storeName
       || !view.shell.primaryNav.length
       || !view.shell.categoryNav.length
+      || !view.shell.theme?.primary
+      || !view.shell.floatingAction?.href
       || !view.home?.title
       || !view.home.ctas.length
+      || !view.home.heroBanners.length
+      || !view.home.heroBanners.every((banner) => banner.image?.src && banner.image.alt)
       || !view.productListing?.title
       || !view.productListing.products.length
       || !view.productListing.filters.length
