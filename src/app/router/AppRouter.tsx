@@ -42,6 +42,7 @@ import { MasterDataBrandsPage, MasterDataCategoriesPage, MasterDataDeviceModelsP
 import { MasterDataColorsPage, MasterDataConditionsPage, MasterDataRamCapacitiesPage, MasterDataSparePartTypesPage, MasterDataStorageCapacitiesPage } from '@/features/master-data/presentation/ExtendedMasterDataAdminPages';
 import { JsonStorefrontProvider } from '@/features/storefront/infrastructure/JsonStorefrontProvider';
 import { StorefrontHomePage } from '@/features/storefront/presentation/StorefrontHomePage';
+import { StorefrontProductDetailPage } from '@/features/storefront/presentation/StorefrontProductDetailPage';
 import { StorefrontProductListingPage } from '@/features/storefront/presentation/StorefrontProductListingPage';
 import { BlogEditorPage } from '@/features/applications/blog/presentation/BlogEditorPage';
 import { BlogGridPage } from '@/features/applications/blog/presentation/BlogGridPage';
@@ -130,6 +131,7 @@ export function AppRouter() {
       <Route element={<StorefrontShell provider={storefrontProvider} />}>
         <Route path="store" element={<StorefrontHomePage provider={storefrontProvider} />} />
         <Route path="store/products" element={<StorefrontProductListingPage provider={storefrontProvider} />} />
+        <Route path="store/products/:slug" element={<StorefrontProductDetailPage provider={storefrontProvider} />} />
       </Route>
       <Route element={<TemplateShell />}>
         <Route index element={<Navigate to="/dashboard" replace />} />
