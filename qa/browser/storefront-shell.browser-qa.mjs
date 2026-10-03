@@ -36,6 +36,12 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       title: document.querySelector('h1')?.textContent ?? '',
       navText: document.querySelector('[data-storefront-shell] header')?.textContent ?? '',
       footerText: document.querySelector('[data-storefront-footer]')?.textContent ?? '',
+      categoryText: document.querySelector('[data-storefront-category-section]')?.textContent ?? '',
+      productText: document.querySelector('[data-storefront-product-section]')?.textContent ?? '',
+      promoText: document.querySelector('[data-storefront-promo-band]')?.textContent ?? '',
+      categoryCards: document.querySelectorAll('[data-storefront-category-section] a').length,
+      productCards: document.querySelectorAll('[data-storefront-product-card]').length,
+      addToCartButtons: [...document.querySelectorAll('[data-storefront-product-card] button')].filter((button) => button.textContent?.includes('Agregar')).length,
       adminSidebar: Boolean(document.querySelector('[data-template-sidebar]')),
       publicShellBrand: document.querySelector('header')?.textContent?.includes('WebBlueprint') ?? false,
       searchInputs: document.querySelectorAll('[data-storefront-shell] input[type="search"]').length,
@@ -48,6 +54,11 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     check('Storefront home hero renders', desktop.title.includes('Storefront comercial'), desktop);
     check('Storefront footer renders support links', desktop.footerText.includes('Consultar por WhatsApp') && desktop.footerText.includes('Envíos'), desktop);
     check('Storefront has commercial search inputs', desktop.searchInputs >= 2, desktop);
+    check('Storefront category section renders', desktop.categoryCards === 4 && desktop.categoryText.includes('Celulares usados'), desktop);
+    check('Storefront product section renders demo products', desktop.productCards === 3 && desktop.productText.includes('Display OLED iPhone 13'), desktop);
+    check('Storefront product cards expose replacement cost labels', desktop.productText.includes('Costo repuesto nuevo'), desktop);
+    check('Storefront promo band states future auth flow', desktop.promoText.includes('registro') && desktop.promoText.includes('checkout'), desktop);
+    check('Storefront product cards do not implement cart behavior yet', desktop.addToCartButtons === 0, desktop);
     check('Storefront does not render admin sidebar', !desktop.adminSidebar, desktop);
     check('Storefront does not reuse public blueprint header copy', !desktop.publicShellBrand, desktop);
     check('Storefront desktop avoids horizontal overflow', !desktop.overflow, desktop);
@@ -61,10 +72,13 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       menu: Boolean(document.querySelector('details summary')),
       home: Boolean(document.querySelector('[data-storefront-home]')),
       footer: Boolean(document.querySelector('[data-storefront-footer]')),
+      categories: document.querySelectorAll('[data-storefront-category-section] a').length,
+      products: document.querySelectorAll('[data-storefront-product-card]').length,
       overflow: document.documentElement.scrollWidth > innerWidth
     })`);
     check('Mobile preserves storefront shell', mobile.shell && mobile.home && mobile.footer, mobile);
     check('Mobile exposes menu control', mobile.menu, mobile);
+    check('Mobile preserves catalog home sections', mobile.categories === 4 && mobile.products === 3, mobile);
     check('Mobile storefront avoids horizontal overflow', !mobile.overflow, mobile);
     await shot('storefront-shell-mobile.png');
   } catch (error) {
