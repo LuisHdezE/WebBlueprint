@@ -259,6 +259,20 @@
       ]
     },
     {
+      "id": "storefront.product-listing",
+      "route": "store/products",
+      "presentation": "src/features/storefront/presentation/StorefrontProductListingPage.tsx",
+      "dto": "src/features/storefront/application/storefront.dto.ts",
+      "contracts": "src/features/storefront/application/storefront.contracts.ts",
+      "content": "src/features/storefront/infrastructure/storefront.view.json",
+      "checkpoint": "docs/checkpoints/B3-storefront-product-listing-skeleton.md",
+      "browserQa": "qa/browser/storefront-products.browser-qa.mjs",
+      "tests": [
+        "src/features/storefront/infrastructure/storefront.adapters.test.ts",
+        "src/features/storefront/storefront.architecture.test.ts"
+      ]
+    },
+    {
       "id": "inventory.dashboard",
       "route": "apps/inventory/dashboard",
       "presentation": "src/features/inventory/presentation/InventoryDashboardPage.tsx",
