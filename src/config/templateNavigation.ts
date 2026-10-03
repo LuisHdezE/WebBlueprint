@@ -48,6 +48,13 @@ export const templateNavigation: readonly TemplateNavigationSection[] = [
     items: [
       { label: 'Inicio', to: '/store', icon: 'apps' },
       { label: 'Productos', to: '/store/products', icon: 'apps' },
+      { label: 'Repuestos', to: '/store/spare-parts', icon: 'apps' },
+      { label: 'Celulares usados', to: '/store/used-phones', icon: 'device' },
+      { label: 'Marcas', to: '/store/brands', icon: 'layers' },
+      { label: 'Categoría · Displays', to: '/store/categories/displays', icon: 'apps' },
+      { label: 'Categoría · Baterías', to: '/store/categories/batteries', icon: 'apps' },
+      { label: 'Categoría · Conectores', to: '/store/categories/charge-connectors', icon: 'apps' },
+      { label: 'Categoría · Accesorios', to: '/store/categories/accessories', icon: 'apps' },
       { label: 'Detalle de producto', to: '/store/products/iphone-13-display-oled', icon: 'device' },
       { label: 'Carrito', to: '/store/cart', icon: 'apps' },
       { label: 'Favoritos', to: '/store/favorites', icon: 'apps' },

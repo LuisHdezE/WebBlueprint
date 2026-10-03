@@ -8,6 +8,7 @@ describe('storefront architecture', () => {
     const listing = readFileSync('src/features/storefront/presentation/StorefrontProductListingPage.tsx', 'utf8');
     const detail = readFileSync('src/features/storefront/presentation/StorefrontProductDetailPage.tsx', 'utf8');
     const cart = readFileSync('src/features/storefront/presentation/StorefrontCartPage.tsx', 'utf8');
+    const catalog = readFileSync('src/features/storefront/presentation/StorefrontCatalogPage.tsx', 'utf8');
     const contact = readFileSync('src/features/storefront/presentation/StorefrontContactPage.tsx', 'utf8');
     const checkout = readFileSync('src/features/storefront/presentation/StorefrontCheckoutPage.tsx', 'utf8');
     const identity = readFileSync('src/features/storefront/presentation/StorefrontCustomerIdentityPage.tsx', 'utf8');
@@ -24,6 +25,7 @@ describe('storefront architecture', () => {
     expect(listing).not.toContain('.json');
     expect(detail).not.toContain('.json');
     expect(cart).not.toContain('.json');
+    expect(catalog).not.toContain('.json');
     expect(contact).not.toContain('.json');
     expect(checkout).not.toContain('.json');
     expect(identity).not.toContain('.json');
@@ -36,6 +38,8 @@ describe('storefront architecture', () => {
     expect(detail).toContain('provider.getProductDetailView()');
     expect(detail).toContain('provider.getProductDetailBySlug(slug)');
     expect(cart).toContain('provider.getCartView()');
+    expect(catalog).toContain('provider.getCatalogView()');
+    expect(catalog).toContain('provider.getCatalogRouteView(resolvedKey)');
     expect(contact).toContain('provider.getContactView()');
     expect(checkout).toContain('provider.getCheckoutView()');
     expect(identity).toContain('provider.getCustomerIdentityView()');
@@ -52,6 +56,10 @@ describe('storefront architecture', () => {
     expect(router).toContain('path="store"');
     expect(router).toContain('path="store/products"');
     expect(router).toContain('path="store/products/:slug"');
+    expect(router).toContain('path="store/spare-parts"');
+    expect(router).toContain('path="store/used-phones"');
+    expect(router).toContain('path="store/brands"');
+    expect(router).toContain('path="store/categories/:category"');
     expect(router).toContain('path="store/cart"');
     expect(router).toContain('path="store/checkout"');
     expect(router).toContain('path="store/shipping"');
@@ -71,6 +79,7 @@ describe('storefront architecture', () => {
     const listing = readFileSync('src/features/storefront/presentation/StorefrontProductListingPage.tsx', 'utf8');
     const detail = readFileSync('src/features/storefront/presentation/StorefrontProductDetailPage.tsx', 'utf8');
     const cart = readFileSync('src/features/storefront/presentation/StorefrontCartPage.tsx', 'utf8');
+    const catalog = readFileSync('src/features/storefront/presentation/StorefrontCatalogPage.tsx', 'utf8');
     const contact = readFileSync('src/features/storefront/presentation/StorefrontContactPage.tsx', 'utf8');
     const checkout = readFileSync('src/features/storefront/presentation/StorefrontCheckoutPage.tsx', 'utf8');
     const identity = readFileSync('src/features/storefront/presentation/StorefrontCustomerIdentityPage.tsx', 'utf8');
@@ -82,6 +91,7 @@ describe('storefront architecture', () => {
     expect(router).toContain('StorefrontProductListingPage');
     expect(router).toContain('StorefrontProductDetailPage');
     expect(router).toContain('StorefrontCartPage');
+    expect(router).toContain('StorefrontCatalogPage');
     expect(router).toContain('StorefrontContactPage');
     expect(router).toContain('StorefrontCheckoutPage');
     expect(router).toContain('StorefrontCustomerIdentityPage');
@@ -92,6 +102,7 @@ describe('storefront architecture', () => {
     expect(listing).not.toContain('JsonEcommerceCatalogProvider');
     expect(detail).not.toContain('JsonEcommerceCatalogProvider');
     expect(cart).not.toContain('JsonEcommerceCatalogProvider');
+    expect(catalog).not.toContain('JsonEcommerceCatalogProvider');
     expect(contact).not.toContain('JsonEcommerceCatalogProvider');
     expect(checkout).not.toContain('JsonEcommerceCatalogProvider');
     expect(identity).not.toContain('JsonEcommerceCatalogProvider');
@@ -229,9 +240,14 @@ describe('storefront architecture', () => {
       expect(navigation).toContain(`to: '${route}'`);
     });
 
-    // Dynamic product detail routes require one deterministic preview entry in the sidebar.
+    // Dynamic Storefront routes require deterministic sidebar previews.
     expect(router).toContain('path="store/products/:slug"');
     expect(navigation).toContain("to: '/store/products/iphone-13-display-oled'");
+    expect(router).toContain('path="store/categories/:category"');
+    expect(navigation).toContain("to: '/store/categories/displays'");
+    expect(navigation).toContain("to: '/store/categories/batteries'");
+    expect(navigation).toContain("to: '/store/categories/charge-connectors'");
+    expect(navigation).toContain("to: '/store/categories/accessories'");
   });
 
   it('keeps storefront visual density compact through shared primitives', () => {
@@ -301,6 +317,36 @@ describe('storefront architecture', () => {
     expect(productCard).toContain('aspect-[4/3]');
     expect(productCard).not.toContain('text-xl');
     expect(productCard).not.toContain('text-2xl');
+  });
+
+  it('completes storefront catalog routes with one provider-driven reusable page', () => {
+    const dto = readFileSync('src/features/storefront/application/storefront.dto.ts', 'utf8');
+    const contracts = readFileSync('src/features/storefront/application/storefront.contracts.ts', 'utf8');
+    const provider = readFileSync('src/features/storefront/infrastructure/JsonStorefrontProvider.ts', 'utf8');
+    const catalog = readFileSync('src/features/storefront/presentation/StorefrontCatalogPage.tsx', 'utf8');
+    const router = readFileSync('src/app/router/AppRouter.tsx', 'utf8');
+    const navigation = readFileSync('src/config/templateNavigation.ts', 'utf8');
+
+    expect(dto).toContain('StorefrontCatalogRouteViewDto');
+    expect(dto).toContain('StorefrontCatalogViewDto');
+    expect(contracts).toContain('getCatalogView');
+    expect(contracts).toContain('getCatalogRouteView');
+    expect(provider).toContain("import rawCatalog from './storefront.catalog.json'");
+    expect(provider).toContain('productIds');
+    expect(catalog).toContain('StorefrontProductCard');
+    expect(catalog).toContain('useParams');
+    expect(catalog).toContain('data-storefront-catalog-route');
+    expect(catalog).toContain('data-storefront-catalog-products');
+    expect(catalog).not.toContain('localStorage');
+    expect(catalog).not.toContain('sessionStorage');
+    expect(catalog).not.toContain('fetch(');
+    expect(router).toContain('routeKey="spare-parts"');
+    expect(router).toContain('routeKey="used-phones"');
+    expect(router).toContain('routeKey="brands"');
+    expect(router).toContain('path="store/categories/:category"');
+    expect(navigation).toContain("to: '/store/spare-parts'");
+    expect(navigation).toContain("to: '/store/used-phones'");
+    expect(navigation).toContain("to: '/store/brands'");
   });
 
   it('renders shipping zone skeleton without persistence, carrier integration or order mutation', () => {
