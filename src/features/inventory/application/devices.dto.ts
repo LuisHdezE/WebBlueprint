@@ -66,8 +66,8 @@ export interface InventoryDeviceIntakeViewDto {
   acquisitionSectionTitle: string;
   routingSectionTitle: string;
   fields: {
-    manufacturer: string;
-    model: string;
+    brandId: string;
+    deviceModelId: string;
     serialOrImei: string;
     storage: string;
     color: string;
@@ -80,8 +80,8 @@ export interface InventoryDeviceIntakeViewDto {
     notes: string;
   };
   placeholders: {
-    manufacturer: string;
-    model: string;
+    brandId: string;
+    deviceModelId: string;
     serialOrImei: string;
     storage: string;
     color: string;
@@ -90,6 +90,8 @@ export interface InventoryDeviceIntakeViewDto {
     notes: string;
   };
   defaults: {
+    brandId: string;
+    deviceModelId: string;
     powersOn: DevicePowerState;
     physicalCondition: DevicePhysicalCondition;
     accountLock: DeviceAccountLock;
