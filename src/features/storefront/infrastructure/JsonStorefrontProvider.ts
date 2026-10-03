@@ -1,11 +1,20 @@
 import rawStorefront from './storefront.view.json';
 import type { StorefrontProvider } from '../application/storefront.contracts';
-import type { StorefrontHomeViewDto, StorefrontShellViewDto, StorefrontViewDto } from '../application/storefront.dto';
+import type { StorefrontHomeViewDto, StorefrontProductListingViewDto, StorefrontShellViewDto, StorefrontViewDto } from '../application/storefront.dto';
 
 export class JsonStorefrontProvider implements StorefrontProvider {
   getStorefrontView(): StorefrontViewDto {
     const view = rawStorefront as StorefrontViewDto;
-    if (!view.shell?.storeName || !view.shell.primaryNav.length || !view.shell.categoryNav.length || !view.home?.title || !view.home.ctas.length) {
+    if (
+      !view.shell?.storeName
+      || !view.shell.primaryNav.length
+      || !view.shell.categoryNav.length
+      || !view.home?.title
+      || !view.home.ctas.length
+      || !view.productListing?.title
+      || !view.productListing.products.length
+      || !view.productListing.filters.length
+    ) {
       throw new Error('Storefront demo data is incomplete.');
     }
     return view;
@@ -17,5 +26,9 @@ export class JsonStorefrontProvider implements StorefrontProvider {
 
   getHomeView(): StorefrontHomeViewDto {
     return this.getStorefrontView().home;
+  }
+
+  getProductListingView(): StorefrontProductListingViewDto {
+    return this.getStorefrontView().productListing;
   }
 }
