@@ -50,6 +50,7 @@ export const templateNavigation: readonly TemplateNavigationSection[] = [
       { label: 'Productos', to: '/store/products', icon: 'apps' },
       { label: 'Detalle de producto', to: '/store/products/iphone-13-display-oled', icon: 'device' },
       { label: 'Carrito', to: '/store/cart', icon: 'apps' },
+      { label: 'Favoritos', to: '/store/favorites', icon: 'apps' },
       { label: 'Checkout', to: '/store/checkout', icon: 'forms' },
       { label: 'Envíos', to: '/store/shipping', icon: 'apps' },
       { label: 'Cuenta · Iniciar sesión', to: '/store/account/sign-in', icon: 'lock' },

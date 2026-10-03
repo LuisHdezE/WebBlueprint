@@ -44,6 +44,7 @@ import { JsonStorefrontProvider } from '@/features/storefront/infrastructure/Jso
 import { StorefrontCartPage } from '@/features/storefront/presentation/StorefrontCartPage';
 import { StorefrontCheckoutPage } from '@/features/storefront/presentation/StorefrontCheckoutPage';
 import { StorefrontCustomerIdentityPage } from '@/features/storefront/presentation/StorefrontCustomerIdentityPage';
+import { StorefrontFavoritesPage } from '@/features/storefront/presentation/StorefrontFavoritesPage';
 import { StorefrontHomePage } from '@/features/storefront/presentation/StorefrontHomePage';
 import { StorefrontProductDetailPage } from '@/features/storefront/presentation/StorefrontProductDetailPage';
 import { StorefrontProductListingPage } from '@/features/storefront/presentation/StorefrontProductListingPage';
@@ -137,6 +138,7 @@ export function AppRouter() {
         <Route path="store/products" element={<StorefrontProductListingPage provider={storefrontProvider} />} />
         <Route path="store/products/:slug" element={<StorefrontProductDetailPage provider={storefrontProvider} />} />
         <Route path="store/cart" element={<StorefrontCartPage provider={storefrontProvider} />} />
+        <Route path="store/favorites" element={<StorefrontFavoritesPage provider={storefrontProvider} />} />
         <Route path="store/checkout" element={<StorefrontCheckoutPage provider={storefrontProvider} />} />
         <Route path="store/shipping" element={<StorefrontShippingPage provider={storefrontProvider} />} />
         <Route path="store/account" element={<Navigate to="/store/account/sign-in" replace />} />

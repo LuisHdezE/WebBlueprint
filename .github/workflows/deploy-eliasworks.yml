@@ -90,6 +90,7 @@ jobs:
             store/products \
             store/products/iphone-13-display-oled \
             store/cart \
+            store/favorites \
             store/checkout \
             store/shipping \
             store/account/sign-in \

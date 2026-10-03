@@ -7,6 +7,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
   const targetUrl = `${base}/store/products`;
   const detailUrl = `${base}/store/products/iphone-13-display-oled`;
   const cartUrl = `${base}/store/cart`;
+  const favoritesUrl = `${base}/store/favorites`;
   const checkoutUrl = `${base}/store/checkout`;
   const shippingUrl = `${base}/store/shipping`;
   const signInUrl = `${base}/store/account/sign-in`;
@@ -30,6 +31,8 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     check('Storefront product detail deep link responds successfully', detailResponse.ok, { status: detailResponse.status, detailUrl });
     const cartResponse = await fetch(cartUrl);
     check('Storefront cart deep link responds successfully', cartResponse.ok, { status: cartResponse.status, cartUrl });
+    const favoritesResponse = await fetch(favoritesUrl);
+    check('Storefront favorites deep link responds successfully', favoritesResponse.ok, { status: favoritesResponse.status, favoritesUrl });
     const checkoutResponse = await fetch(checkoutUrl);
     check('Storefront checkout deep link responds successfully', checkoutResponse.ok, { status: checkoutResponse.status, checkoutUrl });
     const shippingResponse = await fetch(shippingUrl);
@@ -113,6 +116,23 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     check('Storefront product detail avoids admin sidebar and public blueprint copy', !detail.adminSidebar && !detail.publicShellBrand, detail);
     check('Storefront product detail desktop avoids horizontal overflow', !detail.overflow, detail);
     await shot('storefront-product-detail-desktop.png');
+
+    await navigate(cdp, favoritesUrl);
+    await waitFor(cdp, "Boolean(document.querySelector('[data-storefront-favorites]'))");
+    const favorites = await evaluate(cdp, `({
+      shell: Boolean(document.querySelector('[data-storefront-shell]')),
+      page: Boolean(document.querySelector('[data-storefront-favorites]')),
+      title: document.querySelector('[data-storefront-favorites] h1')?.textContent ?? '',
+      products: document.querySelectorAll('[data-storefront-favorites-products] [data-storefront-listing-product-card]').length,
+      emptyState: document.querySelector('[data-storefront-favorites-empty-state]')?.textContent ?? '',
+      notices: document.querySelector('[data-storefront-favorites-notices]')?.textContent ?? '',
+      overflow: document.documentElement.scrollWidth > innerWidth
+    })`);
+    check('Storefront favorites renders inside storefront shell', favorites.shell && favorites.page, favorites);
+    check('Storefront favorites renders three provider-driven products', favorites.title.includes('Guarda productos') && favorites.products === 3, favorites);
+    check('Storefront favorites exposes empty state and persistence guardrails', favorites.emptyState.includes('Aún no hay favoritos reales') && favorites.notices.includes('localStorage') && favorites.notices.includes('Sin carrito automático'), favorites);
+    check('Storefront favorites desktop avoids horizontal overflow', !favorites.overflow, favorites);
+    await shot('storefront-favorites-desktop.png');
 
     await navigate(cdp, cartUrl);
     await waitFor(cdp, "Boolean(document.querySelector('[data-storefront-cart]'))");
@@ -298,6 +318,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       targetUrl,
       detailUrl,
       cartUrl,
+      favoritesUrl,
       checkoutUrl,
       shippingUrl,
       signInUrl,
