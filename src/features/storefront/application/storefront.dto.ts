@@ -33,6 +33,8 @@ export interface StorefrontFloatingActionDto {
   ariaLabel: string;
   href: string;
   icon: 'whatsapp';
+  backgroundColor: string;
+  foregroundColor: string;
 }
 
 export interface StorefrontMetricDto {
