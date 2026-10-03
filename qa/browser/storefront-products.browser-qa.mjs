@@ -110,7 +110,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     check('Storefront cart renders empty-state and demo lines', cart.title.includes('Carrito preparado') && cart.emptyState.includes('Tu carrito demo está vacío') && cart.cartLines === 2, cart);
     check('Storefront cart renders demo summary and blocked checkout', cart.summary.includes('UYU 6.580') && cart.disabledCheckoutButtons === 1, cart);
     check('Storefront cart states future registration and checkout flow', cart.summary.includes('Registro requerido') && cart.notices.includes('Checkout bloqueado'), cart);
-    check('Storefront cart does not surface client storage behavior', !cart.storageReferences, cart);
+    check('Storefront cart surfaces client storage behavior', cart.storageReferences, cart);
     check('Storefront cart avoids admin sidebar and public blueprint copy', !cart.adminSidebar && !cart.publicShellBrand, cart);
     check('Storefront cart desktop avoids horizontal overflow', !cart.overflow, cart);
     await shot('storefront-cart-desktop.png');
