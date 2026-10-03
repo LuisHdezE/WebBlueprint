@@ -102,6 +102,9 @@ export function StorefrontCartPage({ provider }: StorefrontCartPageProps) {
             {cart.summary.checkoutDisabledLabel}
           </button>
           <p className="mt-3 text-center text-xs font-bold text-slate-500">{cart.summary.checkoutLabel} queda para un incremento posterior.</p>
+          <Link className="mt-4 flex w-full items-center justify-center rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-black text-slate-900" to={cart.summary.checkoutPreviewHref}>
+            {cart.summary.checkoutPreviewLabel}
+          </Link>
         </aside>
       </section>
     </main>

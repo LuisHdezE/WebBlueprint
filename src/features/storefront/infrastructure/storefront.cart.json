@@ -38,14 +38,31 @@
   "summary": {
     "title": "Resumen demo",
     "items": [
-      { "id": "subtotal", "label": "Subtotal demo", "value": "UYU 6.580", "tone": "default" },
-      { "id": "shipping", "label": "Envío por zona", "value": "Pendiente", "tone": "muted" },
-      { "id": "registration", "label": "Registro requerido", "value": "Antes del checkout", "tone": "muted" }
+      {
+        "id": "subtotal",
+        "label": "Subtotal demo",
+        "value": "UYU 6.580",
+        "tone": "default"
+      },
+      {
+        "id": "shipping",
+        "label": "Envío por zona",
+        "value": "Pendiente",
+        "tone": "muted"
+      },
+      {
+        "id": "registration",
+        "label": "Registro requerido",
+        "value": "Antes del checkout",
+        "tone": "muted"
+      }
     ],
     "totalLabel": "Total demo visible",
     "totalValue": "UYU 6.580",
     "checkoutLabel": "Continuar al checkout",
-    "checkoutDisabledLabel": "Checkout pendiente"
+    "checkoutDisabledLabel": "Checkout pendiente",
+    "checkoutPreviewLabel": "Revisar checkout demo",
+    "checkoutPreviewHref": "/store/checkout"
   },
   "notices": [
     {
