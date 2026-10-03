@@ -11,6 +11,17 @@ const scenarios = [
     representative: 'Apple',
     search: 'samsung',
     expectedSearch: 'Samsung',
+    createName: 'Nokia Demo',
+    updateName: 'Nokia Demo Actualizada',
+    fillScript: `
+      input('#brand-name', 'Nokia Demo');
+      input('#brand-slug', 'nokia-demo');
+      input('#brand-sort-order', '990');
+    `,
+    editScript: `
+      input('#brand-name', 'Nokia Demo Actualizada');
+      input('#brand-slug', 'nokia-demo-actualizada');
+    `,
   },
   {
     view: 'master-data.device-models',
@@ -20,6 +31,18 @@ const scenarios = [
     representative: 'iPhone 12',
     search: 'Galaxy S21',
     expectedSearch: 'Galaxy S21',
+    createName: 'Nokia G22 Demo',
+    updateName: 'Nokia G22 Demo Actualizado',
+    fillScript: `
+      input('#model-name', 'Nokia G22 Demo');
+      input('#model-slug', 'nokia-g22-demo');
+      input('#model-code', 'TA-1528');
+      input('#model-sort-order', '991');
+    `,
+    editScript: `
+      input('#model-name', 'Nokia G22 Demo Actualizado');
+      input('#model-slug', 'nokia-g22-demo-actualizado');
+    `,
   },
   {
     view: 'master-data.categories',
@@ -29,6 +52,18 @@ const scenarios = [
     representative: 'Repuestos',
     search: 'baterias-apple',
     expectedSearch: 'Baterías Apple',
+    createName: 'Accesorios Demo',
+    updateName: 'Accesorios Demo Actualizados',
+    fillScript: `
+      input('#category-name', 'Accesorios Demo');
+      input('#category-slug', 'accesorios-demo');
+      input('#category-description', 'Categoría demo para validar CRUD en memoria.');
+      input('#category-sort-order', '992');
+    `,
+    editScript: `
+      input('#category-name', 'Accesorios Demo Actualizados');
+      input('#category-slug', 'accesorios-demo-actualizados');
+    `,
   },
 ];
 
@@ -65,28 +100,86 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
         total: document.querySelector('[data-data-table-count]')?.textContent,
         rows: document.querySelectorAll('[${scenario.marker}] tbody tr').length,
         text: document.querySelector('[${scenario.marker}]')?.textContent,
+        hasCreate: Boolean(document.querySelector('[data-master-data-create]')),
+        hasPersistenceNote: document.querySelector('[${scenario.marker}]')?.textContent?.includes('CRUD demo en memoria'),
         overflow: document.documentElement.scrollWidth > innerWidth
       })`);
       check(`${scenario.view} title is rendered`, desktop.title === scenario.title, desktop);
       check(`${scenario.view} table renders deterministic rows`, desktop.rows === 5 && desktop.text?.includes(scenario.representative), desktop);
+      check(`${scenario.view} exposes create action and demo persistence note`, desktop.hasCreate && desktop.hasPersistenceNote, desktop);
       check(`${scenario.view} desktop has no page overflow`, !desktop.overflow, desktop);
 
       const interactions = await evaluate(cdp, `(async () => {
-        const search = document.querySelector('#data-table-search');
+        const sleep = () => new Promise((resolve) => setTimeout(resolve, 100));
         const setInput = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
-        setInput.call(search, ${JSON.stringify(scenario.search)});
-        search.dispatchEvent(new Event('input', { bubbles: true }));
-        await new Promise((resolve) => setTimeout(resolve, 80));
-        const searchedRows = document.querySelectorAll('[${scenario.marker}] tbody tr').length;
-        const searchedText = document.querySelector('[${scenario.marker}] tbody')?.textContent;
+        const setTextArea = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set;
+        window.confirm = () => true;
+        function input(selector, value) {
+          const el = document.querySelector(selector);
+          if (!el) throw new Error('Missing input ' + selector);
+          const setter = el.tagName === 'TEXTAREA' ? setTextArea : setInput;
+          setter.call(el, value);
+          el.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+        function clickByText(text) {
+          const expected = String(text ?? '').trim();
+          const button = [...document.querySelectorAll('button')].find((candidate) => candidate.textContent?.trim().includes(expected));
+          if (!button) throw new Error('Missing button ' + expected);
+          button.click();
+        }
+        function search(value) {
+          input('#data-table-search', value);
+        }
+        function tableText() {
+          return document.querySelector('[${scenario.marker}]')?.textContent ?? '';
+        }
+        function bodyText() {
+          return document.querySelector('[${scenario.marker}] tbody')?.textContent ?? '';
+        }
+
+        clickByText(document.querySelector('[data-master-data-create]')?.textContent?.trim() ?? '');
+        await sleep();
+        ${scenario.fillScript}
+        clickByText(document.querySelector('[data-master-data-form] button[type="submit"]')?.textContent?.trim() ?? '');
+        await sleep();
+        search(${JSON.stringify(scenario.createName)});
+        await sleep();
+        const createdText = bodyText();
+
+        clickByText('Editar');
+        await sleep();
+        ${scenario.editScript}
+        clickByText(document.querySelector('[data-master-data-form] button[type="submit"]')?.textContent?.trim() ?? '');
+        await sleep();
+        search(${JSON.stringify(scenario.updateName)});
+        await sleep();
+        const updatedText = bodyText();
+
+        clickByText('Desactivar');
+        await sleep();
+        const disabledText = bodyText();
+
+        clickByText('Eliminar');
+        await sleep();
+        const deletedText = tableText();
 
         const reset = [...document.querySelectorAll('button')].find((button) => button.textContent === 'Restablecer');
         reset?.click();
-        await new Promise((resolve) => setTimeout(resolve, 80));
-        const resetText = document.querySelector('[${scenario.marker}] tbody')?.textContent;
+        await sleep();
+        search(${JSON.stringify(scenario.search)});
+        await sleep();
+        const searchedRows = document.querySelectorAll('[${scenario.marker}] tbody tr').length;
+        const searchedText = bodyText();
+        reset?.click();
+        await sleep();
+        const resetText = bodyText();
 
-        return { searchedRows, searchedText, resetText };
+        return { createdText, updatedText, disabledText, deletedText, searchedRows, searchedText, resetText };
       })()`);
+      check(`${scenario.view} creates a demo record`, interactions.createdText?.includes(scenario.createName), interactions);
+      check(`${scenario.view} edits a demo record`, interactions.updatedText?.includes(scenario.updateName), interactions);
+      check(`${scenario.view} deactivates a demo record`, interactions.disabledText?.includes('Inactivo'), interactions);
+      check(`${scenario.view} deletes a demo record`, !interactions.deletedText?.includes(scenario.updateName), interactions);
       check(`${scenario.view} search narrows records`, interactions.searchedRows >= 1 && interactions.searchedText?.includes(scenario.expectedSearch), interactions);
       check(`${scenario.view} reset restores table`, interactions.resetText?.includes(scenario.representative), interactions);
       await shot(`${scenario.view.replaceAll('.', '-')}-desktop.png`);
@@ -97,9 +190,11 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       const mobile = await evaluate(cdp, `({
         title: document.querySelector('h1')?.textContent,
         table: Boolean(document.querySelector('[${scenario.marker}] [data-data-table]')),
+        create: Boolean(document.querySelector('[data-master-data-create]')),
+        actions: document.querySelector('[${scenario.marker}] tbody')?.textContent?.includes('Editar'),
         overflow: document.documentElement.scrollWidth > innerWidth
       })`);
-      check(`${scenario.view} mobile preserves table`, mobile.title === scenario.title && mobile.table, mobile);
+      check(`${scenario.view} mobile preserves CRUD table`, mobile.title === scenario.title && mobile.table && mobile.create && mobile.actions, mobile);
       check(`${scenario.view} mobile avoids horizontal overflow`, !mobile.overflow, mobile);
       await shot(`${scenario.view.replaceAll('.', '-')}-mobile.png`);
     }
