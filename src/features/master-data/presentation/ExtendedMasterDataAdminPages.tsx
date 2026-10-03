@@ -46,7 +46,6 @@ interface ExtendedPageProps {
 }
 
 const status = (active: boolean) => <StatusBadge label={active ? 'Activo' : 'Inactivo'} tone={active ? 'success' : 'neutral'} />;
-const yesNo = (value: boolean) => <StatusBadge label={value ? 'Sí' : 'No'} tone={value ? 'success' : 'neutral'} />;
 
 function normalizeSlug(value: string) {
   return value.trim().toLocaleLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '').replace(/-+/g, '-');
