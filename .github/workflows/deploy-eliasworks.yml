@@ -89,6 +89,13 @@ jobs:
             store \
             store/products \
             store/products/iphone-13-display-oled \
+            store/spare-parts \
+            store/used-phones \
+            store/brands \
+            store/categories/displays \
+            store/categories/batteries \
+            store/categories/charge-connectors \
+            store/categories/accessories \
             store/cart \
             store/favorites \
             store/checkout \
