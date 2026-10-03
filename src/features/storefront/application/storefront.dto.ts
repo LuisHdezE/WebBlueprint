@@ -91,8 +91,6 @@ export interface StorefrontProductListingViewDto {
   description: string;
   resultSummary: string;
   searchPlaceholder: string;
-  theme: StorefrontThemeDto;
-  floatingAction: StorefrontFloatingActionDto;
   sortOptions: readonly StorefrontFilterOptionDto[];
   filters: readonly {
     id: string;
@@ -325,6 +323,8 @@ export interface StorefrontShellViewDto {
   announcement: string;
   logoText: string;
   searchPlaceholder: string;
+  theme: StorefrontThemeDto;
+  floatingAction: StorefrontFloatingActionDto;
   primaryNav: readonly StorefrontNavItemDto[];
   categoryNav: readonly StorefrontNavItemDto[];
   utilityNav: readonly StorefrontNavItemDto[];
