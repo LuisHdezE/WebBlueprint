@@ -182,7 +182,9 @@ export interface StorefrontCheckoutViewDto {
     description: string;
     requiredLabel: string;
     signInLabel: string;
+    signInHref: string;
     signUpLabel: string;
+    signUpHref: string;
   };
   orderSummary: {
     title: string;
@@ -215,6 +217,37 @@ export interface StorefrontCheckoutViewDto {
       statusLabel: string;
     }[];
   };
+  notices: readonly {
+    id: string;
+    title: string;
+    description: string;
+  }[];
+}
+
+export interface StorefrontCustomerIdentityFieldDto {
+  id: string;
+  label: string;
+  type: 'text' | 'email' | 'password' | 'tel';
+  placeholder: string;
+  helper: string;
+}
+
+export interface StorefrontCustomerIdentityPanelDto {
+  title: string;
+  description: string;
+  alternateLabel: string;
+  alternateHref: string;
+  submitLabel: string;
+  fields: readonly StorefrontCustomerIdentityFieldDto[];
+}
+
+export interface StorefrontCustomerIdentityViewDto {
+  eyebrow: string;
+  description: string;
+  returnToCheckoutLabel: string;
+  returnToCheckoutHref: string;
+  signIn: StorefrontCustomerIdentityPanelDto;
+  register: StorefrontCustomerIdentityPanelDto;
   notices: readonly {
     id: string;
     title: string;
@@ -277,4 +310,5 @@ export interface StorefrontViewDto {
   productDetail: StorefrontProductDetailViewDto;
   cart: StorefrontCartViewDto;
   checkout: StorefrontCheckoutViewDto;
+  customerIdentity: StorefrontCustomerIdentityViewDto;
 }
