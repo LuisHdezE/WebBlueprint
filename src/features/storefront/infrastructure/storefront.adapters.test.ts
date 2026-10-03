@@ -81,6 +81,27 @@ describe('storefront provider', () => {
     expect(identity.notices.map((notice) => notice.id)).toEqual(['storefront-only', 'no-session', 'no-persistence']);
   });
 
+  it('exposes shipping zones without delivery persistence or order mutation', () => {
+    const provider = new JsonStorefrontProvider();
+    const shipping = provider.getShippingView();
+
+    expect(shipping.zones).toHaveLength(4);
+    expect(shipping.zones.map((zone) => zone.id)).toEqual([
+      'montevideo-centro',
+      'montevideo-metropolitana',
+      'canelones-sur',
+      'interior',
+    ]);
+    expect(shipping.pickup.priceLabel).toBe('Sin costo');
+    expect(shipping.returnToCheckoutHref).toBe('/store/checkout');
+    expect(shipping.addressPreview.fields).toHaveLength(3);
+    expect(shipping.notices.map((notice) => notice.id)).toEqual([
+      'no-address-persistence',
+      'no-carrier',
+      'no-order-mutation',
+    ]);
+  });
+
   it('exposes checkout auth gate data without transactional behavior', () => {
     const provider = new JsonStorefrontProvider();
     const checkout = provider.getCheckoutView();
@@ -90,7 +111,8 @@ describe('storefront provider', () => {
     expect(checkout.authGate.signInHref).toBe('/store/account/sign-in');
     expect(checkout.authGate.signUpHref).toBe('/store/account/register');
     expect(checkout.orderSummary.totalValue).toBe('UYU 6.580');
-    expect(checkout.shipping.statusLabel).toContain('pendiente');
+    expect(checkout.shipping.statusLabel).toContain('disponibles');
+    expect(checkout.shipping.actionHref).toBe('/store/shipping');
     expect(checkout.payment.options.map((option) => option.id)).toEqual(['mercado-pago', 'card', 'whatsapp']);
     expect(checkout.notices.map((notice) => notice.id)).toEqual(['no-order', 'no-inventory', 'no-persistence']);
   });
