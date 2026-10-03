@@ -6,6 +6,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
   const base = baseUrl.replace(/\/$/, '');
   const targetUrl = `${base}/store/products`;
   const detailUrl = `${base}/store/products/iphone-13-display-oled`;
+  const cartUrl = `${base}/store/cart`;
   const checks = [], failures = [];
   let chrome, cdp;
   const check = (name, passed, details) => {
@@ -23,6 +24,8 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     check('Storefront products deep link responds successfully', response.ok, { status: response.status, targetUrl });
     const detailResponse = await fetch(detailUrl);
     check('Storefront product detail deep link responds successfully', detailResponse.ok, { status: detailResponse.status, detailUrl });
+    const cartResponse = await fetch(cartUrl);
+    check('Storefront cart deep link responds successfully', cartResponse.ok, { status: cartResponse.status, cartUrl });
 
     chrome = await launchChrome();
     cdp = await connectCdp(chrome.webSocketDebuggerUrl);
@@ -87,6 +90,31 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     check('Storefront product detail desktop avoids horizontal overflow', !detail.overflow, detail);
     await shot('storefront-product-detail-desktop.png');
 
+    await navigate(cdp, cartUrl);
+    await waitFor(cdp, "Boolean(document.querySelector('[data-storefront-cart]'))");
+    const cart = await evaluate(cdp, `({
+      shell: Boolean(document.querySelector('[data-storefront-shell]')),
+      cart: Boolean(document.querySelector('[data-storefront-cart]')),
+      title: document.querySelector('[data-storefront-cart] h1')?.textContent ?? '',
+      emptyState: document.querySelector('[data-storefront-cart-empty-state]')?.textContent ?? '',
+      cartLines: document.querySelectorAll('[data-storefront-cart-line]').length,
+      summary: document.querySelector('[data-storefront-cart-summary]')?.textContent ?? '',
+      notices: document.querySelector('[data-storefront-cart-notices]')?.textContent ?? '',
+      disabledCheckoutButtons: [...document.querySelectorAll('[data-storefront-cart] button')].filter((button) => button.disabled && button.textContent?.includes('Checkout pendiente')).length,
+      storageReferences: document.querySelector('[data-storefront-cart]')?.textContent?.includes('localStorage') || document.querySelector('[data-storefront-cart]')?.textContent?.includes('sessionStorage'),
+      adminSidebar: Boolean(document.querySelector('[data-template-sidebar]')),
+      publicShellBrand: document.querySelector('header')?.textContent?.includes('WebBlueprint') ?? false,
+      overflow: document.documentElement.scrollWidth > innerWidth
+    })`);
+    check('Storefront cart renders inside storefront shell', cart.shell && cart.cart, cart);
+    check('Storefront cart renders empty-state and demo lines', cart.title.includes('Carrito preparado') && cart.emptyState.includes('Tu carrito demo está vacío') && cart.cartLines === 2, cart);
+    check('Storefront cart renders demo summary and blocked checkout', cart.summary.includes('UYU 6.580') && cart.disabledCheckoutButtons === 1, cart);
+    check('Storefront cart states future registration and checkout flow', cart.summary.includes('Registro requerido') && cart.notices.includes('Checkout bloqueado'), cart);
+    check('Storefront cart does not surface client storage behavior', !cart.storageReferences, cart);
+    check('Storefront cart avoids admin sidebar and public blueprint copy', !cart.adminSidebar && !cart.publicShellBrand, cart);
+    check('Storefront cart desktop avoids horizontal overflow', !cart.overflow, cart);
+    await shot('storefront-cart-desktop.png');
+
     await setViewport(cdp, { width: 390, height: 844, mobile: true });
     await navigate(cdp, targetUrl);
     await waitFor(cdp, "Boolean(document.querySelector('[data-storefront-product-listing]'))");
@@ -111,6 +139,19 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     })`);
     check('Mobile preserves product detail shell and buy box', mobileDetail.shell && mobileDetail.detail && mobileDetail.buyBox && mobileDetail.title.includes('Display OLED iPhone 13'), mobileDetail);
     check('Mobile storefront product detail avoids horizontal overflow', !mobileDetail.overflow, mobileDetail);
+
+    await navigate(cdp, cartUrl);
+    await waitFor(cdp, "Boolean(document.querySelector('[data-storefront-cart]'))");
+    const mobileCart = await evaluate(cdp, `({
+      shell: Boolean(document.querySelector('[data-storefront-shell]')),
+      cart: Boolean(document.querySelector('[data-storefront-cart]')),
+      title: document.querySelector('[data-storefront-cart] h1')?.textContent ?? '',
+      cartLines: document.querySelectorAll('[data-storefront-cart-line]').length,
+      summary: Boolean(document.querySelector('[data-storefront-cart-summary]')),
+      overflow: document.documentElement.scrollWidth > innerWidth
+    })`);
+    check('Mobile preserves cart shell, lines and summary', mobileCart.shell && mobileCart.cart && mobileCart.title.includes('Carrito preparado') && mobileCart.cartLines === 2 && mobileCart.summary, mobileCart);
+    check('Mobile storefront cart avoids horizontal overflow', !mobileCart.overflow, mobileCart);
     await shot('storefront-products-mobile.png');
   } catch (error) {
     check('Storefront product listing browser scenario completes without runtime exception', false, { error: String(error.stack ?? error) });
@@ -119,9 +160,10 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     await chrome?.stop();
     writeFileSync(join(artifactDir, 'report.json'), JSON.stringify({
       schemaVersion: '1.0',
-      view: 'storefront.product-listing',
+      view: 'storefront.product-listing-detail-cart',
       targetUrl,
       detailUrl,
+      cartUrl,
       generatedAt: new Date().toISOString(),
       status: failures.length ? 'FAIL' : 'PASS',
       checks,
@@ -129,5 +171,5 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     }, null, 2));
   }
 
-  if (failures.length) throw new Error(`Storefront product listing/detail browser QA failed: ${failures.join('; ')}`);
+  if (failures.length) throw new Error(`Storefront product listing/detail/cart browser QA failed: ${failures.join('; ')}`);
 }
