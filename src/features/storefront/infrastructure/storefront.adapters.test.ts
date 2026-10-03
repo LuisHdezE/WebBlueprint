@@ -30,4 +30,18 @@ describe('storefront provider', () => {
     expect(home.productSection.products.some((product) => product.compareLabel?.includes('Costo repuesto nuevo'))).toBe(true);
     expect(home.promoBand.title).toContain('registro');
   });
+
+  it('exposes product listing skeleton data behind the storefront provider', () => {
+    const provider = new JsonStorefrontProvider();
+    const listing = provider.getProductListingView();
+
+    expect(listing.title).toContain('Productos preparados');
+    expect(listing.searchPlaceholder).toContain('Buscar');
+    expect(listing.sortOptions.map((option) => option.id)).toEqual(['recommended', 'price-low', 'recent']);
+    expect(listing.filters.map((filter) => filter.id)).toEqual(['category', 'brand-model', 'condition', 'price']);
+    expect(listing.products).toHaveLength(6);
+    expect(listing.products.map((product) => product.id)).toContain('listing-iphone-13-display');
+    expect(listing.products.some((product) => product.compareLabel?.includes('Costo repuesto nuevo'))).toBe(true);
+    expect(listing.listingNotice.title).toContain('visual');
+  });
 });
