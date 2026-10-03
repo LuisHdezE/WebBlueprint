@@ -7,16 +7,16 @@ import { SurfaceCard } from '@/components/layout/SurfaceCard';
 import { PageShell } from '@/shell/PageShell';
 import type { MasterDataProvider } from '@/features/master-data/application/master-data.contracts';
 import type { InventoryDemoProvider } from '../application/inventory.contracts';
-import type { DeviceAccountLock, DeviceDestination, DevicePhysicalCondition, DevicePowerState } from '../application/devices.dto';
+import type { DeviceAccountLock, DeviceDestination, DevicePowerState } from '../application/devices.dto';
 
 type IntakeFormState = {
   brandId: string;
   deviceModelId: string;
   serialOrImei: string;
-  storage: string;
-  color: string;
+  storageCapacityId: string;
+  colorId: string;
+  conditionId: string;
   powersOn: DevicePowerState;
-  physicalCondition: DevicePhysicalCondition;
   accountLock: DeviceAccountLock;
   acquisitionSource: string;
   acquisitionCost: string;
@@ -28,15 +28,18 @@ export function InventoryDeviceIntakePage({ provider, masterDataProvider }: { pr
   const view = provider.getDeviceIntakeView();
   const brands = useMemo(() => masterDataProvider.getBrands().filter((brand) => brand.active), [masterDataProvider]);
   const deviceModels = useMemo(() => masterDataProvider.getDeviceModels().filter((model) => model.active), [masterDataProvider]);
+  const storageCapacities = useMemo(() => masterDataProvider.getStorageCapacities().filter((storage) => storage.active), [masterDataProvider]);
+  const colors = useMemo(() => masterDataProvider.getColors().filter((color) => color.active), [masterDataProvider]);
+  const conditions = useMemo(() => masterDataProvider.getConditions().filter((condition) => condition.active), [masterDataProvider]);
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState<IntakeFormState>(() => ({
     brandId: view.defaults.brandId,
     deviceModelId: view.defaults.deviceModelId,
     serialOrImei: '',
-    storage: '',
-    color: '',
+    storageCapacityId: view.defaults.storageCapacityId,
+    colorId: view.defaults.colorId,
+    conditionId: view.defaults.conditionId,
     powersOn: view.defaults.powersOn,
-    physicalCondition: view.defaults.physicalCondition,
     accountLock: view.defaults.accountLock,
     acquisitionSource: '',
     acquisitionCost: '',
@@ -57,6 +60,21 @@ export function InventoryDeviceIntakePage({ provider, masterDataProvider }: { pr
     ];
   }, [deviceModels, form.brandId, view.placeholders.deviceModelId]);
 
+  const storageOptions = useMemo(() => [
+    { value: '', label: view.placeholders.storageCapacityId },
+    ...storageCapacities.map((storage) => ({ value: storage.id, label: storage.label })),
+  ], [storageCapacities, view.placeholders.storageCapacityId]);
+
+  const colorOptions = useMemo(() => [
+    { value: '', label: view.placeholders.colorId },
+    ...colors.map((color) => ({ value: color.id, label: color.name })),
+  ], [colors, view.placeholders.colorId]);
+
+  const conditionOptions = useMemo(() => [
+    { value: '', label: view.placeholders.conditionId },
+    ...conditions.map((condition) => ({ value: condition.id, label: condition.name })),
+  ], [conditions, view.placeholders.conditionId]);
+
   function setField<Key extends keyof IntakeFormState>(key: Key, value: IntakeFormState[Key]) {
     setSubmitted(false);
     setForm((current) => ({ ...current, [key]: value }));
@@ -72,9 +90,12 @@ export function InventoryDeviceIntakePage({ provider, masterDataProvider }: { pr
     setSubmitted(true);
   }
 
-  const canSubmit = Boolean(form.brandId && form.deviceModelId && form.serialOrImei.trim());
+  const canSubmit = Boolean(form.brandId && form.deviceModelId && form.storageCapacityId && form.colorId && form.conditionId && form.serialOrImei.trim());
   const selectedBrand = brands.find((brand) => brand.id === form.brandId);
   const selectedModel = deviceModels.find((model) => model.id === form.deviceModelId);
+  const selectedStorage = storageCapacities.find((storage) => storage.id === form.storageCapacityId);
+  const selectedColor = colors.find((color) => color.id === form.colorId);
+  const selectedCondition = conditions.find((condition) => condition.id === form.conditionId);
 
   return <PageShell breadcrumbs={view.breadcrumbs.map((label) => ({ label }))} description={view.description} title={view.title}>
     <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_19rem]" data-device-intake>
@@ -85,11 +106,11 @@ export function InventoryDeviceIntakePage({ provider, masterDataProvider }: { pr
             <SelectField id="device-brand" label={view.fields.brandId} onChange={setBrand} options={brandOptions} value={form.brandId} />
             <SelectField id="device-model" label={view.fields.deviceModelId} onChange={(value) => setField('deviceModelId', value)} options={filteredModelOptions} value={form.deviceModelId} />
             <TextField id="device-identity" label={view.fields.serialOrImei} onChange={(value) => setField('serialOrImei', value)} placeholder={view.placeholders.serialOrImei} value={form.serialOrImei} />
-            <TextField id="device-storage" label={view.fields.storage} onChange={(value) => setField('storage', value)} placeholder={view.placeholders.storage} value={form.storage} />
-            <TextField id="device-color" label={view.fields.color} onChange={(value) => setField('color', value)} placeholder={view.placeholders.color} value={form.color} />
+            <SelectField id="device-storage" label={view.fields.storageCapacityId} onChange={(value) => setField('storageCapacityId', value)} options={storageOptions} value={form.storageCapacityId} />
+            <SelectField id="device-color" label={view.fields.colorId} onChange={(value) => setField('colorId', value)} options={colorOptions} value={form.colorId} />
           </div>
-          {selectedBrand || selectedModel ? <p className="mt-3 text-xs text-slate-500" data-device-master-data-hint>
-            Referencia canónica: {selectedBrand?.name ?? 'Marca pendiente'}{selectedModel ? ` · ${selectedModel.name}` : ''}
+          {selectedBrand || selectedModel || selectedStorage || selectedColor ? <p className="mt-3 text-xs text-slate-500" data-device-master-data-hint>
+            Referencia canónica: {[selectedBrand?.name, selectedModel?.name, selectedStorage?.label, selectedColor?.name].filter(Boolean).join(' · ')}
           </p> : null}
         </SurfaceCard>
 
@@ -97,9 +118,10 @@ export function InventoryDeviceIntakePage({ provider, masterDataProvider }: { pr
           <h2 className="text-base font-semibold text-slate-950">{view.conditionSectionTitle}</h2>
           <div className="mt-4 grid gap-4 md:grid-cols-3">
             <SelectField id="device-powers-on" label={view.fields.powersOn} onChange={(value) => setField('powersOn', value)} options={view.options.powersOn} value={form.powersOn} />
-            <SelectField id="device-condition" label={view.fields.physicalCondition} onChange={(value) => setField('physicalCondition', value)} options={view.options.physicalCondition} value={form.physicalCondition} />
+            <SelectField id="device-condition" label={view.fields.conditionId} onChange={(value) => setField('conditionId', value)} options={conditionOptions} value={form.conditionId} />
             <SelectField id="device-lock" label={view.fields.accountLock} onChange={(value) => setField('accountLock', value)} options={view.options.accountLock} value={form.accountLock} />
           </div>
+          {selectedCondition ? <p className="mt-3 text-xs text-slate-500" data-device-condition-hint>Condición canónica: {selectedCondition.name} · {selectedCondition.grade}</p> : null}
         </SurfaceCard>
 
         <SurfaceCard>
