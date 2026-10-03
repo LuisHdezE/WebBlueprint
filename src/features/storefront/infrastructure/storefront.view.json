@@ -289,5 +289,140 @@
       "title": "Listado visual, no transaccional",
       "description": "B3 prepara la experiencia pública. Los filtros, el carrito y el checkout se activarán en incrementos posteriores."
     }
+  },
+  "productDetail": {
+    "eyebrow": "Detalle público demo",
+    "backLabel": "Volver al listado",
+    "backHref": "/store/products",
+    "actionNotice": {
+      "title": "Compra futura, no activa",
+      "description": "B4 muestra la ficha comercial y prepara el lugar del flujo de consulta, carrito, registro y checkout. No agrega al carrito, no crea órdenes y no descuenta inventario."
+    },
+    "products": [
+      {
+        "slug": "iphone-13-display-oled",
+        "title": "Display OLED iPhone 13",
+        "subtitle": "Módulo demo para reparación premium",
+        "badgeLabel": "Repuesto",
+        "priceLabel": "UYU 4.890",
+        "compareLabel": "Costo repuesto nuevo: UYU 3.950",
+        "stockLabel": "Stock demo: 3",
+        "compatibilityLabel": "Compatible: iPhone 13",
+        "conditionLabel": "Condición: nuevo demo",
+        "warrantyLabel": "Garantía demo configurable",
+        "heroLabel": "Repuesto crítico",
+        "description": "Ficha pública preparada para mostrar precio de tienda, costo de repuesto nuevo, compatibilidad y stock sin exponer costos internos ni datos del dispositivo donante.",
+        "highlights": [
+          "Compatibilidad expresada como dato comercial visible.",
+          "Costo de repuesto nuevo visible según regla de tienda.",
+          "Reservado para futura consulta, carrito y checkout."
+        ],
+        "specs": [
+          { "label": "Tipo", "value": "Display OLED" },
+          { "label": "Modelo", "value": "iPhone 13" },
+          { "label": "Stock", "value": "3 unidades demo" },
+          { "label": "Estado", "value": "Nuevo demo" }
+        ],
+        "gallery": [
+          { "id": "front", "label": "Vista frontal", "tone": "dark" },
+          { "id": "connector", "label": "Flex y conector", "tone": "warm" },
+          { "id": "package", "label": "Empaque demo", "tone": "light" }
+        ],
+        "notices": [
+          {
+            "id": "no-cart",
+            "title": "Sin carrito funcional todavía",
+            "description": "La acción principal queda como placeholder visual para B4."
+          },
+          {
+            "id": "no-inventory-mutation",
+            "title": "Sin movimiento de inventario",
+            "description": "El stock mostrado es demo y no se descuenta."
+          }
+        ],
+        "relatedProductSlugs": ["samsung-s21-battery", "iphone-11-camera-module"]
+      },
+      {
+        "slug": "samsung-s21-battery",
+        "title": "Batería Samsung S21",
+        "subtitle": "Repuesto demo con garantía futura configurable",
+        "badgeLabel": "Batería",
+        "priceLabel": "UYU 1.690",
+        "compareLabel": "Costo repuesto nuevo: UYU 1.150",
+        "stockLabel": "Stock demo: 5",
+        "compatibilityLabel": "Compatible: Galaxy S21",
+        "conditionLabel": "Condición: nuevo demo",
+        "warrantyLabel": "Garantía demo configurable",
+        "heroLabel": "Energía y autonomía",
+        "description": "Detalle público de repuesto preparado para comunicar compatibilidad, precio y disponibilidad sin habilitar compra real.",
+        "highlights": [
+          "Preparado para filtros de marca/modelo futuros.",
+          "Precio comercial separado del costo de repuesto nuevo.",
+          "Flujo de consulta pendiente para incrementos posteriores."
+        ],
+        "specs": [
+          { "label": "Tipo", "value": "Batería" },
+          { "label": "Modelo", "value": "Galaxy S21" },
+          { "label": "Stock", "value": "5 unidades demo" },
+          { "label": "Estado", "value": "Nuevo demo" }
+        ],
+        "gallery": [
+          { "id": "front", "label": "Vista repuesto", "tone": "dark" },
+          { "id": "label", "label": "Etiqueta demo", "tone": "warm" },
+          { "id": "package", "label": "Empaque demo", "tone": "light" }
+        ],
+        "notices": [
+          {
+            "id": "no-cart",
+            "title": "Sin carrito funcional todavía",
+            "description": "La ficha no ejecuta compra ni reserva."
+          }
+        ],
+        "relatedProductSlugs": ["iphone-13-display-oled", "samsung-s20-used-b"]
+      },
+      {
+        "slug": "iphone-12-128-used-a",
+        "title": "iPhone 12 128 GB usado",
+        "subtitle": "Equipo demo individual preparado para vitrina",
+        "badgeLabel": "Usado A",
+        "priceLabel": "USD 285",
+        "stockLabel": "Unidad única demo",
+        "compatibilityLabel": "Color: Negro · Batería: 87%",
+        "conditionLabel": "Condición: usado A demo",
+        "warrantyLabel": "Garantía demo configurable",
+        "heroLabel": "Equipo individual",
+        "description": "Ficha de celular usado preparada para mostrar atributos comerciales sin exponer costo de adquisición ni trazabilidad interna.",
+        "highlights": [
+          "Unidad individual, no producto genérico.",
+          "Información comercial pública sin costo interno.",
+          "Preparado para consulta asistida y compra futura."
+        ],
+        "specs": [
+          { "label": "Modelo", "value": "iPhone 12" },
+          { "label": "Almacenamiento", "value": "128 GB" },
+          { "label": "Color", "value": "Negro" },
+          { "label": "Batería", "value": "87% demo" }
+        ],
+        "gallery": [
+          { "id": "front", "label": "Frente", "tone": "dark" },
+          { "id": "back", "label": "Dorso", "tone": "warm" },
+          { "id": "detail", "label": "Detalle estado", "tone": "light" }
+        ],
+        "notices": [
+          {
+            "id": "no-cost",
+            "title": "Costo interno oculto",
+            "description": "La tienda pública no expone adquisición, margen ni datos del origen."
+          }
+        ],
+        "relatedProductSlugs": ["iphone-13-display-oled", "samsung-s20-used-b"]
+      }
+    ],
+    "notFound": {
+      "title": "Producto demo no encontrado",
+      "description": "El slug solicitado no existe en el catálogo demo de Storefront.",
+      "actionLabel": "Volver a productos",
+      "actionHref": "/store/products"
+    }
   }
 }
