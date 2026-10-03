@@ -260,6 +260,25 @@ export interface StorefrontCheckoutViewDto {
   }[];
 }
 
+export interface StorefrontFavoritesViewDto {
+  eyebrow: string;
+  title: string;
+  description: string;
+  stateLabel: string;
+  emptyState: {
+    title: string;
+    description: string;
+    actionLabel: string;
+    actionHref: string;
+  };
+  products: readonly StorefrontProductCardDto[];
+  notices: readonly {
+    id: string;
+    title: string;
+    description: string;
+  }[];
+}
+
 export interface StorefrontShippingZoneDto {
   id: string;
   name: string;
@@ -391,4 +410,5 @@ export interface StorefrontViewDto {
   checkout: StorefrontCheckoutViewDto;
   customerIdentity: StorefrontCustomerIdentityViewDto;
   shipping: StorefrontShippingViewDto;
+  favorites: StorefrontFavoritesViewDto;
 }
