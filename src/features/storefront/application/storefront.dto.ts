@@ -234,6 +234,8 @@ export interface StorefrontCheckoutViewDto {
     title: string;
     description: string;
     statusLabel: string;
+    actionLabel: string;
+    actionHref: string;
     fields: readonly {
       id: string;
       label: string;
