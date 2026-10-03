@@ -81,6 +81,24 @@ describe('storefront provider', () => {
     expect(identity.notices.map((notice) => notice.id)).toEqual(['storefront-only', 'no-session', 'no-persistence']);
   });
 
+  it('exposes favorites without customer persistence or cart mutation', () => {
+    const provider = new JsonStorefrontProvider();
+    const favorites = provider.getFavoritesView();
+
+    expect(favorites.products).toHaveLength(3);
+    expect(favorites.products.map((product) => product.id)).toEqual([
+      'favorite-display',
+      'favorite-battery',
+      'favorite-used-phone',
+    ]);
+    expect(favorites.emptyState.actionHref).toBe('/store/products');
+    expect(favorites.notices.map((notice) => notice.id)).toEqual([
+      'no-persistence',
+      'no-customer-mutation',
+      'no-cart-mutation',
+    ]);
+  });
+
   it('exposes shipping zones without delivery persistence or order mutation', () => {
     const provider = new JsonStorefrontProvider();
     const shipping = provider.getShippingView();
