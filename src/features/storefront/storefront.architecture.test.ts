@@ -66,6 +66,7 @@ describe('storefront architecture', () => {
     const cart = readFileSync('src/features/storefront/presentation/StorefrontCartPage.tsx', 'utf8');
     const checkout = readFileSync('src/features/storefront/presentation/StorefrontCheckoutPage.tsx', 'utf8');
     const identity = readFileSync('src/features/storefront/presentation/StorefrontCustomerIdentityPage.tsx', 'utf8');
+    const favorites = readFileSync('src/features/storefront/presentation/StorefrontFavoritesPage.tsx', 'utf8');
     const shell = readFileSync('src/shell/StorefrontShell.tsx', 'utf8');
 
     expect(router).toContain('StorefrontHomePage');
