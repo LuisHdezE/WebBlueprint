@@ -40,6 +40,8 @@ import { JsonMasterDataAdminViewProvider } from '@/features/master-data/infrastr
 import { JsonMasterDataProvider } from '@/features/master-data/infrastructure/JsonMasterDataProvider';
 import { MasterDataBrandsPage, MasterDataCategoriesPage, MasterDataDeviceModelsPage } from '@/features/master-data/presentation/MasterDataAdminPages';
 import { MasterDataColorsPage, MasterDataConditionsPage, MasterDataRamCapacitiesPage, MasterDataSparePartTypesPage, MasterDataStorageCapacitiesPage } from '@/features/master-data/presentation/ExtendedMasterDataAdminPages';
+import { JsonStorefrontProvider } from '@/features/storefront/infrastructure/JsonStorefrontProvider';
+import { StorefrontHomePage } from '@/features/storefront/presentation/StorefrontHomePage';
 import { BlogEditorPage } from '@/features/applications/blog/presentation/BlogEditorPage';
 import { BlogGridPage } from '@/features/applications/blog/presentation/BlogGridPage';
 import { BlogListPage } from '@/features/applications/blog/presentation/BlogListPage';
@@ -56,6 +58,7 @@ import { TemplateComposerExportPage } from '@/pages/TemplateComposerExportPage';
 import { TemplateOverviewPage } from '@/pages/TemplateOverviewPage';
 import { TemplatePlaceholderPage } from '@/pages/TemplatePlaceholderPage';
 import { PublicShell } from '@/shell/PublicShell';
+import { StorefrontShell } from '@/shell/StorefrontShell';
 import { TemplateShell } from '@/shell/TemplateShell';
 
 const passwordResetContentProvider = new JsonPasswordResetContentProvider();
@@ -76,6 +79,7 @@ const ecommerceCatalogProvider = new JsonEcommerceCatalogProvider();
 const inventoryDemoProvider = new JsonInventoryDemoProvider();
 const masterDataProvider = new JsonMasterDataProvider();
 const masterDataAdminViewProvider = new JsonMasterDataAdminViewProvider();
+const storefrontProvider = new JsonStorefrontProvider();
 
 const templateFamilies = [
   'applications/*', 'components/*', 'elements/*', 'forms/*', 'tables/*', 'charts/*', 'widgets/*', 'maps/*', 'pages/*', 'user/*', 'authentication/*', 'layouts/*', 'documentation/*',
@@ -122,6 +126,9 @@ export function AppRouter() {
       <Route path="authentication/password-reset" element={<PasswordResetPage contentProvider={passwordResetContentProvider} gateway={passwordResetGateway} />} />
       <Route path="authentication/two-factor" element={<TwoFactorPage contentProvider={twoFactorContentProvider} gateway={twoFactorGateway} />} />
       <Route path="authentication/lock-screen" element={<LockScreenPage contentProvider={lockScreenContentProvider} gateway={lockScreenGateway} />} />
+      <Route element={<StorefrontShell provider={storefrontProvider} />}>
+        <Route path="store" element={<StorefrontHomePage provider={storefrontProvider} />} />
+      </Route>
       <Route element={<TemplateShell />}>
         <Route index element={<Navigate to="/dashboard" replace />} />
         <Route path="dashboard" element={<TemplateOverviewPage />} />
