@@ -90,8 +90,8 @@ export function InventoryDeviceEvaluationPage({ provider }: { provider: Inventor
             <h2 className="text-base font-semibold text-slate-950">{view.commercialSectionTitle}</h2>
             <dl className="mt-4 grid gap-3">
               <div><dt className="text-[11px] font-semibold text-slate-500">{view.fields.estimatedRecoverableValue}</dt><dd className="mt-1 text-xl font-semibold text-slate-950">{view.commercial.estimatedRecoverableValue}</dd></div>
-              <div><dt className="text-[11px] font-semibold text-slate-500">Valor estimado en piezas</dt><dd className="mt-1 text-sm text-slate-700">{view.commercial.estimatedPartsValue}</dd></div>
-              <div><dt className="text-[11px] font-semibold text-slate-500">Costo de reacondicionamiento</dt><dd className="mt-1 text-sm text-slate-700">{view.commercial.estimatedRefurbCost}</dd></div>
+              <div><dt className="text-[11px] font-semibold text-slate-500">{view.fields.estimatedPartsValue}</dt><dd className="mt-1 text-sm text-slate-700">{view.commercial.estimatedPartsValue}</dd></div>
+              <div><dt className="text-[11px] font-semibold text-slate-500">{view.fields.estimatedRefurbCost}</dt><dd className="mt-1 text-sm text-slate-700">{view.commercial.estimatedRefurbCost}</dd></div>
             </dl>
             <p className="mt-4 rounded-xl bg-slate-50 p-3 text-sm leading-6 text-slate-600">{view.commercial.profitabilitySignal}</p>
           </SurfaceCard>
