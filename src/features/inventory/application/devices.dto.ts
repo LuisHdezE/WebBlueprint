@@ -151,6 +151,8 @@ export interface InventoryDeviceEvaluationViewDto {
     physicalCondition: string;
     powersOn: string;
     estimatedRecoverableValue: string;
+    estimatedPartsValue: string;
+    estimatedRefurbCost: string;
     recommendedDestination: string;
     evaluatorNotes: string;
   };
