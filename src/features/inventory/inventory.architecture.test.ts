@@ -68,6 +68,17 @@ describe('inventory foundation architecture', () => {
     for (const primitive of ['TextField', 'SelectField', 'TextAreaField', 'SurfaceCard', 'PageShell']) expect(intake).toContain(primitive);
   });
 
+  it('uses master data provider for intake brand and model selection', () => {
+    const intake = readFileSync('src/features/inventory/presentation/InventoryDeviceIntakePage.tsx', 'utf8');
+    const router = readFileSync('src/app/router/AppRouter.tsx', 'utf8');
+    expect(intake).toContain('masterDataProvider.getBrands()');
+    expect(intake).toContain('masterDataProvider.getDeviceModels()');
+    expect(intake).toContain('brandId');
+    expect(intake).toContain('deviceModelId');
+    expect(intake).not.toContain('device-manufacturer');
+    expect(router).toContain('<InventoryDeviceIntakePage masterDataProvider={masterDataProvider} provider={inventoryDemoProvider} />');
+  });
+
   it('extends the provider boundary for devices and intake', () => {
     const contracts = readFileSync('src/features/inventory/application/inventory.contracts.ts', 'utf8');
     const provider = readFileSync('src/features/inventory/infrastructure/JsonInventoryDemoProvider.ts', 'utf8');
