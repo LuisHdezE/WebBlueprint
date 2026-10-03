@@ -14,18 +14,13 @@ const scenarios = [
     createName: 'Nokia Demo',
     updateName: 'Nokia Demo Actualizada',
     fillScript: `
-      document.querySelector('#brand-name').value = 'Nokia Demo';
-      document.querySelector('#brand-name').dispatchEvent(new Event('input', { bubbles: true }));
-      document.querySelector('#brand-slug').value = 'nokia-demo';
-      document.querySelector('#brand-slug').dispatchEvent(new Event('input', { bubbles: true }));
-      document.querySelector('#brand-sort-order').value = '990';
-      document.querySelector('#brand-sort-order').dispatchEvent(new Event('input', { bubbles: true }));
+      input('#brand-name', 'Nokia Demo');
+      input('#brand-slug', 'nokia-demo');
+      input('#brand-sort-order', '990');
     `,
     editScript: `
-      document.querySelector('#brand-name').value = 'Nokia Demo Actualizada';
-      document.querySelector('#brand-name').dispatchEvent(new Event('input', { bubbles: true }));
-      document.querySelector('#brand-slug').value = 'nokia-demo-actualizada';
-      document.querySelector('#brand-slug').dispatchEvent(new Event('input', { bubbles: true }));
+      input('#brand-name', 'Nokia Demo Actualizada');
+      input('#brand-slug', 'nokia-demo-actualizada');
     `,
   },
   {
@@ -39,20 +34,14 @@ const scenarios = [
     createName: 'Nokia G22 Demo',
     updateName: 'Nokia G22 Demo Actualizado',
     fillScript: `
-      document.querySelector('#model-name').value = 'Nokia G22 Demo';
-      document.querySelector('#model-name').dispatchEvent(new Event('input', { bubbles: true }));
-      document.querySelector('#model-slug').value = 'nokia-g22-demo';
-      document.querySelector('#model-slug').dispatchEvent(new Event('input', { bubbles: true }));
-      document.querySelector('#model-code').value = 'TA-1528';
-      document.querySelector('#model-code').dispatchEvent(new Event('input', { bubbles: true }));
-      document.querySelector('#model-sort-order').value = '991';
-      document.querySelector('#model-sort-order').dispatchEvent(new Event('input', { bubbles: true }));
+      input('#model-name', 'Nokia G22 Demo');
+      input('#model-slug', 'nokia-g22-demo');
+      input('#model-code', 'TA-1528');
+      input('#model-sort-order', '991');
     `,
     editScript: `
-      document.querySelector('#model-name').value = 'Nokia G22 Demo Actualizado';
-      document.querySelector('#model-name').dispatchEvent(new Event('input', { bubbles: true }));
-      document.querySelector('#model-slug').value = 'nokia-g22-demo-actualizado';
-      document.querySelector('#model-slug').dispatchEvent(new Event('input', { bubbles: true }));
+      input('#model-name', 'Nokia G22 Demo Actualizado');
+      input('#model-slug', 'nokia-g22-demo-actualizado');
     `,
   },
   {
@@ -66,20 +55,14 @@ const scenarios = [
     createName: 'Accesorios Demo',
     updateName: 'Accesorios Demo Actualizados',
     fillScript: `
-      document.querySelector('#category-name').value = 'Accesorios Demo';
-      document.querySelector('#category-name').dispatchEvent(new Event('input', { bubbles: true }));
-      document.querySelector('#category-slug').value = 'accesorios-demo';
-      document.querySelector('#category-slug').dispatchEvent(new Event('input', { bubbles: true }));
-      document.querySelector('#category-description').value = 'Categoría demo para validar CRUD en memoria.';
-      document.querySelector('#category-description').dispatchEvent(new Event('input', { bubbles: true }));
-      document.querySelector('#category-sort-order').value = '992';
-      document.querySelector('#category-sort-order').dispatchEvent(new Event('input', { bubbles: true }));
+      input('#category-name', 'Accesorios Demo');
+      input('#category-slug', 'accesorios-demo');
+      input('#category-description', 'Categoría demo para validar CRUD en memoria.');
+      input('#category-sort-order', '992');
     `,
     editScript: `
-      document.querySelector('#category-name').value = 'Accesorios Demo Actualizados';
-      document.querySelector('#category-name').dispatchEvent(new Event('input', { bubbles: true }));
-      document.querySelector('#category-slug').value = 'accesorios-demo-actualizados';
-      document.querySelector('#category-slug').dispatchEvent(new Event('input', { bubbles: true }));
+      input('#category-name', 'Accesorios Demo Actualizados');
+      input('#category-slug', 'accesorios-demo-actualizados');
     `,
   },
 ];
@@ -139,8 +122,9 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
           el.dispatchEvent(new Event('input', { bubbles: true }));
         }
         function clickByText(text) {
-          const button = [...document.querySelectorAll('button')].find((candidate) => candidate.textContent?.trim() === text);
-          if (!button) throw new Error('Missing button ' + text);
+          const expected = String(text ?? '').trim();
+          const button = [...document.querySelectorAll('button')].find((candidate) => candidate.textContent?.trim().includes(expected));
+          if (!button) throw new Error('Missing button ' + expected);
           button.click();
         }
         function search(value) {
