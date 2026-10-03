@@ -60,6 +60,18 @@ describe('storefront provider', () => {
     expect(provider.getProductDetailBySlug('missing-demo-product')).toBeUndefined();
   });
 
+  it('exposes checkout auth gate data without transactional behavior', () => {
+    const provider = new JsonStorefrontProvider();
+    const checkout = provider.getCheckoutView();
+
+    expect(checkout.title).toContain('Revisa la compra');
+    expect(checkout.authGate.requiredLabel).toContain('Autenticación');
+    expect(checkout.orderSummary.totalValue).toBe('UYU 6.580');
+    expect(checkout.shipping.statusLabel).toContain('pendiente');
+    expect(checkout.payment.options.map((option) => option.id)).toEqual(['mercado-pago', 'card', 'whatsapp']);
+    expect(checkout.notices.map((notice) => notice.id)).toEqual(['no-order', 'no-inventory', 'no-persistence']);
+  });
+
   it('exposes cart shell data without transactional behavior', () => {
     const provider = new JsonStorefrontProvider();
     const cart = provider.getCartView();
@@ -70,6 +82,7 @@ describe('storefront provider', () => {
     expect(cart.lines.map((line) => line.id)).toContain('cart-line-display');
     expect(cart.summary.totalValue).toBe('UYU 6.580');
     expect(cart.summary.checkoutDisabledLabel).toBe('Checkout pendiente');
+    expect(cart.summary.checkoutPreviewHref).toBe('/store/checkout');
     expect(cart.notices.map((notice) => notice.id)).toEqual(['no-persistence', 'no-checkout', 'no-inventory-mutation']);
   });
 });
