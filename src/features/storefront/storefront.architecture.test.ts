@@ -208,4 +208,31 @@ describe('storefront architecture', () => {
     expect(navigation).toContain("to: '/store/products/iphone-13-display-oled'");
   });
 
+  it('keeps storefront visual density compact through shared primitives', () => {
+    const primitives = readFileSync('src/features/storefront/presentation/StorefrontPrimitives.tsx', 'utf8');
+    const pages = [
+      'StorefrontHomePage.tsx',
+      'StorefrontProductListingPage.tsx',
+      'StorefrontProductDetailPage.tsx',
+      'StorefrontCartPage.tsx',
+      'StorefrontCheckoutPage.tsx',
+      'StorefrontCustomerIdentityPage.tsx',
+    ].map((file) => readFileSync(`src/features/storefront/presentation/${file}`, 'utf8'));
+
+    expect(primitives).toContain('StorefrontPageIntro');
+    expect(primitives).toContain('StorefrontSectionIntro');
+    expect(pages[0]).toContain('StorefrontSectionIntro');
+    expect(pages[1]).toContain('StorefrontPageIntro');
+    expect(pages[3]).toContain('StorefrontPageIntro');
+    expect(pages[4]).toContain('StorefrontPageIntro');
+    expect(pages[5]).toContain('StorefrontPageIntro');
+
+    pages.forEach((page) => {
+      expect(page).not.toContain('text-6xl');
+      expect(page).not.toContain('text-5xl');
+      expect(page).not.toContain('rounded-[2rem]');
+      expect(page).not.toContain('min-h-[28rem]');
+    });
+  });
+
 });

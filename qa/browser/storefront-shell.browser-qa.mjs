@@ -45,6 +45,9 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       adminSidebar: Boolean(document.querySelector('[data-template-sidebar]')),
       publicShellBrand: document.querySelector('header')?.textContent?.includes('WebBlueprint') ?? false,
       searchInputs: document.querySelectorAll('[data-storefront-shell] input[type="search"]').length,
+      heroFontPx: parseFloat(getComputedStyle(document.querySelector('[data-storefront-home] h1')).fontSize),
+      headerHeight: document.querySelector('[data-storefront-shell] header')?.getBoundingClientRect().height ?? 0,
+      categorySectionTop: document.querySelector('[data-storefront-category-section]')?.getBoundingClientRect().top ?? 9999,
       overflow: document.documentElement.scrollWidth > innerWidth
     })`);
 
@@ -61,6 +64,9 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     check('Storefront product cards do not implement cart behavior yet', desktop.addToCartButtons === 0, desktop);
     check('Storefront does not render admin sidebar', !desktop.adminSidebar, desktop);
     check('Storefront does not reuse public blueprint header copy', !desktop.publicShellBrand, desktop);
+    check('Storefront desktop uses compact heading scale', desktop.heroFontPx <= 40, desktop);
+    check('Storefront desktop keeps commercial chrome compact', desktop.headerHeight <= 150, desktop);
+    check('Storefront categories enter the initial viewport rhythm', desktop.categorySectionTop < 700, desktop);
     check('Storefront desktop avoids horizontal overflow', !desktop.overflow, desktop);
     await shot('storefront-shell-desktop.png');
 
