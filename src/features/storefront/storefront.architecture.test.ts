@@ -13,6 +13,7 @@ describe('storefront architecture', () => {
     const identity = readFileSync('src/features/storefront/presentation/StorefrontCustomerIdentityPage.tsx', 'utf8');
     const favorites = readFileSync('src/features/storefront/presentation/StorefrontFavoritesPage.tsx', 'utf8');
     const shipping = readFileSync('src/features/storefront/presentation/StorefrontShippingPage.tsx', 'utf8');
+    const warranty = readFileSync('src/features/storefront/presentation/StorefrontWarrantyPage.tsx', 'utf8');
     const shell = readFileSync('src/shell/StorefrontShell.tsx', 'utf8');
 
     expect(provider).toContain("import rawStorefront from './storefront.view.json'");
@@ -28,6 +29,7 @@ describe('storefront architecture', () => {
     expect(identity).not.toContain('.json');
     expect(favorites).not.toContain('.json');
     expect(shipping).not.toContain('.json');
+    expect(warranty).not.toContain('.json');
     expect(shell).not.toContain('.json');
     expect(home).toContain('provider.getHomeView()');
     expect(listing).toContain('provider.getProductListingView()');
@@ -39,6 +41,7 @@ describe('storefront architecture', () => {
     expect(identity).toContain('provider.getCustomerIdentityView()');
     expect(favorites).toContain('provider.getFavoritesView()');
     expect(shipping).toContain('provider.getShippingView()');
+    expect(warranty).toContain('provider.getWarrantyView()');
     expect(shell).toContain('provider.getShellView()');
   });
 
@@ -52,6 +55,7 @@ describe('storefront architecture', () => {
     expect(router).toContain('path="store/cart"');
     expect(router).toContain('path="store/checkout"');
     expect(router).toContain('path="store/shipping"');
+    expect(router).toContain('path="store/warranty"');
     expect(router).toContain('path="store/account/sign-in"');
     expect(router).toContain('path="store/account/register"');
     expect(router).toContain('<StorefrontShell provider={storefrontProvider} />');
@@ -71,6 +75,7 @@ describe('storefront architecture', () => {
     const checkout = readFileSync('src/features/storefront/presentation/StorefrontCheckoutPage.tsx', 'utf8');
     const identity = readFileSync('src/features/storefront/presentation/StorefrontCustomerIdentityPage.tsx', 'utf8');
     const favorites = readFileSync('src/features/storefront/presentation/StorefrontFavoritesPage.tsx', 'utf8');
+    const warranty = readFileSync('src/features/storefront/presentation/StorefrontWarrantyPage.tsx', 'utf8');
     const shell = readFileSync('src/shell/StorefrontShell.tsx', 'utf8');
 
     expect(router).toContain('StorefrontHomePage');
@@ -82,6 +87,7 @@ describe('storefront architecture', () => {
     expect(router).toContain('StorefrontCustomerIdentityPage');
     expect(router).toContain('StorefrontFavoritesPage');
     expect(router).toContain('StorefrontShippingPage');
+    expect(router).toContain('StorefrontWarrantyPage');
     expect(home).not.toContain('JsonEcommerceCatalogProvider');
     expect(listing).not.toContain('JsonEcommerceCatalogProvider');
     expect(detail).not.toContain('JsonEcommerceCatalogProvider');
@@ -90,6 +96,7 @@ describe('storefront architecture', () => {
     expect(checkout).not.toContain('JsonEcommerceCatalogProvider');
     expect(identity).not.toContain('JsonEcommerceCatalogProvider');
     expect(favorites).not.toContain('JsonEcommerceCatalogProvider');
+    expect(warranty).not.toContain('JsonEcommerceCatalogProvider');
     expect(shell).not.toContain('JsonEcommerceCatalogProvider');
     expect(home).not.toContain('ProductsPage');
     expect(listing).not.toContain('ProductsPage');
@@ -359,6 +366,27 @@ describe('storefront architecture', () => {
     expect(contact).not.toContain('https://wa.me');
     expect(shell).toContain('shell.floatingAction.href');
     expect(navigation).toContain("to: '/store/contact'");
+  });
+
+  it('renders warranty and returns skeleton without requests, order lookup or inventory mutation', () => {
+    const dto = readFileSync('src/features/storefront/application/storefront.dto.ts', 'utf8');
+    const contracts = readFileSync('src/features/storefront/application/storefront.contracts.ts', 'utf8');
+    const provider = readFileSync('src/features/storefront/infrastructure/JsonStorefrontProvider.ts', 'utf8');
+    const warranty = readFileSync('src/features/storefront/presentation/StorefrontWarrantyPage.tsx', 'utf8');
+    const navigation = readFileSync('src/config/templateNavigation.ts', 'utf8');
+
+    expect(dto).toContain('StorefrontWarrantyViewDto');
+    expect(dto).toContain('StorefrontWarrantyPolicyDto');
+    expect(contracts).toContain('getWarrantyView');
+    expect(provider).toContain('getWarrantyView()');
+    expect(provider).toContain("import rawWarranty from './storefront.warranty.json'");
+    expect(warranty).toContain('data-storefront-warranty');
+    expect(warranty).toContain('data-storefront-warranty-policies');
+    expect(warranty).toContain('data-storefront-warranty-eligibility');
+    expect(warranty).not.toContain('localStorage');
+    expect(warranty).not.toContain('sessionStorage');
+    expect(warranty).not.toContain('fetch(');
+    expect(navigation).toContain("to: '/store/warranty'");
   });
 
 });
