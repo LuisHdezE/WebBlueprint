@@ -11,7 +11,13 @@ function ProductCard({ product }: { product: StorefrontProductCardDto }) {
           <span className="rounded-full bg-white px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.08em] text-slate-700 shadow-sm">{product.badgeLabel}</span>
           <span className="rounded-full bg-[var(--storefront-primary)] px-2.5 py-1 text-[10px] font-black text-[var(--storefront-on-primary)]">{product.stockLabel}</span>
         </div>
-        <div className="mt-5 h-14 rounded-xl border border-black/10 bg-white/70" aria-hidden="true" />
+        <img
+          alt={product.image.alt}
+          className="mt-3 h-28 w-full rounded-xl object-cover"
+          data-storefront-listing-product-image
+          src={product.image.src}
+          style={{ objectPosition: product.image.objectPosition ?? 'center' }}
+        />
       </div>
       <div className="grid gap-3 p-4">
         <div>
