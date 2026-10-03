@@ -34,10 +34,19 @@ function ProductCard({ product }: { product: StorefrontProductCardDto }) {
         </span>
         <span className="text-right text-[11px] font-bold text-slate-500">{product.stockLabel}</span>
       </div>
-      <div className="mt-4 rounded-xl bg-[#f7f2ea] p-3">
-        <p className="text-[11px] font-bold text-slate-500">{product.compatibilityLabel}</p>
-        <h3 className="mt-1.5 text-base font-black tracking-[-0.02em] text-slate-950">{product.title}</h3>
-        <p className="mt-1 text-xs leading-5 text-slate-600">{product.subtitle}</p>
+      <div className="mt-3 overflow-hidden rounded-xl bg-[#f7f2ea]">
+        <img
+          alt={product.image.alt}
+          className="h-32 w-full object-cover"
+          data-storefront-product-image
+          src={product.image.src}
+          style={{ objectPosition: product.image.objectPosition ?? 'center' }}
+        />
+        <div className="p-3">
+          <p className="text-[11px] font-bold text-slate-500">{product.compatibilityLabel}</p>
+          <h3 className="mt-1.5 text-base font-black tracking-[-0.02em] text-slate-950">{product.title}</h3>
+          <p className="mt-1 text-xs leading-5 text-slate-600">{product.subtitle}</p>
+        </div>
       </div>
       <div className="mt-3 flex items-end justify-between gap-3">
         <div>
