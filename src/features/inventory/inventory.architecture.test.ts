@@ -68,14 +68,17 @@ describe('inventory foundation architecture', () => {
     for (const primitive of ['TextField', 'SelectField', 'TextAreaField', 'SurfaceCard', 'PageShell']) expect(intake).toContain(primitive);
   });
 
-  it('uses master data provider for intake brand and model selection', () => {
+  it('uses master data provider for intake brand, model and normalized attributes', () => {
     const intake = readFileSync('src/features/inventory/presentation/InventoryDeviceIntakePage.tsx', 'utf8');
     const router = readFileSync('src/app/router/AppRouter.tsx', 'utf8');
     expect(intake).toContain('masterDataProvider.getBrands()');
     expect(intake).toContain('masterDataProvider.getDeviceModels()');
-    expect(intake).toContain('brandId');
-    expect(intake).toContain('deviceModelId');
+    expect(intake).toContain('masterDataProvider.getStorageCapacities()');
+    expect(intake).toContain('masterDataProvider.getColors()');
+    expect(intake).toContain('masterDataProvider.getConditions()');
+    for (const key of ['brandId', 'deviceModelId', 'storageCapacityId', 'colorId', 'conditionId']) expect(intake).toContain(key);
     expect(intake).not.toContain('device-manufacturer');
+    expect(intake).not.toContain('physicalCondition:');
     expect(router).toContain('<InventoryDeviceIntakePage masterDataProvider={masterDataProvider} provider={inventoryDemoProvider} />');
   });
 

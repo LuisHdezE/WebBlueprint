@@ -23,7 +23,7 @@ describe('inventory demo adapter', () => {
     expect(queue.some((item) => item.actionLabel === 'Evaluar dispositivo')).toBe(true);
   });
 
-  it('exposes deterministic device intake views', () => {
+  it('exposes deterministic device intake views backed by canonical ids', () => {
     const provider = new JsonInventoryDemoProvider();
     const devices = provider.getDevicesView();
     const intake = provider.getDeviceIntakeView();
@@ -34,8 +34,17 @@ describe('inventory demo adapter', () => {
     expect(intake.title).toBe('Registrar dispositivo');
     expect(intake.fields.brandId).toBe('Marca');
     expect(intake.fields.deviceModelId).toBe('Modelo');
+    expect(intake.fields.storageCapacityId).toBe('Almacenamiento');
+    expect(intake.fields.colorId).toBe('Color');
+    expect(intake.fields.conditionId).toBe('Condición');
+    expect('storage' in intake.fields).toBe(false);
+    expect('color' in intake.fields).toBe(false);
+    expect('physicalCondition' in intake.fields).toBe(false);
     expect(intake.defaults.brandId).toBe('');
     expect(intake.defaults.deviceModelId).toBe('');
+    expect(intake.defaults.storageCapacityId).toBe('');
+    expect(intake.defaults.colorId).toBe('');
+    expect(intake.defaults.conditionId).toBe('');
     expect(intake.defaults.destination).toBe('Pending Evaluation');
     expect(intake.options.destination).toHaveLength(5);
     expect(intake.options.powersOn).toHaveLength(3);

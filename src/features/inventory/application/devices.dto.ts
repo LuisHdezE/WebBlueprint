@@ -69,10 +69,10 @@ export interface InventoryDeviceIntakeViewDto {
     brandId: string;
     deviceModelId: string;
     serialOrImei: string;
-    storage: string;
-    color: string;
+    storageCapacityId: string;
+    colorId: string;
     powersOn: string;
-    physicalCondition: string;
+    conditionId: string;
     accountLock: string;
     acquisitionSource: string;
     acquisitionCost: string;
@@ -83,8 +83,9 @@ export interface InventoryDeviceIntakeViewDto {
     brandId: string;
     deviceModelId: string;
     serialOrImei: string;
-    storage: string;
-    color: string;
+    storageCapacityId: string;
+    colorId: string;
+    conditionId: string;
     acquisitionSource: string;
     acquisitionCost: string;
     notes: string;
@@ -92,14 +93,15 @@ export interface InventoryDeviceIntakeViewDto {
   defaults: {
     brandId: string;
     deviceModelId: string;
+    storageCapacityId: string;
+    colorId: string;
+    conditionId: string;
     powersOn: DevicePowerState;
-    physicalCondition: DevicePhysicalCondition;
     accountLock: DeviceAccountLock;
     destination: DeviceDestination;
   };
   options: {
     powersOn: readonly { value: DevicePowerState; label: string }[];
-    physicalCondition: readonly { value: DevicePhysicalCondition; label: string }[];
     accountLock: readonly { value: DeviceAccountLock; label: string }[];
     destination: readonly { value: DeviceDestination; label: string }[];
   };
