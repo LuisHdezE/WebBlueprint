@@ -45,4 +45,42 @@ describe('inventory foundation architecture', () => {
     expect(router).toContain('path="apps/inventory/dashboard"');
     expect(router.indexOf('path="apps/inventory/dashboard"')).toBeLessThan(router.indexOf('path="apps/:slug"'));
   });
+
+  it('keeps device intake demo data outside presentation', () => {
+    for (const file of ['InventoryDevicesPage.tsx', 'InventoryDeviceIntakePage.tsx']) {
+      const page = readFileSync(`src/features/inventory/presentation/${file}`, 'utf8');
+      expect(page).not.toContain('.json');
+      expect(page).not.toContain('infrastructure/');
+      expect(page).not.toContain('iPhone 12');
+      expect(page).not.toContain("'Pending Evaluation'");
+      expect(page).not.toContain("'Donor'");
+      expect(page).not.toContain("'Refurbish'");
+    }
+  });
+
+  it('reuses shared table and form primitives for device intake', () => {
+    const list = readFileSync('src/features/inventory/presentation/InventoryDevicesPage.tsx', 'utf8');
+    expect(list).toContain('DataTable');
+    expect(list).toContain('StatusBadge');
+    expect(list).not.toContain('<table');
+
+    const intake = readFileSync('src/features/inventory/presentation/InventoryDeviceIntakePage.tsx', 'utf8');
+    for (const primitive of ['TextField', 'SelectField', 'TextAreaField', 'SurfaceCard', 'PageShell']) expect(intake).toContain(primitive);
+  });
+
+  it('extends the provider boundary for devices and intake', () => {
+    const contracts = readFileSync('src/features/inventory/application/inventory.contracts.ts', 'utf8');
+    const provider = readFileSync('src/features/inventory/infrastructure/JsonInventoryDemoProvider.ts', 'utf8');
+    expect(contracts).toContain('getDevicesView(): InventoryDevicesViewDto');
+    expect(contracts).toContain('getDeviceIntakeView(): InventoryDeviceIntakeViewDto');
+    expect(provider).toContain("import rawDevices from './inventory.devices.json'");
+  });
+
+  it('registers device intake routes before generic apps routes', () => {
+    const router = readFileSync('src/app/router/AppRouter.tsx', 'utf8');
+    for (const route of ['apps/inventory/devices', 'apps/inventory/devices/new']) {
+      expect(router).toContain(`path="${route}"`);
+      expect(router.indexOf(`path="${route}"`)).toBeLessThan(router.indexOf('path="apps/:slug"'));
+    }
+  });
 });

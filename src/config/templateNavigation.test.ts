@@ -25,6 +25,6 @@ describe('templateNavigation', () => {
       'Layouts',
       'Documentación',
     ]);
-    expect(templateRouteItems).toHaveLength(97);
+    expect(templateRouteItems).toHaveLength(99);
   });
 });

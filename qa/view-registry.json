@@ -215,6 +215,34 @@
         "src/features/inventory/infrastructure/inventory.adapters.test.ts",
         "src/features/inventory/inventory.architecture.test.ts"
       ]
+    },
+    {
+      "id": "inventory.devices",
+      "route": "apps/inventory/devices",
+      "presentation": "src/features/inventory/presentation/InventoryDevicesPage.tsx",
+      "dto": "src/features/inventory/application/devices.dto.ts",
+      "contracts": "src/features/inventory/application/inventory.contracts.ts",
+      "content": "src/features/inventory/infrastructure/inventory.devices.json",
+      "checkpoint": "docs/checkpoints/I2-inventory-device-intake.md",
+      "browserQa": "qa/browser/inventory-devices.browser-qa.mjs",
+      "tests": [
+        "src/features/inventory/infrastructure/inventory.adapters.test.ts",
+        "src/features/inventory/inventory.architecture.test.ts"
+      ]
+    },
+    {
+      "id": "inventory.device-intake",
+      "route": "apps/inventory/devices/new",
+      "presentation": "src/features/inventory/presentation/InventoryDeviceIntakePage.tsx",
+      "dto": "src/features/inventory/application/devices.dto.ts",
+      "contracts": "src/features/inventory/application/inventory.contracts.ts",
+      "content": "src/features/inventory/infrastructure/inventory.devices.json",
+      "checkpoint": "docs/checkpoints/I2-inventory-device-intake.md",
+      "browserQa": "qa/browser/inventory-device-intake.browser-qa.mjs",
+      "tests": [
+        "src/features/inventory/infrastructure/inventory.adapters.test.ts",
+        "src/features/inventory/inventory.architecture.test.ts"
+      ]
     }
   ]
 }

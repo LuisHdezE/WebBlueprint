@@ -1,5 +1,7 @@
 import rawDashboard from './inventory.dashboard.json';
+import rawDevices from './inventory.devices.json';
 import type { InventoryDemoProvider } from '../application/inventory.contracts';
+import type { InventoryDeviceIntakeViewDto, InventoryDevicesViewDto } from '../application/devices.dto';
 import type { InventoryDashboardDto } from '../application/inventory.dto';
 
 export class JsonInventoryDemoProvider implements InventoryDemoProvider {
@@ -9,5 +11,21 @@ export class JsonInventoryDemoProvider implements InventoryDemoProvider {
       throw new Error('Inventory dashboard demo data is incomplete.');
     }
     return dashboard;
+  }
+
+  getDevicesView(): InventoryDevicesViewDto {
+    const view = rawDevices.list as InventoryDevicesViewDto;
+    if (!view.title || !view.breadcrumbs.length || !view.devices.length || !view.filters.destinationOptions.length || !view.filters.conditionOptions.length) {
+      throw new Error('Inventory devices demo data is incomplete.');
+    }
+    return view;
+  }
+
+  getDeviceIntakeView(): InventoryDeviceIntakeViewDto {
+    const view = rawDevices.intake as InventoryDeviceIntakeViewDto;
+    if (!view.title || !view.breadcrumbs.length || !view.options.destination.length || !view.options.powersOn.length || !view.submitLabel) {
+      throw new Error('Inventory device intake demo data is incomplete.');
+    }
+    return view;
   }
 }

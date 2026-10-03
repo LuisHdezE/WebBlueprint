@@ -23,6 +23,8 @@ export const templateNavigation: readonly TemplateNavigationSection[] = [
     icon: 'apps',
     items: [
       { label: 'Inventario · Dashboard', to: '/apps/inventory/dashboard', icon: 'dashboard' },
+      { label: 'Inventario · Dispositivos', to: '/apps/inventory/devices', icon: 'device' },
+      { label: 'Inventario · Registrar', to: '/apps/inventory/devices/new', icon: 'forms' },
     ],
   },
   {
