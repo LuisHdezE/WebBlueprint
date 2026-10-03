@@ -101,6 +101,9 @@ jobs:
             applications/contacts \
             applications/ecommerce/products \
             applications/ecommerce/shop \
+            admin/master-data/brands \
+            admin/master-data/device-models \
+            admin/master-data/categories \
             apps/inventory/dashboard \
             apps/inventory/devices \
             apps/inventory/devices/new \
