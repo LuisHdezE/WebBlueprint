@@ -1,10 +1,15 @@
+import rawCart from './storefront.cart.json';
 import rawStorefront from './storefront.view.json';
 import type { StorefrontProvider } from '../application/storefront.contracts';
 import type { StorefrontCartViewDto, StorefrontHomeViewDto, StorefrontProductDetailDto, StorefrontProductDetailViewDto, StorefrontProductListingViewDto, StorefrontShellViewDto, StorefrontViewDto } from '../application/storefront.dto';
 
 export class JsonStorefrontProvider implements StorefrontProvider {
   getStorefrontView(): StorefrontViewDto {
-    const view = rawStorefront as StorefrontViewDto;
+    const view = {
+      ...(rawStorefront as Omit<StorefrontViewDto, 'cart'>),
+      cart: rawCart as StorefrontCartViewDto,
+    } as StorefrontViewDto;
+
     if (
       !view.shell?.storeName
       || !view.shell.primaryNav.length
