@@ -68,6 +68,7 @@ export interface StorefrontProductCardDto {
   href: string;
   compatibilityLabel: string;
   stockLabel: string;
+  image: StorefrontMediaDto;
 }
 
 export interface StorefrontPromoBandDto {
