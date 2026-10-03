@@ -11,6 +11,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
   const checkoutUrl = `${base}/store/checkout`;
   const shippingUrl = `${base}/store/shipping`;
   const contactUrl = `${base}/store/contact`;
+  const warrantyUrl = `${base}/store/warranty`;
   const signInUrl = `${base}/store/account/sign-in`;
   const registerUrl = `${base}/store/account/register`;
   const checks = [], failures = [];
@@ -40,6 +41,8 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     check('Storefront shipping deep link responds successfully', shippingResponse.ok, { status: shippingResponse.status, shippingUrl });
     const contactResponse = await fetch(contactUrl);
     check('Storefront contact deep link responds successfully', contactResponse.ok, { status: contactResponse.status, contactUrl });
+    const warrantyResponse = await fetch(warrantyUrl);
+    check('Storefront warranty deep link responds successfully', warrantyResponse.ok, { status: warrantyResponse.status, warrantyUrl });
     const signInResponse = await fetch(signInUrl);
     check('Storefront customer sign-in deep link responds successfully', signInResponse.ok, { status: signInResponse.status, signInUrl });
     const registerResponse = await fetch(registerUrl);
@@ -232,6 +235,25 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     check('Storefront contact desktop avoids horizontal overflow', !contact.overflow, contact);
     await shot('storefront-contact-desktop.png');
 
+    await navigate(cdp, warrantyUrl);
+    await waitFor(cdp, "Boolean(document.querySelector('[data-storefront-warranty]'))");
+    const warranty = await evaluate(cdp, `({
+      shell: Boolean(document.querySelector('[data-storefront-shell]')),
+      page: Boolean(document.querySelector('[data-storefront-warranty]')),
+      title: document.querySelector('[data-storefront-warranty] h1')?.textContent ?? '',
+      policies: document.querySelectorAll('[data-storefront-warranty-policies] article').length,
+      eligibilityRows: document.querySelectorAll('[data-storefront-warranty-eligibility] [class*="rounded-xl"]').length,
+      disabledButtons: document.querySelectorAll('[data-storefront-warranty-eligibility] button:disabled').length,
+      notices: document.querySelector('[data-storefront-warranty-notices]')?.textContent ?? '',
+      overflow: document.documentElement.scrollWidth > innerWidth
+    })`);
+    check('Storefront warranty renders inside storefront shell', warranty.shell && warranty.page, warranty);
+    check('Storefront warranty renders warranty and returns policies', warranty.title.includes('Condiciones claras') && warranty.policies === 2, warranty);
+    check('Storefront warranty keeps eligibility non-transactional', warranty.eligibilityRows >= 3 && warranty.disabledButtons === 1, warranty);
+    check('Storefront warranty surfaces request/order/inventory guardrails', warranty.notices.includes('Sin solicitud real') && warranty.notices.includes('Sin consulta de órdenes') && warranty.notices.includes('Sin mutación de inventario'), warranty);
+    check('Storefront warranty desktop avoids horizontal overflow', !warranty.overflow, warranty);
+    await shot('storefront-warranty-desktop.png');
+
     await navigate(cdp, signInUrl);
     await waitFor(cdp, "Boolean(document.querySelector('[data-storefront-customer-identity]'))");
     const signIn = await evaluate(cdp, `({
@@ -346,6 +368,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       checkoutUrl,
       shippingUrl,
       contactUrl,
+      warrantyUrl,
       signInUrl,
       registerUrl,
       generatedAt: new Date().toISOString(),

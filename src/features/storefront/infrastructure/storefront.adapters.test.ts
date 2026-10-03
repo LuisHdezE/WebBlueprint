@@ -81,6 +81,21 @@ describe('storefront provider', () => {
     expect(identity.notices.map((notice) => notice.id)).toEqual(['storefront-only', 'no-session', 'no-persistence']);
   });
 
+  it('exposes warranty and returns policies without creating requests', () => {
+    const provider = new JsonStorefrontProvider();
+    const warranty = provider.getWarrantyView();
+
+    expect(warranty.policies.map((policy) => policy.id)).toEqual(['warranty', 'returns']);
+    expect(warranty.eligibility.rows).toHaveLength(3);
+    expect(warranty.links.contactHref).toBe('/store/contact');
+    expect(warranty.links.productsHref).toBe('/store/products');
+    expect(warranty.notices.map((notice) => notice.id)).toEqual([
+      'no-return-request',
+      'no-order-lookup',
+      'no-inventory-mutation',
+    ]);
+  });
+
   it('exposes contact channels without messaging or form persistence', () => {
     const provider = new JsonStorefrontProvider();
     const contact = provider.getContactView();

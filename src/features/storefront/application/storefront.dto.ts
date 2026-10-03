@@ -260,6 +260,43 @@ export interface StorefrontCheckoutViewDto {
   }[];
 }
 
+export interface StorefrontWarrantyPolicyDto {
+  id: string;
+  title: string;
+  badgeLabel: string;
+  description: string;
+  items: readonly string[];
+}
+
+export interface StorefrontWarrantyViewDto {
+  eyebrow: string;
+  title: string;
+  description: string;
+  stateLabel: string;
+  policies: readonly StorefrontWarrantyPolicyDto[];
+  eligibility: {
+    title: string;
+    description: string;
+    rows: readonly {
+      id: string;
+      label: string;
+      value: string;
+    }[];
+    actionLabel: string;
+  };
+  links: {
+    contactLabel: string;
+    contactHref: string;
+    productsLabel: string;
+    productsHref: string;
+  };
+  notices: readonly {
+    id: string;
+    title: string;
+    description: string;
+  }[];
+}
+
 export interface StorefrontContactChannelDto {
   id: string;
   title: string;
@@ -454,4 +491,5 @@ export interface StorefrontViewDto {
   shipping: StorefrontShippingViewDto;
   favorites: StorefrontFavoritesViewDto;
   contact: StorefrontContactViewDto;
+  warranty: StorefrontWarrantyViewDto;
 }

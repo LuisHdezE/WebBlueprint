@@ -54,6 +54,7 @@ export const templateNavigation: readonly TemplateNavigationSection[] = [
       { label: 'Checkout', to: '/store/checkout', icon: 'forms' },
       { label: 'Envíos', to: '/store/shipping', icon: 'apps' },
       { label: 'Contacto', to: '/store/contact', icon: 'user' },
+      { label: 'Garantía y devoluciones', to: '/store/warranty', icon: 'check-circle' },
       { label: 'Cuenta · Iniciar sesión', to: '/store/account/sign-in', icon: 'lock' },
       { label: 'Cuenta · Crear cuenta', to: '/store/account/register', icon: 'user' },
     ],

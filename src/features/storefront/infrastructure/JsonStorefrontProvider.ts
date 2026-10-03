@@ -5,19 +5,21 @@ import rawIdentity from './storefront.identity.json';
 import rawFavorites from './storefront.favorites.json';
 import rawStorefront from './storefront.view.json';
 import rawShipping from './storefront.shipping.json';
+import rawWarranty from './storefront.warranty.json';
 import type { StorefrontProvider } from '../application/storefront.contracts';
-import type { StorefrontCartViewDto, StorefrontCheckoutViewDto, StorefrontContactViewDto, StorefrontCustomerIdentityViewDto, StorefrontFavoritesViewDto, StorefrontHomeViewDto, StorefrontProductDetailDto, StorefrontProductDetailViewDto, StorefrontProductListingViewDto, StorefrontShellViewDto, StorefrontShippingViewDto, StorefrontViewDto } from '../application/storefront.dto';
+import type { StorefrontCartViewDto, StorefrontCheckoutViewDto, StorefrontContactViewDto, StorefrontCustomerIdentityViewDto, StorefrontFavoritesViewDto, StorefrontHomeViewDto, StorefrontProductDetailDto, StorefrontProductDetailViewDto, StorefrontProductListingViewDto, StorefrontShellViewDto, StorefrontShippingViewDto, StorefrontViewDto, StorefrontWarrantyViewDto } from '../application/storefront.dto';
 
 export class JsonStorefrontProvider implements StorefrontProvider {
   getStorefrontView(): StorefrontViewDto {
     const view = {
-      ...(rawStorefront as Omit<StorefrontViewDto, 'cart' | 'checkout' | 'customerIdentity' | 'shipping' | 'favorites' | 'contact'>),
+      ...(rawStorefront as Omit<StorefrontViewDto, 'cart' | 'checkout' | 'customerIdentity' | 'shipping' | 'favorites' | 'contact' | 'warranty'>),
       cart: rawCart as StorefrontCartViewDto,
       checkout: rawCheckout as StorefrontCheckoutViewDto,
       contact: rawContact as StorefrontContactViewDto,
       customerIdentity: rawIdentity as StorefrontCustomerIdentityViewDto,
       favorites: rawFavorites as StorefrontFavoritesViewDto,
       shipping: rawShipping as StorefrontShippingViewDto,
+      warranty: rawWarranty as StorefrontWarrantyViewDto,
     } as StorefrontViewDto;
 
     if (
@@ -49,6 +51,8 @@ export class JsonStorefrontProvider implements StorefrontProvider {
       || !view.favorites.emptyState.title
       || !view.contact?.channels.length
       || !view.contact.service.hours.length
+      || !view.warranty?.policies.length
+      || !view.warranty.eligibility.rows.length
     ) {
       throw new Error('Storefront demo data is incomplete.');
     }
@@ -97,5 +101,9 @@ export class JsonStorefrontProvider implements StorefrontProvider {
 
   getContactView(): StorefrontContactViewDto {
     return this.getStorefrontView().contact;
+  }
+
+  getWarrantyView(): StorefrontWarrantyViewDto {
+    return this.getStorefrontView().warranty;
   }
 }
