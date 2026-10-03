@@ -58,6 +58,10 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       productText: document.querySelector('[data-storefront-product-listing]')?.textContent ?? '',
       headingFontPx: parseFloat(getComputedStyle(document.querySelector('[data-storefront-product-listing] h1')).fontSize),
       firstCardTop: document.querySelector('[data-storefront-listing-product-card]')?.getBoundingClientRect().top ?? 9999,
+      cardRects: [...document.querySelectorAll('[data-storefront-listing-product-card]')].slice(0, 4).map((card) => {
+        const rect = card.getBoundingClientRect();
+        return { top: Math.round(rect.top), width: Math.round(rect.width), height: Math.round(rect.height) };
+      }),
       addToCartButtons: [...document.querySelectorAll('[data-storefront-listing-product-card] button')].filter((button) => button.textContent?.includes('Agregar')).length,
       adminSidebar: Boolean(document.querySelector('[data-template-sidebar]')),
       publicShellBrand: document.querySelector('header')?.textContent?.includes('WebBlueprint') ?? false,
@@ -76,6 +80,8 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     check('Storefront product listing avoids public blueprint header copy', !desktop.publicShellBrand, desktop);
     check('Storefront product listing uses compact heading scale', desktop.headingFontPx <= 40, desktop);
     check('Storefront product cards start high enough for commercial density', desktop.firstCardTop < 620, desktop);
+    check('Storefront listing shows four cards on the first desktop row', desktop.cardRects.length === 4 && desktop.cardRects.every((card) => Math.abs(card.top - desktop.cardRects[0].top) <= 2), desktop);
+    check('Storefront listing cards are portrait-oriented', desktop.cardRects.every((card) => card.height > card.width), desktop);
     check('Storefront product listing desktop avoids horizontal overflow', !desktop.overflow, desktop);
     await shot('storefront-products-desktop.png');
 

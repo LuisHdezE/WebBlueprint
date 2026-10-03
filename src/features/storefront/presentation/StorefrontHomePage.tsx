@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
 import type { StorefrontProvider } from '../application/storefront.contracts';
-import type { StorefrontCategoryCardDto, StorefrontProductCardDto } from '../application/storefront.dto';
+import type { StorefrontCategoryCardDto } from '../application/storefront.dto';
 import { StorefrontSectionIntro } from './StorefrontPrimitives';
+import { StorefrontProductCard } from './StorefrontProductCard';
 
 function CategoryCard({ category }: { category: StorefrontCategoryCardDto }) {
   return (
@@ -22,42 +23,6 @@ function CategoryCard({ category }: { category: StorefrontCategoryCardDto }) {
         <span aria-hidden="true" className="transition group-hover:translate-x-1">→</span>
       </span>
     </Link>
-  );
-}
-
-function ProductCard({ product }: { product: StorefrontProductCardDto }) {
-  return (
-    <article className="grid rounded-2xl border border-black/10 bg-white p-4 shadow-sm" data-storefront-product-card>
-      <div className="flex items-start justify-between gap-3">
-        <span className="rounded-full bg-[var(--storefront-primary)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.1em] text-[var(--storefront-on-primary)]">
-          {product.badgeLabel}
-        </span>
-        <span className="text-right text-[11px] font-bold text-slate-500">{product.stockLabel}</span>
-      </div>
-      <div className="mt-3 overflow-hidden rounded-xl bg-[#f7f2ea]">
-        <img
-          alt={product.image.alt}
-          className="h-32 w-full object-cover"
-          data-storefront-product-image
-          src={product.image.src}
-          style={{ objectPosition: product.image.objectPosition ?? 'center' }}
-        />
-        <div className="p-3">
-          <p className="text-[11px] font-bold text-slate-500">{product.compatibilityLabel}</p>
-          <h3 className="mt-1.5 text-base font-black tracking-[-0.02em] text-slate-950">{product.title}</h3>
-          <p className="mt-1 text-xs leading-5 text-slate-600">{product.subtitle}</p>
-        </div>
-      </div>
-      <div className="mt-3 flex items-end justify-between gap-3">
-        <div>
-          <p className="text-xl font-black text-slate-950">{product.priceLabel}</p>
-          {product.compareLabel ? <p className="mt-0.5 text-[11px] font-semibold text-slate-500">{product.compareLabel}</p> : null}
-        </div>
-        <Link className="rounded-full border border-[var(--storefront-primary)] px-3 py-2 text-xs font-black text-[var(--storefront-primary-strong)] transition hover:bg-[var(--storefront-primary-soft)]" to={product.href}>
-          Ver
-        </Link>
-      </div>
-    </article>
   );
 }
 
@@ -150,8 +115,8 @@ export function StorefrontHomePage({ provider }: { provider: StorefrontProvider 
 
       <section className="grid gap-3" data-storefront-product-section>
         <StorefrontSectionIntro {...home.productSection} />
-        <div className="grid gap-3 md:grid-cols-3">
-          {home.productSection.products.map((product) => <ProductCard key={product.id} product={product} />)}
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {home.productSection.products.map((product) => <StorefrontProductCard key={product.id} context="home" product={product} />)}
         </div>
       </section>
 

@@ -91,7 +91,9 @@ describe('storefront architecture', () => {
     expect(home).toContain('home.categorySection.categories.map');
     expect(home).toContain('home.productSection.products.map');
     expect(home).toContain('home.promoBand');
-    expect(home).toContain('data-storefront-product-card');
+    expect(home).toContain('StorefrontProductCard');
+    const productCard = readFileSync('src/features/storefront/presentation/StorefrontProductCard.tsx', 'utf8');
+    expect(productCard).toContain('data-storefront-product-card');
   });
 
   it('renders product listing skeleton from storefront DTOs without transactions', () => {
@@ -240,6 +242,7 @@ describe('storefront architecture', () => {
     const data = readFileSync('src/features/storefront/infrastructure/storefront.view.json', 'utf8');
     const home = readFileSync('src/features/storefront/presentation/StorefrontHomePage.tsx', 'utf8');
     const listing = readFileSync('src/features/storefront/presentation/StorefrontProductListingPage.tsx', 'utf8');
+    const productCard = readFileSync('src/features/storefront/presentation/StorefrontProductCard.tsx', 'utf8');
     const shell = readFileSync('src/shell/StorefrontShell.tsx', 'utf8');
 
     expect(dto).toContain('StorefrontThemeDto');
@@ -250,13 +253,30 @@ describe('storefront architecture', () => {
     expect(data).toContain('"floatingAction"');
     expect(home).toContain('home.heroBanners');
     expect(home).toContain('activeBanner.image.src');
-    expect(home).toContain('product.image.src');
-    expect(listing).toContain('product.image.src');
+    expect(home).toContain('StorefrontProductCard');
+    expect(listing).toContain('StorefrontProductCard');
+    expect(productCard).toContain('product.image.src');
     expect(shell).toContain('shell.theme.primary');
     expect(shell).toContain('shell.floatingAction');
     expect(home).not.toContain('images.unsplash.com');
     expect(listing).not.toContain('images.unsplash.com');
+    expect(productCard).not.toContain('images.unsplash.com');
     expect(shell).not.toContain('#25D366');
+  });
+
+  it('uses one portrait-oriented product card component across home and listing', () => {
+    const home = readFileSync('src/features/storefront/presentation/StorefrontHomePage.tsx', 'utf8');
+    const listing = readFileSync('src/features/storefront/presentation/StorefrontProductListingPage.tsx', 'utf8');
+    const productCard = readFileSync('src/features/storefront/presentation/StorefrontProductCard.tsx', 'utf8');
+
+    expect(home).toContain('xl:grid-cols-4');
+    expect(listing).toContain('xl:grid-cols-4');
+    expect(home).toContain('<StorefrontProductCard');
+    expect(listing).toContain('<StorefrontProductCard');
+    expect(productCard).toContain('min-h-[360px]');
+    expect(productCard).toContain('aspect-[4/3]');
+    expect(productCard).not.toContain('text-xl');
+    expect(productCard).not.toContain('text-2xl');
   });
 
 });
