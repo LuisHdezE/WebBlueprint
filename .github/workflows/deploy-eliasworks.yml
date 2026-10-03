@@ -91,6 +91,8 @@ jobs:
             store/products/iphone-13-display-oled \
             store/cart \
             store/checkout \
+            store/account/sign-in \
+            store/account/register \
             demo/pet-shop/dashboard \
             authentication/sign-in \
             authentication/sign-up \
