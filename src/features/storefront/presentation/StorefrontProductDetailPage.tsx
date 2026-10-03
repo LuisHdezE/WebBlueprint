@@ -18,7 +18,7 @@ export function StorefrontProductDetailPage({ provider }: { provider: Storefront
         <Link className="text-xs font-black text-slate-600 hover:text-slate-950" to={detail.notFound.actionHref}>← {detail.notFound.actionLabel}</Link>
         <section className="rounded-xl border border-black/10 bg-white p-3 shadow-sm">
           <p className="text-[11px] font-black uppercase tracking-[0.12em] text-slate-500">{detail.eyebrow}</p>
-          <h1 className="mt-2 text-3xl font-black tracking-[-0.035em] text-slate-950">{detail.notFound.title}</h1>
+          <h1 className="mt-2 text-2xl font-black tracking-[-0.035em] text-slate-950">{detail.notFound.title}</h1>
           <p className="mt-2 max-w-2xl text-[11px] leading-4 text-slate-600">{detail.notFound.description}</p>
         </section>
       </main>
@@ -35,7 +35,7 @@ export function StorefrontProductDetailPage({ provider }: { provider: Storefront
             <div className="grid aspect-[4/3] w-full max-w-[34rem] place-items-center rounded-xl bg-[#f7f2ea] p-3 text-center">
               <div>
                 <p className="text-[11px] font-black uppercase tracking-[0.12em] text-slate-500">{product.heroLabel}</p>
-                <p className="mt-2 text-3xl font-black tracking-[-0.04em] text-slate-950">{product.badgeLabel}</p>
+                <p className="mt-2 text-2xl font-black tracking-[-0.04em] text-slate-950">{product.badgeLabel}</p>
                 <p className="mt-2 max-w-xs text-[11px] leading-4 text-slate-600">Imagen demo preparada para galería comercial futura</p>
               </div>
             </div>
@@ -56,7 +56,7 @@ export function StorefrontProductDetailPage({ provider }: { provider: Storefront
             <span className="rounded-full bg-[var(--storefront-primary)] px-2.5 py-1 text-[10px] font-black text-[var(--storefront-on-primary)]">{product.badgeLabel}</span>
             <span className="rounded-full bg-[#f7f2ea] px-2.5 py-1 text-[10px] font-black text-slate-700">{product.stockLabel}</span>
           </div>
-          <h1 className="mt-3 text-3xl font-black tracking-[-0.035em] text-slate-950">{product.title}</h1>
+          <h1 className="mt-3 text-2xl font-black tracking-[-0.035em] text-slate-950">{product.title}</h1>
           <p className="mt-2 text-[11px] leading-4 text-slate-600">{product.subtitle}</p>
 
           <div className="mt-4 rounded-xl bg-[#f7f2ea] p-3">
