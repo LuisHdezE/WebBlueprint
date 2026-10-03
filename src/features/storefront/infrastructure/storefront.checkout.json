@@ -37,8 +37,8 @@
   },
   "shipping": {
     "title": "Entrega y envío",
-    "description": "La dirección, la zona y el costo final de envío se resolverán en un incremento posterior.",
-    "statusLabel": "Cálculo de envío pendiente",
+    "description": "Consulta una zona demo para visualizar cómo impactará el costo de entrega.",
+    "statusLabel": "Tarifas demo disponibles",
     "fields": [
       {
         "id": "department",
@@ -58,7 +58,9 @@
         "value": "Envío o retiro",
         "helper": "Sin selección funcional en B6."
       }
-    ]
+    ],
+    "actionLabel": "Ver zonas y costos",
+    "actionHref": "/store/shipping"
   },
   "payment": {
     "title": "Método de pago",
