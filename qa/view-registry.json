@@ -203,6 +203,48 @@
       ]
     },
     {
+      "id": "master-data.brands",
+      "route": "admin/master-data/brands",
+      "presentation": "src/features/master-data/presentation/MasterDataAdminPages.tsx",
+      "dto": "src/features/master-data/application/master-data-admin.dto.ts",
+      "contracts": "src/features/master-data/application/master-data.contracts.ts",
+      "content": "src/features/master-data/infrastructure/master-data-admin.view.json",
+      "checkpoint": "docs/checkpoints/A2-admin-master-data-views.md",
+      "browserQa": "qa/browser/admin-master-data.browser-qa.mjs",
+      "tests": [
+        "src/features/master-data/infrastructure/master-data.adapters.test.ts",
+        "src/features/master-data/master-data.architecture.test.ts"
+      ]
+    },
+    {
+      "id": "master-data.device-models",
+      "route": "admin/master-data/device-models",
+      "presentation": "src/features/master-data/presentation/MasterDataAdminPages.tsx",
+      "dto": "src/features/master-data/application/master-data-admin.dto.ts",
+      "contracts": "src/features/master-data/application/master-data.contracts.ts",
+      "content": "src/features/master-data/infrastructure/master-data-admin.view.json",
+      "checkpoint": "docs/checkpoints/A2-admin-master-data-views.md",
+      "browserQa": "qa/browser/admin-master-data.browser-qa.mjs",
+      "tests": [
+        "src/features/master-data/infrastructure/master-data.adapters.test.ts",
+        "src/features/master-data/master-data.architecture.test.ts"
+      ]
+    },
+    {
+      "id": "master-data.categories",
+      "route": "admin/master-data/categories",
+      "presentation": "src/features/master-data/presentation/MasterDataAdminPages.tsx",
+      "dto": "src/features/master-data/application/master-data-admin.dto.ts",
+      "contracts": "src/features/master-data/application/master-data.contracts.ts",
+      "content": "src/features/master-data/infrastructure/master-data-admin.view.json",
+      "checkpoint": "docs/checkpoints/A2-admin-master-data-views.md",
+      "browserQa": "qa/browser/admin-master-data.browser-qa.mjs",
+      "tests": [
+        "src/features/master-data/infrastructure/master-data.adapters.test.ts",
+        "src/features/master-data/master-data.architecture.test.ts"
+      ]
+    },
+    {
       "id": "inventory.dashboard",
       "route": "apps/inventory/dashboard",
       "presentation": "src/features/inventory/presentation/InventoryDashboardPage.tsx",
