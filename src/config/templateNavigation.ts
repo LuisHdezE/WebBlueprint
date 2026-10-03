@@ -35,6 +35,11 @@ export const templateNavigation: readonly TemplateNavigationSection[] = [
       { label: 'Master Data · Marcas', to: '/admin/master-data/brands', icon: 'table' },
       { label: 'Master Data · Modelos', to: '/admin/master-data/device-models', icon: 'device' },
       { label: 'Master Data · Categorías', to: '/admin/master-data/categories', icon: 'layers' },
+      { label: 'Master Data · Colores', to: '/admin/master-data/colors', icon: 'palette' },
+      { label: 'Master Data · Almacenamientos', to: '/admin/master-data/storage-capacities', icon: 'table' },
+      { label: 'Master Data · RAM', to: '/admin/master-data/ram-capacities', icon: 'table' },
+      { label: 'Master Data · Condiciones', to: '/admin/master-data/conditions', icon: 'check-circle' },
+      { label: 'Master Data · Tipos de repuesto', to: '/admin/master-data/spare-part-types', icon: 'layers' },
     ],
   },
   {
