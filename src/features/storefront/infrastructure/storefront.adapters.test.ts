@@ -59,4 +59,17 @@ describe('storefront provider', () => {
     expect(product?.notices.map((notice) => notice.id)).toContain('no-cart');
     expect(provider.getProductDetailBySlug('missing-demo-product')).toBeUndefined();
   });
+
+  it('exposes cart shell data without transactional behavior', () => {
+    const provider = new JsonStorefrontProvider();
+    const cart = provider.getCartView();
+
+    expect(cart.title).toContain('Carrito preparado');
+    expect(cart.emptyState.title).toContain('carrito demo está vacío');
+    expect(cart.lines).toHaveLength(2);
+    expect(cart.lines.map((line) => line.id)).toContain('cart-line-display');
+    expect(cart.summary.totalValue).toBe('UYU 6.580');
+    expect(cart.summary.checkoutDisabledLabel).toBe('Checkout pendiente');
+    expect(cart.notices.map((notice) => notice.id)).toEqual(['no-persistence', 'no-checkout', 'no-inventory-mutation']);
+  });
 });

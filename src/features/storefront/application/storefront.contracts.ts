@@ -1,4 +1,4 @@
-import type { StorefrontHomeViewDto, StorefrontProductDetailDto, StorefrontProductDetailViewDto, StorefrontProductListingViewDto, StorefrontShellViewDto, StorefrontViewDto } from './storefront.dto';
+import type { StorefrontCartViewDto, StorefrontHomeViewDto, StorefrontProductDetailDto, StorefrontProductDetailViewDto, StorefrontProductListingViewDto, StorefrontShellViewDto, StorefrontViewDto } from './storefront.dto';
 
 export interface StorefrontProvider {
   getStorefrontView(): StorefrontViewDto;
@@ -7,4 +7,5 @@ export interface StorefrontProvider {
   getProductListingView(): StorefrontProductListingViewDto;
   getProductDetailView(): StorefrontProductDetailViewDto;
   getProductDetailBySlug(slug: string): StorefrontProductDetailDto | undefined;
+  getCartView(): StorefrontCartViewDto;
 }
