@@ -1,6 +1,6 @@
 import rawStorefront from './storefront.view.json';
 import type { StorefrontProvider } from '../application/storefront.contracts';
-import type { StorefrontHomeViewDto, StorefrontProductDetailDto, StorefrontProductDetailViewDto, StorefrontProductListingViewDto, StorefrontShellViewDto, StorefrontViewDto } from '../application/storefront.dto';
+import type { StorefrontCartViewDto, StorefrontHomeViewDto, StorefrontProductDetailDto, StorefrontProductDetailViewDto, StorefrontProductListingViewDto, StorefrontShellViewDto, StorefrontViewDto } from '../application/storefront.dto';
 
 export class JsonStorefrontProvider implements StorefrontProvider {
   getStorefrontView(): StorefrontViewDto {
@@ -16,6 +16,9 @@ export class JsonStorefrontProvider implements StorefrontProvider {
       || !view.productListing.filters.length
       || !view.productDetail?.products.length
       || !view.productDetail.notFound.title
+      || !view.cart?.title
+      || !view.cart.emptyState.title
+      || !view.cart.summary.items.length
     ) {
       throw new Error('Storefront demo data is incomplete.');
     }
@@ -40,5 +43,9 @@ export class JsonStorefrontProvider implements StorefrontProvider {
 
   getProductDetailBySlug(slug: string): StorefrontProductDetailDto | undefined {
     return this.getProductDetailView().products.find((product) => product.slug === slug);
+  }
+
+  getCartView(): StorefrontCartViewDto {
+    return this.getStorefrontView().cart;
   }
 }
