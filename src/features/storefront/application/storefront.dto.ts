@@ -258,6 +258,46 @@ export interface StorefrontCheckoutViewDto {
   }[];
 }
 
+export interface StorefrontShippingZoneDto {
+  id: string;
+  name: string;
+  description: string;
+  priceLabel: string;
+  etaLabel: string;
+  coverageLabel: string;
+}
+
+export interface StorefrontShippingViewDto {
+  eyebrow: string;
+  title: string;
+  description: string;
+  stateLabel: string;
+  returnToCheckoutLabel: string;
+  returnToCheckoutHref: string;
+  pickup: {
+    id: string;
+    title: string;
+    description: string;
+    priceLabel: string;
+    etaLabel: string;
+  };
+  zones: readonly StorefrontShippingZoneDto[];
+  addressPreview: {
+    title: string;
+    description: string;
+    fields: readonly {
+      id: string;
+      label: string;
+      placeholder: string;
+    }[];
+  };
+  notices: readonly {
+    id: string;
+    title: string;
+    description: string;
+  }[];
+}
+
 export interface StorefrontCustomerIdentityFieldDto {
   id: string;
   label: string;
@@ -348,4 +388,5 @@ export interface StorefrontViewDto {
   cart: StorefrontCartViewDto;
   checkout: StorefrontCheckoutViewDto;
   customerIdentity: StorefrontCustomerIdentityViewDto;
+  shipping: StorefrontShippingViewDto;
 }
