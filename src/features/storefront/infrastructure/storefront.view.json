@@ -79,6 +79,91 @@
         "title": "Listo para catálogo",
         "description": "El siguiente bloque puede conectar productos, categorías y filtros públicos."
       }
-    ]
+    ],
+    "categorySection": {
+      "eyebrow": "Explorar por necesidad",
+      "title": "Categorías preparadas para vitrina pública",
+      "description": "B2 presenta agrupaciones comerciales sin acoplarse al demo Ecommerce legacy ni a datos de backend.",
+      "categories": [
+        {
+          "id": "cat-displays",
+          "title": "Displays y módulos",
+          "description": "Pantallas demo organizadas para futuras compatibilidades por marca y modelo.",
+          "href": "/store/categories/displays",
+          "eyebrow": "Repuestos",
+          "itemCountLabel": "12 ítems demo"
+        },
+        {
+          "id": "cat-batteries",
+          "title": "Baterías",
+          "description": "Sección pública para comparar repuesto nuevo, costo de tienda y disponibilidad.",
+          "href": "/store/categories/batteries",
+          "eyebrow": "Energía",
+          "itemCountLabel": "8 ítems demo"
+        },
+        {
+          "id": "cat-used-phones",
+          "title": "Celulares usados",
+          "description": "Tarjetas comerciales para equipos individuales sin exponer costo interno.",
+          "href": "/store/used-phones",
+          "eyebrow": "Equipos",
+          "itemCountLabel": "6 ítems demo"
+        },
+        {
+          "id": "cat-connectors",
+          "title": "Conectores de carga",
+          "description": "Preparado para compatibilidad, stock exacto y consultas asistidas.",
+          "href": "/store/categories/charge-connectors",
+          "eyebrow": "Carga",
+          "itemCountLabel": "9 ítems demo"
+        }
+      ]
+    },
+    "productSection": {
+      "eyebrow": "Destacados demo",
+      "title": "Cards comerciales listas para catálogo",
+      "description": "Estos productos son datos de presentación. No descuentan inventario, no compran y no crean órdenes.",
+      "products": [
+        {
+          "id": "product-iphone-13-display",
+          "title": "Display OLED iPhone 13",
+          "subtitle": "Módulo demo para reparación premium",
+          "priceLabel": "UYU 4.890",
+          "compareLabel": "Costo repuesto nuevo: UYU 3.950",
+          "badgeLabel": "Repuesto",
+          "href": "/store/products/iphone-13-display-oled",
+          "compatibilityLabel": "Compatible: iPhone 13",
+          "stockLabel": "Stock demo: 3"
+        },
+        {
+          "id": "product-samsung-battery",
+          "title": "Batería Samsung S21",
+          "subtitle": "Repuesto demo con garantía futura configurable",
+          "priceLabel": "UYU 1.690",
+          "compareLabel": "Costo repuesto nuevo: UYU 1.150",
+          "badgeLabel": "Batería",
+          "href": "/store/products/samsung-s21-battery",
+          "compatibilityLabel": "Compatible: Galaxy S21",
+          "stockLabel": "Stock demo: 5"
+        },
+        {
+          "id": "product-used-iphone",
+          "title": "iPhone 12 128 GB usado",
+          "subtitle": "Equipo demo individual preparado para vitrina",
+          "priceLabel": "USD 285",
+          "badgeLabel": "Usado A",
+          "href": "/store/products/iphone-12-128-used-a",
+          "compatibilityLabel": "Color: Negro · Batería: 87%",
+          "stockLabel": "Unidad única demo"
+        }
+      ]
+    },
+    "promoBand": {
+      "eyebrow": "Flujo futuro",
+      "title": "La compra requerirá registro antes del checkout",
+      "description": "El Storefront queda preparado para carrito, autenticación, envío por zona y pagos, pero B2 solo muestra secciones navegables.",
+      "actionLabel": "Ver alcance pendiente",
+      "actionHref": "/store/cart"
+    }
   }
 }
