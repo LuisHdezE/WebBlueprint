@@ -260,6 +260,48 @@ export interface StorefrontCheckoutViewDto {
   }[];
 }
 
+export interface StorefrontContactChannelDto {
+  id: string;
+  title: string;
+  description: string;
+  actionLabel: string;
+  actionHref: string;
+  statusLabel: string;
+}
+
+export interface StorefrontContactViewDto {
+  eyebrow: string;
+  title: string;
+  description: string;
+  stateLabel: string;
+  channels: readonly StorefrontContactChannelDto[];
+  service: {
+    title: string;
+    serviceAreaLabel: string;
+    hours: readonly {
+      id: string;
+      label: string;
+      value: string;
+    }[];
+  };
+  topics: readonly {
+    id: string;
+    title: string;
+    description: string;
+  }[];
+  links: {
+    productsLabel: string;
+    productsHref: string;
+    shippingLabel: string;
+    shippingHref: string;
+  };
+  notices: readonly {
+    id: string;
+    title: string;
+    description: string;
+  }[];
+}
+
 export interface StorefrontFavoritesViewDto {
   eyebrow: string;
   title: string;
@@ -411,4 +453,5 @@ export interface StorefrontViewDto {
   customerIdentity: StorefrontCustomerIdentityViewDto;
   shipping: StorefrontShippingViewDto;
   favorites: StorefrontFavoritesViewDto;
+  contact: StorefrontContactViewDto;
 }
