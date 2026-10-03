@@ -50,6 +50,7 @@ import { StorefrontHomePage } from '@/features/storefront/presentation/Storefron
 import { StorefrontProductDetailPage } from '@/features/storefront/presentation/StorefrontProductDetailPage';
 import { StorefrontProductListingPage } from '@/features/storefront/presentation/StorefrontProductListingPage';
 import { StorefrontShippingPage } from '@/features/storefront/presentation/StorefrontShippingPage';
+import { StorefrontWarrantyPage } from '@/features/storefront/presentation/StorefrontWarrantyPage';
 import { BlogEditorPage } from '@/features/applications/blog/presentation/BlogEditorPage';
 import { BlogGridPage } from '@/features/applications/blog/presentation/BlogGridPage';
 import { BlogListPage } from '@/features/applications/blog/presentation/BlogListPage';
@@ -143,6 +144,7 @@ export function AppRouter() {
         <Route path="store/favorites" element={<StorefrontFavoritesPage provider={storefrontProvider} />} />
         <Route path="store/checkout" element={<StorefrontCheckoutPage provider={storefrontProvider} />} />
         <Route path="store/shipping" element={<StorefrontShippingPage provider={storefrontProvider} />} />
+        <Route path="store/warranty" element={<StorefrontWarrantyPage provider={storefrontProvider} />} />
         <Route path="store/account" element={<Navigate to="/store/account/sign-in" replace />} />
         <Route path="store/account/sign-in" element={<StorefrontCustomerIdentityPage mode="sign-in" provider={storefrontProvider} />} />
         <Route path="store/account/register" element={<StorefrontCustomerIdentityPage mode="register" provider={storefrontProvider} />} />
