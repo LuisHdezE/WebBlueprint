@@ -108,6 +108,31 @@ export interface StorefrontProductListingViewDto {
   };
 }
 
+export interface StorefrontCatalogRouteViewDto {
+  key: string;
+  eyebrow: string;
+  title: string;
+  description: string;
+  resultSummary: string;
+  badgeLabel: string;
+  products: readonly StorefrontProductCardDto[];
+}
+
+export interface StorefrontCatalogViewDto {
+  navigation: readonly StorefrontNavItemDto[];
+  routes: readonly StorefrontCatalogRouteViewDto[];
+  notFound: {
+    title: string;
+    description: string;
+    actionLabel: string;
+    actionHref: string;
+  };
+  notice: {
+    title: string;
+    description: string;
+  };
+}
+
 export interface StorefrontProductDetailDto {
   slug: string;
   title: string;
@@ -484,6 +509,7 @@ export interface StorefrontViewDto {
   shell: StorefrontShellViewDto;
   home: StorefrontHomeViewDto;
   productListing: StorefrontProductListingViewDto;
+  catalog: StorefrontCatalogViewDto;
   productDetail: StorefrontProductDetailViewDto;
   cart: StorefrontCartViewDto;
   checkout: StorefrontCheckoutViewDto;
