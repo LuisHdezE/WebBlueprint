@@ -12,9 +12,16 @@ describe('storefront provider', () => {
     expect(shell.categoryNav).toHaveLength(4);
     expect(shell.utilityNav.map((item) => item.href)).toEqual(['/store/account', '/store/favorites', '/store/cart']);
     expect(shell.footerColumns.length).toBeGreaterThanOrEqual(2);
+    expect(shell.theme.primary).toBe('#16a34a');
+    expect(shell.theme.primary).not.toBe('#000000');
+    expect(shell.floatingAction.icon).toBe('whatsapp');
+    expect(shell.floatingAction.href).toBe('/store/contact');
     expect(home.title).toContain('Storefront comercial');
     expect(home.ctas.map((cta) => cta.href)).toContain('/store/products');
     expect(home.featureTiles.map((tile) => tile.id)).toContain('admin-separated');
+    expect(home.heroBanners).toHaveLength(3);
+    expect(home.heroBanners.every((banner) => banner.image.src.startsWith('https://'))).toBe(true);
+    expect(home.heroBanners.every((banner) => banner.image.alt.length > 0)).toBe(true);
   });
 
   it('exposes provider-driven catalog home sections', () => {
@@ -28,6 +35,7 @@ describe('storefront provider', () => {
     expect(home.productSection.products).toHaveLength(3);
     expect(home.productSection.products.map((product) => product.id)).toContain('product-iphone-13-display');
     expect(home.productSection.products.some((product) => product.compareLabel?.includes('Costo repuesto nuevo'))).toBe(true);
+    expect(home.productSection.products.every((product) => product.image.src.startsWith('https://'))).toBe(true);
     expect(home.promoBand.title).toContain('registro');
   });
 
@@ -42,6 +50,7 @@ describe('storefront provider', () => {
     expect(listing.products).toHaveLength(6);
     expect(listing.products.map((product) => product.id)).toContain('listing-iphone-13-display');
     expect(listing.products.some((product) => product.compareLabel?.includes('Costo repuesto nuevo'))).toBe(true);
+    expect(listing.products.every((product) => product.image.alt.length > 0)).toBe(true);
     expect(listing.listingNotice.title).toContain('visual');
   });
 
