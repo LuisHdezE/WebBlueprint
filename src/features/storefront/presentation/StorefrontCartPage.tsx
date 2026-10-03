@@ -12,7 +12,7 @@ function CartLineCard({ line }: { line: StorefrontCartLineDto }) {
     <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm" data-storefront-cart-line>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex gap-3">
-          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-slate-950 text-center text-[10px] font-black uppercase tracking-[0.14em] text-white">
+          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-[var(--storefront-primary)] text-center text-[10px] font-black uppercase tracking-[0.14em] text-[var(--storefront-on-primary)]">
             Demo
           </div>
           <div>
@@ -63,7 +63,7 @@ export function StorefrontCartPage({ provider }: StorefrontCartPageProps) {
               <p className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">Estado vacío reusable</p>
               <h2 className="mt-1 text-lg font-black text-slate-950">{cart.emptyState.title}</h2>
               <p className="mt-1.5 text-xs leading-5 text-slate-600">{cart.emptyState.description}</p>
-              <Link className="mt-3 inline-flex rounded-full bg-slate-950 px-4 py-2 text-xs font-black text-white" to={cart.emptyState.actionHref}>
+              <Link className="mt-3 inline-flex rounded-full bg-[var(--storefront-primary)] px-4 py-2 text-xs font-black text-[var(--storefront-on-primary)]" to={cart.emptyState.actionHref}>
                 {cart.emptyState.actionLabel}
               </Link>
             </div>
