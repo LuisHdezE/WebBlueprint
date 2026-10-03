@@ -59,6 +59,22 @@ The Storefront customer identity lane must remain separate from:
 
 The Storefront page consumes only `StorefrontProvider` and Storefront DTOs.
 
+## Blueprint sidebar discoverability
+
+The Blueprint sidebar must expose every completed Storefront view so the visual catalog remains navigable from the main blueprint workspace.
+
+Current completed Storefront entries:
+
+- Inicio → `/store`
+- Productos → `/store/products`
+- Detalle de producto → `/store/products/iphone-13-display-oled`
+- Carrito → `/store/cart`
+- Checkout → `/store/checkout`
+- Cuenta / Iniciar sesión → `/store/account/sign-in`
+- Cuenta / Crear cuenta → `/store/account/register`
+
+This is protected by an architecture test. Future Storefront increments that introduce a completed view must update `templateNavigation` in the same PR.
+
 ## QA contract
 
 Browser QA verifies:
