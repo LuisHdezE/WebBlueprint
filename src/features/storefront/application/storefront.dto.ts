@@ -4,6 +4,37 @@ export interface StorefrontNavItemDto {
   href: string;
 }
 
+export interface StorefrontThemeDto {
+  primary: string;
+  primaryStrong: string;
+  primarySoft: string;
+  onPrimary: string;
+}
+
+export interface StorefrontMediaDto {
+  src: string;
+  alt: string;
+  objectPosition?: string;
+}
+
+export interface StorefrontHeroBannerDto {
+  id: string;
+  eyebrow: string;
+  title: string;
+  description: string;
+  actionLabel: string;
+  actionHref: string;
+  image: StorefrontMediaDto;
+}
+
+export interface StorefrontFloatingActionDto {
+  id: string;
+  label: string;
+  ariaLabel: string;
+  href: string;
+  icon: 'whatsapp';
+}
+
 export interface StorefrontMetricDto {
   id: string;
   label: string;
@@ -57,6 +88,8 @@ export interface StorefrontProductListingViewDto {
   description: string;
   resultSummary: string;
   searchPlaceholder: string;
+  theme: StorefrontThemeDto;
+  floatingAction: StorefrontFloatingActionDto;
   sortOptions: readonly StorefrontFilterOptionDto[];
   filters: readonly {
     id: string;
@@ -260,6 +293,7 @@ export interface StorefrontHomeViewDto {
   title: string;
   description: string;
   primarySearchPlaceholder: string;
+  heroBanners: readonly StorefrontHeroBannerDto[];
   ctas: readonly StorefrontHeroCtaDto[];
   trustMetrics: readonly StorefrontMetricDto[];
   featureTiles: readonly {
