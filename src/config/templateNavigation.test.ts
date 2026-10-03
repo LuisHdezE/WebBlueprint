@@ -13,6 +13,7 @@ describe('templateNavigation', () => {
     expect(templateNavigation.map((section) => section.label)).toEqual([
       'General',
       'Inventario',
+      'Master Data',
       'Aplicaciones',
       'Componentes',
       'Elementos',
@@ -25,6 +26,6 @@ describe('templateNavigation', () => {
       'Layouts',
       'Documentación',
     ]);
-    expect(templateRouteItems).toHaveLength(100);
+    expect(templateRouteItems).toHaveLength(103);
   });
 });

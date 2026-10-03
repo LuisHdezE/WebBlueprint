@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { JsonMasterDataAdminViewProvider } from './JsonMasterDataAdminViewProvider';
 import { JsonMasterDataProvider } from './JsonMasterDataProvider';
 
 describe('master data JSON adapter', () => {
@@ -45,5 +46,16 @@ describe('master data JSON adapter', () => {
     expect(provider.getBrands()).toBe(catalog.brands);
     expect(provider.getDeviceModels()).toBe(catalog.deviceModels);
     expect(provider.getCategories()).toBe(catalog.categories);
+  });
+
+  it('exposes deterministic admin view content separately from canonical catalog data', () => {
+    const provider = new JsonMasterDataAdminViewProvider();
+    const views = provider.getViews();
+    expect(views.brands.title).toBe('Marcas');
+    expect(views.deviceModels.title).toBe('Modelos de dispositivo');
+    expect(views.categories.title).toBe('Categorías');
+    expect(provider.getView('brands')).toBe(views.brands);
+    expect(provider.getView('deviceModels').columns.map((column) => column.id)).toContain('brand');
+    expect(provider.getView('categories').columns.map((column) => column.id)).toContain('parent');
   });
 });
