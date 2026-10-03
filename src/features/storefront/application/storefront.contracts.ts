@@ -1,4 +1,4 @@
-import type { StorefrontCartViewDto, StorefrontCheckoutViewDto, StorefrontCustomerIdentityViewDto, StorefrontHomeViewDto, StorefrontProductDetailDto, StorefrontProductDetailViewDto, StorefrontProductListingViewDto, StorefrontShellViewDto, StorefrontViewDto } from './storefront.dto';
+import type { StorefrontCartViewDto, StorefrontCheckoutViewDto, StorefrontCustomerIdentityViewDto, StorefrontHomeViewDto, StorefrontProductDetailDto, StorefrontProductDetailViewDto, StorefrontProductListingViewDto, StorefrontShellViewDto, StorefrontShippingViewDto, StorefrontViewDto } from './storefront.dto';
 
 export interface StorefrontProvider {
   getStorefrontView(): StorefrontViewDto;
@@ -10,4 +10,5 @@ export interface StorefrontProvider {
   getCartView(): StorefrontCartViewDto;
   getCheckoutView(): StorefrontCheckoutViewDto;
   getCustomerIdentityView(): StorefrontCustomerIdentityViewDto;
+  getShippingView(): StorefrontShippingViewDto;
 }

@@ -10,6 +10,7 @@ describe('storefront architecture', () => {
     const cart = readFileSync('src/features/storefront/presentation/StorefrontCartPage.tsx', 'utf8');
     const checkout = readFileSync('src/features/storefront/presentation/StorefrontCheckoutPage.tsx', 'utf8');
     const identity = readFileSync('src/features/storefront/presentation/StorefrontCustomerIdentityPage.tsx', 'utf8');
+    const shipping = readFileSync('src/features/storefront/presentation/StorefrontShippingPage.tsx', 'utf8');
     const shell = readFileSync('src/shell/StorefrontShell.tsx', 'utf8');
 
     expect(provider).toContain("import rawStorefront from './storefront.view.json'");
@@ -22,6 +23,7 @@ describe('storefront architecture', () => {
     expect(cart).not.toContain('.json');
     expect(checkout).not.toContain('.json');
     expect(identity).not.toContain('.json');
+    expect(shipping).not.toContain('.json');
     expect(shell).not.toContain('.json');
     expect(home).toContain('provider.getHomeView()');
     expect(listing).toContain('provider.getProductListingView()');
@@ -30,6 +32,7 @@ describe('storefront architecture', () => {
     expect(cart).toContain('provider.getCartView()');
     expect(checkout).toContain('provider.getCheckoutView()');
     expect(identity).toContain('provider.getCustomerIdentityView()');
+    expect(shipping).toContain('provider.getShippingView()');
     expect(shell).toContain('provider.getShellView()');
   });
 
@@ -42,6 +45,7 @@ describe('storefront architecture', () => {
     expect(router).toContain('path="store/products/:slug"');
     expect(router).toContain('path="store/cart"');
     expect(router).toContain('path="store/checkout"');
+    expect(router).toContain('path="store/shipping"');
     expect(router).toContain('path="store/account/sign-in"');
     expect(router).toContain('path="store/account/register"');
     expect(router).toContain('<StorefrontShell provider={storefrontProvider} />');
@@ -67,6 +71,7 @@ describe('storefront architecture', () => {
     expect(router).toContain('StorefrontCartPage');
     expect(router).toContain('StorefrontCheckoutPage');
     expect(router).toContain('StorefrontCustomerIdentityPage');
+    expect(router).toContain('StorefrontShippingPage');
     expect(home).not.toContain('JsonEcommerceCatalogProvider');
     expect(listing).not.toContain('JsonEcommerceCatalogProvider');
     expect(detail).not.toContain('JsonEcommerceCatalogProvider');
@@ -277,6 +282,27 @@ describe('storefront architecture', () => {
     expect(productCard).toContain('aspect-[4/3]');
     expect(productCard).not.toContain('text-xl');
     expect(productCard).not.toContain('text-2xl');
+  });
+
+  it('renders shipping zone skeleton without persistence, carrier integration or order mutation', () => {
+    const dto = readFileSync('src/features/storefront/application/storefront.dto.ts', 'utf8');
+    const contracts = readFileSync('src/features/storefront/application/storefront.contracts.ts', 'utf8');
+    const provider = readFileSync('src/features/storefront/infrastructure/JsonStorefrontProvider.ts', 'utf8');
+    const shipping = readFileSync('src/features/storefront/presentation/StorefrontShippingPage.tsx', 'utf8');
+    const navigation = readFileSync('src/config/templateNavigation.ts', 'utf8');
+
+    expect(dto).toContain('StorefrontShippingViewDto');
+    expect(dto).toContain('StorefrontShippingZoneDto');
+    expect(contracts).toContain('getShippingView');
+    expect(provider).toContain('getShippingView()');
+    expect(provider).toContain("import rawShipping from './storefront.shipping.json'");
+    expect(shipping).toContain('data-storefront-shipping');
+    expect(shipping).toContain('data-storefront-shipping-zones');
+    expect(shipping).toContain('data-storefront-shipping-address');
+    expect(shipping).not.toContain('localStorage');
+    expect(shipping).not.toContain('sessionStorage');
+    expect(shipping).not.toContain('fetch(');
+    expect(navigation).toContain("to: '/store/shipping'");
   });
 
 });

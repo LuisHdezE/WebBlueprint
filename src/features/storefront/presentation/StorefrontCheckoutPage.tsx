@@ -54,6 +54,9 @@ export function StorefrontCheckoutPage({ provider }: StorefrontCheckoutPageProps
                 </div>
                 <span className="inline-flex w-fit rounded-full bg-slate-100 px-2.5 py-1.5 text-[10px] font-black text-slate-600">{checkout.shipping.statusLabel}</span>
               </div>
+              <Link className="mt-3 inline-flex rounded-full border border-[var(--storefront-primary)] px-3 py-2 text-[11px] font-black text-[var(--storefront-primary-strong)]" to={checkout.shipping.actionHref}>
+                {checkout.shipping.actionLabel}
+              </Link>
               <div className="mt-4 grid gap-3 sm:grid-cols-3">
                 {checkout.shipping.fields.map((field) => (
                   <article key={field.id} className="rounded-xl border border-slate-200 bg-slate-50 p-3">
