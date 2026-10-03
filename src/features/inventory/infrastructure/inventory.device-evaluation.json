@@ -60,6 +60,8 @@
     "physicalCondition": "Condición física",
     "powersOn": "Enciende",
     "estimatedRecoverableValue": "Valor recuperable",
+    "estimatedPartsValue": "Valor estimado en piezas",
+    "estimatedRefurbCost": "Costo de reacondicionamiento",
     "recommendedDestination": "Destino recomendado",
     "evaluatorNotes": "Notas de evaluación"
   },
