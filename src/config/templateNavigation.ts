@@ -43,6 +43,19 @@ export const templateNavigation: readonly TemplateNavigationSection[] = [
     ],
   },
   {
+    label: 'Tienda online',
+    icon: 'apps',
+    items: [
+      { label: 'Inicio', to: '/store', icon: 'apps' },
+      { label: 'Productos', to: '/store/products', icon: 'apps' },
+      { label: 'Detalle de producto', to: '/store/products/iphone-13-display-oled', icon: 'device' },
+      { label: 'Carrito', to: '/store/cart', icon: 'apps' },
+      { label: 'Checkout', to: '/store/checkout', icon: 'forms' },
+      { label: 'Cuenta · Iniciar sesión', to: '/store/account/sign-in', icon: 'lock' },
+      { label: 'Cuenta · Crear cuenta', to: '/store/account/register', icon: 'user' },
+    ],
+  },
+  {
     label: 'Aplicaciones',
     icon: 'apps',
     items: [
