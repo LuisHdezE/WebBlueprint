@@ -45,6 +45,10 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       promoText: document.querySelector('[data-storefront-promo-band]')?.textContent ?? '',
       categoryCards: document.querySelectorAll('[data-storefront-category-section] a').length,
       productCards: document.querySelectorAll('[data-storefront-product-card]').length,
+      productCardRects: [...document.querySelectorAll('[data-storefront-product-card]')].slice(0, 4).map((card) => {
+        const rect = card.getBoundingClientRect();
+        return { top: Math.round(rect.top), width: Math.round(rect.width), height: Math.round(rect.height) };
+      }),
       addToCartButtons: [...document.querySelectorAll('[data-storefront-product-card] button')].filter((button) => button.textContent?.includes('Agregar')).length,
       adminSidebar: Boolean(document.querySelector('[data-template-sidebar]')),
       publicShellBrand: document.querySelector('header')?.textContent?.includes('WebBlueprint') ?? false,
@@ -64,6 +68,8 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     check('Storefront has commercial search input', desktop.searchInputs >= 1, desktop);
     check('Storefront category section renders', desktop.categoryCards === 4 && desktop.categoryText.includes('Celulares usados'), desktop);
     check('Storefront product section renders demo products', desktop.productCards === 4 && desktop.productText.includes('Display OLED iPhone 13'), desktop);
+    check('Storefront home shows four featured products on one desktop row', desktop.productCardRects.length === 4 && desktop.productCardRects.every((card) => Math.abs(card.top - desktop.productCardRects[0].top) <= 2), desktop);
+    check('Storefront home product cards are portrait-oriented', desktop.productCardRects.every((card) => card.height > card.width), desktop);
     check('Storefront product cards expose replacement cost labels', desktop.productText.includes('Costo repuesto nuevo'), desktop);
     check('Storefront promo band states future auth flow', desktop.promoText.includes('registro') && desktop.promoText.includes('checkout'), desktop);
     check('Storefront product cards do not implement cart behavior yet', desktop.addToCartButtons === 0, desktop);
