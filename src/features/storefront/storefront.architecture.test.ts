@@ -91,7 +91,9 @@ describe('storefront architecture', () => {
     expect(home).toContain('home.categorySection.categories.map');
     expect(home).toContain('home.productSection.products.map');
     expect(home).toContain('home.promoBand');
-    expect(home).toContain('data-storefront-product-card');
+    expect(home).toContain('StorefrontProductCard');
+    const productCard = readFileSync('src/features/storefront/presentation/StorefrontProductCard.tsx', 'utf8');
+    expect(productCard).toContain('data-storefront-product-card');
   });
 
   it('renders product listing skeleton from storefront DTOs without transactions', () => {
