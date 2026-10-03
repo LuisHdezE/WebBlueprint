@@ -56,7 +56,7 @@ export function StorefrontHomePage({ provider }: { provider: StorefrontProvider 
           <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/35 to-black/10" />
           <div className="relative z-10 flex min-h-[260px] max-w-2xl flex-col justify-center px-8 py-8 text-white sm:min-h-[320px] sm:px-12 lg:min-h-[360px] lg:px-14">
             <p className="text-[11px] font-black uppercase tracking-[0.16em] text-white/80">{activeBanner.eyebrow}</p>
-            <h1 className="mt-2 text-3xl font-black tracking-[-0.035em] sm:text-4xl">{activeBanner.title}</h1>
+            <h1 className="mt-2 text-2xl font-black tracking-[-0.035em] sm:text-2xl">{activeBanner.title}</h1>
             <p className="mt-3 max-w-xl text-[11px] leading-4 text-white/85">{activeBanner.description}</p>
             <Link
               className="mt-5 inline-flex w-fit rounded-full bg-[var(--storefront-primary)] px-5 py-2 text-[11px] font-black text-[var(--storefront-on-primary)] transition hover:bg-[var(--storefront-primary-strong)]"
