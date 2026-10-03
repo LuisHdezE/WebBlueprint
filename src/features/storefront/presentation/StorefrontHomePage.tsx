@@ -64,7 +64,9 @@ function ProductCard({ product }: { product: StorefrontProductCardDto }) {
 export function StorefrontHomePage({ provider }: { provider: StorefrontProvider }) {
   const home = provider.getHomeView();
   const [activeBannerIndex, setActiveBannerIndex] = useState(0);
-  const activeBanner = home.heroBanners[activeBannerIndex];
+  const activeBanner = home.heroBanners[activeBannerIndex] ?? home.heroBanners[0];
+
+  if (!activeBanner) return null;
 
   function moveBanner(direction: -1 | 1) {
     setActiveBannerIndex((current) => {
