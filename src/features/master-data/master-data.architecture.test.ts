@@ -13,9 +13,11 @@ describe('master data architecture', () => {
   it('keeps JSON imports inside infrastructure only', () => {
     const contracts = readFileSync('src/features/master-data/application/master-data.contracts.ts', 'utf8');
     const provider = readFileSync('src/features/master-data/infrastructure/JsonMasterDataProvider.ts', 'utf8');
+    const adminProvider = readFileSync('src/features/master-data/infrastructure/JsonMasterDataAdminViewProvider.ts', 'utf8');
     expect(contracts).not.toContain('.json');
     expect(contracts).not.toContain('infrastructure/');
     expect(provider).toContain("import rawCatalog from './master-data.catalog.json'");
+    expect(adminProvider).toContain("import rawViews from './master-data-admin.view.json'");
   });
 
   it('exposes one shared provider for brands, models and categories', () => {
@@ -32,5 +34,23 @@ describe('master data architecture', () => {
     expect(dto).toContain('brandId: string');
     expect(dto).toContain('parentId: string | null');
     expect(dto).toContain('showInStorefront: boolean');
+  });
+
+  it('keeps admin presentation behind provider boundaries', () => {
+    const page = readFileSync('src/features/master-data/presentation/MasterDataAdminPages.tsx', 'utf8');
+    expect(page).not.toContain('.json');
+    expect(page).not.toContain('infrastructure/');
+    expect(page).toContain('masterDataProvider.getBrands()');
+    expect(page).toContain("viewProvider.getView('brands')");
+    expect(page).toContain('DataTable');
+    expect(page).not.toContain('<table');
+  });
+
+  it('registers admin master data routes before generic public apps routes', () => {
+    const router = readFileSync('src/app/router/AppRouter.tsx', 'utf8');
+    for (const route of ['admin/master-data/brands', 'admin/master-data/device-models', 'admin/master-data/categories']) {
+      expect(router).toContain(`path="${route}"`);
+      expect(router.indexOf(`path="${route}"`)).toBeLessThan(router.indexOf('path="apps/:slug"'));
+    }
   });
 });
