@@ -74,6 +74,54 @@ export interface StorefrontProductListingViewDto {
   };
 }
 
+export interface StorefrontProductDetailDto {
+  slug: string;
+  title: string;
+  subtitle: string;
+  badgeLabel: string;
+  priceLabel: string;
+  compareLabel?: string;
+  stockLabel: string;
+  compatibilityLabel: string;
+  conditionLabel: string;
+  warrantyLabel: string;
+  heroLabel: string;
+  description: string;
+  highlights: readonly string[];
+  specs: readonly {
+    label: string;
+    value: string;
+  }[];
+  gallery: readonly {
+    id: string;
+    label: string;
+    tone: string;
+  }[];
+  notices: readonly {
+    id: string;
+    title: string;
+    description: string;
+  }[];
+  relatedProductSlugs: readonly string[];
+}
+
+export interface StorefrontProductDetailViewDto {
+  eyebrow: string;
+  backLabel: string;
+  backHref: string;
+  actionNotice: {
+    title: string;
+    description: string;
+  };
+  products: readonly StorefrontProductDetailDto[];
+  notFound: {
+    title: string;
+    description: string;
+    actionLabel: string;
+    actionHref: string;
+  };
+}
+
 export interface StorefrontHomeViewDto {
   eyebrow: string;
   title: string;
@@ -126,4 +174,5 @@ export interface StorefrontViewDto {
   shell: StorefrontShellViewDto;
   home: StorefrontHomeViewDto;
   productListing: StorefrontProductListingViewDto;
+  productDetail: StorefrontProductDetailViewDto;
 }

@@ -44,4 +44,19 @@ describe('storefront provider', () => {
     expect(listing.products.some((product) => product.compareLabel?.includes('Costo repuesto nuevo'))).toBe(true);
     expect(listing.listingNotice.title).toContain('visual');
   });
+
+  it('exposes product detail skeleton data by slug', () => {
+    const provider = new JsonStorefrontProvider();
+    const detail = provider.getProductDetailView();
+    const product = provider.getProductDetailBySlug('iphone-13-display-oled');
+
+    expect(detail.backHref).toBe('/store/products');
+    expect(detail.products).toHaveLength(3);
+    expect(product?.title).toBe('Display OLED iPhone 13');
+    expect(product?.compareLabel).toContain('Costo repuesto nuevo');
+    expect(product?.stockLabel).toContain('Stock demo');
+    expect(product?.specs.map((spec) => spec.label)).toContain('Modelo');
+    expect(product?.notices.map((notice) => notice.id)).toContain('no-cart');
+    expect(provider.getProductDetailBySlug('missing-demo-product')).toBeUndefined();
+  });
 });

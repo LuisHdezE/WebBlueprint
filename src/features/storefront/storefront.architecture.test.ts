@@ -6,14 +6,18 @@ describe('storefront architecture', () => {
     const provider = readFileSync('src/features/storefront/infrastructure/JsonStorefrontProvider.ts', 'utf8');
     const home = readFileSync('src/features/storefront/presentation/StorefrontHomePage.tsx', 'utf8');
     const listing = readFileSync('src/features/storefront/presentation/StorefrontProductListingPage.tsx', 'utf8');
+    const detail = readFileSync('src/features/storefront/presentation/StorefrontProductDetailPage.tsx', 'utf8');
     const shell = readFileSync('src/shell/StorefrontShell.tsx', 'utf8');
 
     expect(provider).toContain("import rawStorefront from './storefront.view.json'");
     expect(home).not.toContain('.json');
     expect(listing).not.toContain('.json');
+    expect(detail).not.toContain('.json');
     expect(shell).not.toContain('.json');
     expect(home).toContain('provider.getHomeView()');
     expect(listing).toContain('provider.getProductListingView()');
+    expect(detail).toContain('provider.getProductDetailView()');
+    expect(detail).toContain('provider.getProductDetailBySlug(slug)');
     expect(shell).toContain('provider.getShellView()');
   });
 
@@ -23,6 +27,7 @@ describe('storefront architecture', () => {
 
     expect(router).toContain('path="store"');
     expect(router).toContain('path="store/products"');
+    expect(router).toContain('path="store/products/:slug"');
     expect(router).toContain('<StorefrontShell provider={storefrontProvider} />');
     expect(router.indexOf('<StorefrontShell provider={storefrontProvider} />')).toBeLessThan(router.indexOf('<TemplateShell />'));
     expect(storefrontShell).not.toContain('TemplateSidebar');
@@ -34,15 +39,19 @@ describe('storefront architecture', () => {
     const router = readFileSync('src/app/router/AppRouter.tsx', 'utf8');
     const home = readFileSync('src/features/storefront/presentation/StorefrontHomePage.tsx', 'utf8');
     const listing = readFileSync('src/features/storefront/presentation/StorefrontProductListingPage.tsx', 'utf8');
+    const detail = readFileSync('src/features/storefront/presentation/StorefrontProductDetailPage.tsx', 'utf8');
     const shell = readFileSync('src/shell/StorefrontShell.tsx', 'utf8');
 
     expect(router).toContain('StorefrontHomePage');
     expect(router).toContain('StorefrontProductListingPage');
+    expect(router).toContain('StorefrontProductDetailPage');
     expect(home).not.toContain('JsonEcommerceCatalogProvider');
     expect(listing).not.toContain('JsonEcommerceCatalogProvider');
+    expect(detail).not.toContain('JsonEcommerceCatalogProvider');
     expect(shell).not.toContain('JsonEcommerceCatalogProvider');
     expect(home).not.toContain('ProductsPage');
     expect(listing).not.toContain('ProductsPage');
+    expect(detail).not.toContain('ProductsPage');
     expect(shell).not.toContain('ShopPage');
   });
 
@@ -74,5 +83,24 @@ describe('storefront architecture', () => {
     expect(listing).not.toContain('localStorage');
     expect(listing).not.toContain('sessionStorage');
     expect(listing).not.toContain('Agregar al carrito');
+  });
+
+  it('renders product detail skeleton from storefront DTOs without transactions', () => {
+    const dto = readFileSync('src/features/storefront/application/storefront.dto.ts', 'utf8');
+    const contracts = readFileSync('src/features/storefront/application/storefront.contracts.ts', 'utf8');
+    const provider = readFileSync('src/features/storefront/infrastructure/JsonStorefrontProvider.ts', 'utf8');
+    const detail = readFileSync('src/features/storefront/presentation/StorefrontProductDetailPage.tsx', 'utf8');
+
+    expect(dto).toContain('StorefrontProductDetailDto');
+    expect(dto).toContain('StorefrontProductDetailViewDto');
+    expect(contracts).toContain('getProductDetailView');
+    expect(contracts).toContain('getProductDetailBySlug');
+    expect(provider).toContain('getProductDetailBySlug(slug: string)');
+    expect(detail).toContain('useParams');
+    expect(detail).toContain('data-storefront-product-detail');
+    expect(detail).toContain('data-storefront-product-action-notice');
+    expect(detail).not.toContain('localStorage');
+    expect(detail).not.toContain('sessionStorage');
+    expect(detail).not.toContain('Agregar al carrito');
   });
 });
