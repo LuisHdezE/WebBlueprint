@@ -6,23 +6,23 @@ export function StorefrontProductListingPage({ provider }: { provider: Storefron
   const listing = provider.getProductListingView();
 
   return (
-    <div className="mx-auto grid max-w-[1440px] gap-5 px-4 py-5 sm:px-5 lg:px-6 lg:py-6" data-storefront-product-listing>
-      <section className="rounded-2xl border border-black/10 bg-white p-5 shadow-sm">
+    <div className="mx-auto grid max-w-[1440px] gap-3 px-4 py-3 sm:px-5 lg:px-6 lg:py-4" data-storefront-product-listing>
+      <section className="rounded-xl border border-black/10 bg-white p-3 shadow-sm">
         <StorefrontPageIntro
           eyebrow={listing.eyebrow}
           title={listing.title}
           description={listing.description}
           trailing={(
-            <div className="max-w-xs rounded-xl bg-slate-950 p-4 text-white" data-storefront-listing-notice>
+            <div className="max-w-xs rounded-xl bg-slate-950 p-3 text-white" data-storefront-listing-notice>
               <p className="text-sm font-black">{listing.listingNotice.title}</p>
-              <p className="mt-1.5 text-xs leading-5 text-white/70">{listing.listingNotice.description}</p>
+              <p className="mt-1.5 text-[11px] leading-4 text-white/70">{listing.listingNotice.description}</p>
             </div>
           )}
         />
       </section>
 
-      <section className="grid gap-4 lg:grid-cols-[17rem_minmax(0,1fr)]">
-        <aside className="grid gap-3 rounded-2xl border border-black/10 bg-white p-4 shadow-sm lg:sticky lg:top-24 lg:self-start" data-storefront-listing-filters>
+      <section className="grid gap-3 lg:grid-cols-[17rem_minmax(0,1fr)]">
+        <aside className="grid gap-3 rounded-xl border border-black/10 bg-white p-3 shadow-sm lg:sticky lg:top-24 lg:self-start" data-storefront-listing-filters>
           <label className="grid gap-1.5">
             <span className="text-[10px] font-black uppercase tracking-[0.08em] text-slate-500">Búsqueda visual</span>
             <input
@@ -59,8 +59,8 @@ export function StorefrontProductListingPage({ provider }: { provider: Storefron
           ))}
         </aside>
 
-        <div className="grid gap-4">
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-black/10 bg-white px-4 py-3 shadow-sm">
+        <div className="grid gap-3">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-black/10 bg-white px-4 py-3 shadow-sm">
             <p className="text-sm font-black text-slate-950">{listing.resultSummary}</p>
             <p className="text-[11px] font-bold text-slate-500">Filtros visuales, sin lógica aplicada todavía</p>
           </div>
@@ -71,9 +71,9 @@ export function StorefrontProductListingPage({ provider }: { provider: Storefron
             ))}
           </section>
 
-          <section className="rounded-2xl border border-dashed border-black/20 bg-white p-4" data-storefront-listing-empty-state>
+          <section className="rounded-xl border border-dashed border-black/20 bg-white p-3" data-storefront-listing-empty-state>
             <p className="text-sm font-black text-slate-950">{listing.emptyState.title}</p>
-            <p className="mt-1.5 text-xs leading-5 text-slate-600">{listing.emptyState.description}</p>
+            <p className="mt-1.5 text-[11px] leading-4 text-slate-600">{listing.emptyState.description}</p>
           </section>
         </div>
       </section>
