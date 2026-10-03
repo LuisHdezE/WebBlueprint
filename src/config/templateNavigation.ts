@@ -25,6 +25,7 @@ export const templateNavigation: readonly TemplateNavigationSection[] = [
       { label: 'Inventario · Dashboard', to: '/apps/inventory/dashboard', icon: 'dashboard' },
       { label: 'Inventario · Dispositivos', to: '/apps/inventory/devices', icon: 'device' },
       { label: 'Inventario · Registrar', to: '/apps/inventory/devices/new', icon: 'forms' },
+      { label: 'Inventario · Evaluación', to: '/apps/inventory/devices/evaluation', icon: 'check-circle' },
     ],
   },
   {
