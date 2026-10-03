@@ -54,6 +54,22 @@ describe('storefront provider', () => {
     expect(listing.listingNotice.title).toContain('visual');
   });
 
+  it('resolves catalog route variants from the shared product listing', () => {
+    const provider = new JsonStorefrontProvider();
+    const catalog = provider.getCatalogView();
+    const spareParts = provider.getCatalogRouteView('spare-parts');
+    const usedPhones = provider.getCatalogRouteView('used-phones');
+    const displays = provider.getCatalogRouteView('category:displays');
+
+    expect(catalog.navigation).toHaveLength(7);
+    expect(catalog.routes).toHaveLength(7);
+    expect(spareParts?.products).toHaveLength(4);
+    expect(spareParts?.products.map((product) => product.id)).toContain('listing-iphone-13-display');
+    expect(usedPhones?.products.map((product) => product.id)).toEqual(['listing-iphone-12-used', 'listing-used-galaxy']);
+    expect(displays?.products.map((product) => product.id)).toEqual(['listing-iphone-13-display']);
+    expect(provider.getCatalogRouteView('category:missing')).toBeUndefined();
+  });
+
   it('exposes product detail skeleton data by slug', () => {
     const provider = new JsonStorefrontProvider();
     const detail = provider.getProductDetailView();
