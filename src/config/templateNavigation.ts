@@ -29,6 +29,15 @@ export const templateNavigation: readonly TemplateNavigationSection[] = [
     ],
   },
   {
+    label: 'Master Data',
+    icon: 'table',
+    items: [
+      { label: 'Master Data · Marcas', to: '/admin/master-data/brands', icon: 'table' },
+      { label: 'Master Data · Modelos', to: '/admin/master-data/device-models', icon: 'device' },
+      { label: 'Master Data · Categorías', to: '/admin/master-data/categories', icon: 'layers' },
+    ],
+  },
+  {
     label: 'Aplicaciones',
     icon: 'apps',
     items: [
