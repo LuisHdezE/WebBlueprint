@@ -107,3 +107,66 @@ export interface InventoryDeviceIntakeViewDto {
   successTitle: string;
   successMessage: string;
 }
+
+export interface DeviceEvaluationCheckDto {
+  id: string;
+  label: string;
+  value: string;
+  tone: StatusBadgeTone;
+}
+
+export interface DeviceEvaluationMetricDto {
+  id: string;
+  label: string;
+  value: string;
+  note: string;
+  tone: 'success' | 'warning' | 'info' | 'neutral';
+}
+
+export interface DeviceEvaluationDecisionDto {
+  destination: DeviceDestination;
+  label: string;
+  description: string;
+  tone: StatusBadgeTone;
+}
+
+export interface InventoryDeviceEvaluationViewDto {
+  title: string;
+  description: string;
+  breadcrumbs: readonly string[];
+  backLabel: string;
+  device: InventoryDeviceListItemDto;
+  summaryTitle: string;
+  metrics: readonly DeviceEvaluationMetricDto[];
+  identitySectionTitle: string;
+  visualSectionTitle: string;
+  functionalSectionTitle: string;
+  commercialSectionTitle: string;
+  decisionSectionTitle: string;
+  fields: {
+    acquisitionSource: string;
+    acquisitionCost: string;
+    serialOrImei: string;
+    accountLock: string;
+    physicalCondition: string;
+    powersOn: string;
+    estimatedRecoverableValue: string;
+    recommendedDestination: string;
+    evaluatorNotes: string;
+  };
+  visualChecks: readonly DeviceEvaluationCheckDto[];
+  functionalChecks: readonly DeviceEvaluationCheckDto[];
+  commercial: {
+    estimatedRecoverableValue: string;
+    estimatedPartsValue: string;
+    estimatedRefurbCost: string;
+    profitabilitySignal: string;
+  };
+  decisions: readonly DeviceEvaluationDecisionDto[];
+  recommendedDestination: DeviceDestination;
+  evaluatorNotes: string;
+  demoNotice: string;
+  submitLabel: string;
+  successTitle: string;
+  successMessage: string;
+}
