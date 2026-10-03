@@ -42,6 +42,7 @@ import { MasterDataBrandsPage, MasterDataCategoriesPage, MasterDataDeviceModelsP
 import { MasterDataColorsPage, MasterDataConditionsPage, MasterDataRamCapacitiesPage, MasterDataSparePartTypesPage, MasterDataStorageCapacitiesPage } from '@/features/master-data/presentation/ExtendedMasterDataAdminPages';
 import { JsonStorefrontProvider } from '@/features/storefront/infrastructure/JsonStorefrontProvider';
 import { StorefrontCartPage } from '@/features/storefront/presentation/StorefrontCartPage';
+import { StorefrontCatalogPage } from '@/features/storefront/presentation/StorefrontCatalogPage';
 import { StorefrontContactPage } from '@/features/storefront/presentation/StorefrontContactPage';
 import { StorefrontCheckoutPage } from '@/features/storefront/presentation/StorefrontCheckoutPage';
 import { StorefrontCustomerIdentityPage } from '@/features/storefront/presentation/StorefrontCustomerIdentityPage';
@@ -138,6 +139,10 @@ export function AppRouter() {
       <Route element={<StorefrontShell provider={storefrontProvider} />}>
         <Route path="store" element={<StorefrontHomePage provider={storefrontProvider} />} />
         <Route path="store/products" element={<StorefrontProductListingPage provider={storefrontProvider} />} />
+        <Route path="store/spare-parts" element={<StorefrontCatalogPage provider={storefrontProvider} routeKey="spare-parts" />} />
+        <Route path="store/used-phones" element={<StorefrontCatalogPage provider={storefrontProvider} routeKey="used-phones" />} />
+        <Route path="store/brands" element={<StorefrontCatalogPage provider={storefrontProvider} routeKey="brands" />} />
+        <Route path="store/categories/:category" element={<StorefrontCatalogPage provider={storefrontProvider} />} />
         <Route path="store/products/:slug" element={<StorefrontProductDetailPage provider={storefrontProvider} />} />
         <Route path="store/cart" element={<StorefrontCartPage provider={storefrontProvider} />} />
         <Route path="store/contact" element={<StorefrontContactPage provider={storefrontProvider} />} />
