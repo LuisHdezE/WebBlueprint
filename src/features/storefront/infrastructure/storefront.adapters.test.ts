@@ -81,6 +81,21 @@ describe('storefront provider', () => {
     expect(identity.notices.map((notice) => notice.id)).toEqual(['storefront-only', 'no-session', 'no-persistence']);
   });
 
+  it('exposes contact channels without messaging or form persistence', () => {
+    const provider = new JsonStorefrontProvider();
+    const contact = provider.getContactView();
+
+    expect(contact.channels.map((channel) => channel.id)).toEqual(['whatsapp', 'email']);
+    expect(contact.service.hours).toHaveLength(3);
+    expect(contact.links.productsHref).toBe('/store/products');
+    expect(contact.links.shippingHref).toBe('/store/shipping');
+    expect(contact.notices.map((notice) => notice.id)).toEqual([
+      'no-messaging-api',
+      'no-form-submit',
+      'provider-driven',
+    ]);
+  });
+
   it('exposes favorites without customer persistence or cart mutation', () => {
     const provider = new JsonStorefrontProvider();
     const favorites = provider.getFavoritesView();
