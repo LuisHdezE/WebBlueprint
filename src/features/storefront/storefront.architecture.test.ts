@@ -5,12 +5,15 @@ describe('storefront architecture', () => {
   it('keeps storefront data behind a provider boundary', () => {
     const provider = readFileSync('src/features/storefront/infrastructure/JsonStorefrontProvider.ts', 'utf8');
     const home = readFileSync('src/features/storefront/presentation/StorefrontHomePage.tsx', 'utf8');
+    const listing = readFileSync('src/features/storefront/presentation/StorefrontProductListingPage.tsx', 'utf8');
     const shell = readFileSync('src/shell/StorefrontShell.tsx', 'utf8');
 
     expect(provider).toContain("import rawStorefront from './storefront.view.json'");
     expect(home).not.toContain('.json');
+    expect(listing).not.toContain('.json');
     expect(shell).not.toContain('.json');
     expect(home).toContain('provider.getHomeView()');
+    expect(listing).toContain('provider.getProductListingView()');
     expect(shell).toContain('provider.getShellView()');
   });
 
@@ -19,6 +22,7 @@ describe('storefront architecture', () => {
     const storefrontShell = readFileSync('src/shell/StorefrontShell.tsx', 'utf8');
 
     expect(router).toContain('path="store"');
+    expect(router).toContain('path="store/products"');
     expect(router).toContain('<StorefrontShell provider={storefrontProvider} />');
     expect(router.indexOf('<StorefrontShell provider={storefrontProvider} />')).toBeLessThan(router.indexOf('<TemplateShell />'));
     expect(storefrontShell).not.toContain('TemplateSidebar');
@@ -29,12 +33,16 @@ describe('storefront architecture', () => {
   it('keeps storefront free of legacy ecommerce coupling', () => {
     const router = readFileSync('src/app/router/AppRouter.tsx', 'utf8');
     const home = readFileSync('src/features/storefront/presentation/StorefrontHomePage.tsx', 'utf8');
+    const listing = readFileSync('src/features/storefront/presentation/StorefrontProductListingPage.tsx', 'utf8');
     const shell = readFileSync('src/shell/StorefrontShell.tsx', 'utf8');
 
     expect(router).toContain('StorefrontHomePage');
+    expect(router).toContain('StorefrontProductListingPage');
     expect(home).not.toContain('JsonEcommerceCatalogProvider');
+    expect(listing).not.toContain('JsonEcommerceCatalogProvider');
     expect(shell).not.toContain('JsonEcommerceCatalogProvider');
     expect(home).not.toContain('ProductsPage');
+    expect(listing).not.toContain('ProductsPage');
     expect(shell).not.toContain('ShopPage');
   });
 
@@ -49,5 +57,22 @@ describe('storefront architecture', () => {
     expect(home).toContain('home.productSection.products.map');
     expect(home).toContain('home.promoBand');
     expect(home).toContain('data-storefront-product-card');
+  });
+
+  it('renders product listing skeleton from storefront DTOs without transactions', () => {
+    const dto = readFileSync('src/features/storefront/application/storefront.dto.ts', 'utf8');
+    const contracts = readFileSync('src/features/storefront/application/storefront.contracts.ts', 'utf8');
+    const provider = readFileSync('src/features/storefront/infrastructure/JsonStorefrontProvider.ts', 'utf8');
+    const listing = readFileSync('src/features/storefront/presentation/StorefrontProductListingPage.tsx', 'utf8');
+
+    expect(dto).toContain('StorefrontProductListingViewDto');
+    expect(dto).toContain('StorefrontFilterOptionDto');
+    expect(contracts).toContain('getProductListingView');
+    expect(provider).toContain('getProductListingView()');
+    expect(listing).toContain('listing.filters.map');
+    expect(listing).toContain('listing.products.map');
+    expect(listing).not.toContain('localStorage');
+    expect(listing).not.toContain('sessionStorage');
+    expect(listing).not.toContain('Agregar al carrito');
   });
 });

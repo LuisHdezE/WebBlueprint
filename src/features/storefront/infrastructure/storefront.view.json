@@ -165,5 +165,129 @@
       "actionLabel": "Ver alcance pendiente",
       "actionHref": "/store/cart"
     }
+  },
+  "productListing": {
+    "eyebrow": "Catálogo público demo",
+    "title": "Productos preparados para navegación pública",
+    "description": "Skeleton comercial para listar repuestos y celulares usados. Los controles son visuales; B3 no filtra, no compra y no descuenta inventario.",
+    "resultSummary": "6 productos demo visibles",
+    "searchPlaceholder": "Buscar por producto, marca, modelo o repuesto…",
+    "sortOptions": [
+      { "id": "recommended", "label": "Recomendados" },
+      { "id": "price-low", "label": "Menor precio" },
+      { "id": "recent", "label": "Más recientes" }
+    ],
+    "filters": [
+      {
+        "id": "category",
+        "title": "Categoría",
+        "options": [
+          { "id": "all", "label": "Todas" },
+          { "id": "spare-parts", "label": "Repuestos", "helper": "Displays, baterías y conectores" },
+          { "id": "used-phones", "label": "Celulares usados", "helper": "Unidades individuales" }
+        ]
+      },
+      {
+        "id": "brand-model",
+        "title": "Marca / modelo",
+        "options": [
+          { "id": "iphone-13", "label": "Apple · iPhone 13" },
+          { "id": "iphone-12", "label": "Apple · iPhone 12" },
+          { "id": "galaxy-s21", "label": "Samsung · Galaxy S21" }
+        ]
+      },
+      {
+        "id": "condition",
+        "title": "Condición",
+        "options": [
+          { "id": "new", "label": "Nuevo" },
+          { "id": "used-a", "label": "Usado A" },
+          { "id": "open-box", "label": "Caja abierta" }
+        ]
+      },
+      {
+        "id": "price",
+        "title": "Precio demo",
+        "options": [
+          { "id": "under-2000", "label": "Hasta UYU 2.000" },
+          { "id": "over-2000", "label": "Más de UYU 2.000" },
+          { "id": "usd", "label": "USD" }
+        ]
+      }
+    ],
+    "products": [
+      {
+        "id": "listing-iphone-13-display",
+        "title": "Display OLED iPhone 13",
+        "subtitle": "Módulo demo para reparación premium",
+        "priceLabel": "UYU 4.890",
+        "compareLabel": "Costo repuesto nuevo: UYU 3.950",
+        "badgeLabel": "Repuesto",
+        "href": "/store/products/iphone-13-display-oled",
+        "compatibilityLabel": "Compatible: iPhone 13",
+        "stockLabel": "Stock demo: 3"
+      },
+      {
+        "id": "listing-samsung-battery",
+        "title": "Batería Samsung S21",
+        "subtitle": "Repuesto demo con garantía futura configurable",
+        "priceLabel": "UYU 1.690",
+        "compareLabel": "Costo repuesto nuevo: UYU 1.150",
+        "badgeLabel": "Batería",
+        "href": "/store/products/samsung-s21-battery",
+        "compatibilityLabel": "Compatible: Galaxy S21",
+        "stockLabel": "Stock demo: 5"
+      },
+      {
+        "id": "listing-iphone-12-used",
+        "title": "iPhone 12 128 GB usado",
+        "subtitle": "Equipo demo individual preparado para vitrina",
+        "priceLabel": "USD 285",
+        "badgeLabel": "Usado A",
+        "href": "/store/products/iphone-12-128-used-a",
+        "compatibilityLabel": "Color: Negro · Batería: 87%",
+        "stockLabel": "Unidad única demo"
+      },
+      {
+        "id": "listing-charge-connector",
+        "title": "Conector de carga Xiaomi Redmi Note",
+        "subtitle": "Repuesto demo para compatibilidad futura",
+        "priceLabel": "UYU 890",
+        "compareLabel": "Costo repuesto nuevo: UYU 520",
+        "badgeLabel": "Conector",
+        "href": "/store/products/xiaomi-redmi-charge-connector",
+        "compatibilityLabel": "Compatible: Redmi Note demo",
+        "stockLabel": "Stock demo: 7"
+      },
+      {
+        "id": "listing-camera-module",
+        "title": "Módulo cámara iPhone 11",
+        "subtitle": "Pieza demo extraída y testeada",
+        "priceLabel": "UYU 2.250",
+        "compareLabel": "Costo repuesto nuevo: UYU 1.720",
+        "badgeLabel": "Cámara",
+        "href": "/store/products/iphone-11-camera-module",
+        "compatibilityLabel": "Compatible: iPhone 11",
+        "stockLabel": "Stock demo: 2"
+      },
+      {
+        "id": "listing-used-galaxy",
+        "title": "Samsung S20 usado",
+        "subtitle": "Equipo demo para venta asistida",
+        "priceLabel": "USD 195",
+        "badgeLabel": "Usado B",
+        "href": "/store/products/samsung-s20-used-b",
+        "compatibilityLabel": "Color: Azul · 128 GB",
+        "stockLabel": "Unidad única demo"
+      }
+    ],
+    "emptyState": {
+      "title": "Sin resultados demo",
+      "description": "Cuando los filtros sean funcionales, este estado cubrirá búsquedas sin coincidencias."
+    },
+    "listingNotice": {
+      "title": "Listado visual, no transaccional",
+      "description": "B3 prepara la experiencia pública. Los filtros, el carrito y el checkout se activarán en incrementos posteriores."
+    }
   }
 }

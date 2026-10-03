@@ -87,6 +87,7 @@ jobs:
             docs \
             components \
             store \
+            store/products \
             demo/pet-shop/dashboard \
             authentication/sign-in \
             authentication/sign-up \

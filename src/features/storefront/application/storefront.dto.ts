@@ -45,6 +45,35 @@ export interface StorefrontPromoBandDto {
   actionHref: string;
 }
 
+export interface StorefrontFilterOptionDto {
+  id: string;
+  label: string;
+  helper?: string;
+}
+
+export interface StorefrontProductListingViewDto {
+  eyebrow: string;
+  title: string;
+  description: string;
+  resultSummary: string;
+  searchPlaceholder: string;
+  sortOptions: readonly StorefrontFilterOptionDto[];
+  filters: readonly {
+    id: string;
+    title: string;
+    options: readonly StorefrontFilterOptionDto[];
+  }[];
+  products: readonly StorefrontProductCardDto[];
+  emptyState: {
+    title: string;
+    description: string;
+  };
+  listingNotice: {
+    title: string;
+    description: string;
+  };
+}
+
 export interface StorefrontHomeViewDto {
   eyebrow: string;
   title: string;
@@ -96,4 +125,5 @@ export interface StorefrontShellViewDto {
 export interface StorefrontViewDto {
   shell: StorefrontShellViewDto;
   home: StorefrontHomeViewDto;
+  productListing: StorefrontProductListingViewDto;
 }
