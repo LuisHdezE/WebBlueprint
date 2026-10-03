@@ -1,15 +1,17 @@
 import rawCart from './storefront.cart.json';
 import rawCheckout from './storefront.checkout.json';
+import rawIdentity from './storefront.identity.json';
 import rawStorefront from './storefront.view.json';
 import type { StorefrontProvider } from '../application/storefront.contracts';
-import type { StorefrontCartViewDto, StorefrontCheckoutViewDto, StorefrontHomeViewDto, StorefrontProductDetailDto, StorefrontProductDetailViewDto, StorefrontProductListingViewDto, StorefrontShellViewDto, StorefrontViewDto } from '../application/storefront.dto';
+import type { StorefrontCartViewDto, StorefrontCheckoutViewDto, StorefrontCustomerIdentityViewDto, StorefrontHomeViewDto, StorefrontProductDetailDto, StorefrontProductDetailViewDto, StorefrontProductListingViewDto, StorefrontShellViewDto, StorefrontViewDto } from '../application/storefront.dto';
 
 export class JsonStorefrontProvider implements StorefrontProvider {
   getStorefrontView(): StorefrontViewDto {
     const view = {
-      ...(rawStorefront as Omit<StorefrontViewDto, 'cart' | 'checkout'>),
+      ...(rawStorefront as Omit<StorefrontViewDto, 'cart' | 'checkout' | 'customerIdentity'>),
       cart: rawCart as StorefrontCartViewDto,
       checkout: rawCheckout as StorefrontCheckoutViewDto,
+      customerIdentity: rawIdentity as StorefrontCustomerIdentityViewDto,
     } as StorefrontViewDto;
 
     if (
@@ -29,6 +31,8 @@ export class JsonStorefrontProvider implements StorefrontProvider {
       || !view.checkout?.title
       || !view.checkout.authGate.requiredLabel
       || !view.checkout.payment.options.length
+      || !view.customerIdentity?.signIn.fields.length
+      || !view.customerIdentity.register.fields.length
     ) {
       throw new Error('Storefront demo data is incomplete.');
     }
@@ -61,5 +65,9 @@ export class JsonStorefrontProvider implements StorefrontProvider {
 
   getCheckoutView(): StorefrontCheckoutViewDto {
     return this.getStorefrontView().checkout;
+  }
+
+  getCustomerIdentityView(): StorefrontCustomerIdentityViewDto {
+    return this.getStorefrontView().customerIdentity;
   }
 }
