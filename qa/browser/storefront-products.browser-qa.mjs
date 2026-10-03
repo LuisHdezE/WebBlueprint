@@ -12,6 +12,13 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
   const shippingUrl = `${base}/store/shipping`;
   const contactUrl = `${base}/store/contact`;
   const warrantyUrl = `${base}/store/warranty`;
+  const sparePartsUrl = `${base}/store/spare-parts`;
+  const usedPhonesUrl = `${base}/store/used-phones`;
+  const brandsUrl = `${base}/store/brands`;
+  const displaysUrl = `${base}/store/categories/displays`;
+  const batteriesUrl = `${base}/store/categories/batteries`;
+  const chargeConnectorsUrl = `${base}/store/categories/charge-connectors`;
+  const accessoriesUrl = `${base}/store/categories/accessories`;
   const signInUrl = `${base}/store/account/sign-in`;
   const registerUrl = `${base}/store/account/register`;
   const checks = [], failures = [];
@@ -43,6 +50,18 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     check('Storefront contact deep link responds successfully', contactResponse.ok, { status: contactResponse.status, contactUrl });
     const warrantyResponse = await fetch(warrantyUrl);
     check('Storefront warranty deep link responds successfully', warrantyResponse.ok, { status: warrantyResponse.status, warrantyUrl });
+    for (const [name, url] of [
+      ['spare parts', sparePartsUrl],
+      ['used phones', usedPhonesUrl],
+      ['brands', brandsUrl],
+      ['displays category', displaysUrl],
+      ['batteries category', batteriesUrl],
+      ['charge connectors category', chargeConnectorsUrl],
+      ['accessories category', accessoriesUrl],
+    ]) {
+      const catalogResponse = await fetch(url);
+      check(`Storefront ${name} deep link responds successfully`, catalogResponse.ok, { status: catalogResponse.status, url });
+    }
     const signInResponse = await fetch(signInUrl);
     check('Storefront customer sign-in deep link responds successfully', signInResponse.ok, { status: signInResponse.status, signInUrl });
     const registerResponse = await fetch(registerUrl);
@@ -254,6 +273,45 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     check('Storefront warranty desktop avoids horizontal overflow', !warranty.overflow, warranty);
     await shot('storefront-warranty-desktop.png');
 
+    await navigate(cdp, sparePartsUrl);
+    await waitFor(cdp, "Boolean(document.querySelector('[data-storefront-catalog-route]'))");
+    const spareParts = await evaluate(cdp, `({
+      shell: Boolean(document.querySelector('[data-storefront-shell]')),
+      routeKey: document.querySelector('[data-storefront-catalog-route]')?.getAttribute('data-storefront-catalog-route-key') ?? '',
+      title: document.querySelector('[data-storefront-catalog-route] h1')?.textContent ?? '',
+      cards: document.querySelectorAll('[data-storefront-catalog-products] [data-storefront-listing-product-card]').length,
+      navigationLinks: document.querySelectorAll('[data-storefront-catalog-navigation] a').length,
+      notice: document.querySelector('[data-storefront-catalog-notice]')?.textContent ?? '',
+      overflow: document.documentElement.scrollWidth > innerWidth
+    })`);
+    check('Storefront spare parts route reuses storefront catalog page', spareParts.shell && spareParts.routeKey === 'spare-parts' && spareParts.title.includes('Repuestos para reparación'), spareParts);
+    check('Storefront spare parts renders shared product cards and route navigation', spareParts.cards === 4 && spareParts.navigationLinks === 7, spareParts);
+    check('Storefront catalog declares provider reuse without backend filtering', spareParts.notice.includes('Catálogo reutilizado') && spareParts.notice.includes('No aplica filtros de backend'), spareParts);
+    check('Storefront spare parts desktop avoids horizontal overflow', !spareParts.overflow, spareParts);
+    await shot('storefront-catalog-spare-parts-desktop.png');
+
+    await navigate(cdp, usedPhonesUrl);
+    await waitFor(cdp, "Boolean(document.querySelector('[data-storefront-catalog-route]'))");
+    const usedPhones = await evaluate(cdp, `({
+      routeKey: document.querySelector('[data-storefront-catalog-route]')?.getAttribute('data-storefront-catalog-route-key') ?? '',
+      title: document.querySelector('[data-storefront-catalog-route] h1')?.textContent ?? '',
+      cards: document.querySelectorAll('[data-storefront-catalog-products] [data-storefront-listing-product-card]').length,
+      overflow: document.documentElement.scrollWidth > innerWidth
+    })`);
+    check('Storefront used phones route resolves its provider variant', usedPhones.routeKey === 'used-phones' && usedPhones.title.includes('Equipos usados') && usedPhones.cards === 2, usedPhones);
+    check('Storefront used phones desktop avoids horizontal overflow', !usedPhones.overflow, usedPhones);
+
+    await navigate(cdp, displaysUrl);
+    await waitFor(cdp, "Boolean(document.querySelector('[data-storefront-catalog-route]'))");
+    const category = await evaluate(cdp, `({
+      routeKey: document.querySelector('[data-storefront-catalog-route]')?.getAttribute('data-storefront-catalog-route-key') ?? '',
+      title: document.querySelector('[data-storefront-catalog-route] h1')?.textContent ?? '',
+      cards: document.querySelectorAll('[data-storefront-catalog-products] [data-storefront-listing-product-card]').length,
+      overflow: document.documentElement.scrollWidth > innerWidth
+    })`);
+    check('Storefront dynamic category route resolves configured slug', category.routeKey === 'category:displays' && category.title.includes('Displays') && category.cards === 1, category);
+    check('Storefront dynamic category desktop avoids horizontal overflow', !category.overflow, category);
+
     await navigate(cdp, signInUrl);
     await waitFor(cdp, "Boolean(document.querySelector('[data-storefront-customer-identity]'))");
     const signIn = await evaluate(cdp, `({
@@ -360,7 +418,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     await chrome?.stop();
     writeFileSync(join(artifactDir, 'report.json'), JSON.stringify({
       schemaVersion: '1.0',
-      view: 'storefront.product-listing-detail-cart-checkout-customer-identity',
+      view: 'storefront.catalog-product-listing-detail-cart-checkout-customer-identity',
       targetUrl,
       detailUrl,
       cartUrl,
@@ -369,6 +427,13 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       shippingUrl,
       contactUrl,
       warrantyUrl,
+      sparePartsUrl,
+      usedPhonesUrl,
+      brandsUrl,
+      displaysUrl,
+      batteriesUrl,
+      chargeConnectorsUrl,
+      accessoriesUrl,
       signInUrl,
       registerUrl,
       generatedAt: new Date().toISOString(),
