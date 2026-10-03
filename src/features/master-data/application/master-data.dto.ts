@@ -29,8 +29,57 @@ export interface MasterDataCategoryDto {
   sortOrder: number;
 }
 
+export interface MasterDataColorDto {
+  id: string;
+  name: string;
+  slug: string;
+  hex: string | null;
+  active: boolean;
+  sortOrder: number;
+}
+
+export interface MasterDataStorageCapacityDto {
+  id: string;
+  label: string;
+  valueGb: number;
+  active: boolean;
+  sortOrder: number;
+}
+
+export interface MasterDataRamCapacityDto {
+  id: string;
+  label: string;
+  valueGb: number;
+  active: boolean;
+  sortOrder: number;
+}
+
+export interface MasterDataConditionDto {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  grade: string;
+  active: boolean;
+  sortOrder: number;
+}
+
+export interface MasterDataSparePartTypeDto {
+  id: string;
+  parentId: string | null;
+  name: string;
+  slug: string;
+  active: boolean;
+  sortOrder: number;
+}
+
 export interface MasterDataCatalogDto {
   brands: readonly MasterDataBrandDto[];
   deviceModels: readonly MasterDataDeviceModelDto[];
   categories: readonly MasterDataCategoryDto[];
+  colors: readonly MasterDataColorDto[];
+  storageCapacities: readonly MasterDataStorageCapacityDto[];
+  ramCapacities: readonly MasterDataRamCapacityDto[];
+  conditions: readonly MasterDataConditionDto[];
+  sparePartTypes: readonly MasterDataSparePartTypeDto[];
 }
