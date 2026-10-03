@@ -1,0 +1,48 @@
+{
+  "eyebrow": "Checkout público demo",
+  "title": "Revisa la compra antes de continuar",
+  "description": "B6 define la estructura visual del checkout y deja explícito que el cliente debe autenticarse o registrarse antes de confirmar una compra real.",
+  "stateLabel": "Checkout visual · sin transacción",
+  "authGate": {
+    "eyebrow": "Paso obligatorio",
+    "title": "Identifícate para comprar",
+    "description": "La compra requerirá una cuenta del cliente. En B6 este gate es únicamente visual: no inicia sesión, no registra usuarios y no crea sesión.",
+    "requiredLabel": "Autenticación o registro requerido",
+    "signInLabel": "Iniciar sesión pendiente",
+    "signUpLabel": "Crear cuenta pendiente"
+  },
+  "orderSummary": {
+    "title": "Resumen de compra demo",
+    "lines": [
+      { "id": "display", "label": "Display OLED iPhone 13 · 1 ud.", "value": "UYU 4.890" },
+      { "id": "battery", "label": "Batería Samsung S21 · 1 ud.", "value": "UYU 1.690" },
+      { "id": "shipping", "label": "Envío según zona", "value": "Pendiente" }
+    ],
+    "totalLabel": "Total demo sin envío",
+    "totalValue": "UYU 6.580"
+  },
+  "shipping": {
+    "title": "Entrega y envío",
+    "description": "La dirección, la zona y el costo final de envío se resolverán en un incremento posterior.",
+    "statusLabel": "Cálculo de envío pendiente",
+    "fields": [
+      { "id": "department", "label": "Departamento", "value": "Montevideo (demo)", "helper": "Dato visual, no editable." },
+      { "id": "zone", "label": "Zona de entrega", "value": "A definir", "helper": "El costo dependerá de la zona." },
+      { "id": "delivery", "label": "Modalidad", "value": "Envío o retiro", "helper": "Sin selección funcional en B6." }
+    ]
+  },
+  "payment": {
+    "title": "Método de pago",
+    "description": "Los métodos aparecen para reservar el espacio visual del flujo. Ninguno procesa pagos en B6.",
+    "options": [
+      { "id": "mercado-pago", "title": "Mercado Pago", "description": "Integración futura mediante checkout seguro.", "statusLabel": "Placeholder" },
+      { "id": "card", "title": "Tarjeta", "description": "Pago con tarjeta mediante proveedor futuro.", "statusLabel": "Placeholder" },
+      { "id": "whatsapp", "title": "Coordinar por WhatsApp", "description": "Canal futuro para coordinar la compra asistida.", "statusLabel": "Placeholder" }
+    ]
+  },
+  "notices": [
+    { "id": "no-order", "title": "Sin creación de orden", "description": "Esta pantalla no confirma compras ni genera pedidos." },
+    { "id": "no-inventory", "title": "Sin mutación de inventario", "description": "No reserva stock ni descuenta unidades." },
+    { "id": "no-persistence", "title": "Sin persistencia de cliente", "description": "No usa localStorage, sessionStorage ni backend para guardar datos del checkout." }
+  ]
+}
