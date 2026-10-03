@@ -109,7 +109,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     check('Storefront product listing has no add-to-cart behavior yet', desktop.addToCartButtons === 0, desktop);
     check('Storefront product listing avoids admin sidebar', !desktop.adminSidebar, desktop);
     check('Storefront product listing avoids public blueprint header copy', !desktop.publicShellBrand, desktop);
-    check('Storefront product listing uses compact heading scale', desktop.headingFontPx <= 40, desktop);
+    check('Storefront product listing uses compact heading scale', desktop.headingFontPx <= 26, desktop);
     check('Storefront product cards start high enough for commercial density', desktop.firstCardTop < 620, desktop);
     check('Storefront listing shows four cards on the first desktop row', desktop.cardRects.length === 4 && desktop.cardRects.every((card) => Math.abs(card.top - desktop.cardRects[0].top) <= 2), desktop);
     check('Storefront listing cards are portrait-oriented', desktop.cardRects.every((card) => card.height > card.width), desktop);
