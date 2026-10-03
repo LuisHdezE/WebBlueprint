@@ -97,7 +97,6 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
 
       const desktop = await evaluate(cdp, `({
         title: document.querySelector('h1')?.textContent,
-        total: document.querySelector('[data-data-table-count]')?.textContent,
         rows: document.querySelectorAll('[${scenario.marker}] tbody tr').length,
         text: document.querySelector('[${scenario.marker}]')?.textContent,
         hasCreate: Boolean(document.querySelector('[data-master-data-create]')),
@@ -106,14 +105,13 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       })`);
       check(`${scenario.view} title is rendered`, desktop.title === scenario.title, desktop);
       check(`${scenario.view} table renders deterministic rows`, desktop.rows === 5 && desktop.text?.includes(scenario.representative), desktop);
-      check(`${scenario.view} exposes create action and demo persistence note`, desktop.hasCreate && desktop.hasPersistenceNote, desktop);
+      check(`${scenario.view} exposes create action and compact persistence note`, desktop.hasCreate && desktop.hasPersistenceNote, desktop);
       check(`${scenario.view} desktop has no page overflow`, !desktop.overflow, desktop);
 
       const interactions = await evaluate(cdp, `(async () => {
         const sleep = () => new Promise((resolve) => setTimeout(resolve, 100));
         const setInput = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
         const setTextArea = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set;
-        window.confirm = () => true;
         function input(selector, value) {
           const el = document.querySelector(selector);
           if (!el) throw new Error('Missing input ' + selector);
@@ -127,18 +125,14 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
           if (!button) throw new Error('Missing button ' + expected);
           button.click();
         }
-        function search(value) {
-          input('#data-table-search', value);
-        }
-        function tableText() {
-          return document.querySelector('[${scenario.marker}]')?.textContent ?? '';
-        }
-        function bodyText() {
-          return document.querySelector('[${scenario.marker}] tbody')?.textContent ?? '';
-        }
+        function search(value) { input('#data-table-search', value); }
+        function tableText() { return document.querySelector('[${scenario.marker}]')?.textContent ?? ''; }
+        function bodyText() { return document.querySelector('[${scenario.marker}] tbody')?.textContent ?? ''; }
+        function hasDialog() { return Boolean(document.querySelector('[role="dialog"]')); }
 
         clickByText(document.querySelector('[data-master-data-create]')?.textContent?.trim() ?? '');
         await sleep();
+        const createOpenedModal = hasDialog();
         ${scenario.fillScript}
         clickByText(document.querySelector('[data-master-data-form] button[type="submit"]')?.textContent?.trim() ?? '');
         await sleep();
@@ -148,6 +142,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
 
         clickByText('Editar');
         await sleep();
+        const editOpenedModal = hasDialog();
         ${scenario.editScript}
         clickByText(document.querySelector('[data-master-data-form] button[type="submit"]')?.textContent?.trim() ?? '');
         await sleep();
@@ -157,8 +152,14 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
 
         clickByText('Desactivar');
         await sleep();
+        const deactivateOpenedModal = hasDialog();
+        clickByText('Desactivar');
+        await sleep();
         const disabledText = bodyText();
 
+        clickByText('Eliminar');
+        await sleep();
+        const deleteOpenedModal = hasDialog();
         clickByText('Eliminar');
         await sleep();
         const deletedText = tableText();
@@ -174,12 +175,14 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
         await sleep();
         const resetText = bodyText();
 
-        return { createdText, updatedText, disabledText, deletedText, searchedRows, searchedText, resetText };
+        return { createOpenedModal, editOpenedModal, deactivateOpenedModal, deleteOpenedModal, createdText, updatedText, disabledText, deletedText, searchedRows, searchedText, resetText };
       })()`);
+      check(`${scenario.view} opens compact create modal`, interactions.createOpenedModal, interactions);
       check(`${scenario.view} creates a demo record`, interactions.createdText?.includes(scenario.createName), interactions);
+      check(`${scenario.view} opens compact edit modal`, interactions.editOpenedModal, interactions);
       check(`${scenario.view} edits a demo record`, interactions.updatedText?.includes(scenario.updateName), interactions);
-      check(`${scenario.view} deactivates a demo record`, interactions.disabledText?.includes('Inactivo'), interactions);
-      check(`${scenario.view} deletes a demo record`, !interactions.deletedText?.includes(scenario.updateName), interactions);
+      check(`${scenario.view} confirms deactivate with modal`, interactions.deactivateOpenedModal && interactions.disabledText?.includes('Inactivo'), interactions);
+      check(`${scenario.view} confirms delete with modal`, interactions.deleteOpenedModal && !interactions.deletedText?.includes(scenario.updateName), interactions);
       check(`${scenario.view} search narrows records`, interactions.searchedRows >= 1 && interactions.searchedText?.includes(scenario.expectedSearch), interactions);
       check(`${scenario.view} reset restores table`, interactions.resetText?.includes(scenario.representative), interactions);
       await shot(`${scenario.view.replaceAll('.', '-')}-desktop.png`);
@@ -203,14 +206,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
   } finally {
     cdp?.close();
     await chrome?.stop();
-    writeFileSync(join(artifactDir, 'report.json'), JSON.stringify({
-      schemaVersion: '1.0',
-      view: 'master-data.admin',
-      generatedAt: new Date().toISOString(),
-      status: failures.length ? 'FAIL' : 'PASS',
-      checks,
-      failures,
-    }, null, 2));
+    writeFileSync(join(artifactDir, 'report.json'), JSON.stringify({ schemaVersion: '1.0', view: 'master-data.admin', generatedAt: new Date().toISOString(), status: failures.length ? 'FAIL' : 'PASS', checks, failures }, null, 2));
   }
 
   if (failures.length) throw new Error(`Admin master data browser QA failed: ${failures.join('; ')}`);
