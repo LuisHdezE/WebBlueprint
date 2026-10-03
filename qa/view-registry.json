@@ -245,6 +245,20 @@
       ]
     },
     {
+      "id": "storefront.shell",
+      "route": "store",
+      "presentation": "src/features/storefront/presentation/StorefrontHomePage.tsx",
+      "dto": "src/features/storefront/application/storefront.dto.ts",
+      "contracts": "src/features/storefront/application/storefront.contracts.ts",
+      "content": "src/features/storefront/infrastructure/storefront.view.json",
+      "checkpoint": "docs/checkpoints/B1-storefront-shell-foundation.md",
+      "browserQa": "qa/browser/storefront-shell.browser-qa.mjs",
+      "tests": [
+        "src/features/storefront/infrastructure/storefront.adapters.test.ts",
+        "src/features/storefront/storefront.architecture.test.ts"
+      ]
+    },
+    {
       "id": "inventory.dashboard",
       "route": "apps/inventory/dashboard",
       "presentation": "src/features/inventory/presentation/InventoryDashboardPage.tsx",
