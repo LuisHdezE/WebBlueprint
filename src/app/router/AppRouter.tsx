@@ -36,6 +36,9 @@ import { InventoryDashboardPage } from '@/features/inventory/presentation/Invent
 import { InventoryDeviceEvaluationPage } from '@/features/inventory/presentation/InventoryDeviceEvaluationPage';
 import { InventoryDeviceIntakePage } from '@/features/inventory/presentation/InventoryDeviceIntakePage';
 import { InventoryDevicesPage } from '@/features/inventory/presentation/InventoryDevicesPage';
+import { JsonMasterDataAdminViewProvider } from '@/features/master-data/infrastructure/JsonMasterDataAdminViewProvider';
+import { JsonMasterDataProvider } from '@/features/master-data/infrastructure/JsonMasterDataProvider';
+import { MasterDataBrandsPage, MasterDataCategoriesPage, MasterDataDeviceModelsPage } from '@/features/master-data/presentation/MasterDataAdminPages';
 import { BlogEditorPage } from '@/features/applications/blog/presentation/BlogEditorPage';
 import { BlogGridPage } from '@/features/applications/blog/presentation/BlogGridPage';
 import { BlogListPage } from '@/features/applications/blog/presentation/BlogListPage';
@@ -70,6 +73,8 @@ const chatContentProvider = new JsonChatContentProvider();
 const contactsContentProvider = new JsonContactsContentProvider();
 const ecommerceCatalogProvider = new JsonEcommerceCatalogProvider();
 const inventoryDemoProvider = new JsonInventoryDemoProvider();
+const masterDataProvider = new JsonMasterDataProvider();
+const masterDataAdminViewProvider = new JsonMasterDataAdminViewProvider();
 
 const templateFamilies = [
   'applications/*', 'components/*', 'elements/*', 'forms/*', 'tables/*', 'charts/*', 'widgets/*', 'maps/*', 'pages/*', 'user/*', 'authentication/*', 'layouts/*', 'documentation/*',
@@ -130,6 +135,9 @@ export function AppRouter() {
         <Route path="applications/contacts" element={<ContactsPage contentProvider={contactsContentProvider} />} />
         <Route path="applications/ecommerce/products" element={<ProductsPage catalogProvider={ecommerceCatalogProvider} />} />
         <Route path="applications/ecommerce/shop" element={<ShopPage catalogProvider={ecommerceCatalogProvider} />} />
+        <Route path="admin/master-data/brands" element={<MasterDataBrandsPage masterDataProvider={masterDataProvider} viewProvider={masterDataAdminViewProvider} />} />
+        <Route path="admin/master-data/device-models" element={<MasterDataDeviceModelsPage masterDataProvider={masterDataProvider} viewProvider={masterDataAdminViewProvider} />} />
+        <Route path="admin/master-data/categories" element={<MasterDataCategoriesPage masterDataProvider={masterDataProvider} viewProvider={masterDataAdminViewProvider} />} />
         <Route path="apps/inventory/dashboard" element={<InventoryDashboardPage provider={inventoryDemoProvider} />} />
         <Route path="apps/inventory/devices" element={<InventoryDevicesPage provider={inventoryDemoProvider} />} />
         <Route path="apps/inventory/devices/new" element={<InventoryDeviceIntakePage provider={inventoryDemoProvider} />} />
