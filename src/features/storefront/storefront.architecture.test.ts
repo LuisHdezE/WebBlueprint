@@ -191,22 +191,21 @@ describe('storefront architecture', () => {
     expect(cart).not.toContain('fetch(');
   });
   it('keeps every completed storefront view discoverable from the Blueprint sidebar', () => {
+    const router = readFileSync('src/app/router/AppRouter.tsx', 'utf8');
     const navigation = readFileSync('src/config/templateNavigation.ts', 'utf8');
 
-    const completedStorefrontRoutes = [
-      '/store',
-      '/store/products',
-      '/store/products/iphone-13-display-oled',
-      '/store/cart',
-      '/store/checkout',
-      '/store/account/sign-in',
-      '/store/account/register',
-    ];
+    const routedStaticStorefrontPaths = [...router.matchAll(/path=["'](store(?:\/[^"']*)?)["']/g)]
+      .map((match) => `/${match[1]}`)
+      .filter((route) => !route.includes(':') && route !== '/store/account');
 
     expect(navigation).toContain("label: 'Tienda online'");
-    completedStorefrontRoutes.forEach((route) => {
+    routedStaticStorefrontPaths.forEach((route) => {
       expect(navigation).toContain(`to: '${route}'`);
     });
+
+    // Dynamic product detail routes require one deterministic preview entry in the sidebar.
+    expect(router).toContain('path="store/products/:slug"');
+    expect(navigation).toContain("to: '/store/products/iphone-13-display-oled'");
   });
 
 });
