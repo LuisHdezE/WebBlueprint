@@ -17,7 +17,7 @@ export function InventoryDevicesPage({ provider }: { provider: InventoryDemoProv
     {
       id: 'id',
       header: view.columns.id,
-      cell: (device) => <span className="font-mono text-xs font-semibold text-slate-500">{device.id}</span>,
+      cell: (device) => <Link className="font-mono text-xs font-semibold text-brand-600 hover:text-brand-700" to="/apps/inventory/devices/evaluation">{device.id}</Link>,
       sortable: true,
       sortValue: (device) => device.id,
       searchValue: (device) => device.id,
