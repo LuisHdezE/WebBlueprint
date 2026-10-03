@@ -23,6 +23,7 @@ describe('storefront architecture', () => {
     expect(listing).not.toContain('.json');
     expect(detail).not.toContain('.json');
     expect(cart).not.toContain('.json');
+    expect(contact).not.toContain('.json');
     expect(checkout).not.toContain('.json');
     expect(identity).not.toContain('.json');
     expect(favorites).not.toContain('.json');
@@ -33,6 +34,7 @@ describe('storefront architecture', () => {
     expect(detail).toContain('provider.getProductDetailView()');
     expect(detail).toContain('provider.getProductDetailBySlug(slug)');
     expect(cart).toContain('provider.getCartView()');
+    expect(contact).toContain('provider.getContactView()');
     expect(checkout).toContain('provider.getCheckoutView()');
     expect(identity).toContain('provider.getCustomerIdentityView()');
     expect(favorites).toContain('provider.getFavoritesView()');
@@ -65,6 +67,7 @@ describe('storefront architecture', () => {
     const listing = readFileSync('src/features/storefront/presentation/StorefrontProductListingPage.tsx', 'utf8');
     const detail = readFileSync('src/features/storefront/presentation/StorefrontProductDetailPage.tsx', 'utf8');
     const cart = readFileSync('src/features/storefront/presentation/StorefrontCartPage.tsx', 'utf8');
+    const contact = readFileSync('src/features/storefront/presentation/StorefrontContactPage.tsx', 'utf8');
     const checkout = readFileSync('src/features/storefront/presentation/StorefrontCheckoutPage.tsx', 'utf8');
     const identity = readFileSync('src/features/storefront/presentation/StorefrontCustomerIdentityPage.tsx', 'utf8');
     const favorites = readFileSync('src/features/storefront/presentation/StorefrontFavoritesPage.tsx', 'utf8');
