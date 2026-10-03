@@ -122,6 +122,53 @@ export interface StorefrontProductDetailViewDto {
   };
 }
 
+export interface StorefrontCartLineDto {
+  id: string;
+  title: string;
+  subtitle: string;
+  href: string;
+  badgeLabel: string;
+  quantityLabel: string;
+  unitPriceLabel: string;
+  lineTotalLabel: string;
+  stockLabel: string;
+  compatibilityLabel: string;
+}
+
+export interface StorefrontCartSummaryItemDto {
+  id: string;
+  label: string;
+  value: string;
+  tone?: 'default' | 'muted' | 'strong';
+}
+
+export interface StorefrontCartViewDto {
+  eyebrow: string;
+  title: string;
+  description: string;
+  cartStateLabel: string;
+  emptyState: {
+    title: string;
+    description: string;
+    actionLabel: string;
+    actionHref: string;
+  };
+  lines: readonly StorefrontCartLineDto[];
+  summary: {
+    title: string;
+    items: readonly StorefrontCartSummaryItemDto[];
+    totalLabel: string;
+    totalValue: string;
+    checkoutLabel: string;
+    checkoutDisabledLabel: string;
+  };
+  notices: readonly {
+    id: string;
+    title: string;
+    description: string;
+  }[];
+}
+
 export interface StorefrontHomeViewDto {
   eyebrow: string;
   title: string;
@@ -175,4 +222,5 @@ export interface StorefrontViewDto {
   home: StorefrontHomeViewDto;
   productListing: StorefrontProductListingViewDto;
   productDetail: StorefrontProductDetailViewDto;
+  cart: StorefrontCartViewDto;
 }
