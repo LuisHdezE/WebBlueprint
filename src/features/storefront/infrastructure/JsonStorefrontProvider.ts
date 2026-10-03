@@ -1,18 +1,20 @@
 import rawCart from './storefront.cart.json';
 import rawCheckout from './storefront.checkout.json';
 import rawIdentity from './storefront.identity.json';
+import rawFavorites from './storefront.favorites.json';
 import rawStorefront from './storefront.view.json';
 import rawShipping from './storefront.shipping.json';
 import type { StorefrontProvider } from '../application/storefront.contracts';
-import type { StorefrontCartViewDto, StorefrontCheckoutViewDto, StorefrontCustomerIdentityViewDto, StorefrontHomeViewDto, StorefrontProductDetailDto, StorefrontProductDetailViewDto, StorefrontProductListingViewDto, StorefrontShellViewDto, StorefrontShippingViewDto, StorefrontViewDto } from '../application/storefront.dto';
+import type { StorefrontCartViewDto, StorefrontCheckoutViewDto, StorefrontCustomerIdentityViewDto, StorefrontFavoritesViewDto, StorefrontHomeViewDto, StorefrontProductDetailDto, StorefrontProductDetailViewDto, StorefrontProductListingViewDto, StorefrontShellViewDto, StorefrontShippingViewDto, StorefrontViewDto } from '../application/storefront.dto';
 
 export class JsonStorefrontProvider implements StorefrontProvider {
   getStorefrontView(): StorefrontViewDto {
     const view = {
-      ...(rawStorefront as Omit<StorefrontViewDto, 'cart' | 'checkout' | 'customerIdentity' | 'shipping'>),
+      ...(rawStorefront as Omit<StorefrontViewDto, 'cart' | 'checkout' | 'customerIdentity' | 'shipping' | 'favorites'>),
       cart: rawCart as StorefrontCartViewDto,
       checkout: rawCheckout as StorefrontCheckoutViewDto,
       customerIdentity: rawIdentity as StorefrontCustomerIdentityViewDto,
+      favorites: rawFavorites as StorefrontFavoritesViewDto,
       shipping: rawShipping as StorefrontShippingViewDto,
     } as StorefrontViewDto;
 
@@ -41,6 +43,8 @@ export class JsonStorefrontProvider implements StorefrontProvider {
       || !view.customerIdentity.register.fields.length
       || !view.shipping?.zones.length
       || !view.shipping.addressPreview.fields.length
+      || !view.favorites?.products.length
+      || !view.favorites.emptyState.title
     ) {
       throw new Error('Storefront demo data is incomplete.');
     }
@@ -81,5 +85,9 @@ export class JsonStorefrontProvider implements StorefrontProvider {
 
   getShippingView(): StorefrontShippingViewDto {
     return this.getStorefrontView().shipping;
+  }
+
+  getFavoritesView(): StorefrontFavoritesViewDto {
+    return this.getStorefrontView().favorites;
   }
 }
