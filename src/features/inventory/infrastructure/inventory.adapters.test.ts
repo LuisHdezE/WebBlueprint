@@ -36,4 +36,15 @@ describe('inventory demo adapter', () => {
     expect(intake.options.destination).toHaveLength(5);
     expect(intake.options.powersOn).toHaveLength(3);
   });
+
+  it('exposes deterministic device evaluation data', () => {
+    const evaluation = new JsonInventoryDemoProvider().getDeviceEvaluationView();
+    expect(evaluation.title).toBe('Evaluación de dispositivo');
+    expect(evaluation.device.id).toBe('DEV-0291');
+    expect(evaluation.metrics).toHaveLength(3);
+    expect(evaluation.visualChecks).toHaveLength(4);
+    expect(evaluation.functionalChecks).toHaveLength(4);
+    expect(evaluation.decisions.map((decision) => decision.destination)).toEqual(['Refurbish', 'Donor', 'Hold', 'Discard']);
+    expect(evaluation.recommendedDestination).toBe('Refurbish');
+  });
 });

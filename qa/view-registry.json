@@ -243,6 +243,20 @@
         "src/features/inventory/infrastructure/inventory.adapters.test.ts",
         "src/features/inventory/inventory.architecture.test.ts"
       ]
+    },
+    {
+      "id": "inventory.device-evaluation",
+      "route": "apps/inventory/devices/evaluation",
+      "presentation": "src/features/inventory/presentation/InventoryDeviceEvaluationPage.tsx",
+      "dto": "src/features/inventory/application/devices.dto.ts",
+      "contracts": "src/features/inventory/application/inventory.contracts.ts",
+      "content": "src/features/inventory/infrastructure/inventory.device-evaluation.json",
+      "checkpoint": "docs/checkpoints/I3-inventory-device-evaluation.md",
+      "browserQa": "qa/browser/inventory-device-evaluation.browser-qa.mjs",
+      "tests": [
+        "src/features/inventory/infrastructure/inventory.adapters.test.ts",
+        "src/features/inventory/inventory.architecture.test.ts"
+      ]
     }
   ]
 }
