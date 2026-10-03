@@ -16,4 +16,18 @@ describe('storefront provider', () => {
     expect(home.ctas.map((cta) => cta.href)).toContain('/store/products');
     expect(home.featureTiles.map((tile) => tile.id)).toContain('admin-separated');
   });
+
+  it('exposes provider-driven catalog home sections', () => {
+    const provider = new JsonStorefrontProvider();
+    const home = provider.getHomeView();
+
+    expect(home.categorySection.title).toContain('Categorías');
+    expect(home.categorySection.categories).toHaveLength(4);
+    expect(home.categorySection.categories.map((category) => category.href)).toContain('/store/used-phones');
+    expect(home.productSection.title).toContain('Cards comerciales');
+    expect(home.productSection.products).toHaveLength(3);
+    expect(home.productSection.products.map((product) => product.id)).toContain('product-iphone-13-display');
+    expect(home.productSection.products.some((product) => product.compareLabel?.includes('Costo repuesto nuevo'))).toBe(true);
+    expect(home.promoBand.title).toContain('registro');
+  });
 });
