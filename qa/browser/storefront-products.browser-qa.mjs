@@ -154,6 +154,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       notices: document.querySelector('[data-storefront-checkout-notices]')?.textContent ?? '',
       disabledButtons: [...document.querySelectorAll('[data-storefront-checkout] button')].filter((button) => button.disabled).length,
       identityLinks: [...document.querySelectorAll('[data-storefront-checkout-auth-gate] a')].map((link) => link.getAttribute('href')),
+      shippingLinks: [...document.querySelectorAll('[data-storefront-checkout-shipping] a')].map((link) => link.getAttribute('href')),
       adminSidebar: Boolean(document.querySelector('[data-template-sidebar]')),
       publicShellBrand: document.querySelector('header')?.textContent?.includes('WebBlueprint') ?? false,
       overflow: document.documentElement.scrollWidth > innerWidth
@@ -161,13 +162,31 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     check('Storefront checkout renders inside storefront shell', checkout.shell && checkout.checkout, checkout);
     check('Storefront checkout requires authentication or registration', checkout.title.includes('Revisa la compra') && checkout.authGate.includes('Autenticación o registro requerido'), checkout);
     check('Storefront checkout links to dedicated customer identity routes', checkout.identityLinks.includes('/store/account/sign-in') && checkout.identityLinks.includes('/store/account/register'), checkout);
-    check('Storefront checkout exposes shipping placeholder', checkout.shipping.includes('Cálculo de envío pendiente') && checkout.shipping.includes('Zona de entrega'), checkout);
+    check('Storefront checkout exposes shipping zone navigation', checkout.shipping.includes('Tarifas demo disponibles') && checkout.shippingLinks.includes('/store/shipping'), checkout);
     check('Storefront checkout exposes payment placeholders', checkout.payment.includes('Mercado Pago') && checkout.payment.includes('Tarjeta') && checkout.payment.includes('WhatsApp'), checkout);
     check('Storefront checkout remains non-transactional', checkout.summary.includes('UYU 6.580') && checkout.disabledButtons >= 1 && checkout.notices.includes('Sin creación de orden'), checkout);
     check('Storefront checkout surfaces no-client-persistence guardrail', checkout.notices.includes('localStorage') && checkout.notices.includes('sessionStorage'), checkout);
     check('Storefront checkout avoids admin sidebar and public blueprint copy', !checkout.adminSidebar && !checkout.publicShellBrand, checkout);
     check('Storefront checkout desktop avoids horizontal overflow', !checkout.overflow, checkout);
     await shot('storefront-checkout-desktop.png');
+
+    await navigate(cdp, shippingUrl);
+    await waitFor(cdp, "Boolean(document.querySelector('[data-storefront-shipping]'))");
+    const shipping = await evaluate(cdp, `({
+      shell: Boolean(document.querySelector('[data-storefront-shell]')),
+      page: Boolean(document.querySelector('[data-storefront-shipping]')),
+      title: document.querySelector('[data-storefront-shipping] h1')?.textContent ?? '',
+      zones: document.querySelectorAll('[data-storefront-shipping-zones] article').length,
+      pickup: document.querySelector('[data-storefront-shipping-pickup]')?.textContent ?? '',
+      disabledFields: document.querySelectorAll('[data-storefront-shipping-address] input:disabled').length,
+      notices: document.querySelector('[data-storefront-shipping-notices]')?.textContent ?? '',
+      overflow: document.documentElement.scrollWidth > innerWidth
+    })`);
+    check('Storefront shipping renders four demo zones', shipping.shell && shipping.page && shipping.zones === 4, shipping);
+    check('Storefront shipping preserves pickup and disabled address preview', shipping.pickup.includes('Sin costo') && shipping.disabledFields === 3, shipping);
+    check('Storefront shipping surfaces non-persistence guardrails', shipping.notices.includes('localStorage') && shipping.notices.includes('Sin transportista') && shipping.notices.includes('Sin mutación de pedido'), shipping);
+    check('Storefront shipping desktop avoids horizontal overflow', !shipping.overflow, shipping);
+    await shot('storefront-shipping-desktop.png');
 
     await navigate(cdp, signInUrl);
     await waitFor(cdp, "Boolean(document.querySelector('[data-storefront-customer-identity]'))");
