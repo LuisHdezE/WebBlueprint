@@ -32,7 +32,7 @@ describe('storefront provider', () => {
     expect(home.categorySection.categories).toHaveLength(4);
     expect(home.categorySection.categories.map((category) => category.href)).toContain('/store/used-phones');
     expect(home.productSection.title).toContain('Cards comerciales');
-    expect(home.productSection.products).toHaveLength(3);
+    expect(home.productSection.products).toHaveLength(4);
     expect(home.productSection.products.map((product) => product.id)).toContain('product-iphone-13-display');
     expect(home.productSection.products.some((product) => product.compareLabel?.includes('Costo repuesto nuevo'))).toBe(true);
     expect(home.productSection.products.every((product) => product.image.src.startsWith('https://'))).toBe(true);
