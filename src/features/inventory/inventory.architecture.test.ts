@@ -83,4 +83,32 @@ describe('inventory foundation architecture', () => {
       expect(router.indexOf(`path="${route}"`)).toBeLessThan(router.indexOf('path="apps/:slug"'));
     }
   });
+
+  it('keeps device evaluation data outside presentation', () => {
+    const page = readFileSync('src/features/inventory/presentation/InventoryDeviceEvaluationPage.tsx', 'utf8');
+    expect(page).not.toContain('.json');
+    expect(page).not.toContain('infrastructure/');
+    expect(page).not.toContain('iPhone 12');
+    expect(page).not.toContain('USD 238');
+    expect(page).not.toContain("'Refurbish'");
+    expect(page).toContain('provider.getDeviceEvaluationView()');
+  });
+
+  it('reuses shared primitives for device evaluation', () => {
+    const page = readFileSync('src/features/inventory/presentation/InventoryDeviceEvaluationPage.tsx', 'utf8');
+    for (const primitive of ['MetricCard', 'StatusBadge', 'SelectField', 'TextAreaField', 'SurfaceCard', 'PageShell']) expect(page).toContain(primitive);
+  });
+
+  it('extends the provider boundary for device evaluation', () => {
+    const contracts = readFileSync('src/features/inventory/application/inventory.contracts.ts', 'utf8');
+    const provider = readFileSync('src/features/inventory/infrastructure/JsonInventoryDemoProvider.ts', 'utf8');
+    expect(contracts).toContain('getDeviceEvaluationView(): InventoryDeviceEvaluationViewDto');
+    expect(provider).toContain("import rawDeviceEvaluation from './inventory.device-evaluation.json'");
+  });
+
+  it('registers the device evaluation route before generic apps routes', () => {
+    const router = readFileSync('src/app/router/AppRouter.tsx', 'utf8');
+    expect(router).toContain('path="apps/inventory/devices/evaluation"');
+    expect(router.indexOf('path="apps/inventory/devices/evaluation"')).toBeLessThan(router.indexOf('path="apps/:slug"'));
+  });
 });
