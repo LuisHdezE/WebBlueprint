@@ -2,16 +2,18 @@ import rawCart from './storefront.cart.json';
 import rawCheckout from './storefront.checkout.json';
 import rawIdentity from './storefront.identity.json';
 import rawStorefront from './storefront.view.json';
+import rawShipping from './storefront.shipping.json';
 import type { StorefrontProvider } from '../application/storefront.contracts';
-import type { StorefrontCartViewDto, StorefrontCheckoutViewDto, StorefrontCustomerIdentityViewDto, StorefrontHomeViewDto, StorefrontProductDetailDto, StorefrontProductDetailViewDto, StorefrontProductListingViewDto, StorefrontShellViewDto, StorefrontViewDto } from '../application/storefront.dto';
+import type { StorefrontCartViewDto, StorefrontCheckoutViewDto, StorefrontCustomerIdentityViewDto, StorefrontHomeViewDto, StorefrontProductDetailDto, StorefrontProductDetailViewDto, StorefrontProductListingViewDto, StorefrontShellViewDto, StorefrontShippingViewDto, StorefrontViewDto } from '../application/storefront.dto';
 
 export class JsonStorefrontProvider implements StorefrontProvider {
   getStorefrontView(): StorefrontViewDto {
     const view = {
-      ...(rawStorefront as Omit<StorefrontViewDto, 'cart' | 'checkout' | 'customerIdentity'>),
+      ...(rawStorefront as Omit<StorefrontViewDto, 'cart' | 'checkout' | 'customerIdentity' | 'shipping'>),
       cart: rawCart as StorefrontCartViewDto,
       checkout: rawCheckout as StorefrontCheckoutViewDto,
       customerIdentity: rawIdentity as StorefrontCustomerIdentityViewDto,
+      shipping: rawShipping as StorefrontShippingViewDto,
     } as StorefrontViewDto;
 
     if (
@@ -37,6 +39,8 @@ export class JsonStorefrontProvider implements StorefrontProvider {
       || !view.checkout.payment.options.length
       || !view.customerIdentity?.signIn.fields.length
       || !view.customerIdentity.register.fields.length
+      || !view.shipping?.zones.length
+      || !view.shipping.addressPreview.fields.length
     ) {
       throw new Error('Storefront demo data is incomplete.');
     }
@@ -73,5 +77,9 @@ export class JsonStorefrontProvider implements StorefrontProvider {
 
   getCustomerIdentityView(): StorefrontCustomerIdentityViewDto {
     return this.getStorefrontView().customerIdentity;
+  }
+
+  getShippingView(): StorefrontShippingViewDto {
+    return this.getStorefrontView().shipping;
   }
 }
