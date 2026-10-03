@@ -27,7 +27,7 @@ describe('templateNavigation', () => {
       'Layouts',
       'Documentación',
     ]);
-    expect(templateRouteItems).toHaveLength(119);
+    expect(templateRouteItems).toHaveLength(126);
   });
 
   it('exposes the extended master data routes added in A4', () => {
