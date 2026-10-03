@@ -30,7 +30,7 @@ export function StorefrontSectionIntro({ eyebrow, title, description }: Storefro
   return (
     <div className="max-w-3xl" data-storefront-section-intro>
       <p className="text-[11px] font-black uppercase tracking-[0.14em] text-slate-500">{eyebrow}</p>
-      <h2 className="mt-1.5 text-xl font-black tracking-[-0.025em] text-slate-950 sm:text-2xl">{title}</h2>
+      <h2 className="mt-1.5 text-lg font-black tracking-[-0.02em] text-slate-950 sm:text-xl">{title}</h2>
       <p className="mt-2 text-sm leading-6 text-slate-600">{description}</p>
     </div>
   );
