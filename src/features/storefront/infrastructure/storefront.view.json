@@ -131,7 +131,9 @@
       "label": "WhatsApp",
       "ariaLabel": "Consultar por WhatsApp",
       "href": "/store/contact",
-      "icon": "whatsapp"
+      "icon": "whatsapp",
+      "backgroundColor": "#25D366",
+      "foregroundColor": "#ffffff"
     }
   },
   "home": {
