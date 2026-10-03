@@ -55,6 +55,8 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       sortControls: document.querySelectorAll('[data-storefront-product-listing] select').length,
       productCards: document.querySelectorAll('[data-storefront-listing-product-card]').length,
       productText: document.querySelector('[data-storefront-product-listing]')?.textContent ?? '',
+      headingFontPx: parseFloat(getComputedStyle(document.querySelector('[data-storefront-product-listing] h1')).fontSize),
+      firstCardTop: document.querySelector('[data-storefront-listing-product-card]')?.getBoundingClientRect().top ?? 9999,
       addToCartButtons: [...document.querySelectorAll('[data-storefront-listing-product-card] button')].filter((button) => button.textContent?.includes('Agregar')).length,
       adminSidebar: Boolean(document.querySelector('[data-template-sidebar]')),
       publicShellBrand: document.querySelector('header')?.textContent?.includes('WebBlueprint') ?? false,
@@ -70,6 +72,8 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     check('Storefront product listing has no add-to-cart behavior yet', desktop.addToCartButtons === 0, desktop);
     check('Storefront product listing avoids admin sidebar', !desktop.adminSidebar, desktop);
     check('Storefront product listing avoids public blueprint header copy', !desktop.publicShellBrand, desktop);
+    check('Storefront product listing uses compact heading scale', desktop.headingFontPx <= 40, desktop);
+    check('Storefront product cards start high enough for commercial density', desktop.firstCardTop < 620, desktop);
     check('Storefront product listing desktop avoids horizontal overflow', !desktop.overflow, desktop);
     await shot('storefront-products-desktop.png');
 
