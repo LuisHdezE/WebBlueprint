@@ -26,6 +26,21 @@ describe('templateNavigation', () => {
       'Layouts',
       'Documentación',
     ]);
-    expect(templateRouteItems).toHaveLength(103);
+    expect(templateRouteItems).toHaveLength(108);
+  });
+
+  it('exposes the extended master data routes added in A4', () => {
+    const masterDataRoutes = templateRouteItems.filter((item) => item.to.startsWith('/admin/master-data/')).map((item) => item.to);
+
+    expect(masterDataRoutes).toEqual([
+      '/admin/master-data/brands',
+      '/admin/master-data/device-models',
+      '/admin/master-data/categories',
+      '/admin/master-data/colors',
+      '/admin/master-data/storage-capacities',
+      '/admin/master-data/ram-capacities',
+      '/admin/master-data/conditions',
+      '/admin/master-data/spare-part-types',
+    ]);
   });
 });
