@@ -43,6 +43,7 @@ import { MasterDataColorsPage, MasterDataConditionsPage, MasterDataRamCapacities
 import { JsonStorefrontProvider } from '@/features/storefront/infrastructure/JsonStorefrontProvider';
 import { StorefrontCartPage } from '@/features/storefront/presentation/StorefrontCartPage';
 import { StorefrontCheckoutPage } from '@/features/storefront/presentation/StorefrontCheckoutPage';
+import { StorefrontCustomerIdentityPage } from '@/features/storefront/presentation/StorefrontCustomerIdentityPage';
 import { StorefrontHomePage } from '@/features/storefront/presentation/StorefrontHomePage';
 import { StorefrontProductDetailPage } from '@/features/storefront/presentation/StorefrontProductDetailPage';
 import { StorefrontProductListingPage } from '@/features/storefront/presentation/StorefrontProductListingPage';
@@ -136,6 +137,9 @@ export function AppRouter() {
         <Route path="store/products/:slug" element={<StorefrontProductDetailPage provider={storefrontProvider} />} />
         <Route path="store/cart" element={<StorefrontCartPage provider={storefrontProvider} />} />
         <Route path="store/checkout" element={<StorefrontCheckoutPage provider={storefrontProvider} />} />
+        <Route path="store/account" element={<Navigate to="/store/account/sign-in" replace />} />
+        <Route path="store/account/sign-in" element={<StorefrontCustomerIdentityPage mode="sign-in" provider={storefrontProvider} />} />
+        <Route path="store/account/register" element={<StorefrontCustomerIdentityPage mode="register" provider={storefrontProvider} />} />
       </Route>
       <Route element={<TemplateShell />}>
         <Route index element={<Navigate to="/dashboard" replace />} />

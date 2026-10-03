@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import type { StorefrontProvider } from '../application/storefront.contracts';
 
 interface StorefrontCheckoutPageProps {
@@ -32,12 +33,12 @@ export function StorefrontCheckoutPage({ provider }: StorefrontCheckoutPageProps
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row">
-              <button className="cursor-not-allowed rounded-full bg-slate-300 px-5 py-3 text-sm font-black text-slate-600" disabled type="button">
+              <Link className="rounded-full bg-slate-950 px-5 py-3 text-center text-sm font-black text-white" to={checkout.authGate.signInHref}>
                 {checkout.authGate.signInLabel}
-              </button>
-              <button className="cursor-not-allowed rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-black text-slate-500" disabled type="button">
+              </Link>
+              <Link className="rounded-full border border-slate-300 bg-white px-5 py-3 text-center text-sm font-black text-slate-800" to={checkout.authGate.signUpHref}>
                 {checkout.authGate.signUpLabel}
-              </button>
+              </Link>
             </div>
           </div>
         </section>

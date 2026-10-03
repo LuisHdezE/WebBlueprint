@@ -1,0 +1,35 @@
+{
+  "eyebrow": "Cuenta de cliente demo",
+  "description": "Identidad exclusiva del Storefront. B7 separa el flujo del cliente de la autenticación administrativa, sin crear sesiones, tokens ni usuarios reales.",
+  "returnToCheckoutLabel": "Volver al checkout",
+  "returnToCheckoutHref": "/store/checkout",
+  "signIn": {
+    "title": "Inicia sesión para continuar",
+    "description": "Este formulario reserva la experiencia del cliente recurrente. Todavía no valida credenciales ni crea sesión.",
+    "alternateLabel": "¿Primera compra? Crear cuenta",
+    "alternateHref": "/store/account/register",
+    "submitLabel": "Inicio de sesión pendiente",
+    "fields": [
+      { "id": "email", "label": "Correo electrónico", "type": "email", "placeholder": "cliente@ejemplo.com", "helper": "No se envía ni guarda en B7." },
+      { "id": "password", "label": "Contraseña", "type": "password", "placeholder": "••••••••", "helper": "Campo visual sin autenticación real." }
+    ]
+  },
+  "register": {
+    "title": "Crea tu cuenta de cliente",
+    "description": "La compra futura requerirá una identidad de cliente. B7 define los datos visuales mínimos sin registrar información.",
+    "alternateLabel": "¿Ya tienes cuenta? Iniciar sesión",
+    "alternateHref": "/store/account/sign-in",
+    "submitLabel": "Registro pendiente",
+    "fields": [
+      { "id": "name", "label": "Nombre", "type": "text", "placeholder": "Nombre y apellido", "helper": "Dato visual, no persistente." },
+      { "id": "email", "label": "Correo electrónico", "type": "email", "placeholder": "cliente@ejemplo.com", "helper": "Será el identificador futuro de la cuenta." },
+      { "id": "phone", "label": "Teléfono", "type": "tel", "placeholder": "+598 ...", "helper": "Preparado para contacto y entrega futura." },
+      { "id": "password", "label": "Contraseña", "type": "password", "placeholder": "••••••••", "helper": "No se procesa ni almacena en B7." }
+    ]
+  },
+  "notices": [
+    { "id": "storefront-only", "title": "Cuenta separada del administrador", "description": "Este flujo pertenece al cliente de la tienda y no reutiliza las pantallas administrativas de authentication/*." },
+    { "id": "no-session", "title": "Sin sesión ni token", "description": "B7 no autentica, no emite tokens y no cambia estado de acceso." },
+    { "id": "no-persistence", "title": "Sin persistencia", "description": "Los campos no se guardan en localStorage, sessionStorage ni backend." }
+  ]
+}

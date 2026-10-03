@@ -60,12 +60,26 @@ describe('storefront provider', () => {
     expect(provider.getProductDetailBySlug('missing-demo-product')).toBeUndefined();
   });
 
+  it('exposes customer identity skeleton data without authentication state', () => {
+    const provider = new JsonStorefrontProvider();
+    const identity = provider.getCustomerIdentityView();
+
+    expect(identity.returnToCheckoutHref).toBe('/store/checkout');
+    expect(identity.signIn.fields.map((field) => field.id)).toEqual(['email', 'password']);
+    expect(identity.register.fields.map((field) => field.id)).toEqual(['name', 'email', 'phone', 'password']);
+    expect(identity.signIn.alternateHref).toBe('/store/account/register');
+    expect(identity.register.alternateHref).toBe('/store/account/sign-in');
+    expect(identity.notices.map((notice) => notice.id)).toEqual(['storefront-only', 'no-session', 'no-persistence']);
+  });
+
   it('exposes checkout auth gate data without transactional behavior', () => {
     const provider = new JsonStorefrontProvider();
     const checkout = provider.getCheckoutView();
 
     expect(checkout.title).toContain('Revisa la compra');
     expect(checkout.authGate.requiredLabel).toContain('Autenticación');
+    expect(checkout.authGate.signInHref).toBe('/store/account/sign-in');
+    expect(checkout.authGate.signUpHref).toBe('/store/account/register');
     expect(checkout.orderSummary.totalValue).toBe('UYU 6.580');
     expect(checkout.shipping.statusLabel).toContain('pendiente');
     expect(checkout.payment.options.map((option) => option.id)).toEqual(['mercado-pago', 'card', 'whatsapp']);
