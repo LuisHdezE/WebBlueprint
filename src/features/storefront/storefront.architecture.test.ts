@@ -8,20 +8,24 @@ describe('storefront architecture', () => {
     const listing = readFileSync('src/features/storefront/presentation/StorefrontProductListingPage.tsx', 'utf8');
     const detail = readFileSync('src/features/storefront/presentation/StorefrontProductDetailPage.tsx', 'utf8');
     const cart = readFileSync('src/features/storefront/presentation/StorefrontCartPage.tsx', 'utf8');
+    const checkout = readFileSync('src/features/storefront/presentation/StorefrontCheckoutPage.tsx', 'utf8');
     const shell = readFileSync('src/shell/StorefrontShell.tsx', 'utf8');
 
     expect(provider).toContain("import rawStorefront from './storefront.view.json'");
     expect(provider).toContain("import rawCart from './storefront.cart.json'");
+    expect(provider).toContain("import rawCheckout from './storefront.checkout.json'");
     expect(home).not.toContain('.json');
     expect(listing).not.toContain('.json');
     expect(detail).not.toContain('.json');
     expect(cart).not.toContain('.json');
+    expect(checkout).not.toContain('.json');
     expect(shell).not.toContain('.json');
     expect(home).toContain('provider.getHomeView()');
     expect(listing).toContain('provider.getProductListingView()');
     expect(detail).toContain('provider.getProductDetailView()');
     expect(detail).toContain('provider.getProductDetailBySlug(slug)');
     expect(cart).toContain('provider.getCartView()');
+    expect(checkout).toContain('provider.getCheckoutView()');
     expect(shell).toContain('provider.getShellView()');
   });
 
@@ -33,6 +37,7 @@ describe('storefront architecture', () => {
     expect(router).toContain('path="store/products"');
     expect(router).toContain('path="store/products/:slug"');
     expect(router).toContain('path="store/cart"');
+    expect(router).toContain('path="store/checkout"');
     expect(router).toContain('<StorefrontShell provider={storefrontProvider} />');
     expect(router.indexOf('<StorefrontShell provider={storefrontProvider} />')).toBeLessThan(router.indexOf('<TemplateShell />'));
     expect(storefrontShell).not.toContain('TemplateSidebar');
@@ -46,16 +51,19 @@ describe('storefront architecture', () => {
     const listing = readFileSync('src/features/storefront/presentation/StorefrontProductListingPage.tsx', 'utf8');
     const detail = readFileSync('src/features/storefront/presentation/StorefrontProductDetailPage.tsx', 'utf8');
     const cart = readFileSync('src/features/storefront/presentation/StorefrontCartPage.tsx', 'utf8');
+    const checkout = readFileSync('src/features/storefront/presentation/StorefrontCheckoutPage.tsx', 'utf8');
     const shell = readFileSync('src/shell/StorefrontShell.tsx', 'utf8');
 
     expect(router).toContain('StorefrontHomePage');
     expect(router).toContain('StorefrontProductListingPage');
     expect(router).toContain('StorefrontProductDetailPage');
     expect(router).toContain('StorefrontCartPage');
+    expect(router).toContain('StorefrontCheckoutPage');
     expect(home).not.toContain('JsonEcommerceCatalogProvider');
     expect(listing).not.toContain('JsonEcommerceCatalogProvider');
     expect(detail).not.toContain('JsonEcommerceCatalogProvider');
     expect(cart).not.toContain('JsonEcommerceCatalogProvider');
+    expect(checkout).not.toContain('JsonEcommerceCatalogProvider');
     expect(shell).not.toContain('JsonEcommerceCatalogProvider');
     expect(home).not.toContain('ProductsPage');
     expect(listing).not.toContain('ProductsPage');
@@ -111,6 +119,26 @@ describe('storefront architecture', () => {
     expect(detail).not.toContain('localStorage');
     expect(detail).not.toContain('sessionStorage');
     expect(detail).not.toContain('Agregar al carrito');
+  });
+
+  it('renders checkout auth gate skeleton without payments, orders or persistence', () => {
+    const dto = readFileSync('src/features/storefront/application/storefront.dto.ts', 'utf8');
+    const contracts = readFileSync('src/features/storefront/application/storefront.contracts.ts', 'utf8');
+    const provider = readFileSync('src/features/storefront/infrastructure/JsonStorefrontProvider.ts', 'utf8');
+    const checkout = readFileSync('src/features/storefront/presentation/StorefrontCheckoutPage.tsx', 'utf8');
+
+    expect(dto).toContain('StorefrontCheckoutViewDto');
+    expect(contracts).toContain('getCheckoutView');
+    expect(provider).toContain('getCheckoutView()');
+    expect(checkout).toContain('data-storefront-checkout');
+    expect(checkout).toContain('data-storefront-checkout-auth-gate');
+    expect(checkout).toContain('data-storefront-checkout-shipping');
+    expect(checkout).toContain('data-storefront-checkout-payment');
+    expect(checkout).toContain('Confirmar compra pendiente');
+    expect(checkout).not.toContain('localStorage');
+    expect(checkout).not.toContain('sessionStorage');
+    expect(checkout).not.toContain('fetch(');
+    expect(checkout).not.toContain('MercadoPago');
   });
 
   it('renders cart shell from storefront DTOs without persistence or checkout', () => {
