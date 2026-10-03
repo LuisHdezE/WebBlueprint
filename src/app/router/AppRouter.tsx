@@ -140,7 +140,7 @@ export function AppRouter() {
         <Route path="admin/master-data/categories" element={<MasterDataCategoriesPage masterDataProvider={masterDataProvider} viewProvider={masterDataAdminViewProvider} />} />
         <Route path="apps/inventory/dashboard" element={<InventoryDashboardPage provider={inventoryDemoProvider} />} />
         <Route path="apps/inventory/devices" element={<InventoryDevicesPage provider={inventoryDemoProvider} />} />
-        <Route path="apps/inventory/devices/new" element={<InventoryDeviceIntakePage provider={inventoryDemoProvider} />} />
+        <Route path="apps/inventory/devices/new" element={<InventoryDeviceIntakePage masterDataProvider={masterDataProvider} provider={inventoryDemoProvider} />} />
         <Route path="apps/inventory/devices/evaluation" element={<InventoryDeviceEvaluationPage provider={inventoryDemoProvider} />} />
         {componentRoutes.map((component) => <Route key={component.path} path={component.path} element={<ComponentShowcasePage description={component.description} kind={component.kind} title={component.title} />} />)}
         {elementRoutes.map((element) => <Route key={element.path} path={element.path} element={<ElementShowcasePage description={element.description} kind={element.kind} title={element.title} />} />)}

@@ -1,16 +1,17 @@
-import { useState, type FormEvent } from 'react';
+import { useMemo, useState, type FormEvent } from 'react';
 import { Link } from 'react-router';
 import { SelectField } from '@/components/forms/SelectField';
 import { TextAreaField } from '@/components/forms/TextAreaField';
 import { TextField } from '@/components/forms/TextField';
 import { SurfaceCard } from '@/components/layout/SurfaceCard';
 import { PageShell } from '@/shell/PageShell';
+import type { MasterDataProvider } from '@/features/master-data/application/master-data.contracts';
 import type { InventoryDemoProvider } from '../application/inventory.contracts';
 import type { DeviceAccountLock, DeviceDestination, DevicePhysicalCondition, DevicePowerState } from '../application/devices.dto';
 
 type IntakeFormState = {
-  manufacturer: string;
-  model: string;
+  brandId: string;
+  deviceModelId: string;
   serialOrImei: string;
   storage: string;
   color: string;
@@ -23,12 +24,14 @@ type IntakeFormState = {
   notes: string;
 };
 
-export function InventoryDeviceIntakePage({ provider }: { provider: InventoryDemoProvider }) {
+export function InventoryDeviceIntakePage({ provider, masterDataProvider }: { provider: InventoryDemoProvider; masterDataProvider: MasterDataProvider }) {
   const view = provider.getDeviceIntakeView();
+  const brands = useMemo(() => masterDataProvider.getBrands().filter((brand) => brand.active), [masterDataProvider]);
+  const deviceModels = useMemo(() => masterDataProvider.getDeviceModels().filter((model) => model.active), [masterDataProvider]);
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState<IntakeFormState>(() => ({
-    manufacturer: '',
-    model: '',
+    brandId: view.defaults.brandId,
+    deviceModelId: view.defaults.deviceModelId,
     serialOrImei: '',
     storage: '',
     color: '',
@@ -41,9 +44,27 @@ export function InventoryDeviceIntakePage({ provider }: { provider: InventoryDem
     notes: '',
   }));
 
+  const brandOptions = useMemo(() => [
+    { value: '', label: view.placeholders.brandId },
+    ...brands.map((brand) => ({ value: brand.id, label: brand.name })),
+  ], [brands, view.placeholders.brandId]);
+
+  const filteredModelOptions = useMemo(() => {
+    const models = deviceModels.filter((model) => model.brandId === form.brandId);
+    return [
+      { value: '', label: form.brandId ? view.placeholders.deviceModelId.replace('primero una marca', 'un modelo') : view.placeholders.deviceModelId },
+      ...models.map((model) => ({ value: model.id, label: model.name })),
+    ];
+  }, [deviceModels, form.brandId, view.placeholders.deviceModelId]);
+
   function setField<Key extends keyof IntakeFormState>(key: Key, value: IntakeFormState[Key]) {
     setSubmitted(false);
     setForm((current) => ({ ...current, [key]: value }));
+  }
+
+  function setBrand(brandId: string) {
+    setSubmitted(false);
+    setForm((current) => ({ ...current, brandId, deviceModelId: '' }));
   }
 
   function submit(event: FormEvent<HTMLFormElement>) {
@@ -51,7 +72,9 @@ export function InventoryDeviceIntakePage({ provider }: { provider: InventoryDem
     setSubmitted(true);
   }
 
-  const canSubmit = Boolean(form.manufacturer.trim() && form.model.trim() && form.serialOrImei.trim());
+  const canSubmit = Boolean(form.brandId && form.deviceModelId && form.serialOrImei.trim());
+  const selectedBrand = brands.find((brand) => brand.id === form.brandId);
+  const selectedModel = deviceModels.find((model) => model.id === form.deviceModelId);
 
   return <PageShell breadcrumbs={view.breadcrumbs.map((label) => ({ label }))} description={view.description} title={view.title}>
     <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_19rem]" data-device-intake>
@@ -59,12 +82,15 @@ export function InventoryDeviceIntakePage({ provider }: { provider: InventoryDem
         <SurfaceCard>
           <h2 className="text-base font-semibold text-slate-950">{view.identitySectionTitle}</h2>
           <div className="mt-4 grid gap-4 md:grid-cols-2">
-            <TextField id="device-manufacturer" label={view.fields.manufacturer} onChange={(value) => setField('manufacturer', value)} placeholder={view.placeholders.manufacturer} value={form.manufacturer} />
-            <TextField id="device-model" label={view.fields.model} onChange={(value) => setField('model', value)} placeholder={view.placeholders.model} value={form.model} />
+            <SelectField id="device-brand" label={view.fields.brandId} onChange={setBrand} options={brandOptions} value={form.brandId} />
+            <SelectField id="device-model" label={view.fields.deviceModelId} onChange={(value) => setField('deviceModelId', value)} options={filteredModelOptions} value={form.deviceModelId} />
             <TextField id="device-identity" label={view.fields.serialOrImei} onChange={(value) => setField('serialOrImei', value)} placeholder={view.placeholders.serialOrImei} value={form.serialOrImei} />
             <TextField id="device-storage" label={view.fields.storage} onChange={(value) => setField('storage', value)} placeholder={view.placeholders.storage} value={form.storage} />
             <TextField id="device-color" label={view.fields.color} onChange={(value) => setField('color', value)} placeholder={view.placeholders.color} value={form.color} />
           </div>
+          {selectedBrand || selectedModel ? <p className="mt-3 text-xs text-slate-500" data-device-master-data-hint>
+            Referencia canónica: {selectedBrand?.name ?? 'Marca pendiente'}{selectedModel ? ` · ${selectedModel.name}` : ''}
+          </p> : null}
         </SurfaceCard>
 
         <SurfaceCard>

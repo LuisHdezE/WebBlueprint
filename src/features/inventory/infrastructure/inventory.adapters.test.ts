@@ -32,6 +32,10 @@ describe('inventory demo adapter', () => {
     expect(new Set(devices.devices.map((device) => device.id)).size).toBe(devices.devices.length);
     expect(devices.filters.destinationOptions.map((option) => option.value)).toContain('Pending Evaluation');
     expect(intake.title).toBe('Registrar dispositivo');
+    expect(intake.fields.brandId).toBe('Marca');
+    expect(intake.fields.deviceModelId).toBe('Modelo');
+    expect(intake.defaults.brandId).toBe('');
+    expect(intake.defaults.deviceModelId).toBe('');
     expect(intake.defaults.destination).toBe('Pending Evaluation');
     expect(intake.options.destination).toHaveLength(5);
     expect(intake.options.powersOn).toHaveLength(3);
