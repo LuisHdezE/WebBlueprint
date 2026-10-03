@@ -1,4 +1,5 @@
 import rawCart from './storefront.cart.json';
+import rawCatalog from './storefront.catalog.json';
 import rawCheckout from './storefront.checkout.json';
 import rawContact from './storefront.contact.json';
 import rawIdentity from './storefront.identity.json';
@@ -7,13 +8,34 @@ import rawStorefront from './storefront.view.json';
 import rawShipping from './storefront.shipping.json';
 import rawWarranty from './storefront.warranty.json';
 import type { StorefrontProvider } from '../application/storefront.contracts';
-import type { StorefrontCartViewDto, StorefrontCheckoutViewDto, StorefrontContactViewDto, StorefrontCustomerIdentityViewDto, StorefrontFavoritesViewDto, StorefrontHomeViewDto, StorefrontProductDetailDto, StorefrontProductDetailViewDto, StorefrontProductListingViewDto, StorefrontShellViewDto, StorefrontShippingViewDto, StorefrontViewDto, StorefrontWarrantyViewDto } from '../application/storefront.dto';
+import type { StorefrontCartViewDto, StorefrontCatalogRouteViewDto, StorefrontCatalogViewDto, StorefrontCheckoutViewDto, StorefrontContactViewDto, StorefrontCustomerIdentityViewDto, StorefrontFavoritesViewDto, StorefrontHomeViewDto, StorefrontProductDetailDto, StorefrontProductDetailViewDto, StorefrontProductListingViewDto, StorefrontShellViewDto, StorefrontShippingViewDto, StorefrontViewDto, StorefrontWarrantyViewDto } from '../application/storefront.dto';
+
+type RawStorefrontCatalogRoute = Omit<StorefrontCatalogRouteViewDto, 'products'> & {
+  productIds: readonly string[];
+};
+
+type RawStorefrontCatalog = Omit<StorefrontCatalogViewDto, 'routes'> & {
+  routes: readonly RawStorefrontCatalogRoute[];
+};
 
 export class JsonStorefrontProvider implements StorefrontProvider {
   getStorefrontView(): StorefrontViewDto {
+    const listingProducts = (rawStorefront as Pick<StorefrontViewDto, 'productListing'>).productListing.products;
+    const catalogConfig = rawCatalog as RawStorefrontCatalog;
+    const catalog: StorefrontCatalogViewDto = {
+      ...catalogConfig,
+      routes: catalogConfig.routes.map(({ productIds, ...route }) => ({
+        ...route,
+        products: productIds
+          .map((productId) => listingProducts.find((product) => product.id === productId))
+          .filter((product): product is StorefrontProductListingViewDto['products'][number] => Boolean(product)),
+      })),
+    };
+
     const view = {
-      ...(rawStorefront as Omit<StorefrontViewDto, 'cart' | 'checkout' | 'customerIdentity' | 'shipping' | 'favorites' | 'contact' | 'warranty'>),
+      ...(rawStorefront as Omit<StorefrontViewDto, 'cart' | 'checkout' | 'customerIdentity' | 'shipping' | 'favorites' | 'contact' | 'warranty' | 'catalog'>),
       cart: rawCart as StorefrontCartViewDto,
+      catalog,
       checkout: rawCheckout as StorefrontCheckoutViewDto,
       contact: rawContact as StorefrontContactViewDto,
       customerIdentity: rawIdentity as StorefrontCustomerIdentityViewDto,
@@ -35,6 +57,8 @@ export class JsonStorefrontProvider implements StorefrontProvider {
       || !view.productListing?.title
       || !view.productListing.products.length
       || !view.productListing.filters.length
+      || !view.catalog?.routes.length
+      || !view.catalog.routes.every((route) => route.products.length)
       || !view.productDetail?.products.length
       || !view.productDetail.notFound.title
       || !view.cart?.title
@@ -69,6 +93,14 @@ export class JsonStorefrontProvider implements StorefrontProvider {
 
   getProductListingView(): StorefrontProductListingViewDto {
     return this.getStorefrontView().productListing;
+  }
+
+  getCatalogView(): StorefrontCatalogViewDto {
+    return this.getStorefrontView().catalog;
+  }
+
+  getCatalogRouteView(key: string): StorefrontCatalogRouteViewDto | undefined {
+    return this.getCatalogView().routes.find((route) => route.key === key);
   }
 
   getProductDetailView(): StorefrontProductDetailViewDto {
