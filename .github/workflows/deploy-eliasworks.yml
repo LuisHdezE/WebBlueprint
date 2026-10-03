@@ -103,7 +103,8 @@ jobs:
             applications/ecommerce/shop \
             apps/inventory/dashboard \
             apps/inventory/devices \
-            apps/inventory/devices/new; do
+            apps/inventory/devices/new \
+            apps/inventory/devices/evaluation; do
             check_url "$PUBLIC_URL/$path" "/tmp/webblueprint-${path//\//-}.html"
           done
 
