@@ -8,6 +8,8 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
   const detailUrl = `${base}/store/products/iphone-13-display-oled`;
   const cartUrl = `${base}/store/cart`;
   const checkoutUrl = `${base}/store/checkout`;
+  const signInUrl = `${base}/store/account/sign-in`;
+  const registerUrl = `${base}/store/account/register`;
   const checks = [], failures = [];
   let chrome, cdp;
   const check = (name, passed, details) => {
@@ -29,6 +31,10 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     check('Storefront cart deep link responds successfully', cartResponse.ok, { status: cartResponse.status, cartUrl });
     const checkoutResponse = await fetch(checkoutUrl);
     check('Storefront checkout deep link responds successfully', checkoutResponse.ok, { status: checkoutResponse.status, checkoutUrl });
+    const signInResponse = await fetch(signInUrl);
+    check('Storefront customer sign-in deep link responds successfully', signInResponse.ok, { status: signInResponse.status, signInUrl });
+    const registerResponse = await fetch(registerUrl);
+    check('Storefront customer register deep link responds successfully', registerResponse.ok, { status: registerResponse.status, registerUrl });
 
     chrome = await launchChrome();
     cdp = await connectCdp(chrome.webSocketDebuggerUrl);
@@ -132,19 +138,56 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       summary: document.querySelector('[data-storefront-checkout-summary]')?.textContent ?? '',
       notices: document.querySelector('[data-storefront-checkout-notices]')?.textContent ?? '',
       disabledButtons: [...document.querySelectorAll('[data-storefront-checkout] button')].filter((button) => button.disabled).length,
+      identityLinks: [...document.querySelectorAll('[data-storefront-checkout-auth-gate] a')].map((link) => link.getAttribute('href')),
       adminSidebar: Boolean(document.querySelector('[data-template-sidebar]')),
       publicShellBrand: document.querySelector('header')?.textContent?.includes('WebBlueprint') ?? false,
       overflow: document.documentElement.scrollWidth > innerWidth
     })`);
     check('Storefront checkout renders inside storefront shell', checkout.shell && checkout.checkout, checkout);
     check('Storefront checkout requires authentication or registration', checkout.title.includes('Revisa la compra') && checkout.authGate.includes('Autenticación o registro requerido'), checkout);
+    check('Storefront checkout links to dedicated customer identity routes', checkout.identityLinks.includes('/store/account/sign-in') && checkout.identityLinks.includes('/store/account/register'), checkout);
     check('Storefront checkout exposes shipping placeholder', checkout.shipping.includes('Cálculo de envío pendiente') && checkout.shipping.includes('Zona de entrega'), checkout);
     check('Storefront checkout exposes payment placeholders', checkout.payment.includes('Mercado Pago') && checkout.payment.includes('Tarjeta') && checkout.payment.includes('WhatsApp'), checkout);
-    check('Storefront checkout remains non-transactional', checkout.summary.includes('UYU 6.580') && checkout.disabledButtons >= 3 && checkout.notices.includes('Sin creación de orden'), checkout);
+    check('Storefront checkout remains non-transactional', checkout.summary.includes('UYU 6.580') && checkout.disabledButtons >= 1 && checkout.notices.includes('Sin creación de orden'), checkout);
     check('Storefront checkout surfaces no-client-persistence guardrail', checkout.notices.includes('localStorage') && checkout.notices.includes('sessionStorage'), checkout);
     check('Storefront checkout avoids admin sidebar and public blueprint copy', !checkout.adminSidebar && !checkout.publicShellBrand, checkout);
     check('Storefront checkout desktop avoids horizontal overflow', !checkout.overflow, checkout);
     await shot('storefront-checkout-desktop.png');
+
+    await navigate(cdp, signInUrl);
+    await waitFor(cdp, "Boolean(document.querySelector('[data-storefront-customer-identity]'))");
+    const signIn = await evaluate(cdp, `({
+      shell: Boolean(document.querySelector('[data-storefront-shell]')),
+      identity: Boolean(document.querySelector('[data-storefront-customer-identity]')),
+      mode: document.querySelector('[data-storefront-customer-identity]')?.getAttribute('data-storefront-customer-identity-mode') ?? '',
+      title: document.querySelector('[data-storefront-customer-identity] h1')?.textContent ?? '',
+      disabledInputs: document.querySelectorAll('[data-storefront-customer-identity-form] input:disabled').length,
+      disabledButtons: document.querySelectorAll('[data-storefront-customer-identity-form] button:disabled').length,
+      links: [...document.querySelectorAll('[data-storefront-customer-identity-form] a')].map((link) => link.getAttribute('href')),
+      notices: document.querySelector('[data-storefront-customer-identity-notices]')?.textContent ?? '',
+      adminSidebar: Boolean(document.querySelector('[data-template-sidebar]')),
+      overflow: document.documentElement.scrollWidth > innerWidth
+    })`);
+    check('Storefront customer sign-in renders inside storefront shell', signIn.shell && signIn.identity && signIn.mode === 'sign-in', signIn);
+    check('Storefront customer sign-in stays visual and non-authenticating', signIn.title.includes('Inicia sesión') && signIn.disabledInputs === 2 && signIn.disabledButtons === 1, signIn);
+    check('Storefront customer sign-in links to register and checkout', signIn.links.includes('/store/account/register') && signIn.links.includes('/store/checkout'), signIn);
+    check('Storefront customer identity declares separation and no persistence', signIn.notices.includes('separada del administrador') && signIn.notices.includes('localStorage') && signIn.notices.includes('sessionStorage'), signIn);
+    check('Storefront customer sign-in avoids admin sidebar and overflow', !signIn.adminSidebar && !signIn.overflow, signIn);
+    await shot('storefront-customer-sign-in-desktop.png');
+
+    await navigate(cdp, registerUrl);
+    await waitFor(cdp, "Boolean(document.querySelector('[data-storefront-customer-identity]'))");
+    const register = await evaluate(cdp, `({
+      shell: Boolean(document.querySelector('[data-storefront-shell]')),
+      mode: document.querySelector('[data-storefront-customer-identity]')?.getAttribute('data-storefront-customer-identity-mode') ?? '',
+      title: document.querySelector('[data-storefront-customer-identity] h1')?.textContent ?? '',
+      disabledInputs: document.querySelectorAll('[data-storefront-customer-identity-form] input:disabled').length,
+      links: [...document.querySelectorAll('[data-storefront-customer-identity-form] a')].map((link) => link.getAttribute('href')),
+      overflow: document.documentElement.scrollWidth > innerWidth
+    })`);
+    check('Storefront customer register renders dedicated visual flow', register.shell && register.mode === 'register' && register.title.includes('Crea tu cuenta') && register.disabledInputs === 4, register);
+    check('Storefront customer register links back to sign-in and checkout', register.links.includes('/store/account/sign-in') && register.links.includes('/store/checkout'), register);
+    check('Storefront customer register desktop avoids horizontal overflow', !register.overflow, register);
 
     await setViewport(cdp, { width: 390, height: 844, mobile: true });
     await navigate(cdp, targetUrl);
@@ -197,6 +240,18 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     check('Mobile preserves checkout shell, auth gate, payment and summary', mobileCheckout.shell && mobileCheckout.checkout && mobileCheckout.authGate && mobileCheckout.payment && mobileCheckout.summary, mobileCheckout);
     check('Mobile storefront checkout avoids horizontal overflow', !mobileCheckout.overflow, mobileCheckout);
 
+    await navigate(cdp, signInUrl);
+    await waitFor(cdp, "Boolean(document.querySelector('[data-storefront-customer-identity]'))");
+    const mobileIdentity = await evaluate(cdp, `({
+      shell: Boolean(document.querySelector('[data-storefront-shell]')),
+      identity: Boolean(document.querySelector('[data-storefront-customer-identity]')),
+      form: Boolean(document.querySelector('[data-storefront-customer-identity-form]')),
+      notices: Boolean(document.querySelector('[data-storefront-customer-identity-notices]')),
+      overflow: document.documentElement.scrollWidth > innerWidth
+    })`);
+    check('Mobile preserves customer identity shell, form and notices', mobileIdentity.shell && mobileIdentity.identity && mobileIdentity.form && mobileIdentity.notices, mobileIdentity);
+    check('Mobile storefront customer identity avoids horizontal overflow', !mobileIdentity.overflow, mobileIdentity);
+
     await shot('storefront-products-mobile.png');
   } catch (error) {
     check('Storefront product listing browser scenario completes without runtime exception', false, { error: String(error.stack ?? error) });
@@ -205,11 +260,13 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     await chrome?.stop();
     writeFileSync(join(artifactDir, 'report.json'), JSON.stringify({
       schemaVersion: '1.0',
-      view: 'storefront.product-listing-detail-cart-checkout',
+      view: 'storefront.product-listing-detail-cart-checkout-customer-identity',
       targetUrl,
       detailUrl,
       cartUrl,
       checkoutUrl,
+      signInUrl,
+      registerUrl,
       generatedAt: new Date().toISOString(),
       status: failures.length ? 'FAIL' : 'PASS',
       checks,
@@ -217,5 +274,5 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     }, null, 2));
   }
 
-  if (failures.length) throw new Error(`Storefront product listing/detail/cart/checkout browser QA failed: ${failures.join('; ')}`);
+  if (failures.length) throw new Error(`Storefront product listing/detail/cart/checkout/customer-identity browser QA failed: ${failures.join('; ')}`);
 }
