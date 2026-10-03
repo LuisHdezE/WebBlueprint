@@ -161,6 +161,8 @@ export interface StorefrontCartViewDto {
     totalValue: string;
     checkoutLabel: string;
     checkoutDisabledLabel: string;
+    checkoutPreviewLabel: string;
+    checkoutPreviewHref: string;
   };
   notices: readonly {
     id: string;
