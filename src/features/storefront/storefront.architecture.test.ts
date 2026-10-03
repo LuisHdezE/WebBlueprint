@@ -190,4 +190,23 @@ describe('storefront architecture', () => {
     expect(cart).not.toContain('sessionStorage');
     expect(cart).not.toContain('fetch(');
   });
+  it('keeps every completed storefront view discoverable from the Blueprint sidebar', () => {
+    const navigation = readFileSync('src/config/templateNavigation.ts', 'utf8');
+
+    const completedStorefrontRoutes = [
+      '/store',
+      '/store/products',
+      '/store/products/iphone-13-display-oled',
+      '/store/cart',
+      '/store/checkout',
+      '/store/account/sign-in',
+      '/store/account/register',
+    ];
+
+    expect(navigation).toContain("label: 'Tienda online'");
+    completedStorefrontRoutes.forEach((route) => {
+      expect(navigation).toContain(`to: '${route}'`);
+    });
+  });
+
 });
