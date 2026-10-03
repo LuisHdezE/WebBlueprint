@@ -26,7 +26,7 @@ describe('storefront architecture', () => {
     expect(storefrontShell).not.toContain('PublicShell');
   });
 
-  it('keeps B1 storefront free of legacy ecommerce coupling', () => {
+  it('keeps storefront free of legacy ecommerce coupling', () => {
     const router = readFileSync('src/app/router/AppRouter.tsx', 'utf8');
     const home = readFileSync('src/features/storefront/presentation/StorefrontHomePage.tsx', 'utf8');
     const shell = readFileSync('src/shell/StorefrontShell.tsx', 'utf8');
@@ -36,5 +36,18 @@ describe('storefront architecture', () => {
     expect(shell).not.toContain('JsonEcommerceCatalogProvider');
     expect(home).not.toContain('ProductsPage');
     expect(shell).not.toContain('ShopPage');
+  });
+
+  it('renders catalog home sections from storefront DTOs', () => {
+    const dto = readFileSync('src/features/storefront/application/storefront.dto.ts', 'utf8');
+    const home = readFileSync('src/features/storefront/presentation/StorefrontHomePage.tsx', 'utf8');
+
+    expect(dto).toContain('StorefrontCategoryCardDto');
+    expect(dto).toContain('StorefrontProductCardDto');
+    expect(dto).toContain('StorefrontPromoBandDto');
+    expect(home).toContain('home.categorySection.categories.map');
+    expect(home).toContain('home.productSection.products.map');
+    expect(home).toContain('home.promoBand');
+    expect(home).toContain('data-storefront-product-card');
   });
 });

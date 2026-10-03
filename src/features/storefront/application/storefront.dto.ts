@@ -16,6 +16,35 @@ export interface StorefrontHeroCtaDto {
   variant: 'primary' | 'secondary';
 }
 
+export interface StorefrontCategoryCardDto {
+  id: string;
+  title: string;
+  description: string;
+  href: string;
+  eyebrow: string;
+  itemCountLabel: string;
+}
+
+export interface StorefrontProductCardDto {
+  id: string;
+  title: string;
+  subtitle: string;
+  priceLabel: string;
+  compareLabel?: string;
+  badgeLabel: string;
+  href: string;
+  compatibilityLabel: string;
+  stockLabel: string;
+}
+
+export interface StorefrontPromoBandDto {
+  eyebrow: string;
+  title: string;
+  description: string;
+  actionLabel: string;
+  actionHref: string;
+}
+
 export interface StorefrontHomeViewDto {
   eyebrow: string;
   title: string;
@@ -28,6 +57,19 @@ export interface StorefrontHomeViewDto {
     title: string;
     description: string;
   }[];
+  categorySection: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    categories: readonly StorefrontCategoryCardDto[];
+  };
+  productSection: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    products: readonly StorefrontProductCardDto[];
+  };
+  promoBand: StorefrontPromoBandDto;
 }
 
 export interface StorefrontShellViewDto {
