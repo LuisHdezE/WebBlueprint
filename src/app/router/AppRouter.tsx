@@ -39,6 +39,7 @@ import { InventoryDevicesPage } from '@/features/inventory/presentation/Inventor
 import { JsonMasterDataAdminViewProvider } from '@/features/master-data/infrastructure/JsonMasterDataAdminViewProvider';
 import { JsonMasterDataProvider } from '@/features/master-data/infrastructure/JsonMasterDataProvider';
 import { MasterDataBrandsPage, MasterDataCategoriesPage, MasterDataDeviceModelsPage } from '@/features/master-data/presentation/MasterDataAdminPages';
+import { MasterDataColorsPage, MasterDataConditionsPage, MasterDataRamCapacitiesPage, MasterDataSparePartTypesPage, MasterDataStorageCapacitiesPage } from '@/features/master-data/presentation/ExtendedMasterDataAdminPages';
 import { BlogEditorPage } from '@/features/applications/blog/presentation/BlogEditorPage';
 import { BlogGridPage } from '@/features/applications/blog/presentation/BlogGridPage';
 import { BlogListPage } from '@/features/applications/blog/presentation/BlogListPage';
@@ -138,6 +139,11 @@ export function AppRouter() {
         <Route path="admin/master-data/brands" element={<MasterDataBrandsPage masterDataProvider={masterDataProvider} viewProvider={masterDataAdminViewProvider} />} />
         <Route path="admin/master-data/device-models" element={<MasterDataDeviceModelsPage masterDataProvider={masterDataProvider} viewProvider={masterDataAdminViewProvider} />} />
         <Route path="admin/master-data/categories" element={<MasterDataCategoriesPage masterDataProvider={masterDataProvider} viewProvider={masterDataAdminViewProvider} />} />
+        <Route path="admin/master-data/colors" element={<MasterDataColorsPage masterDataProvider={masterDataProvider} />} />
+        <Route path="admin/master-data/storage-capacities" element={<MasterDataStorageCapacitiesPage masterDataProvider={masterDataProvider} />} />
+        <Route path="admin/master-data/ram-capacities" element={<MasterDataRamCapacitiesPage masterDataProvider={masterDataProvider} />} />
+        <Route path="admin/master-data/conditions" element={<MasterDataConditionsPage masterDataProvider={masterDataProvider} />} />
+        <Route path="admin/master-data/spare-part-types" element={<MasterDataSparePartTypesPage masterDataProvider={masterDataProvider} />} />
         <Route path="apps/inventory/dashboard" element={<InventoryDashboardPage provider={inventoryDemoProvider} />} />
         <Route path="apps/inventory/devices" element={<InventoryDevicesPage provider={inventoryDemoProvider} />} />
         <Route path="apps/inventory/devices/new" element={<InventoryDeviceIntakePage masterDataProvider={masterDataProvider} provider={inventoryDemoProvider} />} />
