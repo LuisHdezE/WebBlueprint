@@ -57,7 +57,7 @@
     "description": "Captura rápida para ingresar un equipo al inventario y definir su siguiente destino.",
     "breadcrumbs": ["Aplicaciones", "Inventario", "Dispositivos", "Nuevo"],
     "introTitle": "Ingreso rápido",
-    "introDescription": "Registra primero lo necesario para identificar y enrutar el equipo. La marca y el modelo salen de Datos Maestros para evitar textos duplicados.",
+    "introDescription": "Registra primero lo necesario para identificar y enrutar el equipo. Marca, modelo, almacenamiento, color y condición salen de Datos Maestros para evitar textos duplicados.",
     "identitySectionTitle": "Identidad del equipo",
     "conditionSectionTitle": "Condición inicial",
     "acquisitionSectionTitle": "Adquisición",
@@ -66,10 +66,10 @@
       "brandId": "Marca",
       "deviceModelId": "Modelo",
       "serialOrImei": "IMEI / Número de serie",
-      "storage": "Almacenamiento",
-      "color": "Color",
+      "storageCapacityId": "Almacenamiento",
+      "colorId": "Color",
       "powersOn": "¿Enciende?",
-      "physicalCondition": "Condición física",
+      "conditionId": "Condición",
       "accountLock": "Bloqueo de cuenta",
       "acquisitionSource": "Origen de adquisición",
       "acquisitionCost": "Costo de adquisición",
@@ -80,8 +80,9 @@
       "brandId": "Selecciona una marca",
       "deviceModelId": "Selecciona primero una marca",
       "serialOrImei": "IMEI o serie",
-      "storage": "Ej. 128 GB",
-      "color": "Ej. Negro",
+      "storageCapacityId": "Selecciona almacenamiento",
+      "colorId": "Selecciona color",
+      "conditionId": "Selecciona condición",
       "acquisitionSource": "Ej. Compra directa",
       "acquisitionCost": "Ej. USD 120",
       "notes": "Observaciones visibles, accesorios recibidos o contexto del ingreso"
@@ -91,13 +92,6 @@
         { "value": "Unknown", "label": "Sin verificar" },
         { "value": "Yes", "label": "Sí" },
         { "value": "No", "label": "No" }
-      ],
-      "physicalCondition": [
-        { "value": "Good", "label": "Buena" },
-        { "value": "Excellent", "label": "Excelente" },
-        { "value": "Fair", "label": "Regular" },
-        { "value": "Poor", "label": "Mala" },
-        { "value": "Damaged", "label": "Dañado" }
       ],
       "accountLock": [
         { "value": "Unknown", "label": "Sin verificar" },
@@ -114,14 +108,16 @@
     },
     "submitLabel": "Registrar ingreso",
     "cancelLabel": "Volver a dispositivos",
-    "demoNotice": "Vista demo: el registro valida la interacción y consume marca/modelo desde Datos Maestros, pero no persiste datos en un backend.",
+    "demoNotice": "Vista demo: el registro valida la interacción y consume marca/modelo/atributos desde Datos Maestros, pero no persiste datos en un backend.",
     "successTitle": "Ingreso preparado",
     "successMessage": "El dispositivo quedó preparado para continuar con su evaluación dentro del flujo demo.",
     "defaults": {
       "brandId": "",
       "deviceModelId": "",
+      "storageCapacityId": "",
+      "colorId": "",
+      "conditionId": "",
       "powersOn": "Unknown",
-      "physicalCondition": "Good",
       "accountLock": "Unknown",
       "destination": "Pending Evaluation"
     }
