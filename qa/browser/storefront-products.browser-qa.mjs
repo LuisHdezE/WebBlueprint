@@ -109,7 +109,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     check('Storefront product listing has no add-to-cart behavior yet', desktop.addToCartButtons === 0, desktop);
     check('Storefront product listing avoids admin sidebar', !desktop.adminSidebar, desktop);
     check('Storefront product listing avoids public blueprint header copy', !desktop.publicShellBrand, desktop);
-    check('Storefront product listing uses compact heading scale', desktop.headingFontPx <= 40, desktop);
+    check('Storefront product listing uses compact heading scale', desktop.headingFontPx <= 26, desktop);
     check('Storefront product cards start high enough for commercial density', desktop.firstCardTop < 620, desktop);
     check('Storefront listing shows four cards on the first desktop row', desktop.cardRects.length === 4 && desktop.cardRects.every((card) => Math.abs(card.top - desktop.cardRects[0].top) <= 2), desktop);
     check('Storefront listing cards are portrait-oriented', desktop.cardRects.every((card) => card.height > card.width), desktop);
@@ -165,6 +165,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       shell: Boolean(document.querySelector('[data-storefront-shell]')),
       cart: Boolean(document.querySelector('[data-storefront-cart]')),
       title: document.querySelector('[data-storefront-cart] h1')?.textContent ?? '',
+      headingFontPx: parseFloat(getComputedStyle(document.querySelector('[data-storefront-cart] h1')).fontSize),
       emptyState: document.querySelector('[data-storefront-cart-empty-state]')?.textContent ?? '',
       cartLines: document.querySelectorAll('[data-storefront-cart-line]').length,
       summary: document.querySelector('[data-storefront-cart-summary]')?.textContent ?? '',
@@ -177,6 +178,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       overflow: document.documentElement.scrollWidth > innerWidth
     })`);
     check('Storefront cart renders inside storefront shell', cart.shell && cart.cart, cart);
+    check('Storefront cart keeps compact H1 scale', cart.headingFontPx <= 26, cart);
     check('Storefront cart renders empty-state and demo lines', cart.title.includes('Carrito preparado') && cart.emptyState.includes('Tu carrito demo está vacío') && cart.cartLines === 2, cart);
     check('Storefront cart renders demo summary and blocked checkout', cart.summary.includes('UYU 6.580') && cart.disabledCheckoutButtons === 1, cart);
     check('Storefront cart exposes checkout preview navigation', cart.checkoutPreviewLinks === 1, cart);
@@ -192,6 +194,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       shell: Boolean(document.querySelector('[data-storefront-shell]')),
       checkout: Boolean(document.querySelector('[data-storefront-checkout]')),
       title: document.querySelector('[data-storefront-checkout] h1')?.textContent ?? '',
+      headingFontPx: parseFloat(getComputedStyle(document.querySelector('[data-storefront-checkout] h1')).fontSize),
       authGate: document.querySelector('[data-storefront-checkout-auth-gate]')?.textContent ?? '',
       shipping: document.querySelector('[data-storefront-checkout-shipping]')?.textContent ?? '',
       payment: document.querySelector('[data-storefront-checkout-payment]')?.textContent ?? '',
@@ -205,6 +208,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       overflow: document.documentElement.scrollWidth > innerWidth
     })`);
     check('Storefront checkout renders inside storefront shell', checkout.shell && checkout.checkout, checkout);
+    check('Storefront checkout keeps compact H1 scale', checkout.headingFontPx <= 26, checkout);
     check('Storefront checkout requires authentication or registration', checkout.title.includes('Revisa la compra') && checkout.authGate.includes('Autenticación o registro requerido'), checkout);
     check('Storefront checkout links to dedicated customer identity routes', checkout.identityLinks.includes('/store/account/sign-in') && checkout.identityLinks.includes('/store/account/register'), checkout);
     check('Storefront checkout exposes shipping zone navigation', checkout.shipping.includes('Tarifas demo disponibles') && checkout.shippingLinks.includes('/store/shipping'), checkout);

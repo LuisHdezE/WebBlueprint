@@ -8,7 +8,7 @@ import { StorefrontProductCard } from './StorefrontProductCard';
 function CategoryCard({ category }: { category: StorefrontCategoryCardDto }) {
   return (
     <Link
-      className="group grid min-h-40 content-between rounded-2xl border border-black/10 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-[var(--storefront-primary)] hover:shadow-md"
+      className="group grid min-h-40 content-between rounded-xl border border-black/10 bg-white p-3 shadow-sm transition hover:-translate-y-0.5 hover:border-[var(--storefront-primary)] hover:shadow-md"
       to={category.href}
     >
       <span>
@@ -16,7 +16,7 @@ function CategoryCard({ category }: { category: StorefrontCategoryCardDto }) {
           {category.eyebrow}
         </span>
         <span className="mt-3 block text-base font-black tracking-[-0.02em] text-slate-950">{category.title}</span>
-        <span className="mt-1.5 block text-xs leading-5 text-slate-600">{category.description}</span>
+        <span className="mt-1.5 block text-[11px] leading-4 text-slate-600">{category.description}</span>
       </span>
       <span className="mt-3 flex items-center justify-between gap-3 text-xs font-black text-[var(--storefront-primary-strong)]">
         <span>{category.itemCountLabel}</span>
@@ -44,7 +44,7 @@ export function StorefrontHomePage({ provider }: { provider: StorefrontProvider 
 
   return (
     <div className="mx-auto grid max-w-[1440px] gap-6 px-4 py-4 sm:px-5 lg:px-6 lg:py-5" data-storefront-home>
-      <section className="relative overflow-hidden rounded-2xl border border-black/10 bg-slate-100 shadow-sm" data-storefront-hero-carousel>
+      <section className="relative overflow-hidden rounded-xl border border-black/10 bg-slate-100 shadow-sm" data-storefront-hero-carousel>
         <div className="relative min-h-[260px] sm:min-h-[320px] lg:min-h-[360px]">
           <img
             alt={activeBanner.image.alt}
@@ -56,10 +56,10 @@ export function StorefrontHomePage({ provider }: { provider: StorefrontProvider 
           <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/35 to-black/10" />
           <div className="relative z-10 flex min-h-[260px] max-w-2xl flex-col justify-center px-8 py-8 text-white sm:min-h-[320px] sm:px-12 lg:min-h-[360px] lg:px-14">
             <p className="text-[11px] font-black uppercase tracking-[0.16em] text-white/80">{activeBanner.eyebrow}</p>
-            <h1 className="mt-2 text-3xl font-black tracking-[-0.035em] sm:text-4xl">{activeBanner.title}</h1>
-            <p className="mt-3 max-w-xl text-sm leading-6 text-white/85">{activeBanner.description}</p>
+            <h1 className="mt-2 text-2xl font-black tracking-[-0.035em] sm:text-2xl">{activeBanner.title}</h1>
+            <p className="mt-3 max-w-xl text-[11px] leading-4 text-white/85">{activeBanner.description}</p>
             <Link
-              className="mt-5 inline-flex w-fit rounded-full bg-[var(--storefront-primary)] px-5 py-2.5 text-xs font-black text-[var(--storefront-on-primary)] transition hover:bg-[var(--storefront-primary-strong)]"
+              className="mt-5 inline-flex w-fit rounded-full bg-[var(--storefront-primary)] px-5 py-2 text-[11px] font-black text-[var(--storefront-on-primary)] transition hover:bg-[var(--storefront-primary-strong)]"
               to={activeBanner.actionHref}
             >
               {activeBanner.actionLabel}
@@ -68,7 +68,7 @@ export function StorefrontHomePage({ provider }: { provider: StorefrontProvider 
 
           <button
             aria-label="Banner anterior"
-            className="absolute left-3 top-1/2 z-20 grid size-10 -translate-y-1/2 place-items-center rounded-xl bg-white/95 text-lg font-black text-slate-800 shadow-md transition hover:bg-white"
+            className="absolute left-3 top-1/2 z-20 grid size-10 -translate-y-1/2 place-items-center rounded-xl bg-white/95 text-base font-black text-slate-800 shadow-md transition hover:bg-white"
             type="button"
             onClick={() => moveBanner(-1)}
           >
@@ -76,7 +76,7 @@ export function StorefrontHomePage({ provider }: { provider: StorefrontProvider 
           </button>
           <button
             aria-label="Banner siguiente"
-            className="absolute right-3 top-1/2 z-20 grid size-10 -translate-y-1/2 place-items-center rounded-xl bg-white/95 text-lg font-black text-slate-800 shadow-md transition hover:bg-white"
+            className="absolute right-3 top-1/2 z-20 grid size-10 -translate-y-1/2 place-items-center rounded-xl bg-white/95 text-base font-black text-slate-800 shadow-md transition hover:bg-white"
             type="button"
             onClick={() => moveBanner(1)}
           >
@@ -99,9 +99,9 @@ export function StorefrontHomePage({ provider }: { provider: StorefrontProvider 
 
       <section className="grid gap-3 md:grid-cols-3" aria-label="Base Storefront B1">
         {home.featureTiles.map((tile) => (
-          <article key={tile.id} className="rounded-2xl border border-black/10 bg-white p-4 shadow-sm">
+          <article key={tile.id} className="rounded-xl border border-black/10 bg-white p-3 shadow-sm">
             <p className="text-sm font-black text-slate-950">{tile.title}</p>
-            <p className="mt-1.5 text-xs leading-5 text-slate-600">{tile.description}</p>
+            <p className="mt-1.5 text-[11px] leading-4 text-slate-600">{tile.description}</p>
           </article>
         ))}
       </section>
@@ -120,12 +120,12 @@ export function StorefrontHomePage({ provider }: { provider: StorefrontProvider 
         </div>
       </section>
 
-      <section className="rounded-2xl bg-[var(--storefront-primary-strong)] p-5 text-[var(--storefront-on-primary)] sm:p-6" data-storefront-promo-band>
-        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+      <section className="rounded-xl bg-[var(--storefront-primary-strong)] p-3 text-[var(--storefront-on-primary)] sm:p-6" data-storefront-promo-band>
+        <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
           <div>
             <p className="text-[11px] font-black uppercase tracking-[0.14em] text-white/70">{home.promoBand.eyebrow}</p>
-            <h2 className="mt-1.5 max-w-3xl text-xl font-black tracking-[-0.03em] sm:text-2xl">{home.promoBand.title}</h2>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-white/85">{home.promoBand.description}</p>
+            <h2 className="mt-1.5 max-w-3xl text-lg font-black tracking-[-0.03em] sm:text-2xl">{home.promoBand.title}</h2>
+            <p className="mt-2 max-w-2xl text-[11px] leading-4 text-white/85">{home.promoBand.description}</p>
           </div>
           <Link className="rounded-full bg-white px-4 py-2 text-xs font-black text-[var(--storefront-primary-strong)] transition hover:bg-[var(--storefront-primary-soft)]" to={home.promoBand.actionHref}>
             {home.promoBand.actionLabel}

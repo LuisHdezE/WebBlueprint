@@ -13,13 +13,13 @@ export function StorefrontCustomerIdentityPage({ provider, mode }: StorefrontCus
 
   return (
     <main className="bg-[#f7f2ea]" data-storefront-customer-identity data-storefront-customer-identity-mode={mode}>
-      <section className="mx-auto max-w-6xl px-4 py-5 sm:px-6 lg:px-8 lg:py-6">
-        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
+      <section className="mx-auto max-w-6xl px-4 py-3 sm:px-6 lg:px-8 lg:py-4">
+        <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
           <section>
             <StorefrontPageIntro eyebrow={identity.eyebrow} title={panel.title} description={panel.description} />
 
-            <div className="mt-5 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm" data-storefront-customer-identity-form>
-              <div className="grid gap-4 sm:grid-cols-2">
+            <div className="mt-5 rounded-xl border border-slate-200 bg-white p-3 shadow-sm" data-storefront-customer-identity-form>
+              <div className="grid gap-3 sm:grid-cols-2">
                 {panel.fields.map((field) => (
                   <label key={field.id} className="block">
                     <span className="text-xs font-black text-slate-900">{field.label}</span>
@@ -35,7 +35,7 @@ export function StorefrontCustomerIdentityPage({ provider, mode }: StorefrontCus
                 ))}
               </div>
 
-              <button className="mt-5 w-full cursor-not-allowed rounded-full bg-slate-300 px-4 py-3 text-xs font-black text-slate-600" disabled type="button">
+              <button className="mt-5 w-full cursor-not-allowed rounded-full bg-slate-300 px-4 py-2 text-[11px] font-black text-slate-600" disabled type="button">
                 {panel.submitLabel}
               </button>
 
@@ -46,13 +46,13 @@ export function StorefrontCustomerIdentityPage({ provider, mode }: StorefrontCus
             </div>
           </section>
 
-          <aside className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm" data-storefront-customer-identity-notices>
+          <aside className="rounded-xl border border-slate-200 bg-white p-3 shadow-sm" data-storefront-customer-identity-notices>
             <p className="text-xs leading-5 text-slate-600">{identity.description}</p>
             <div className="mt-4 space-y-3">
               {identity.notices.map((notice) => (
                 <article key={notice.id} className="rounded-xl bg-slate-50 p-3">
                   <h2 className="text-xs font-black text-slate-950">{notice.title}</h2>
-                  <p className="mt-1.5 text-xs leading-5 text-slate-600">{notice.description}</p>
+                  <p className="mt-1.5 text-[11px] leading-4 text-slate-600">{notice.description}</p>
                 </article>
               ))}
             </div>

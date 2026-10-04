@@ -263,6 +263,9 @@ describe('storefront architecture', () => {
 
     expect(primitives).toContain('StorefrontPageIntro');
     expect(primitives).toContain('StorefrontSectionIntro');
+    expect(primitives).toContain('text-2xl');
+    expect(primitives).not.toContain('sm:text-4xl');
+    expect(primitives).not.toContain('text-3xl');
     expect(pages[0]).toContain('StorefrontSectionIntro');
     expect(pages[1]).toContain('StorefrontPageIntro');
     expect(pages[3]).toContain('StorefrontPageIntro');
@@ -272,6 +275,8 @@ describe('storefront architecture', () => {
     pages.forEach((page) => {
       expect(page).not.toContain('text-6xl');
       expect(page).not.toContain('text-5xl');
+      expect(page).not.toContain('text-4xl');
+      expect(page).not.toContain('text-3xl');
       expect(page).not.toContain('rounded-[2rem]');
       expect(page).not.toContain('min-h-[28rem]');
     });

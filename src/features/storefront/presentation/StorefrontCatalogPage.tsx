@@ -17,9 +17,9 @@ export function StorefrontCatalogPage({ provider, routeKey }: StorefrontCatalogP
   if (!view) {
     return (
       <main className="mx-auto max-w-[1440px] px-4 py-6 sm:px-5 lg:px-6" data-storefront-catalog-not-found>
-        <section className="rounded-2xl border border-black/10 bg-white p-6 shadow-sm">
+        <section className="rounded-xl border border-black/10 bg-white p-6 shadow-sm">
           <h1 className="text-lg font-black text-slate-950">{catalog.notFound.title}</h1>
-          <p className="mt-2 max-w-2xl text-xs leading-5 text-slate-600">{catalog.notFound.description}</p>
+          <p className="mt-2 max-w-2xl text-[11px] leading-4 text-slate-600">{catalog.notFound.description}</p>
           <Link className="mt-4 inline-flex rounded-full bg-[var(--storefront-primary)] px-4 py-2 text-xs font-black text-[var(--storefront-on-primary)]" to={catalog.notFound.actionHref}>
             {catalog.notFound.actionLabel}
           </Link>
@@ -29,8 +29,8 @@ export function StorefrontCatalogPage({ provider, routeKey }: StorefrontCatalogP
   }
 
   return (
-    <main className="mx-auto grid max-w-[1440px] gap-5 px-4 py-5 sm:px-5 lg:px-6 lg:py-6" data-storefront-catalog-route data-storefront-catalog-route-key={view.key}>
-      <section className="rounded-2xl border border-black/10 bg-white p-5 shadow-sm">
+    <main className="mx-auto grid max-w-[1440px] gap-3 px-4 py-3 sm:px-5 lg:px-6 lg:py-4" data-storefront-catalog-route data-storefront-catalog-route-key={view.key}>
+      <section className="rounded-xl border border-black/10 bg-white p-3 shadow-sm">
         <StorefrontPageIntro
           eyebrow={view.eyebrow}
           title={view.title}
@@ -56,7 +56,7 @@ export function StorefrontCatalogPage({ provider, routeKey }: StorefrontCatalogP
       </section>
 
       <section className="grid gap-3" data-storefront-catalog-products>
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-black/10 bg-white px-4 py-3 shadow-sm">
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-black/10 bg-white px-4 py-3 shadow-sm">
           <p className="text-sm font-black text-slate-950">{view.resultSummary}</p>
           <p className="text-[11px] font-bold text-slate-500">Datos del catálogo general · sin filtro de backend</p>
         </div>
@@ -68,9 +68,9 @@ export function StorefrontCatalogPage({ provider, routeKey }: StorefrontCatalogP
         </div>
       </section>
 
-      <section className="rounded-2xl border border-dashed border-black/20 bg-white p-4" data-storefront-catalog-notice>
+      <section className="rounded-xl border border-dashed border-black/20 bg-white p-3" data-storefront-catalog-notice>
         <p className="text-sm font-black text-slate-950">{catalog.notice.title}</p>
-        <p className="mt-1.5 text-xs leading-5 text-slate-600">{catalog.notice.description}</p>
+        <p className="mt-1.5 text-[11px] leading-4 text-slate-600">{catalog.notice.description}</p>
       </section>
     </main>
   );
