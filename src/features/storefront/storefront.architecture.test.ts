@@ -222,6 +222,13 @@ describe('storefront architecture', () => {
     expect(cart).toContain('data-storefront-cart');
     expect(cart).toContain('data-storefront-cart-empty-state');
     expect(cart).toContain('data-storefront-cart-summary');
+    expect(cart).toContain('provider.getProductListingView()');
+    expect(cart).toContain('text-[18px]');
+    expect(cart).toContain('text-[12px]');
+    expect(cart).toContain('grid-cols-[4.75rem_minmax(0,1fr)]');
+    expect(cart).not.toContain('StorefrontPageIntro');
+    expect(cart).not.toContain('rounded-2xl');
+    expect(cart).not.toContain('shadow-sm');
     expect(cart).toContain('disabled type="button"');
     expect(cart).not.toContain('localStorage');
     expect(cart).not.toContain('sessionStorage');
@@ -268,7 +275,6 @@ describe('storefront architecture', () => {
     expect(primitives).not.toContain('text-3xl');
     expect(pages[0]).toContain('StorefrontSectionIntro');
     expect(pages[1]).toContain('StorefrontPageIntro');
-    expect(pages[3]).toContain('StorefrontPageIntro');
     expect(pages[4]).toContain('StorefrontPageIntro');
     expect(pages[5]).toContain('StorefrontPageIntro');
 
