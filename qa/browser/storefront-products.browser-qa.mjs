@@ -168,6 +168,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       headingFontPx: parseFloat(getComputedStyle(document.querySelector('[data-storefront-cart] h1')).fontSize),
       emptyState: document.querySelector('[data-storefront-cart-empty-state]')?.textContent ?? '',
       cartLines: document.querySelectorAll('[data-storefront-cart-line]').length,
+      cartImages: document.querySelectorAll('[data-storefront-cart-line] img').length,
       summary: document.querySelector('[data-storefront-cart-summary]')?.textContent ?? '',
       notices: document.querySelector('[data-storefront-cart-notices]')?.textContent ?? '',
       disabledCheckoutButtons: [...document.querySelectorAll('[data-storefront-cart] button')].filter((button) => button.disabled && button.textContent?.includes('Checkout pendiente')).length,
@@ -178,11 +179,12 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       overflow: document.documentElement.scrollWidth > innerWidth
     })`);
     check('Storefront cart renders inside storefront shell', cart.shell && cart.cart, cart);
-    check('Storefront cart keeps compact H1 scale', cart.headingFontPx <= 26, cart);
-    check('Storefront cart renders empty-state and demo lines', cart.title.includes('Carrito preparado') && cart.emptyState.includes('Tu carrito demo está vacío') && cart.cartLines === 2, cart);
+    check('Storefront cart keeps ultra-compact H1 scale', cart.headingFontPx <= 20, cart);
+    check('Storefront cart renders demo lines without simultaneous empty state', cart.title.includes('Carrito preparado') && cart.emptyState === '' && cart.cartLines === 2, cart);
+    check('Storefront cart reuses provider-driven product images', cart.cartImages === 2, cart);
     check('Storefront cart renders demo summary and blocked checkout', cart.summary.includes('UYU 6.580') && cart.disabledCheckoutButtons === 1, cart);
     check('Storefront cart exposes checkout preview navigation', cart.checkoutPreviewLinks === 1, cart);
-    check('Storefront cart states future registration and checkout flow', cart.summary.includes('Registro requerido') && cart.notices.includes('Checkout bloqueado'), cart);
+    check('Storefront cart states future registration and checkout flow', cart.summary.includes('Registro requerido') && cart.notices.includes('checkout queda deshabilitado'), cart);
     check('Storefront cart surfaces client storage behavior', cart.storageReferences, cart);
     check('Storefront cart avoids admin sidebar and public blueprint copy', !cart.adminSidebar && !cart.publicShellBrand, cart);
     check('Storefront cart desktop avoids horizontal overflow', !cart.overflow, cart);
