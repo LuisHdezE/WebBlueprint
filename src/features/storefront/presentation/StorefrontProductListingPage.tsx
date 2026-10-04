@@ -1,9 +1,16 @@
+import { useMemo, useState } from 'react';
 import type { StorefrontProvider } from '../application/storefront.contracts';
+import { discoverStorefrontProducts } from '../application/storefront.discovery';
 import { StorefrontPageIntro } from './StorefrontPrimitives';
 import { StorefrontProductCard } from './StorefrontProductCard';
 
 export function StorefrontProductListingPage({ provider }: { provider: StorefrontProvider }) {
   const listing = provider.getProductListingView();
+  const [searchText, setSearchText] = useState('');
+  const discovery = useMemo(
+    () => discoverStorefrontProducts(listing.products, { searchText }),
+    [listing.products, searchText],
+  );
 
   return (
     <div className="mx-auto grid max-w-[1440px] gap-3 px-4 py-3 sm:px-5 lg:px-6 lg:py-4" data-storefront-product-listing>
@@ -24,17 +31,25 @@ export function StorefrontProductListingPage({ provider }: { provider: Storefron
       <section className="grid gap-3 lg:grid-cols-[17rem_minmax(0,1fr)]">
         <aside className="grid gap-3 rounded-xl border border-black/10 bg-white p-3 shadow-sm lg:sticky lg:top-24 lg:self-start" data-storefront-listing-filters>
           <label className="grid gap-1.5">
-            <span className="text-[10px] font-black uppercase tracking-[0.08em] text-slate-500">Búsqueda visual</span>
+            <span className="text-[10px] font-black uppercase tracking-[0.08em] text-slate-500">Búsqueda</span>
             <input
+              aria-label="Buscar productos"
               className="h-10 rounded-xl border border-black/10 bg-[#f7f2ea] px-3 text-sm font-semibold text-slate-900 outline-none placeholder:text-slate-400 focus:border-[var(--storefront-primary)] focus:ring-4 focus:ring-[var(--storefront-primary-soft)]"
+              data-storefront-discovery-search
+              onChange={(event) => setSearchText(event.target.value)}
               placeholder={listing.searchPlaceholder}
               type="search"
+              value={searchText}
             />
           </label>
 
-          <label className="grid gap-1.5">
-            <span className="text-[10px] font-black uppercase tracking-[0.08em] text-slate-500">Orden visual</span>
-            <select className="h-10 rounded-xl border border-black/10 bg-white px-3 text-sm font-bold text-slate-900 outline-none focus:border-[var(--storefront-primary)]">
+          <label className="grid gap-1.5 opacity-60">
+            <span className="text-[10px] font-black uppercase tracking-[0.08em] text-slate-500">Orden · B13.3</span>
+            <select
+              aria-label="Ordenamiento pendiente"
+              className="h-10 rounded-xl border border-black/10 bg-white px-3 text-sm font-bold text-slate-900 outline-none"
+              disabled
+            >
               {listing.sortOptions.map((option) => (
                 <option key={option.id}>{option.label}</option>
               ))}
@@ -42,11 +57,11 @@ export function StorefrontProductListingPage({ provider }: { provider: Storefron
           </label>
 
           {listing.filters.map((filter) => (
-            <fieldset key={filter.id} className="grid gap-2 border-t border-black/10 pt-3">
-              <legend className="text-sm font-black text-slate-950">{filter.title}</legend>
+            <fieldset key={filter.id} className="grid gap-2 border-t border-black/10 pt-3 opacity-60" disabled>
+              <legend className="text-sm font-black text-slate-950">{filter.title} · B13.2</legend>
               <div className="grid gap-1.5">
                 {filter.options.map((option) => (
-                  <label key={option.id} className="grid cursor-pointer gap-0.5 rounded-xl border border-black/10 p-2.5 text-xs transition hover:border-[var(--storefront-primary)]">
+                  <label key={option.id} className="grid gap-0.5 rounded-xl border border-black/10 p-2.5 text-xs">
                     <span className="flex items-center gap-2 font-bold text-slate-800">
                       <input className="size-3.5 accent-slate-950" name={filter.id} type="radio" />
                       {option.label}
@@ -60,21 +75,46 @@ export function StorefrontProductListingPage({ provider }: { provider: Storefron
         </aside>
 
         <div className="grid gap-3">
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-black/10 bg-white px-4 py-3 shadow-sm">
-            <p className="text-sm font-black text-slate-950">{listing.resultSummary}</p>
-            <p className="text-[11px] font-bold text-slate-500">Filtros visuales, sin lógica aplicada todavía</p>
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-black/10 bg-white px-4 py-3 shadow-sm" data-storefront-discovery-summary>
+            <div>
+              <p className="text-sm font-black text-slate-950" data-storefront-discovery-count>
+                {discovery.resultCount} de {listing.products.length} productos
+              </p>
+              <p className="mt-0.5 text-[11px] font-bold text-slate-500">
+                Búsqueda activa en memoria · filtros y ordenamiento continúan en B13.2/B13.3
+              </p>
+            </div>
+            {discovery.hasActiveCriteria ? (
+              <button
+                className="rounded-full border border-black/10 bg-white px-3 py-1.5 text-[11px] font-black text-slate-700 transition hover:border-[var(--storefront-primary)] hover:text-[var(--storefront-primary-strong)]"
+                data-storefront-discovery-clear
+                onClick={() => setSearchText('')}
+                type="button"
+              >
+                Limpiar búsqueda
+              </button>
+            ) : null}
           </div>
 
-          <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" aria-label="Listado de productos demo">
-            {listing.products.map((product) => (
-              <StorefrontProductCard key={product.id} context="listing" product={product} />
-            ))}
-          </section>
-
-          <section className="rounded-xl border border-dashed border-black/20 bg-white p-3" data-storefront-listing-empty-state>
-            <p className="text-sm font-black text-slate-950">{listing.emptyState.title}</p>
-            <p className="mt-1.5 text-[11px] leading-4 text-slate-600">{listing.emptyState.description}</p>
-          </section>
+          {discovery.resultCount > 0 ? (
+            <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" aria-label="Listado de productos demo" data-storefront-discovery-results>
+              {discovery.products.map((product) => (
+                <StorefrontProductCard key={product.id} context="listing" product={product} />
+              ))}
+            </section>
+          ) : (
+            <section className="rounded-xl border border-dashed border-black/20 bg-white p-3" data-storefront-listing-empty-state>
+              <p className="text-sm font-black text-slate-950">{listing.emptyState.title}</p>
+              <p className="mt-1.5 text-[11px] leading-4 text-slate-600">{listing.emptyState.description}</p>
+              <button
+                className="mt-3 rounded-full bg-[var(--storefront-primary)] px-3 py-1.5 text-[11px] font-black text-[var(--storefront-on-primary)]"
+                onClick={() => setSearchText('')}
+                type="button"
+              >
+                Limpiar búsqueda
+              </button>
+            </section>
+          )}
         </div>
       </section>
     </div>
