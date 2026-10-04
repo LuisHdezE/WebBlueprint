@@ -6,7 +6,7 @@ interface StorefrontCartPageProps {
   provider: StorefrontProvider;
 }
 
-function CartLineRow({ line, image }: { line: StorefrontCartLineDto; image?: StorefrontMediaDto }) {
+function CartLineRow({ line, image }: { line: StorefrontCartLineDto; image: StorefrontMediaDto | undefined }) {
   return (
     <article className="grid grid-cols-[4.75rem_minmax(0,1fr)] gap-3 border-b border-slate-200 py-3 sm:grid-cols-[4.75rem_minmax(0,1fr)_5.5rem_7rem] sm:items-center" data-storefront-cart-line>
       <Link className="block overflow-hidden rounded-md bg-slate-100" to={line.href}>
