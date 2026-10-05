@@ -5,9 +5,9 @@ export interface StorefrontCustomerSession {
 }
 
 export interface StorefrontSessionSubmission {
-  name?: string;
+  name?: string | undefined;
   email: string;
-  phone?: string;
+  phone?: string | undefined;
   password: string;
 }
 
