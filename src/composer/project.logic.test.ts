@@ -29,6 +29,7 @@ describe('project composer logic', () => {
       '/applications/management/dashboard',
       '/applications/management/dispatch',
       '/applications/management/service-order',
+      '/applications/management/alerts',
       '/applications/management/orders',
       '/applications/calendar',
       '/maps',
