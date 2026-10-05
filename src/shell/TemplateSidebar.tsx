@@ -121,7 +121,7 @@ export function TemplateSidebar({ collapsed, mobileOpen, onCloseMobile }: Templa
                     aria-label={section.label}
                     className={`mb-1 hidden h-8 items-center justify-center rounded-md transition-colors md:flex ${
                       hasActiveItem
-                        ? 'bg-[var(--theme-primary-soft)] text-[var(--theme-primary)]'
+                        ? 'bg-[var(--theme-navigation-active-background)] text-[var(--theme-accent)]'
                         : 'text-[var(--theme-navigation-muted)] hover:bg-[var(--theme-navigation-active-background)] hover:text-[var(--theme-navigation-text)]'
                     }`}
                     title={section.label}
@@ -198,7 +198,7 @@ export function TemplateSidebar({ collapsed, mobileOpen, onCloseMobile }: Templa
 
         <div className={`border-t border-[var(--theme-navigation-border)] py-2 ${collapsed ? 'md:px-1.5' : 'px-2'}`}>
           {collapsed ? (
-            <div className="hidden h-8 items-center justify-center rounded-md text-slate-500 transition-colors hover:bg-[var(--theme-primary-soft)] hover:text-[var(--theme-primary)] md:flex">
+            <div className="hidden h-8 items-center justify-center rounded-md text-[var(--theme-navigation-muted)] transition-colors hover:bg-[var(--theme-navigation-active-background)] hover:text-[var(--theme-navigation-text)] md:flex">
               <AppIcon className="size-4" name="settings" />
             </div>
           ) : null}
