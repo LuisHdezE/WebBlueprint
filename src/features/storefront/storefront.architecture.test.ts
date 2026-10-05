@@ -139,6 +139,7 @@ describe('storefront architecture', () => {
 
     expect(dto).toContain('StorefrontProductListingViewDto');
     expect(dto).toContain('StorefrontFilterOptionDto');
+    expect(dto).toContain('discoveryFacets?: Readonly<Record<string, string>>');
     expect(contracts).toContain('getProductListingView');
     expect(provider).toContain('getProductListingView()');
     expect(listing).toContain('listing.filters.map');
@@ -147,6 +148,9 @@ describe('storefront architecture', () => {
     expect(listing).toContain('data-storefront-discovery-search');
     expect(listing).toContain('data-storefront-discovery-count');
     expect(listing).toContain('data-storefront-discovery-clear');
+    expect(listing).toContain('filterSelections');
+    expect(listing).toContain('data-storefront-discovery-filter');
+    expect(listing).toContain('setFilterSelections');
     expect(listing).not.toContain('localStorage');
     expect(listing).not.toContain('sessionStorage');
     expect(listing).not.toContain('Agregar al carrito');
