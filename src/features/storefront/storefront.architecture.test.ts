@@ -405,24 +405,38 @@ describe('storefront architecture', () => {
     expect(navigation).toContain("to: '/store/brands'");
   });
 
-  it('renders shipping zone skeleton without persistence, carrier integration or order mutation', () => {
+  it('calculates shipping from structured provider money with shared memory-only state', () => {
     const dto = readFileSync('src/features/storefront/application/storefront.dto.ts', 'utf8');
-    const contracts = readFileSync('src/features/storefront/application/storefront.contracts.ts', 'utf8');
+    const calculation = readFileSync('src/features/storefront/application/storefront.shipping.ts', 'utf8');
     const provider = readFileSync('src/features/storefront/infrastructure/JsonStorefrontProvider.ts', 'utf8');
     const shipping = readFileSync('src/features/storefront/presentation/StorefrontShippingPage.tsx', 'utf8');
+    const checkout = readFileSync('src/features/storefront/presentation/StorefrontCheckoutPage.tsx', 'utf8');
+    const context = readFileSync('src/features/storefront/presentation/StorefrontShippingContext.tsx', 'utf8');
+    const router = readFileSync('src/app/router/AppRouter.tsx', 'utf8');
     const navigation = readFileSync('src/config/templateNavigation.ts', 'utf8');
 
-    expect(dto).toContain('StorefrontShippingViewDto');
+    expect(dto).toContain('StorefrontMoneyDto');
     expect(dto).toContain('StorefrontShippingZoneDto');
-    expect(contracts).toContain('getShippingView');
+    expect(calculation).toContain('resolveStorefrontShippingQuote');
+    expect(calculation).toContain('deriveStorefrontCheckoutPricing');
+    expect(calculation).not.toContain('parseFloat');
+    expect(calculation).not.toContain('parseInt');
     expect(provider).toContain('getShippingView()');
     expect(provider).toContain("import rawShipping from './storefront.shipping.json'");
-    expect(shipping).toContain('data-storefront-shipping');
-    expect(shipping).toContain('data-storefront-shipping-zones');
-    expect(shipping).toContain('data-storefront-shipping-address');
+    expect(shipping).toContain('data-storefront-shipping-option');
+    expect(shipping).toContain('useStorefrontShipping');
+    expect(shipping).toContain('formatStorefrontMoney');
+    expect(checkout).toContain('data-storefront-checkout-shipping-cost');
+    expect(checkout).toContain('data-storefront-checkout-total');
+    expect(checkout).toContain('deriveStorefrontCheckoutPricing');
+    expect(context).toContain('useState<StorefrontShippingSelection | null>(null)');
+    expect(router).toContain('StorefrontShippingProvider');
     expect(shipping).not.toContain('localStorage');
     expect(shipping).not.toContain('sessionStorage');
     expect(shipping).not.toContain('fetch(');
+    expect(checkout).not.toContain('localStorage');
+    expect(checkout).not.toContain('sessionStorage');
+    expect(checkout).not.toContain('fetch(');
     expect(navigation).toContain("to: '/store/shipping'");
   });
 
