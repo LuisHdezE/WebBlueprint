@@ -32,7 +32,7 @@ describe('templateNavigation', () => {
       'Layouts',
       'Documentación',
     ]);
-    expect(templateRouteItems).toHaveLength(153);
+    expect(templateRouteItems).toHaveLength(154);
   });
 
   it('exposes reusable management views to the Composer catalog', () => {
@@ -45,6 +45,7 @@ describe('templateNavigation', () => {
       '/applications/management/dashboard',
       '/applications/management/dispatch',
       '/applications/management/service-order',
+      '/applications/management/alerts',
       '/applications/management/customers',
       '/applications/management/orders',
       '/applications/management/inventory',
@@ -66,11 +67,11 @@ describe('templateNavigation', () => {
       '/applications/calendar',
       '/maps',
       '/applications/management/customers',
+      '/applications/management/alerts',
       '/user/profile',
       '/user/account-settings',
     ]);
     expect(plannedRoutes).toContain('/volketas/requests');
-    expect(plannedRoutes).toContain('/applications/management/alerts');
     expect(plannedRoutes).toContain('/applications/management/asset');
   });
 
