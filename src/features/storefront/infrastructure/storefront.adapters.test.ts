@@ -51,6 +51,10 @@ describe('storefront provider', () => {
     expect(listing.products.map((product) => product.id)).toContain('listing-iphone-13-display');
     expect(listing.products.some((product) => product.compareLabel?.includes('Costo repuesto nuevo'))).toBe(true);
     expect(listing.products.every((product) => product.image.alt.length > 0)).toBe(true);
+    expect(listing.products.every((product) => product.discoveryFacets?.category)).toBe(true);
+    expect(listing.products.every((product) => product.discoveryFacets?.['brand-model'])).toBe(true);
+    expect(listing.products.every((product) => product.discoveryFacets?.condition)).toBe(true);
+    expect(listing.products.every((product) => product.discoveryFacets?.price)).toBe(true);
     expect(listing.listingNotice.title).toContain('visual');
   });
 

@@ -158,6 +158,36 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     })`);
     check('Storefront discovery clear restores the full listing', clearedSearch.value === '' && clearedSearch.cards === 6 && clearedSearch.count.includes('6 de 6'), clearedSearch);
 
+    await evaluate(cdp, `document.querySelector('[data-storefront-discovery-filter="category"] input[value="used-phones"]')?.click()`);
+    await waitFor(cdp, "document.querySelectorAll('[data-storefront-listing-product-card]').length === 2");
+    const categoryFilter = await evaluate(cdp, `({
+      cards: document.querySelectorAll('[data-storefront-listing-product-card]').length,
+      count: document.querySelector('[data-storefront-discovery-count]')?.textContent ?? '',
+      summary: document.querySelector('[data-storefront-discovery-summary]')?.textContent ?? '',
+      usedChecked: document.querySelector('[data-storefront-discovery-filter="category"] input[value="used-phones"]')?.checked ?? false
+    })`);
+    check('Storefront discovery category filter narrows provider-driven products', categoryFilter.cards === 2 && categoryFilter.count.includes('2 de 6') && categoryFilter.summary.includes('1 filtro activo') && categoryFilter.usedChecked, categoryFilter);
+
+    await evaluate(cdp, `document.querySelector('[data-storefront-discovery-filter="brand-model"] input[value="iphone-12"]')?.click()`);
+    await waitFor(cdp, "document.querySelectorAll('[data-storefront-listing-product-card]').length === 1");
+    const combinedFilters = await evaluate(cdp, `({
+      cards: document.querySelectorAll('[data-storefront-listing-product-card]').length,
+      text: document.querySelector('[data-storefront-discovery-results]')?.textContent ?? '',
+      count: document.querySelector('[data-storefront-discovery-count]')?.textContent ?? '',
+      summary: document.querySelector('[data-storefront-discovery-summary]')?.textContent ?? ''
+    })`);
+    check('Storefront discovery combines filters with AND semantics', combinedFilters.cards === 1 && combinedFilters.text.includes('iPhone 12 128 GB usado') && combinedFilters.count.includes('1 de 6') && combinedFilters.summary.includes('2 filtros activos'), combinedFilters);
+
+    await evaluate(cdp, `document.querySelector('[data-storefront-discovery-clear]')?.click()`);
+    await waitFor(cdp, "document.querySelectorAll('[data-storefront-listing-product-card]').length === 6");
+    const clearedFilters = await evaluate(cdp, `({
+      cards: document.querySelectorAll('[data-storefront-listing-product-card]').length,
+      categoryAll: document.querySelector('[data-storefront-discovery-filter="category"] input[value="all"]')?.checked ?? false,
+      brandAll: document.querySelector('[data-storefront-discovery-filter="brand-model"] input[value="all"]')?.checked ?? false,
+      clearVisible: Boolean(document.querySelector('[data-storefront-discovery-clear]'))
+    })`);
+    check('Storefront discovery clear resets all filters', clearedFilters.cards === 6 && clearedFilters.categoryAll && clearedFilters.brandAll && !clearedFilters.clearVisible, clearedFilters);
+
     await navigate(cdp, detailUrl);
     await waitFor(cdp, "Boolean(document.querySelector('[data-storefront-product-detail]'))");
     const detail = await evaluate(cdp, `({
