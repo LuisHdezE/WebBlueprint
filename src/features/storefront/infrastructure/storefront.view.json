@@ -348,7 +348,7 @@
   "productListing": {
     "eyebrow": "Catálogo público demo",
     "title": "Productos preparados para navegación pública",
-    "description": "Catálogo comercial con búsqueda y filtros locales en memoria. B13.2 combina criterios provider-driven sin backend ni persistencia.",
+    "description": "Catálogo comercial con búsqueda, filtros y ordenamiento locales en memoria. B13.3 mantiene toda la interacción detrás del provider, sin backend ni persistencia.",
     "resultSummary": "6 productos demo visibles",
     "searchPlaceholder": "Buscar por producto, marca, modelo o repuesto…",
     "sortOptions": [
@@ -490,6 +490,11 @@
           "brand-model": "iphone-13",
           "condition": "new",
           "price": "over-2000"
+        },
+        "discoverySortRanks": {
+          "recommended": 1,
+          "price-low": 4,
+          "recent": 6
         }
       },
       {
@@ -512,6 +517,11 @@
           "brand-model": "galaxy-s21",
           "condition": "new",
           "price": "under-2000"
+        },
+        "discoverySortRanks": {
+          "recommended": 2,
+          "price-low": 2,
+          "recent": 5
         }
       },
       {
@@ -533,6 +543,11 @@
           "brand-model": "iphone-12",
           "condition": "used-a",
           "price": "usd"
+        },
+        "discoverySortRanks": {
+          "recommended": 3,
+          "price-low": 6,
+          "recent": 4
         }
       },
       {
@@ -555,6 +570,11 @@
           "brand-model": "redmi-note",
           "condition": "new",
           "price": "under-2000"
+        },
+        "discoverySortRanks": {
+          "recommended": 4,
+          "price-low": 1,
+          "recent": 3
         }
       },
       {
@@ -577,6 +597,11 @@
           "brand-model": "iphone-11",
           "condition": "new",
           "price": "over-2000"
+        },
+        "discoverySortRanks": {
+          "recommended": 5,
+          "price-low": 3,
+          "recent": 2
         }
       },
       {
@@ -598,6 +623,11 @@
           "brand-model": "galaxy-s20",
           "condition": "used-b",
           "price": "usd"
+        },
+        "discoverySortRanks": {
+          "recommended": 6,
+          "price-low": 5,
+          "recent": 1
         }
       }
     ],
@@ -607,7 +637,7 @@
     },
     "listingNotice": {
       "title": "Listado visual, no transaccional",
-      "description": "B13 activa búsqueda y filtros locales reales. Ordenamiento, carrito y checkout continúan en incrementos posteriores."
+      "description": "B13 activa búsqueda, filtros y ordenamiento locales reales. Carrito, checkout y persistencia continúan en incrementos posteriores."
     }
   },
   "productDetail": {

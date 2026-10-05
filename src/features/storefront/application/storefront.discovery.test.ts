@@ -9,6 +9,7 @@ const product = (
   compatibilityLabel: string,
   badgeLabel: string,
   discoveryFacets: Readonly<Record<string, string>>,
+  discoverySortRanks: Readonly<Record<string, number>>,
 ): StorefrontProductCardDto => ({
   id,
   title,
@@ -19,6 +20,7 @@ const product = (
   compatibilityLabel,
   stockLabel: 'Stock demo',
   discoveryFacets,
+  discoverySortRanks,
   image: {
     src: 'https://example.com/product.jpg',
     alt: title,
@@ -33,6 +35,7 @@ const products = [
     'Compatible: iPhone 13',
     'Repuesto',
     { category: 'spare-parts', 'brand-model': 'iphone-13', condition: 'new', price: 'over-2000' },
+    { recommended: 1, 'price-low': 3, recent: 3 },
   ),
   product(
     'battery',
@@ -41,6 +44,7 @@ const products = [
     'Compatible: Galaxy S21',
     'Batería',
     { category: 'spare-parts', 'brand-model': 'galaxy-s21', condition: 'new', price: 'under-2000' },
+    { recommended: 2, 'price-low': 1, recent: 2 },
   ),
   product(
     'used',
@@ -49,6 +53,7 @@ const products = [
     'Color: Negro · Batería: 87%',
     'Usado A',
     { category: 'used-phones', 'brand-model': 'iphone-12', condition: 'used-a', price: 'usd' },
+    { recommended: 3, 'price-low': 2, recent: 1 },
   ),
 ];
 
@@ -96,6 +101,32 @@ describe('storefront product discovery', () => {
 
     expect(matching.products.map((item) => item.id)).toEqual(['battery']);
     expect(noMatch.products).toEqual([]);
+  });
+
+  it('sorts by provider-driven ranks without mutating the source collection', () => {
+    const priceSorted = discoverStorefrontProducts(products, { searchText: '', sortId: 'price-low' });
+    const recentSorted = discoverStorefrontProducts(products, { searchText: '', sortId: 'recent' });
+    const recommended = discoverStorefrontProducts(products, { searchText: '', sortId: 'recommended' });
+
+    expect(priceSorted.products.map((item) => item.id)).toEqual(['battery', 'used', 'display']);
+    expect(recentSorted.products.map((item) => item.id)).toEqual(['used', 'battery', 'display']);
+    expect(recommended.products.map((item) => item.id)).toEqual(['display', 'battery', 'used']);
+    expect(priceSorted.hasCustomSort).toBe(true);
+    expect(priceSorted.hasActiveCriteria).toBe(true);
+    expect(recommended.hasCustomSort).toBe(false);
+    expect(products.map((item) => item.id)).toEqual(['display', 'battery', 'used']);
+  });
+
+  it('combines sorting with search and filters', () => {
+    const result = discoverStorefrontProducts(products, {
+      searchText: '',
+      filters: { category: 'spare-parts' },
+      sortId: 'price-low',
+    });
+
+    expect(result.products.map((item) => item.id)).toEqual(['battery', 'display']);
+    expect(result.resultCount).toBe(2);
+    expect(result.sortId).toBe('price-low');
   });
 
   it('treats all filter selections as inactive and does not mutate source data', () => {
