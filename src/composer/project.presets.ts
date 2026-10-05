@@ -78,6 +78,7 @@ export const projectPresets: readonly ProjectPresetDefinition[] = [
     themeColorId: 'volketas',
     viewPaths: [
       '/applications/management/dashboard',
+      '/applications/management/dispatch',
       '/applications/management/orders',
       '/applications/calendar',
       '/maps',
