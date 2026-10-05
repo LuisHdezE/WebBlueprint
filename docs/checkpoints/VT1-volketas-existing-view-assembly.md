@@ -1,6 +1,6 @@
 # VT-1 · Existing View Assembly
 
-Estado: **EN REVISIÓN**
+Estado: **VALIDACIÓN DE INTEGRACIÓN A MAIN**
 Base apilada: `VT-0@96b27d071b072df3f92fe0d4f64c5d00502bec90`
 Rama: `feat/volketas-template-vt1`
 
@@ -141,3 +141,8 @@ Objetivo:
 ## Regla de retorno
 
 El trabajo en WebBlueprint continúa únicamente mientras desbloquee la plantilla Volketas. Tras completar y exportar la plantilla, el frente retorna al producto Volketas como objetivo principal.
+
+
+## Integration refresh
+
+PR retargeteada a `main` después del merge de VT-0 para ejecutar el gate sobre la base real de integración.
