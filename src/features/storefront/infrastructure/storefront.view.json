@@ -348,7 +348,7 @@
   "productListing": {
     "eyebrow": "Catálogo público demo",
     "title": "Productos preparados para navegación pública",
-    "description": "Catálogo comercial con búsqueda local en memoria. B13.1 filtra el demo sin backend, sin persistencia y sin alterar inventario.",
+    "description": "Catálogo comercial con búsqueda y filtros locales en memoria. B13.2 combina criterios provider-driven sin backend ni persistencia.",
     "resultSummary": "6 productos demo visibles",
     "searchPlaceholder": "Buscar por producto, marca, modelo o repuesto…",
     "sortOptions": [
@@ -391,6 +391,10 @@
         "title": "Marca / modelo",
         "options": [
           {
+            "id": "all",
+            "label": "Todos"
+          },
+          {
             "id": "iphone-13",
             "label": "Apple · iPhone 13"
           },
@@ -401,6 +405,18 @@
           {
             "id": "galaxy-s21",
             "label": "Samsung · Galaxy S21"
+          },
+          {
+            "id": "iphone-11",
+            "label": "Apple · iPhone 11"
+          },
+          {
+            "id": "galaxy-s20",
+            "label": "Samsung · Galaxy S20"
+          },
+          {
+            "id": "redmi-note",
+            "label": "Xiaomi · Redmi Note"
           }
         ]
       },
@@ -408,6 +424,10 @@
         "id": "condition",
         "title": "Condición",
         "options": [
+          {
+            "id": "all",
+            "label": "Todos"
+          },
           {
             "id": "new",
             "label": "Nuevo"
@@ -419,6 +439,10 @@
           {
             "id": "open-box",
             "label": "Caja abierta"
+          },
+          {
+            "id": "used-b",
+            "label": "Usado B"
           }
         ]
       },
@@ -426,6 +450,10 @@
         "id": "price",
         "title": "Precio demo",
         "options": [
+          {
+            "id": "all",
+            "label": "Todos"
+          },
           {
             "id": "under-2000",
             "label": "Hasta UYU 2.000"
@@ -456,6 +484,12 @@
           "src": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=900&q=80",
           "alt": "Smartphone usado como referencia visual para display",
           "objectPosition": "center"
+        },
+        "discoveryFacets": {
+          "category": "spare-parts",
+          "brand-model": "iphone-13",
+          "condition": "new",
+          "price": "over-2000"
         }
       },
       {
@@ -472,6 +506,12 @@
           "src": "https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?auto=format&fit=crop&w=900&q=80",
           "alt": "Smartphone como referencia visual para batería",
           "objectPosition": "center"
+        },
+        "discoveryFacets": {
+          "category": "spare-parts",
+          "brand-model": "galaxy-s21",
+          "condition": "new",
+          "price": "under-2000"
         }
       },
       {
@@ -487,6 +527,12 @@
           "src": "https://images.unsplash.com/photo-1523206489230-c012c64b2b48?auto=format&fit=crop&w=900&q=80",
           "alt": "Teléfono móvil usado en vitrina comercial",
           "objectPosition": "center"
+        },
+        "discoveryFacets": {
+          "category": "used-phones",
+          "brand-model": "iphone-12",
+          "condition": "used-a",
+          "price": "usd"
         }
       },
       {
@@ -503,6 +549,12 @@
           "src": "https://images.unsplash.com/photo-1585060544812-6b45742d762f?auto=format&fit=crop&w=900&q=80",
           "alt": "Equipo y accesorios de carga sobre escritorio",
           "objectPosition": "center"
+        },
+        "discoveryFacets": {
+          "category": "spare-parts",
+          "brand-model": "redmi-note",
+          "condition": "new",
+          "price": "under-2000"
         }
       },
       {
@@ -519,6 +571,12 @@
           "src": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80",
           "alt": "Dispositivo tecnológico como referencia visual de módulo",
           "objectPosition": "center"
+        },
+        "discoveryFacets": {
+          "category": "spare-parts",
+          "brand-model": "iphone-11",
+          "condition": "new",
+          "price": "over-2000"
         }
       },
       {
@@ -534,16 +592,22 @@
           "src": "https://images.unsplash.com/photo-1556656793-08538906a9f8?auto=format&fit=crop&w=900&q=80",
           "alt": "Smartphone Android en una composición comercial",
           "objectPosition": "center"
+        },
+        "discoveryFacets": {
+          "category": "used-phones",
+          "brand-model": "galaxy-s20",
+          "condition": "used-b",
+          "price": "usd"
         }
       }
     ],
     "emptyState": {
       "title": "Sin resultados demo",
-      "description": "No encontramos coincidencias para la búsqueda actual. Limpia el término o prueba con producto, marca, modelo, compatibilidad o tipo."
+      "description": "No encontramos coincidencias para la búsqueda y filtros actuales. Limpia los criterios o prueba una combinación diferente."
     },
     "listingNotice": {
       "title": "Listado visual, no transaccional",
-      "description": "B13 activa búsqueda local real. Filtros, ordenamiento, carrito y checkout continúan en incrementos posteriores."
+      "description": "B13 activa búsqueda y filtros locales reales. Ordenamiento, carrito y checkout continúan en incrementos posteriores."
     }
   },
   "productDetail": {
