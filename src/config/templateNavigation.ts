@@ -23,6 +23,7 @@ export const templateNavigation: readonly TemplateNavigationSection[] = [
     icon: 'apps',
     items: [
       { label: 'Gestión · Dashboard', to: '/applications/management/dashboard', icon: 'dashboard' },
+      { label: 'Gestión · Dispatch', to: '/applications/management/dispatch', icon: 'apps' },
       { label: 'Gestión · Clientes', to: '/applications/management/customers', icon: 'user' },
       { label: 'Gestión · Órdenes', to: '/applications/management/orders', icon: 'apps' },
       { label: 'Gestión · Inventario', to: '/applications/management/inventory', icon: 'table' },
