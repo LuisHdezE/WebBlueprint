@@ -1,6 +1,7 @@
 import { Link } from 'react-router';
 import type { StorefrontProvider } from '../application/storefront.contracts';
 import { StorefrontPageIntro } from './StorefrontPrimitives';
+import { useStorefrontSession } from './StorefrontSessionContext';
 
 interface StorefrontCheckoutPageProps {
   provider: StorefrontProvider;
@@ -8,6 +9,7 @@ interface StorefrontCheckoutPageProps {
 
 export function StorefrontCheckoutPage({ provider }: StorefrontCheckoutPageProps) {
   const checkout = provider.getCheckoutView();
+  const { customer } = useStorefrontSession();
 
   return (
     <main className="bg-[#f7f2ea]" data-storefront-checkout>
@@ -23,24 +25,27 @@ export function StorefrontCheckoutPage({ provider }: StorefrontCheckoutPageProps
           )}
         />
 
-        <section className="mt-5 rounded-xl border border-orange-200 bg-orange-50 p-3 sm:p-5" data-storefront-checkout-auth-gate>
-          <p className="text-[10px] font-black uppercase tracking-[0.16em] text-orange-700">{checkout.authGate.eyebrow}</p>
+        <section className="mt-5 rounded-xl border border-orange-200 bg-orange-50 p-3 sm:p-5" data-storefront-checkout-auth-gate data-storefront-checkout-authenticated={customer ? 'true' : 'false'}>
+          <p className="text-[10px] font-black uppercase tracking-[0.16em] text-orange-700">{customer ? checkout.authGate.authenticatedEyebrow : checkout.authGate.eyebrow}</p>
           <div className="mt-2 grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
             <div>
-              <h2 className="text-lg font-black text-slate-950">{checkout.authGate.title}</h2>
-              <p className="mt-1.5 max-w-3xl text-[11px] leading-4 text-slate-700">{checkout.authGate.description}</p>
+              <h2 className="text-lg font-black text-slate-950">{customer ? checkout.authGate.authenticatedTitle : checkout.authGate.title}</h2>
+              <p className="mt-1.5 max-w-3xl text-[11px] leading-4 text-slate-700">{customer ? checkout.authGate.authenticatedDescription : checkout.authGate.description}</p>
               <p className="mt-3 inline-flex rounded-full bg-white px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.12em] text-orange-800">
-                {checkout.authGate.requiredLabel}
+                {customer ? checkout.authGate.authenticatedLabel : checkout.authGate.requiredLabel}
               </p>
+              {customer ? <p className="mt-2 text-[10px] font-bold text-slate-600" data-storefront-checkout-customer>{customer.name} · {customer.email}</p> : null}
             </div>
-            <div className="flex flex-col gap-2 sm:flex-row">
-              <Link className="rounded-full bg-[var(--storefront-primary)] px-4 py-2.5 text-center text-xs font-black text-[var(--storefront-on-primary)]" to={checkout.authGate.signInHref}>
-                {checkout.authGate.signInLabel}
-              </Link>
-              <Link className="rounded-full border border-slate-300 bg-white px-4 py-2.5 text-center text-xs font-black text-slate-800" to={checkout.authGate.signUpHref}>
-                {checkout.authGate.signUpLabel}
-              </Link>
-            </div>
+            {!customer ? (
+              <div className="flex flex-col gap-2 sm:flex-row">
+                <Link className="rounded-full bg-[var(--storefront-primary)] px-4 py-2.5 text-center text-xs font-black text-[var(--storefront-on-primary)]" to={checkout.authGate.signInHref}>
+                  {checkout.authGate.signInLabel}
+                </Link>
+                <Link className="rounded-full border border-slate-300 bg-white px-4 py-2.5 text-center text-xs font-black text-slate-800" to={checkout.authGate.signUpHref}>
+                  {checkout.authGate.signUpLabel}
+                </Link>
+              </div>
+            ) : null}
           </div>
         </section>
 
