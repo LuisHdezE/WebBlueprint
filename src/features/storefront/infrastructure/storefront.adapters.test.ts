@@ -188,16 +188,20 @@ describe('storefront provider', () => {
     expect(checkout.notices.map((notice) => notice.id)).toEqual(['no-order', 'no-inventory', 'no-persistence']);
   });
 
-  it('exposes cart shell data without transactional behavior', () => {
+  it('exposes interactive cart source data without transactional behavior', () => {
     const provider = new JsonStorefrontProvider();
     const cart = provider.getCartView();
 
-    expect(cart.title).toContain('Carrito preparado');
+    expect(cart.title).toContain('interacción local');
     expect(cart.emptyState.title).toContain('carrito demo está vacío');
     expect(cart.lines).toHaveLength(2);
     expect(cart.lines.map((line) => line.id)).toContain('cart-line-display');
+    expect(cart.lines.every((line) => line.initialQuantity === 1)).toBe(true);
+    expect(cart.lines.every((line) => line.maxQuantity > 1)).toBe(true);
+    expect(cart.lines.every((line) => line.currencyCode === 'UYU')).toBe(true);
+    expect(cart.lines.every((line) => line.unitPriceMinor > 0)).toBe(true);
     expect(cart.summary.totalValue).toBe('UYU 6.580');
-    expect(cart.summary.checkoutDisabledLabel).toBe('Checkout pendiente');
+    expect(cart.summary.checkoutDisabledLabel).toBe('Continuar al checkout');
     expect(cart.summary.checkoutPreviewHref).toBe('/store/checkout');
     expect(cart.notices.map((notice) => notice.id)).toEqual(['no-persistence', 'no-checkout', 'no-inventory-mutation']);
   });
