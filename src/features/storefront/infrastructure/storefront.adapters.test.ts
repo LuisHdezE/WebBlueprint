@@ -156,7 +156,7 @@ describe('storefront provider', () => {
     ]);
   });
 
-  it('exposes shipping zones without delivery persistence or order mutation', () => {
+  it('exposes structured shipping tariffs without delivery persistence or order mutation', () => {
     const provider = new JsonStorefrontProvider();
     const shipping = provider.getShippingView();
 
@@ -167,7 +167,9 @@ describe('storefront provider', () => {
       'canelones-sur',
       'interior',
     ]);
-    expect(shipping.pickup.priceLabel).toBe('Sin costo');
+    expect(shipping.pickup.price).toEqual({ amountMinor: 0, currencyCode: 'UYU' });
+    expect(shipping.zones.every((zone) => zone.price.currencyCode === 'UYU')).toBe(true);
+    expect(shipping.zones.map((zone) => zone.price.amountMinor)).toEqual([18000, 25000, 32000, 45000]);
     expect(shipping.returnToCheckoutHref).toBe('/store/checkout');
     expect(shipping.addressPreview.fields).toHaveLength(3);
     expect(shipping.notices.map((notice) => notice.id)).toEqual([
