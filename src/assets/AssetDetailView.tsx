@@ -59,8 +59,6 @@ export function AssetDetailView({
 
   useEffect(() => {
     let active = true;
-    setState({ status: 'loading' });
-
     repository
       .getById(assetId)
       .then((nextState) => {
