@@ -1,15 +1,18 @@
 {
   "eyebrow": "Envíos demo",
-  "title": "Consulta el costo según tu zona",
-  "description": "B8 define un catálogo visual de zonas y costos para que el checkout pueda mostrar cómo variará el envío. No guarda direcciones ni crea entregas reales.",
-  "stateLabel": "Tarifas demo · sin reserva",
+  "title": "Selecciona retiro o envío por zona",
+  "description": "B17 convierte las tarifas demo en un cálculo funcional de envío en memoria. La selección se comparte con el checkout sin guardar direcciones ni crear entregas reales.",
+  "stateLabel": "Cálculo local · sin reserva",
   "returnToCheckoutLabel": "Volver al checkout",
   "returnToCheckoutHref": "/store/checkout",
   "pickup": {
     "id": "pickup",
     "title": "Retiro en tienda",
     "description": "Modalidad demo sin costo de envío.",
-    "priceLabel": "Sin costo",
+    "price": {
+      "amountMinor": 0,
+      "currencyCode": "UYU"
+    },
     "etaLabel": "Coordinación pendiente"
   },
   "zones": [
@@ -17,7 +20,10 @@
       "id": "montevideo-centro",
       "name": "Montevideo · Centro",
       "description": "Centro, Cordón, Palermo, Parque Rodó y zonas próximas.",
-      "priceLabel": "UYU 180",
+      "price": {
+        "amountMinor": 18000,
+        "currencyCode": "UYU"
+      },
       "etaLabel": "Entrega demo en 24–48 h",
       "coverageLabel": "Zona A"
     },
@@ -25,7 +31,10 @@
       "id": "montevideo-metropolitana",
       "name": "Montevideo · Metropolitana",
       "description": "Barrios periféricos y área metropolitana inmediata.",
-      "priceLabel": "UYU 250",
+      "price": {
+        "amountMinor": 25000,
+        "currencyCode": "UYU"
+      },
       "etaLabel": "Entrega demo en 24–72 h",
       "coverageLabel": "Zona B"
     },
@@ -33,7 +42,10 @@
       "id": "canelones-sur",
       "name": "Canelones · Sur",
       "description": "Las Piedras, La Paz, Ciudad de la Costa y corredor cercano.",
-      "priceLabel": "UYU 320",
+      "price": {
+        "amountMinor": 32000,
+        "currencyCode": "UYU"
+      },
       "etaLabel": "Entrega demo en 48–72 h",
       "coverageLabel": "Zona C"
     },
@@ -41,14 +53,17 @@
       "id": "interior",
       "name": "Interior del país",
       "description": "Tarifa ilustrativa para envíos fuera del área metropolitana.",
-      "priceLabel": "UYU 450",
+      "price": {
+        "amountMinor": 45000,
+        "currencyCode": "UYU"
+      },
       "etaLabel": "Entrega demo en 2–5 días",
       "coverageLabel": "Zona D"
     }
   ],
   "addressPreview": {
     "title": "Dirección de entrega",
-    "description": "Campos visuales preparados para un flujo futuro. En B8 permanecen deshabilitados.",
+    "description": "Los campos continúan deshabilitados en B17: se calcula la tarifa por zona, pero todavía no se persiste una dirección.",
     "fields": [
       { "id": "street", "label": "Calle y número", "placeholder": "Ej. Av. Italia 1234" },
       { "id": "city", "label": "Ciudad / localidad", "placeholder": "Ej. Montevideo" },
@@ -69,7 +84,7 @@
     {
       "id": "no-order-mutation",
       "title": "Sin mutación de pedido",
-      "description": "Elegir una zona no crea pedidos ni modifica el total real del checkout."
+      "description": "La selección calcula el total demo, pero no crea pedidos ni modifica inventario."
     }
   ]
 }
