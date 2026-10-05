@@ -6,6 +6,7 @@ import {
   sanitizeProject,
   toggleProjectView,
 } from '@/composer/project.logic';
+import { getPresetViewPresentation } from '@/composer/project.presets';
 
 describe('project composer logic', () => {
   it('applies a preset as an editable view selection', () => {
@@ -28,13 +29,13 @@ describe('project composer logic', () => {
     expect(presetProject.views).toEqual([
       '/applications/management/dashboard',
       '/applications/management/dispatch',
-      '/applications/management/service-order',
-      '/applications/management/alerts',
-      '/applications/management/asset',
       '/applications/management/orders',
+      '/applications/management/service-order',
       '/applications/calendar',
       '/maps',
+      '/applications/management/alerts',
       '/applications/management/customers',
+      '/applications/management/asset',
       '/user/profile',
       '/user/account-settings',
       '/authentication/sign-in',
@@ -50,9 +51,21 @@ describe('project composer logic', () => {
       '/widgets',
     ]));
 
-    const edited = toggleProjectView(presetProject, '/authentication/sign-in');
+    const edited = toggleProjectView(presetProject, '/applications/management/alerts');
     expect(edited.presetId).toBe('volketas');
-    expect(edited.views).not.toContain('/authentication/sign-in');
+    expect(edited.views).not.toContain('/applications/management/alerts');
+  });
+
+  it('keeps Volketas-specific labels outside the generic view catalog', () => {
+    expect(getPresetViewPresentation('volketas', '/applications/management/dispatch')).toEqual({
+      label: 'Despacho',
+      section: 'Operaciones',
+    });
+    expect(getPresetViewPresentation('volketas', '/applications/management/asset')).toEqual({
+      label: 'Activos',
+      section: 'Activos',
+    });
+    expect(getPresetViewPresentation('crm', '/applications/management/dispatch')).toBeUndefined();
   });
 
   it('keeps the selected view sequence editable', () => {
