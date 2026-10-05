@@ -63,8 +63,6 @@ export function AlertCenterView({ repository = mockAlertCenterRepository }: Aler
 
   useEffect(() => {
     let active = true;
-    setState({ status: 'loading' });
-
     repository
       .list(filter)
       .then((nextState) => {
