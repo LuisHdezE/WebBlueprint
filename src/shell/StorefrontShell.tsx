@@ -1,6 +1,7 @@
 import { useRef, type CSSProperties } from 'react';
 import { Link, NavLink, Outlet } from 'react-router';
 import type { StorefrontProvider } from '@/features/storefront/application/storefront.contracts';
+import { useStorefrontSession } from '@/features/storefront/presentation/StorefrontSessionContext';
 
 function navClassName({ isActive }: { isActive: boolean }) {
   return `rounded-full px-3 py-1.5 text-xs font-semibold transition ${
@@ -12,6 +13,7 @@ function navClassName({ isActive }: { isActive: boolean }) {
 
 export function StorefrontShell({ provider }: { provider: StorefrontProvider }) {
   const shell = provider.getShellView();
+  const { customer, signOut } = useStorefrontSession();
   const mobileMenuRef = useRef<HTMLDetailsElement>(null);
   const storefrontStyle = {
     '--storefront-primary': shell.theme.primary,
@@ -71,9 +73,15 @@ export function StorefrontShell({ provider }: { provider: StorefrontProvider }) 
 
             <nav className="hidden items-center justify-end gap-2 lg:flex" aria-label="Acciones de tienda">
               {shell.utilityNav.map((item) => (
-                <Link key={item.id} className="rounded-full border border-black/10 bg-white px-2.5 py-1 text-[11px] font-bold text-slate-700 shadow-sm transition hover:border-[var(--storefront-primary)] hover:text-[var(--storefront-primary-strong)]" to={item.href}>
-                  {item.label}
-                </Link>
+                item.href === '/store/account' && customer ? (
+                  <button key={item.id} className="rounded-full border border-black/10 bg-white px-2.5 py-1 text-[11px] font-bold text-slate-700 shadow-sm" data-storefront-session-shell onClick={signOut} type="button">
+                    {customer.name} · Salir
+                  </button>
+                ) : (
+                  <Link key={item.id} className="rounded-full border border-black/10 bg-white px-2.5 py-1 text-[11px] font-bold text-slate-700 shadow-sm transition hover:border-[var(--storefront-primary)] hover:text-[var(--storefront-primary-strong)]" to={item.href}>
+                    {item.label}
+                  </Link>
+                )
               ))}
             </nav>
           </div>
