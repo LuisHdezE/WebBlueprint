@@ -1,11 +1,11 @@
 {
-  "eyebrow": "Favoritos demo",
-  "title": "Guarda productos para revisarlos después",
-  "description": "B9 define la experiencia visual de favoritos del Storefront. Los productos son provider-driven y no se guardan todavía en sesión, navegador ni backend.",
-  "stateLabel": "Lista demo · sin persistencia",
+  "eyebrow": "Favoritos",
+  "title": "Tus productos guardados",
+  "description": "B15 activa quitar, vaciar y restaurar favoritos en memoria. La selección todavía no persiste entre recargas ni sesiones.",
+  "stateLabel": "Interacción local no persistente",
   "emptyState": {
-    "title": "Aún no hay favoritos reales",
-    "description": "Cuando exista persistencia, esta vista mostrará los productos guardados por el cliente.",
+    "title": "Tu lista de favoritos está vacía",
+    "description": "Puedes restaurar el conjunto demo o volver al catálogo para seguir explorando productos.",
     "actionLabel": "Explorar productos",
     "actionHref": "/store/products"
   },
@@ -62,12 +62,12 @@
     {
       "id": "no-persistence",
       "title": "Sin persistencia",
-      "description": "Favoritos no usa localStorage, sessionStorage ni backend en B9."
+      "description": "B15 mantiene favoritos solo en memoria React. No usa localStorage, sessionStorage ni backend."
     },
     {
       "id": "no-customer-mutation",
       "title": "Sin estado de cliente",
-      "description": "No modifica cuentas, sesiones ni preferencias del usuario."
+      "description": "Quitar o restaurar favoritos no modifica cuentas, sesiones ni preferencias persistentes."
     },
     {
       "id": "no-cart-mutation",
