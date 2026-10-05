@@ -496,39 +496,82 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     check('Storefront dynamic category desktop avoids horizontal overflow', !category.overflow, category);
 
     await navigate(cdp, signInUrl);
-    await waitFor(cdp, "Boolean(document.querySelector('[data-storefront-customer-identity]'))");
+    await waitFor(cdp, "Boolean(document.querySelector('[data-storefront-customer-identity-form]'))");
     const signIn = await evaluate(cdp, `({
       shell: Boolean(document.querySelector('[data-storefront-shell]')),
-      identity: Boolean(document.querySelector('[data-storefront-customer-identity]')),
       mode: document.querySelector('[data-storefront-customer-identity]')?.getAttribute('data-storefront-customer-identity-mode') ?? '',
       title: document.querySelector('[data-storefront-customer-identity] h1')?.textContent ?? '',
-      disabledInputs: document.querySelectorAll('[data-storefront-customer-identity-form] input:disabled').length,
-      disabledButtons: document.querySelectorAll('[data-storefront-customer-identity-form] button:disabled').length,
-      links: [...document.querySelectorAll('[data-storefront-customer-identity-form] a')].map((link) => link.getAttribute('href')),
+      inputs: document.querySelectorAll('[data-storefront-customer-identity-form] input:not(:disabled)').length,
+      submit: Boolean(document.querySelector('[data-storefront-customer-submit]')),
       notices: document.querySelector('[data-storefront-customer-identity-notices]')?.textContent ?? '',
-      adminSidebar: Boolean(document.querySelector('[data-template-sidebar]')),
       overflow: document.documentElement.scrollWidth > innerWidth
     })`);
-    check('Storefront customer sign-in renders inside storefront shell', signIn.shell && signIn.identity && signIn.mode === 'sign-in', signIn);
-    check('Storefront customer sign-in stays visual and non-authenticating', signIn.title.includes('Inicia sesión') && signIn.disabledInputs === 2 && signIn.disabledButtons === 1, signIn);
-    check('Storefront customer sign-in links to register and checkout', signIn.links.includes('/store/account/register') && signIn.links.includes('/store/checkout'), signIn);
-    check('Storefront customer identity declares separation and no persistence', signIn.notices.includes('separada del administrador') && signIn.notices.includes('localStorage') && signIn.notices.includes('sessionStorage'), signIn);
-    check('Storefront customer sign-in avoids admin sidebar and overflow', !signIn.adminSidebar && !signIn.overflow, signIn);
-    await shot('storefront-customer-sign-in-desktop.png');
+    check('Storefront customer sign-in renders active local form', signIn.shell && signIn.mode === 'sign-in' && signIn.title.includes('Inicia sesión') && signIn.inputs === 2 && signIn.submit, signIn);
+    check('Storefront customer identity keeps memory-only guardrails', signIn.notices.includes('separada del administrador') && signIn.notices.includes('localStorage') && signIn.notices.includes('sessionStorage'), signIn);
+    check('Storefront customer sign-in desktop avoids horizontal overflow', !signIn.overflow, signIn);
+
+    await evaluate(cdp, `(() => {
+      const setValue = (id, value) => {
+        const input = document.querySelector('[data-storefront-customer-field="' + id + '"]');
+        if (!(input instanceof HTMLInputElement)) return false;
+        const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')?.set;
+        setter?.call(input, value);
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        return true;
+      };
+      return setValue('email', 'cliente@example.com') && setValue('password', 'demo123');
+    })()`);
+    await evaluate(cdp, `document.querySelector('[data-storefront-customer-submit]')?.click()`);
+    await waitFor(cdp, "location.pathname === '/store/checkout' && document.querySelector('[data-storefront-checkout-authenticated]')?.getAttribute('data-storefront-checkout-authenticated') === 'true'");
+    const signedInCheckout = await evaluate(cdp, `({
+      customer: document.querySelector('[data-storefront-checkout-customer]')?.textContent ?? '',
+      shellSession: document.querySelector('[data-storefront-session-shell]')?.textContent ?? '',
+      authLinks: document.querySelectorAll('[data-storefront-checkout-auth-gate] a').length
+    })`);
+    check('Storefront sign-in creates a shared checkout session', signedInCheckout.customer.includes('cliente@example.com') && signedInCheckout.shellSession.includes('cliente') && signedInCheckout.authLinks === 0, signedInCheckout);
+    await shot('storefront-customer-session-checkout-desktop.png');
+
+    await evaluate(cdp, `document.querySelector('[data-storefront-session-shell]')?.click()`);
+    await waitFor(cdp, "!document.querySelector('[data-storefront-session-shell]') && document.querySelector('[data-storefront-checkout-authenticated]')?.getAttribute('data-storefront-checkout-authenticated') === 'false'");
+    const signedOutCheckout = await evaluate(cdp, `({
+      authLinks: [...document.querySelectorAll('[data-storefront-checkout-auth-gate] a')].map((link) => link.getAttribute('href')),
+      customer: Boolean(document.querySelector('[data-storefront-checkout-customer]'))
+    })`);
+    check('Storefront shell sign-out restores checkout auth gate', signedOutCheckout.authLinks.includes('/store/account/sign-in') && signedOutCheckout.authLinks.includes('/store/account/register') && !signedOutCheckout.customer, signedOutCheckout);
 
     await navigate(cdp, registerUrl);
-    await waitFor(cdp, "Boolean(document.querySelector('[data-storefront-customer-identity]'))");
+    await waitFor(cdp, "Boolean(document.querySelector('[data-storefront-customer-identity-form]'))");
     const register = await evaluate(cdp, `({
       shell: Boolean(document.querySelector('[data-storefront-shell]')),
       mode: document.querySelector('[data-storefront-customer-identity]')?.getAttribute('data-storefront-customer-identity-mode') ?? '',
       title: document.querySelector('[data-storefront-customer-identity] h1')?.textContent ?? '',
-      disabledInputs: document.querySelectorAll('[data-storefront-customer-identity-form] input:disabled').length,
-      links: [...document.querySelectorAll('[data-storefront-customer-identity-form] a')].map((link) => link.getAttribute('href')),
+      inputs: document.querySelectorAll('[data-storefront-customer-identity-form] input:not(:disabled)').length,
       overflow: document.documentElement.scrollWidth > innerWidth
     })`);
-    check('Storefront customer register renders dedicated visual flow', register.shell && register.mode === 'register' && register.title.includes('Crea tu cuenta') && register.disabledInputs === 4, register);
-    check('Storefront customer register links back to sign-in and checkout', register.links.includes('/store/account/sign-in') && register.links.includes('/store/checkout'), register);
+    check('Storefront customer register renders active local flow', register.shell && register.mode === 'register' && register.title.includes('Crea tu cuenta') && register.inputs === 4, register);
     check('Storefront customer register desktop avoids horizontal overflow', !register.overflow, register);
+
+    await evaluate(cdp, `(() => {
+      const setValue = (id, value) => {
+        const input = document.querySelector('[data-storefront-customer-field="' + id + '"]');
+        if (!(input instanceof HTMLInputElement)) return false;
+        const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')?.set;
+        setter?.call(input, value);
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        return true;
+      };
+      return setValue('name', 'Cliente Demo') &&
+        setValue('email', 'nuevo@example.com') &&
+        setValue('phone', '+59899123456') &&
+        setValue('password', 'demo123');
+    })()`);
+    await evaluate(cdp, `document.querySelector('[data-storefront-customer-submit]')?.click()`);
+    await waitFor(cdp, "location.pathname === '/store/checkout' && document.querySelector('[data-storefront-checkout-customer]')?.textContent.includes('Cliente Demo')");
+    const registeredCheckout = await evaluate(cdp, `({
+      customer: document.querySelector('[data-storefront-checkout-customer]')?.textContent ?? '',
+      authenticated: document.querySelector('[data-storefront-checkout-authenticated]')?.getAttribute('data-storefront-checkout-authenticated') ?? ''
+    })`);
+    check('Storefront registration creates the same memory-only customer session', registeredCheckout.customer.includes('Cliente Demo') && registeredCheckout.customer.includes('nuevo@example.com') && registeredCheckout.authenticated === 'true', registeredCheckout);
 
     await setViewport(cdp, { width: 390, height: 844, mobile: true });
     await navigate(cdp, targetUrl);

@@ -179,7 +179,7 @@ describe('storefront architecture', () => {
     expect(detail).not.toContain('Agregar al carrito');
   });
 
-  it('renders customer identity skeleton separate from admin authentication', () => {
+  it('renders in-memory customer session separate from admin authentication', () => {
     const dto = readFileSync('src/features/storefront/application/storefront.dto.ts', 'utf8');
     const contracts = readFileSync('src/features/storefront/application/storefront.contracts.ts', 'utf8');
     const provider = readFileSync('src/features/storefront/infrastructure/JsonStorefrontProvider.ts', 'utf8');
@@ -192,6 +192,10 @@ describe('storefront architecture', () => {
     expect(identity).toContain('data-storefront-customer-identity');
     expect(identity).toContain("mode: 'sign-in' | 'register'");
     expect(identity).toContain('returnToCheckoutHref');
+    expect(identity).toContain('createStorefrontCustomerSession');
+    expect(identity).toContain('useStorefrontSession');
+    expect(identity).toContain('data-storefront-customer-submit');
+    expect(identity).toContain('data-storefront-customer-sign-out');
     expect(identity).not.toContain('SignInPage');
     expect(identity).not.toContain('SignUpPage');
     expect(identity).not.toContain('localStorage');
@@ -201,7 +205,7 @@ describe('storefront architecture', () => {
     expect(router).toContain('<StorefrontCustomerIdentityPage mode="register"');
   });
 
-  it('renders checkout auth gate skeleton without payments, orders or persistence', () => {
+  it('renders checkout auth gate from in-memory customer session without payments, orders or persistence', () => {
     const dto = readFileSync('src/features/storefront/application/storefront.dto.ts', 'utf8');
     const contracts = readFileSync('src/features/storefront/application/storefront.contracts.ts', 'utf8');
     const provider = readFileSync('src/features/storefront/infrastructure/JsonStorefrontProvider.ts', 'utf8');
@@ -212,6 +216,9 @@ describe('storefront architecture', () => {
     expect(provider).toContain('getCheckoutView()');
     expect(checkout).toContain('data-storefront-checkout');
     expect(checkout).toContain('data-storefront-checkout-auth-gate');
+    expect(checkout).toContain('useStorefrontSession');
+    expect(checkout).toContain('data-storefront-checkout-authenticated');
+    expect(checkout).toContain('data-storefront-checkout-customer');
     expect(checkout).toContain('data-storefront-checkout-shipping');
     expect(checkout).toContain('data-storefront-checkout-payment');
     expect(checkout).toContain('Confirmar compra pendiente');
@@ -219,6 +226,25 @@ describe('storefront architecture', () => {
     expect(checkout).not.toContain('sessionStorage');
     expect(checkout).not.toContain('fetch(');
     expect(checkout).not.toContain('MercadoPago');
+  });
+
+
+  it('keeps storefront session local to React memory with no storage, token or backend coupling', () => {
+    const session = readFileSync('src/features/storefront/application/storefront.session.ts', 'utf8');
+    const context = readFileSync('src/features/storefront/presentation/StorefrontSessionContext.tsx', 'utf8');
+    const shell = readFileSync('src/shell/StorefrontShell.tsx', 'utf8');
+    const router = readFileSync('src/app/router/AppRouter.tsx', 'utf8');
+
+    expect(session).toContain('createStorefrontCustomerSession');
+    expect(session).not.toContain('localStorage');
+    expect(session).not.toContain('sessionStorage');
+    expect(session).not.toContain('fetch(');
+    expect(session).not.toContain('token');
+    expect(context).toContain('useState<StorefrontCustomerSession | null>(null)');
+    expect(context).not.toContain('localStorage');
+    expect(context).not.toContain('sessionStorage');
+    expect(shell).toContain('data-storefront-session-shell');
+    expect(router).toContain('StorefrontSessionProvider');
   });
 
   it('renders cart interaction from storefront DTOs without persistence or transactions', () => {

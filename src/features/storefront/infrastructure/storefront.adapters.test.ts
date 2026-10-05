@@ -92,7 +92,7 @@ describe('storefront provider', () => {
     expect(provider.getProductDetailBySlug('missing-demo-product')).toBeUndefined();
   });
 
-  it('exposes customer identity skeleton data without authentication state', () => {
+  it('exposes customer identity data for an in-memory session flow', () => {
     const provider = new JsonStorefrontProvider();
     const identity = provider.getCustomerIdentityView();
 
@@ -101,7 +101,10 @@ describe('storefront provider', () => {
     expect(identity.register.fields.map((field) => field.id)).toEqual(['name', 'email', 'phone', 'password']);
     expect(identity.signIn.alternateHref).toBe('/store/account/register');
     expect(identity.register.alternateHref).toBe('/store/account/sign-in');
-    expect(identity.notices.map((notice) => notice.id)).toEqual(['storefront-only', 'no-session', 'no-persistence']);
+    expect(identity.session.signedInTitle).toContain('Sesión');
+    expect(identity.signIn.submitLabel).toBe('Iniciar sesión');
+    expect(identity.register.submitLabel).toBe('Crear cuenta demo');
+    expect(identity.notices.map((notice) => notice.id)).toEqual(['storefront-only', 'memory-session', 'no-persistence']);
   });
 
   it('exposes warranty and returns policies without creating requests', () => {
@@ -182,6 +185,7 @@ describe('storefront provider', () => {
     expect(checkout.authGate.requiredLabel).toContain('Autenticación');
     expect(checkout.authGate.signInHref).toBe('/store/account/sign-in');
     expect(checkout.authGate.signUpHref).toBe('/store/account/register');
+    expect(checkout.authGate.authenticatedLabel).toContain('Identidad demo');
     expect(checkout.orderSummary.totalValue).toBe('UYU 6.580');
     expect(checkout.shipping.statusLabel).toContain('disponibles');
     expect(checkout.shipping.actionHref).toBe('/store/shipping');

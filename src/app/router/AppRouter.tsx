@@ -51,6 +51,7 @@ import { StorefrontHomePage } from '@/features/storefront/presentation/Storefron
 import { StorefrontProductDetailPage } from '@/features/storefront/presentation/StorefrontProductDetailPage';
 import { StorefrontProductListingPage } from '@/features/storefront/presentation/StorefrontProductListingPage';
 import { StorefrontShippingPage } from '@/features/storefront/presentation/StorefrontShippingPage';
+import { StorefrontSessionProvider } from '@/features/storefront/presentation/StorefrontSessionContext';
 import { StorefrontWarrantyPage } from '@/features/storefront/presentation/StorefrontWarrantyPage';
 import { BlogEditorPage } from '@/features/applications/blog/presentation/BlogEditorPage';
 import { BlogGridPage } from '@/features/applications/blog/presentation/BlogGridPage';
@@ -141,7 +142,7 @@ export function AppRouter() {
       <Route path="authentication/password-reset" element={<PasswordResetPage contentProvider={passwordResetContentProvider} gateway={passwordResetGateway} />} />
       <Route path="authentication/two-factor" element={<TwoFactorPage contentProvider={twoFactorContentProvider} gateway={twoFactorGateway} />} />
       <Route path="authentication/lock-screen" element={<LockScreenPage contentProvider={lockScreenContentProvider} gateway={lockScreenGateway} />} />
-      <Route element={<StorefrontShell provider={storefrontProvider} />}>
+      <Route element={<StorefrontSessionProvider><StorefrontShell provider={storefrontProvider} /></StorefrontSessionProvider>}>
         <Route path="store" element={<StorefrontHomePage provider={storefrontProvider} />} />
         <Route path="store/products" element={<StorefrontProductListingPage provider={storefrontProvider} />} />
         <Route path="store/spare-parts" element={<StorefrontCatalogPage provider={storefrontProvider} routeKey="spare-parts" />} />
