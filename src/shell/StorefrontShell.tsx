@@ -1,7 +1,7 @@
 import { useRef, type CSSProperties } from 'react';
 import { Link, NavLink, Outlet } from 'react-router';
 import type { StorefrontProvider } from '@/features/storefront/application/storefront.contracts';
-import { useStorefrontSession } from '@/features/storefront/presentation/StorefrontSessionContext';
+import { useStorefrontSession } from '@/features/storefront/presentation/useStorefrontSession';
 
 function navClassName({ isActive }: { isActive: boolean }) {
   return `rounded-full px-3 py-1.5 text-xs font-semibold transition ${
