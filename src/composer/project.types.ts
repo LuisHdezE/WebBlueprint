@@ -30,4 +30,5 @@ export type ProjectPresetDefinition = {
   name: string;
   description: string;
   viewPaths: readonly string[];
+  themeColorId?: ThemeColorId;
 };
