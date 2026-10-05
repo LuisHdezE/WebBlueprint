@@ -18,12 +18,24 @@ type NavigationEntry =
   | { type: 'item'; item: TemplateNavigationItem }
   | { type: 'group'; label: string; items: NavigationGroupItem[] };
 
+function isNavigationItemDisabled(item: TemplateNavigationItem) {
+  return item.status === 'planned';
+}
+
 function itemClassName(isActive: boolean) {
   return `flex min-h-[30px] items-center gap-2 rounded-md border-l-2 px-2 py-1 text-[11.5px] font-medium leading-tight transition-colors ${
     isActive
       ? 'border-[var(--theme-accent)] bg-[var(--theme-navigation-active-background)] text-[var(--theme-navigation-text)]'
       : 'border-transparent text-[var(--theme-navigation-text)] hover:bg-[var(--theme-navigation-active-background)] hover:text-[var(--theme-navigation-text)]'
   }`;
+}
+
+function disabledItemClassName() {
+  return 'flex min-h-[30px] w-full cursor-not-allowed items-center gap-2 rounded-md border-l-2 border-transparent px-2 py-1 text-left text-[11.5px] font-medium leading-tight text-[var(--theme-navigation-muted)] opacity-55';
+}
+
+function PlannedBadge() {
+  return <span className="ml-auto rounded-full border border-[var(--theme-navigation-border)] px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-[0.08em]">Próx.</span>;
 }
 
 function splitCategory(label: string) {
@@ -82,6 +94,36 @@ function buildNavigationEntries(items: readonly TemplateNavigationItem[]): Navig
   return entries;
 }
 
+function NavigationItemLink({ item, label, onCloseMobile }: { item: TemplateNavigationItem; label: string; onCloseMobile: () => void }) {
+  if (isNavigationItemDisabled(item)) {
+    return (
+      <button
+        aria-disabled="true"
+        className={disabledItemClassName()}
+        key={item.to}
+        title={item.disabledReason ?? 'Pendiente de implementación'}
+        type="button"
+      >
+        <AppIcon className="size-[14px] shrink-0" name={item.icon} />
+        <span className="min-w-0 truncate">{label}</span>
+        <PlannedBadge />
+      </button>
+    );
+  }
+
+  return (
+    <NavLink
+      key={item.to}
+      className={({ isActive }) => itemClassName(isActive)}
+      to={item.to}
+      onClick={onCloseMobile}
+    >
+      <AppIcon className="size-[14px] shrink-0" name={item.icon} />
+      <span className="min-w-0 truncate">{label}</span>
+    </NavLink>
+  );
+}
+
 export function TemplateSidebar({ collapsed, mobileOpen, onCloseMobile }: TemplateSidebarProps) {
   const location = useLocation();
 
@@ -106,8 +148,8 @@ export function TemplateSidebar({ collapsed, mobileOpen, onCloseMobile }: Templa
           className={`flex-1 overflow-y-auto overscroll-contain py-2 ${collapsed ? 'md:px-1.5' : 'px-2'}`}
         >
           {templateNavigation.map((section, sectionIndex) => {
-            const hasActiveItem = section.items.some((item) => item.to === location.pathname);
-            const collapsedTarget = section.items[0];
+            const hasActiveItem = section.items.some((item) => item.to === location.pathname && !isNavigationItemDisabled(item));
+            const collapsedTarget = section.items.find((item) => !isNavigationItemDisabled(item));
             const navigationEntries = buildNavigationEntries(section.items);
 
             return (
@@ -144,19 +186,16 @@ export function TemplateSidebar({ collapsed, mobileOpen, onCloseMobile }: Templa
                     {navigationEntries.map((entry) => {
                       if (entry.type === 'item') {
                         return (
-                          <NavLink
+                          <NavigationItemLink
                             key={entry.item.to}
-                            className={({ isActive }) => itemClassName(isActive)}
-                            to={entry.item.to}
-                            onClick={onCloseMobile}
-                          >
-                            <AppIcon className="size-[14px] shrink-0" name={entry.item.icon} />
-                            <span className="min-w-0 truncate">{entry.item.label}</span>
-                          </NavLink>
+                            item={entry.item}
+                            label={entry.item.label}
+                            onCloseMobile={onCloseMobile}
+                          />
                         );
                       }
 
-                      const groupHasActiveItem = entry.items.some(({ item }) => item.to === location.pathname);
+                      const groupHasActiveItem = entry.items.some(({ item }) => item.to === location.pathname && !isNavigationItemDisabled(item));
                       const groupIcon = entry.items[0]?.item.icon ?? section.icon;
 
                       return (
@@ -175,15 +214,12 @@ export function TemplateSidebar({ collapsed, mobileOpen, onCloseMobile }: Templa
 
                           <div className="ml-[13px] mt-0.5 space-y-0.5 border-l border-[var(--theme-navigation-border)] pl-1.5">
                             {entry.items.map(({ item, label }) => (
-                              <NavLink
+                              <NavigationItemLink
                                 key={item.to}
-                                className={({ isActive }) => itemClassName(isActive)}
-                                to={item.to}
-                                onClick={onCloseMobile}
-                              >
-                                <AppIcon className="size-[13px] shrink-0" name={item.icon} />
-                                <span className="min-w-0 truncate">{label}</span>
-                              </NavLink>
+                                item={item}
+                                label={label}
+                                onCloseMobile={onCloseMobile}
+                              />
                             ))}
                           </div>
                         </details>

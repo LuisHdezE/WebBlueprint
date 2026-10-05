@@ -2,16 +2,20 @@ import { describe, expect, it } from 'vitest';
 import { templateNavigation, templateRouteItems } from '@/config/templateNavigation';
 
 describe('templateNavigation', () => {
-  it('keeps every registered route unique and absolute', () => {
-    const routes = templateRouteItems.map((item) => item.to);
+  it('keeps every registered route absolute and every non-Volketas route unique', () => {
+    expect(templateRouteItems.every((route) => route.to.startsWith('/'))).toBe(true);
 
-    expect(new Set(routes).size).toBe(routes.length);
-    expect(routes.every((route) => route.startsWith('/'))).toBe(true);
+    const nonVolketasRoutes = templateNavigation
+      .filter((section) => section.label !== 'Volketas')
+      .flatMap((section) => section.items.map((item) => item.to));
+
+    expect(new Set(nonVolketasRoutes).size).toBe(nonVolketasRoutes.length);
   });
 
-  it('exposes the complete G1 master navigation families', () => {
+  it('exposes the complete G1 master navigation families plus visible Volketas shell', () => {
     expect(templateNavigation.map((section) => section.label)).toEqual([
       'General',
+      'Volketas',
       'Gestión',
       'Inventario',
       'Master Data',
@@ -28,12 +32,13 @@ describe('templateNavigation', () => {
       'Layouts',
       'Documentación',
     ]);
-    expect(templateRouteItems).toHaveLength(131);
+    expect(templateRouteItems).toHaveLength(152);
   });
 
   it('exposes reusable management views to the Composer catalog', () => {
-    const managementRoutes = templateRouteItems
-      .filter((item) => item.to.startsWith('/applications/management/'))
+    const managementRoutes = templateNavigation
+      .find((section) => section.label === 'Gestión')
+      ?.items.filter((item) => item.to.startsWith('/applications/management/'))
       .map((item) => item.to);
 
     expect(managementRoutes).toEqual([
@@ -43,6 +48,29 @@ describe('templateNavigation', () => {
       '/applications/management/orders',
       '/applications/management/inventory',
     ]);
+  });
+
+  it('keeps Volketas visible while marking pending routes as planned', () => {
+    const volketas = templateNavigation.find((section) => section.label === 'Volketas');
+    expect(volketas).toBeDefined();
+
+    const implementedRoutes = volketas?.items.filter((item) => item.status !== 'planned').map((item) => item.to);
+    const plannedRoutes = volketas?.items.filter((item) => item.status === 'planned').map((item) => item.to);
+
+    expect(implementedRoutes).toEqual([
+      '/applications/management/dashboard',
+      '/applications/management/orders',
+      '/applications/management/dispatch',
+      '/applications/calendar',
+      '/maps',
+      '/applications/management/customers',
+      '/user/profile',
+      '/user/account-settings',
+    ]);
+    expect(plannedRoutes).toContain('/volketas/requests');
+    expect(plannedRoutes).toContain('/applications/management/service-order');
+    expect(plannedRoutes).toContain('/applications/management/alerts');
+    expect(plannedRoutes).toContain('/applications/management/asset');
   });
 
   it('exposes the extended master data routes added in A4', () => {

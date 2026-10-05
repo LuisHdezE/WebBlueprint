@@ -3,10 +3,13 @@ import { getPageDefinition, type PageKey } from '@/applications/pageRegistry';
 
 const capabilityLabels: Readonly<Record<string, string>> = {
   Dashboard: 'Panel',
-  Products: 'Productos',
+  Dispatch: 'Despacho',
+  Scheduling: 'Agenda',
+  Map: 'Mapa',
   Customers: 'Clientes',
   Orders: 'Pedidos',
   Inventory: 'Inventario',
+  Products: 'Productos',
 };
 
 export function getCapabilityLabel(capability: string) {
@@ -44,6 +47,25 @@ export const applicationRegistry = [
       defineDemoPage('customers', 'customers', 'Directorio de clientes y contexto de la relación comercial.'),
       defineDemoPage('orders', 'orders', 'Seguimiento de pedidos y espacio de trabajo orientado al cumplimiento.'),
       defineDemoPage('inventory', 'inventory', 'Visibilidad de inventario y espacio de trabajo orientado a la reposición.'),
+    ],
+  },
+  {
+    id: 'volketas',
+    slug: 'volketas',
+    name: 'Volketas',
+    summary:
+      'Plantilla operativa para alquiler y logística de volquetas: dashboard, servicios, despacho, calendario, mapa y clientes visibles desde el Composer.',
+    category: 'Logística operativa',
+    promoted: true,
+    shellVariant: 'vertical-dark-menu',
+    capabilities: ['Dashboard', 'Dispatch', 'Orders', 'Scheduling', 'Map', 'Customers'],
+    demoPages: [
+      defineDemoPage('dashboard', 'volketas-dashboard', 'Resumen operativo de servicios, flota, alertas y disponibilidad.'),
+      defineDemoPage('dispatch', 'volketas-dispatch', 'Tablero de despacho para asignación y seguimiento operativo.'),
+      defineDemoPage('orders', 'volketas-orders', 'Listado de servicios y órdenes operativas reutilizables.'),
+      defineDemoPage('calendar', 'volketas-calendar', 'Agenda de entregas, retiros y ventanas operativas.'),
+      defineDemoPage('map', 'volketas-map', 'Mapa operativo para ubicaciones y cobertura.'),
+      defineDemoPage('customers', 'volketas-customers', 'Directorio de clientes y obras asociadas.'),
     ],
   },
 ] as const satisfies readonly ApplicationDefinition[];

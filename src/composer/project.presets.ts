@@ -74,7 +74,7 @@ export const projectPresets: readonly ProjectPresetDefinition[] = [
   {
     id: 'volketas',
     name: 'Volketas',
-    description: 'Base operativa para gestión de volquetas: panel, agenda, mapa, clientes, facturación y administración.',
+    description: 'Plantilla visible para gestión de volquetas con navegación operativa y vistas activas sin sustitutos falsos.',
     themeColorId: 'volketas',
     viewPaths: [
       '/applications/management/dashboard',
@@ -83,13 +83,11 @@ export const projectPresets: readonly ProjectPresetDefinition[] = [
       '/applications/calendar',
       '/maps',
       '/applications/management/customers',
-      '/applications/management/inventory',
-      '/applications/tasks',
-      '/applications/invoices/list',
-      '/charts',
-      '/widgets',
       '/user/profile',
       '/user/account-settings',
+      '/authentication/sign-in',
+      '/authentication/password-reset',
+      '/authentication/two-factor',
     ],
   },
 ];

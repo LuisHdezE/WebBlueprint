@@ -11,6 +11,22 @@ describe('applicationRegistry', () => {
   it('exposes promoted applications to the public catalog', () => {
     expect(listPublicApplications().every((application) => application.promoted)).toBe(true);
     expect(getApplicationBySlug('pet-shop')?.name).toBe('Pet Shop');
+    expect(getApplicationBySlug('volketas')?.name).toBe('Volketas');
+  });
+
+  it('exposes Volketas as an operational composer preset', () => {
+    const volketas = getApplicationBySlug('volketas');
+
+    expect(volketas?.category).toBe('Logística operativa');
+    expect(volketas?.capabilities).toEqual(['Dashboard', 'Dispatch', 'Orders', 'Scheduling', 'Map', 'Customers']);
+    expect(volketas?.demoPages.map((page) => page.path)).toEqual([
+      'applications/management/dashboard',
+      'applications/management/dispatch',
+      'applications/management/orders',
+      'applications/calendar',
+      'maps',
+      'applications/management/customers',
+    ]);
   });
 
   it('uses only governed left-menu variants', () => {
