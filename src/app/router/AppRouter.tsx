@@ -57,6 +57,7 @@ import { BlogGridPage } from '@/features/applications/blog/presentation/BlogGrid
 import { BlogListPage } from '@/features/applications/blog/presentation/BlogListPage';
 import { BlogPostPage } from '@/features/applications/blog/presentation/BlogPostPage';
 import { CustomerDirectoryView } from '@/customers/CustomerDirectoryView';
+import { DispatchBoardView } from '@/dispatch/DispatchBoardView';
 import { DashboardView } from '@/dashboard/DashboardView';
 import { InventoryView } from '@/inventory/InventoryView';
 import { OrderListView } from '@/orders/OrderListView';
@@ -163,6 +164,7 @@ export function AppRouter() {
         <Route path="dashboard" element={<TemplateOverviewPage />} />
         <Route path="composer" element={<TemplateComposerExportPage />} />
         <Route path="applications/management/dashboard" element={<DashboardView />} />
+        <Route path="applications/management/dispatch" element={<DispatchBoardView />} />
         <Route path="applications/management/customers" element={<CustomerDirectoryView />} />
         <Route path="applications/management/orders" element={<OrderListView />} />
         <Route path="applications/management/inventory" element={<InventoryView />} />
