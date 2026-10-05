@@ -188,6 +188,42 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     })`);
     check('Storefront discovery clear resets all filters', clearedFilters.cards === 6 && clearedFilters.categoryAll && clearedFilters.brandAll && !clearedFilters.clearVisible, clearedFilters);
 
+    await evaluate(cdp, `(() => {
+      const select = document.querySelector('[data-storefront-discovery-sort]');
+      if (!(select instanceof HTMLSelectElement)) return false;
+      const setter = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value')?.set;
+      setter?.call(select, 'price-low');
+      select.dispatchEvent(new Event('change', { bubbles: true }));
+      return true;
+    })()`);
+    await waitFor(cdp, "document.querySelector('[data-storefront-discovery-sort]')?.value === 'price-low'");
+    const priceSorted = await evaluate(cdp, `({
+      firstCard: document.querySelector('[data-storefront-listing-product-card]')?.textContent ?? '',
+      sortValue: document.querySelector('[data-storefront-discovery-sort]')?.value ?? '',
+      summary: document.querySelector('[data-storefront-discovery-summary]')?.textContent ?? '',
+      clearVisible: Boolean(document.querySelector('[data-storefront-discovery-clear]'))
+    })`);
+    check('Storefront discovery sorts by provider-driven price rank', priceSorted.firstCard.includes('Conector de carga Xiaomi Redmi Note') && priceSorted.sortValue === 'price-low' && priceSorted.summary.includes('Menor precio') && priceSorted.clearVisible, priceSorted);
+
+    await evaluate(cdp, `document.querySelector('[data-storefront-discovery-filter="category"] input[value="spare-parts"]')?.click()`);
+    await waitFor(cdp, "document.querySelectorAll('[data-storefront-listing-product-card]').length === 4");
+    const sortedFiltered = await evaluate(cdp, `({
+      cards: document.querySelectorAll('[data-storefront-listing-product-card]').length,
+      firstCard: document.querySelector('[data-storefront-listing-product-card]')?.textContent ?? '',
+      sortValue: document.querySelector('[data-storefront-discovery-sort]')?.value ?? ''
+    })`);
+    check('Storefront discovery composes sorting with active filters', sortedFiltered.cards === 4 && sortedFiltered.firstCard.includes('Conector de carga Xiaomi Redmi Note') && sortedFiltered.sortValue === 'price-low', sortedFiltered);
+
+    await evaluate(cdp, `document.querySelector('[data-storefront-discovery-clear]')?.click()`);
+    await waitFor(cdp, "document.querySelectorAll('[data-storefront-listing-product-card]').length === 6");
+    const clearedSort = await evaluate(cdp, `({
+      sortValue: document.querySelector('[data-storefront-discovery-sort]')?.value ?? '',
+      firstCard: document.querySelector('[data-storefront-listing-product-card]')?.textContent ?? '',
+      categoryAll: document.querySelector('[data-storefront-discovery-filter="category"] input[value="all"]')?.checked ?? false,
+      clearVisible: Boolean(document.querySelector('[data-storefront-discovery-clear]'))
+    })`);
+    check('Storefront discovery clear restores recommended sorting', clearedSort.sortValue === 'recommended' && clearedSort.firstCard.includes('Display OLED iPhone 13') && clearedSort.categoryAll && !clearedSort.clearVisible, clearedSort);
+
     await navigate(cdp, detailUrl);
     await waitFor(cdp, "Boolean(document.querySelector('[data-storefront-product-detail]'))");
     const detail = await evaluate(cdp, `({
