@@ -69,6 +69,7 @@ export interface StorefrontProductCardDto {
   compatibilityLabel: string;
   stockLabel: string;
   image: StorefrontMediaDto;
+  discoveryFacets?: Readonly<Record<string, string>>;
 }
 
 export interface StorefrontPromoBandDto {
