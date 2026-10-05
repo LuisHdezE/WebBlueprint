@@ -71,6 +71,23 @@ export const projectPresets: readonly ProjectPresetDefinition[] = [
       '/applications/tasks',
     ],
   },
+  {
+    id: 'volketas',
+    name: 'Volketas',
+    description: 'Base operativa para gestión de volquetas: panel, agenda, mapa, clientes, facturación y administración.',
+    viewPaths: [
+      '/dashboard',
+      '/applications/calendar',
+      '/maps',
+      '/applications/contacts',
+      '/applications/tasks',
+      '/applications/invoices/list',
+      '/charts',
+      '/widgets',
+      '/user/profile',
+      '/user/account-settings',
+    ],
+  },
 ];
 
 export function getProjectPreset(presetId: string | null) {
