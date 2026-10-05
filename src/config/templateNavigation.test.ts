@@ -28,7 +28,7 @@ describe('templateNavigation', () => {
       'Layouts',
       'Documentación',
     ]);
-    expect(templateRouteItems).toHaveLength(130);
+    expect(templateRouteItems).toHaveLength(131);
   });
 
   it('exposes reusable management views to the Composer catalog', () => {
@@ -38,6 +38,7 @@ describe('templateNavigation', () => {
 
     expect(managementRoutes).toEqual([
       '/applications/management/dashboard',
+      '/applications/management/dispatch',
       '/applications/management/customers',
       '/applications/management/orders',
       '/applications/management/inventory',
