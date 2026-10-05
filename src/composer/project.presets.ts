@@ -74,27 +74,47 @@ export const projectPresets: readonly ProjectPresetDefinition[] = [
   {
     id: 'volketas',
     name: 'Volketas',
-    description: 'Plantilla visible para gestión de volquetas con navegación operativa y vistas activas sin sustitutos falsos.',
+    description: 'Base operativa compacta para coordinación de servicios, despacho, activos, clientes y seguimiento.',
     themeColorId: 'volketas',
     viewPaths: [
       '/applications/management/dashboard',
       '/applications/management/dispatch',
-      '/applications/management/service-order',
-      '/applications/management/alerts',
-      '/applications/management/asset',
       '/applications/management/orders',
+      '/applications/management/service-order',
       '/applications/calendar',
       '/maps',
+      '/applications/management/alerts',
       '/applications/management/customers',
+      '/applications/management/asset',
       '/user/profile',
       '/user/account-settings',
       '/authentication/sign-in',
       '/authentication/password-reset',
       '/authentication/two-factor',
     ],
-  },
+    viewPresentation: {
+      '/applications/management/dashboard': { label: 'Dashboard', section: 'General' },
+      '/applications/management/dispatch': { label: 'Despacho', section: 'Operaciones' },
+      '/applications/management/orders': { label: 'Servicios', section: 'Operaciones' },
+      '/applications/management/service-order': { label: 'Orden de servicio', section: 'Operaciones' },
+      '/applications/calendar': { label: 'Calendario', section: 'Operaciones' },
+      '/maps': { label: 'Mapa', section: 'Operaciones' },
+      '/applications/management/alerts': { label: 'Alertas', section: 'Operaciones' },
+      '/applications/management/customers': { label: 'Clientes', section: 'Relaciones' },
+      '/applications/management/asset': { label: 'Activos', section: 'Activos' },
+      '/user/profile': { label: 'Perfil', section: 'Usuario' },
+      '/user/account-settings': { label: 'Configuración', section: 'Usuario' },
+      '/authentication/sign-in': { label: 'Iniciar sesión', section: 'Acceso' },
+      '/authentication/password-reset': { label: 'Recuperar contraseña', section: 'Acceso' },
+      '/authentication/two-factor': { label: 'Verificación 2FA', section: 'Acceso' },
+    },
+  }
 ];
 
 export function getProjectPreset(presetId: string | null) {
   return projectPresets.find((preset) => preset.id === presetId);
+}
+
+export function getPresetViewPresentation(presetId: string | null, path: string) {
+  return getProjectPreset(presetId)?.viewPresentation?.[path];
 }
