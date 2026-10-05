@@ -32,7 +32,7 @@ describe('templateNavigation', () => {
       'Layouts',
       'Documentación',
     ]);
-    expect(templateRouteItems).toHaveLength(152);
+    expect(templateRouteItems).toHaveLength(153);
   });
 
   it('exposes reusable management views to the Composer catalog', () => {
