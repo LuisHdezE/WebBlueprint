@@ -250,6 +250,10 @@ export interface StorefrontCheckoutViewDto {
     signInHref: string;
     signUpLabel: string;
     signUpHref: string;
+    authenticatedEyebrow: string;
+    authenticatedTitle: string;
+    authenticatedDescription: string;
+    authenticatedLabel: string;
   };
   orderSummary: {
     title: string;
@@ -453,6 +457,11 @@ export interface StorefrontCustomerIdentityViewDto {
   returnToCheckoutHref: string;
   signIn: StorefrontCustomerIdentityPanelDto;
   register: StorefrontCustomerIdentityPanelDto;
+  session: {
+    signedInTitle: string;
+    signedInDescription: string;
+    signOutLabel: string;
+  };
   notices: readonly {
     id: string;
     title: string;
