@@ -75,6 +75,7 @@ export const projectPresets: readonly ProjectPresetDefinition[] = [
     id: 'volketas',
     name: 'Volketas',
     description: 'Base operativa para gestión de volquetas: panel, agenda, mapa, clientes, facturación y administración.',
+    themeColorId: 'volketas',
     viewPaths: [
       '/applications/management/dashboard',
       '/applications/management/orders',

@@ -24,6 +24,7 @@ describe('project composer logic', () => {
     const presetProject = applyProjectPreset(createDefaultProject(), 'volketas');
 
     expect(presetProject.presetId).toBe('volketas');
+    expect(presetProject.theme.colorId).toBe('volketas');
     expect(presetProject.views).toEqual([
       '/applications/management/dashboard',
       '/applications/management/orders',

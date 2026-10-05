@@ -22,6 +22,14 @@ export interface ThemePreset {
   primaryMuted: string;
   primaryBorder: string;
   onPrimary: string;
+  accent?: string;
+  accentHover?: string;
+  accentSoft?: string;
+  navigationBackground?: string;
+  navigationText?: string;
+  navigationMuted?: string;
+  navigationBorder?: string;
+  navigationActiveBackground?: string;
 }
 
 export const themePresets: readonly ThemePreset[] = [
@@ -134,6 +142,14 @@ export const themePresets: readonly ThemePreset[] = [
     primaryMuted: '#dceaf5',
     primaryBorder: '#9fb9cf',
     onPrimary: '#ffffff',
+    accent: '#f97316',
+    accentHover: '#ea580c',
+    accentSoft: '#fff7ed',
+    navigationBackground: '#0b2f4f',
+    navigationText: '#e6eef5',
+    navigationMuted: '#9fb4c7',
+    navigationBorder: '#163f62',
+    navigationActiveBackground: '#143d5f',
   },
 ];
 

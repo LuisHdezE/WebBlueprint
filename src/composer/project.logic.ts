@@ -30,6 +30,7 @@ export function applyProjectPreset(
   return {
     ...project,
     presetId: preset.id === 'blank' ? null : preset.id,
+    theme: preset.themeColorId ? { colorId: preset.themeColorId } : project.theme,
     views: [...preset.viewPaths],
   };
 }
