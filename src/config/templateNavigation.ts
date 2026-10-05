@@ -32,7 +32,7 @@ export const templateNavigation: readonly TemplateNavigationSection[] = [
       { label: 'Solicitudes', to: '/volketas/requests', icon: 'forms', ...planned() },
       { label: 'Cotizaciones', to: '/volketas/quotes', icon: 'document', ...planned() },
       { label: 'Servicios', to: '/applications/management/orders', icon: 'apps', status: 'implemented' },
-      { label: 'Orden de servicio', to: '/applications/management/service-order', icon: 'document', ...planned('Se activa con VT-3.2') },
+      { label: 'Orden de servicio', to: '/applications/management/service-order', icon: 'document', status: 'implemented' },
       { label: 'Despacho', to: '/applications/management/dispatch', icon: 'apps', status: 'implemented' },
       { label: 'Calendario', to: '/applications/calendar', icon: 'apps', status: 'implemented' },
       { label: 'Mapa', to: '/maps', icon: 'map', status: 'implemented' },
@@ -57,6 +57,7 @@ export const templateNavigation: readonly TemplateNavigationSection[] = [
     items: [
       { label: 'Gestión · Dashboard', to: '/applications/management/dashboard', icon: 'dashboard' },
       { label: 'Gestión · Dispatch', to: '/applications/management/dispatch', icon: 'apps' },
+      { label: 'Gestión · Orden de servicio', to: '/applications/management/service-order', icon: 'document' },
       { label: 'Gestión · Clientes', to: '/applications/management/customers', icon: 'user' },
       { label: 'Gestión · Órdenes', to: '/applications/management/orders', icon: 'apps' },
       { label: 'Gestión · Inventario', to: '/applications/management/inventory', icon: 'table' },

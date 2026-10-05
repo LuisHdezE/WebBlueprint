@@ -79,6 +79,7 @@ export const projectPresets: readonly ProjectPresetDefinition[] = [
     viewPaths: [
       '/applications/management/dashboard',
       '/applications/management/dispatch',
+      '/applications/management/service-order',
       '/applications/management/orders',
       '/applications/calendar',
       '/maps',
