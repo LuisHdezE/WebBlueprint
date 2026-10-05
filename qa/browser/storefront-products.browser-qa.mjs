@@ -116,6 +116,48 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     check('Storefront product listing desktop avoids horizontal overflow', !desktop.overflow, desktop);
     await shot('storefront-products-desktop.png');
 
+    await evaluate(cdp, `(() => {
+      const input = document.querySelector('[data-storefront-discovery-search]');
+      if (!(input instanceof HTMLInputElement)) return false;
+      const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')?.set;
+      setter?.call(input, 'galaxy s21');
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      return true;
+    })()`);
+    await waitFor(cdp, "document.querySelectorAll('[data-storefront-listing-product-card]').length === 1");
+    const searched = await evaluate(cdp, `({
+      cards: document.querySelectorAll('[data-storefront-listing-product-card]').length,
+      text: document.querySelector('[data-storefront-discovery-results]')?.textContent ?? '',
+      count: document.querySelector('[data-storefront-discovery-count]')?.textContent ?? '',
+      clearVisible: Boolean(document.querySelector('[data-storefront-discovery-clear]'))
+    })`);
+    check('Storefront discovery search filters products in memory', searched.cards === 1 && searched.text.includes('Batería Samsung S21') && searched.count.includes('1 de 6') && searched.clearVisible, searched);
+
+    await evaluate(cdp, `(() => {
+      const input = document.querySelector('[data-storefront-discovery-search]');
+      if (!(input instanceof HTMLInputElement)) return false;
+      const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')?.set;
+      setter?.call(input, 'pixel 99');
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      return true;
+    })()`);
+    await waitFor(cdp, "Boolean(document.querySelector('[data-storefront-listing-empty-state]'))");
+    const emptySearch = await evaluate(cdp, `({
+      cards: document.querySelectorAll('[data-storefront-listing-product-card]').length,
+      empty: document.querySelector('[data-storefront-listing-empty-state]')?.textContent ?? '',
+      count: document.querySelector('[data-storefront-discovery-count]')?.textContent ?? ''
+    })`);
+    check('Storefront discovery exposes real zero-result state', emptySearch.cards === 0 && emptySearch.empty.includes('Sin resultados demo') && emptySearch.count.includes('0 de 6'), emptySearch);
+
+    await evaluate(cdp, `document.querySelector('[data-storefront-listing-empty-state] button')?.click()`);
+    await waitFor(cdp, "document.querySelectorAll('[data-storefront-listing-product-card]').length === 6");
+    const clearedSearch = await evaluate(cdp, `({
+      value: document.querySelector('[data-storefront-discovery-search]')?.value ?? 'missing',
+      cards: document.querySelectorAll('[data-storefront-listing-product-card]').length,
+      count: document.querySelector('[data-storefront-discovery-count]')?.textContent ?? ''
+    })`);
+    check('Storefront discovery clear restores the full listing', clearedSearch.value === '' && clearedSearch.cards === 6 && clearedSearch.count.includes('6 de 6'), clearedSearch);
+
     await navigate(cdp, detailUrl);
     await waitFor(cdp, "Boolean(document.querySelector('[data-storefront-product-detail]'))");
     const detail = await evaluate(cdp, `({

@@ -142,7 +142,11 @@ describe('storefront architecture', () => {
     expect(contracts).toContain('getProductListingView');
     expect(provider).toContain('getProductListingView()');
     expect(listing).toContain('listing.filters.map');
-    expect(listing).toContain('listing.products.map');
+    expect(listing).toContain('discovery.products.map');
+    expect(listing).toContain('discoverStorefrontProducts');
+    expect(listing).toContain('data-storefront-discovery-search');
+    expect(listing).toContain('data-storefront-discovery-count');
+    expect(listing).toContain('data-storefront-discovery-clear');
     expect(listing).not.toContain('localStorage');
     expect(listing).not.toContain('sessionStorage');
     expect(listing).not.toContain('Agregar al carrito');

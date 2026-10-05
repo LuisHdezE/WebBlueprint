@@ -348,7 +348,7 @@
   "productListing": {
     "eyebrow": "Catálogo público demo",
     "title": "Productos preparados para navegación pública",
-    "description": "Skeleton comercial para listar repuestos y celulares usados. Los controles son visuales; B3 no filtra, no compra y no descuenta inventario.",
+    "description": "Catálogo comercial con búsqueda local en memoria. B13.1 filtra el demo sin backend, sin persistencia y sin alterar inventario.",
     "resultSummary": "6 productos demo visibles",
     "searchPlaceholder": "Buscar por producto, marca, modelo o repuesto…",
     "sortOptions": [
@@ -539,11 +539,11 @@
     ],
     "emptyState": {
       "title": "Sin resultados demo",
-      "description": "Cuando los filtros sean funcionales, este estado cubrirá búsquedas sin coincidencias."
+      "description": "No encontramos coincidencias para la búsqueda actual. Limpia el término o prueba con producto, marca, modelo, compatibilidad o tipo."
     },
     "listingNotice": {
       "title": "Listado visual, no transaccional",
-      "description": "B3 prepara la experiencia pública. Los filtros, el carrito y el checkout se activarán en incrementos posteriores."
+      "description": "B13 activa búsqueda local real. Filtros, ordenamiento, carrito y checkout continúan en incrementos posteriores."
     }
   },
   "productDetail": {
