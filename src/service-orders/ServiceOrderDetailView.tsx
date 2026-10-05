@@ -45,8 +45,6 @@ export function ServiceOrderDetailView({
 
   useEffect(() => {
     let active = true;
-    setState({ status: 'loading' });
-
     repository
       .getById(orderId)
       .then((nextState) => {
