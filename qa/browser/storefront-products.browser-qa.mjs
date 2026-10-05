@@ -417,7 +417,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     check('Storefront shipping desktop avoids horizontal overflow', !shipping.overflow, shipping);
 
     await evaluate(cdp, `document.querySelector('[data-storefront-shipping-option="canelones-sur"]')?.click()`);
-    await waitFor(cdp, "document.querySelector('[data-storefront-shipping-option="canelones-sur"]')?.getAttribute('data-storefront-shipping-selected') === 'true'");
+    await waitFor(cdp, "document.querySelector('[data-storefront-shipping-option=canelones-sur]')?.getAttribute('data-storefront-shipping-selected') === 'true'");
     const selectedShipping = await evaluate(cdp, `({
       summary: document.querySelector('[data-storefront-shipping-selection-summary]')?.textContent ?? '',
       cost: document.querySelector('[data-storefront-shipping-selection-cost]')?.textContent ?? ''
