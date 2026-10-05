@@ -58,6 +58,7 @@ import { BlogGridPage } from '@/features/applications/blog/presentation/BlogGrid
 import { BlogListPage } from '@/features/applications/blog/presentation/BlogListPage';
 import { BlogPostPage } from '@/features/applications/blog/presentation/BlogPostPage';
 import { AlertCenterView } from '@/alerts-center/AlertCenterView';
+import { AssetDetailView } from '@/assets/AssetDetailView';
 import { CustomerDirectoryView } from '@/customers/CustomerDirectoryView';
 import { DispatchBoardView } from '@/dispatch/DispatchBoardView';
 import { ServiceOrderDetailView } from '@/service-orders/ServiceOrderDetailView';
@@ -170,6 +171,7 @@ export function AppRouter() {
         <Route path="applications/management/dispatch" element={<DispatchBoardView />} />
         <Route path="applications/management/service-order" element={<ServiceOrderDetailView />} />
         <Route path="applications/management/alerts" element={<AlertCenterView />} />
+        <Route path="applications/management/asset" element={<AssetDetailView />} />
         <Route path="applications/management/customers" element={<CustomerDirectoryView />} />
         <Route path="applications/management/orders" element={<OrderListView />} />
         <Route path="applications/management/inventory" element={<InventoryView />} />
