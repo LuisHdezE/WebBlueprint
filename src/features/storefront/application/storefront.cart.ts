@@ -30,8 +30,9 @@ export function setCartLineQuantity(
   const normalizedQuantity = Math.max(0, Math.min(line.maxQuantity, Math.trunc(nextQuantity)));
 
   if (normalizedQuantity === 0) {
-    const { [line.id]: _removed, ...remaining } = quantities;
-    return remaining;
+    return Object.fromEntries(
+      Object.entries(quantities).filter(([lineId]) => lineId !== line.id),
+    );
   }
 
   return {
