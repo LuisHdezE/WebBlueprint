@@ -7,7 +7,7 @@ import {
   setCartLineQuantity,
 } from './storefront.cart';
 
-const lines: readonly StorefrontCartLineDto[] = [
+const lines: readonly [StorefrontCartLineDto, StorefrontCartLineDto] = [
   {
     id: 'display',
     title: 'Display',
