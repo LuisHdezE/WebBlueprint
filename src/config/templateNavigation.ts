@@ -1,9 +1,13 @@
 import type { AppIconName } from '@/components/AppIcon';
 
+export type TemplateNavigationItemStatus = 'implemented' | 'planned';
+
 export interface TemplateNavigationItem {
   label: string;
   to: string;
   icon: AppIconName;
+  status?: TemplateNavigationItemStatus;
+  disabledReason?: string;
 }
 
 export interface TemplateNavigationSection {
@@ -12,11 +16,40 @@ export interface TemplateNavigationSection {
   items: readonly TemplateNavigationItem[];
 }
 
+const planned = (reason = 'Pendiente de implementación') => ({ status: 'planned' as const, disabledReason: reason });
+
 export const templateNavigation: readonly TemplateNavigationSection[] = [
   {
     label: 'General',
     icon: 'dashboard',
     items: [{ label: 'Dashboard', to: '/dashboard', icon: 'dashboard' }],
+  },
+  {
+    label: 'Volketas',
+    icon: 'apps',
+    items: [
+      { label: 'Dashboard', to: '/applications/management/dashboard', icon: 'dashboard', status: 'implemented' },
+      { label: 'Solicitudes', to: '/volketas/requests', icon: 'forms', ...planned() },
+      { label: 'Cotizaciones', to: '/volketas/quotes', icon: 'document', ...planned() },
+      { label: 'Servicios', to: '/applications/management/orders', icon: 'apps', status: 'implemented' },
+      { label: 'Orden de servicio', to: '/applications/management/service-order', icon: 'document', ...planned('Se activa con VT-3.2') },
+      { label: 'Despacho', to: '/applications/management/dispatch', icon: 'apps', status: 'implemented' },
+      { label: 'Calendario', to: '/applications/calendar', icon: 'apps', status: 'implemented' },
+      { label: 'Mapa', to: '/maps', icon: 'map', status: 'implemented' },
+      { label: 'Clientes', to: '/applications/management/customers', icon: 'user', status: 'implemented' },
+      { label: 'Obras / Ubicaciones', to: '/volketas/worksites', icon: 'map', ...planned() },
+      { label: 'Activos / Volquetas', to: '/applications/management/asset', icon: 'table', ...planned('Se activa con VT-3.5') },
+      { label: 'Camiones', to: '/volketas/trucks', icon: 'device', ...planned() },
+      { label: 'Choferes', to: '/volketas/drivers', icon: 'user', ...planned() },
+      { label: 'Alertas', to: '/applications/management/alerts', icon: 'bell', ...planned('Se activa con VT-3.4') },
+      { label: 'Mantenimiento', to: '/volketas/maintenance', icon: 'settings', ...planned() },
+      { label: 'Disposición final', to: '/volketas/disposal', icon: 'check-circle', ...planned() },
+      { label: 'Facturación', to: '/volketas/billing', icon: 'document', ...planned() },
+      { label: 'Pagos', to: '/volketas/payments', icon: 'document', ...planned() },
+      { label: 'Reportes', to: '/volketas/reports', icon: 'chart', ...planned() },
+      { label: 'Perfil', to: '/user/profile', icon: 'user', status: 'implemented' },
+      { label: 'Configuración', to: '/user/account-settings', icon: 'settings', status: 'implemented' },
+    ],
   },
   {
     label: 'Gestión',
