@@ -28,6 +28,7 @@ describe('project composer logic', () => {
     expect(presetProject.views).toEqual([
       '/applications/management/dashboard',
       '/applications/management/dispatch',
+      '/applications/management/service-order',
       '/applications/management/orders',
       '/applications/calendar',
       '/maps',
