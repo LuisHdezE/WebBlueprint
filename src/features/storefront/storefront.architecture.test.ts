@@ -140,6 +140,7 @@ describe('storefront architecture', () => {
     expect(dto).toContain('StorefrontProductListingViewDto');
     expect(dto).toContain('StorefrontFilterOptionDto');
     expect(dto).toContain('discoveryFacets?: Readonly<Record<string, string>>');
+    expect(dto).toContain('discoverySortRanks?: Readonly<Record<string, number>>');
     expect(contracts).toContain('getProductListingView');
     expect(provider).toContain('getProductListingView()');
     expect(listing).toContain('listing.filters.map');
@@ -151,6 +152,9 @@ describe('storefront architecture', () => {
     expect(listing).toContain('filterSelections');
     expect(listing).toContain('data-storefront-discovery-filter');
     expect(listing).toContain('setFilterSelections');
+    expect(listing).toContain('data-storefront-discovery-sort');
+    expect(listing).toContain('setSortId');
+    expect(listing).not.toContain('aria-label="Ordenamiento pendiente"');
     expect(listing).not.toContain('localStorage');
     expect(listing).not.toContain('sessionStorage');
     expect(listing).not.toContain('Agregar al carrito');
