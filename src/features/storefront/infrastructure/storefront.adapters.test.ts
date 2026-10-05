@@ -55,6 +55,9 @@ describe('storefront provider', () => {
     expect(listing.products.every((product) => product.discoveryFacets?.['brand-model'])).toBe(true);
     expect(listing.products.every((product) => product.discoveryFacets?.condition)).toBe(true);
     expect(listing.products.every((product) => product.discoveryFacets?.price)).toBe(true);
+    expect(listing.products.every((product) => product.discoverySortRanks?.recommended)).toBe(true);
+    expect(listing.products.every((product) => product.discoverySortRanks?.['price-low'])).toBe(true);
+    expect(listing.products.every((product) => product.discoverySortRanks?.recent)).toBe(true);
     expect(listing.listingNotice.title).toContain('visual');
   });
 
