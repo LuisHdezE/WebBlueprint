@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router';
 import type { StorefrontProvider } from '../application/storefront.contracts';
 import { createStorefrontCustomerSession } from '../application/storefront.session';
 import { StorefrontPageIntro } from './StorefrontPrimitives';
-import { useStorefrontSession } from './StorefrontSessionContext';
+import { useStorefrontSession } from './useStorefrontSession';
 
 interface StorefrontCustomerIdentityPageProps {
   provider: StorefrontProvider;
