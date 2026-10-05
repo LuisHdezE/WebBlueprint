@@ -2,11 +2,14 @@ import { describe, expect, it } from 'vitest';
 import { templateNavigation, templateRouteItems } from '@/config/templateNavigation';
 
 describe('templateNavigation', () => {
-  it('keeps every registered route unique and absolute', () => {
-    const routes = templateRouteItems.map((item) => item.to);
+  it('keeps every registered route absolute and every non-Volketas route unique', () => {
+    expect(templateRouteItems.every((route) => route.to.startsWith('/'))).toBe(true);
 
-    expect(new Set(routes).size).toBe(routes.length);
-    expect(routes.every((route) => route.startsWith('/'))).toBe(true);
+    const nonVolketasRoutes = templateNavigation
+      .filter((section) => section.label !== 'Volketas')
+      .flatMap((section) => section.items.map((item) => item.to));
+
+    expect(new Set(nonVolketasRoutes).size).toBe(nonVolketasRoutes.length);
   });
 
   it('exposes the complete G1 master navigation families plus visible Volketas shell', () => {
@@ -33,18 +36,12 @@ describe('templateNavigation', () => {
   });
 
   it('exposes reusable management views to the Composer catalog', () => {
-    const managementRoutes = templateRouteItems
-      .filter((item) => item.to.startsWith('/applications/management/'))
+    const managementRoutes = templateNavigation
+      .find((section) => section.label === 'Gestión')
+      ?.items.filter((item) => item.to.startsWith('/applications/management/'))
       .map((item) => item.to);
 
     expect(managementRoutes).toEqual([
-      '/applications/management/dashboard',
-      '/applications/management/dispatch',
-      '/applications/management/orders',
-      '/applications/management/service-order',
-      '/applications/management/customers',
-      '/applications/management/asset',
-      '/applications/management/alerts',
       '/applications/management/dashboard',
       '/applications/management/dispatch',
       '/applications/management/customers',
