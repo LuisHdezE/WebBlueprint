@@ -56,6 +56,12 @@ export function ComposerPreviewPage() {
     '--preview-primary-soft': theme.primarySoft,
     '--preview-primary-border': theme.primaryBorder,
     '--preview-on-primary': theme.onPrimary,
+    '--preview-accent': theme.accent ?? theme.primary,
+    '--preview-navigation-background': theme.navigationBackground ?? '#ffffff',
+    '--preview-navigation-text': theme.navigationText ?? '#475569',
+    '--preview-navigation-muted': theme.navigationMuted ?? '#94a3b8',
+    '--preview-navigation-border': theme.navigationBorder ?? '#e2e8f0',
+    '--preview-navigation-active-background': theme.navigationActiveBackground ?? theme.primarySoft,
   } as CSSProperties;
 
   if (selectedViews.length === 0) {
@@ -92,10 +98,10 @@ export function ComposerPreviewPage() {
         </div>
       </header>
 
-      <aside className="fixed bottom-0 left-0 top-12 z-30 w-[232px] overflow-y-auto border-r border-slate-200 bg-white px-2 py-2">
+      <aside className="fixed bottom-0 left-0 top-12 z-30 w-[232px] overflow-y-auto border-r border-[var(--preview-navigation-border)] bg-[var(--preview-navigation-background)] px-2 py-2">
         {sections.map((section, index) => (
           <section className={index === 0 ? 'mb-2' : 'mb-2.5'} key={section.label}>
-            <div className="px-2 pb-1 pt-1 text-[9px] font-bold uppercase tracking-[0.12em] text-slate-400">{section.label}</div>
+            <div className="px-2 pb-1 pt-1 text-[9px] font-bold uppercase tracking-[0.12em] text-[var(--preview-navigation-muted)]">{section.label}</div>
             <div className="space-y-0.5">
               {section.items.map((view) => {
                 const active = view.path === activeView?.path;
@@ -103,8 +109,8 @@ export function ComposerPreviewPage() {
                   <button
                     className={`flex min-h-[30px] w-full items-center gap-2 rounded-md border-l-2 px-2 py-1 text-left text-[11.5px] font-medium transition ${
                       active
-                        ? 'border-[var(--preview-primary)] bg-[var(--preview-primary-soft)] text-[var(--preview-primary-active)]'
-                        : 'border-transparent text-slate-600 hover:bg-[var(--preview-primary-soft)] hover:text-[var(--preview-primary)]'
+                        ? 'border-[var(--preview-accent)] bg-[var(--preview-navigation-active-background)] text-[var(--preview-navigation-text)]'
+                        : 'border-transparent text-[var(--preview-navigation-text)] hover:bg-[var(--preview-navigation-active-background)]'
                     }`}
                     key={view.path}
                     onClick={() => setActivePath(view.path)}
