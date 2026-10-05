@@ -533,7 +533,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       summary: Boolean(document.querySelector('[data-storefront-cart-summary]')),
       overflow: document.documentElement.scrollWidth > innerWidth
     })`);
-    check('Mobile preserves cart shell, lines and summary', mobileCart.shell && mobileCart.cart && mobileCart.title.includes('Carrito preparado') && mobileCart.cartLines === 2 && mobileCart.summary, mobileCart);
+    check('Mobile preserves cart shell, lines and summary', mobileCart.shell && mobileCart.cart && mobileCart.title.includes('interacción local') && mobileCart.cartLines === 2 && mobileCart.summary, mobileCart);
     check('Mobile storefront cart avoids horizontal overflow', !mobileCart.overflow, mobileCart);
 
     await navigate(cdp, checkoutUrl);
