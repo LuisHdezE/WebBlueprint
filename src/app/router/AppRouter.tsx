@@ -56,6 +56,10 @@ import { BlogEditorPage } from '@/features/applications/blog/presentation/BlogEd
 import { BlogGridPage } from '@/features/applications/blog/presentation/BlogGridPage';
 import { BlogListPage } from '@/features/applications/blog/presentation/BlogListPage';
 import { BlogPostPage } from '@/features/applications/blog/presentation/BlogPostPage';
+import { CustomerDirectoryView } from '@/customers/CustomerDirectoryView';
+import { DashboardView } from '@/dashboard/DashboardView';
+import { InventoryView } from '@/inventory/InventoryView';
+import { OrderListView } from '@/orders/OrderListView';
 import { ApplicationDemoPage } from '@/pages/ApplicationDemoPage';
 import { ApplicationDetailPage } from '@/pages/ApplicationDetailPage';
 import { ApplicationsPage } from '@/pages/ApplicationsPage';
@@ -158,6 +162,10 @@ export function AppRouter() {
         <Route index element={<Navigate to="/dashboard" replace />} />
         <Route path="dashboard" element={<TemplateOverviewPage />} />
         <Route path="composer" element={<TemplateComposerExportPage />} />
+        <Route path="applications/management/dashboard" element={<DashboardView />} />
+        <Route path="applications/management/customers" element={<CustomerDirectoryView />} />
+        <Route path="applications/management/orders" element={<OrderListView />} />
+        <Route path="applications/management/inventory" element={<InventoryView />} />
         <Route path="maps" element={<MapViewPage />} />
         <Route path="applications/blog/list" element={<BlogListPage contentProvider={blogContentProvider} />} />
         <Route path="applications/blog/grid" element={<BlogGridPage contentProvider={blogContentProvider} />} />
