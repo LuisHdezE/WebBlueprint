@@ -2,11 +2,11 @@ import { describe, expect, it } from 'vitest';
 import { templateNavigation, templateRouteItems } from '@/config/templateNavigation';
 
 describe('templateNavigation', () => {
-  it('keeps every registered route absolute and every non-Volketas route unique', () => {
+  it('keeps every registered route absolute and every non-vertical route unique', () => {
     expect(templateRouteItems.every((route) => route.to.startsWith('/'))).toBe(true);
 
     const nonVolketasRoutes = templateNavigation
-      .filter((section) => section.label !== 'Volketas')
+      .filter((section) => !['Volketas', 'FixPhone'].includes(section.label))
       .flatMap((section) => section.items.map((item) => item.to));
 
     expect(new Set(nonVolketasRoutes).size).toBe(nonVolketasRoutes.length);
@@ -15,6 +15,7 @@ describe('templateNavigation', () => {
   it('exposes the complete G1 master navigation families plus visible Volketas shell', () => {
     expect(templateNavigation.map((section) => section.label)).toEqual([
       'General',
+      'FixPhone',
       'Volketas',
       'Gestión',
       'Inventario',
@@ -32,7 +33,7 @@ describe('templateNavigation', () => {
       'Layouts',
       'Documentación',
     ]);
-    expect(templateRouteItems).toHaveLength(152);
+    expect(templateRouteItems).toHaveLength(202);
   });
 
   it('exposes reusable management views to the Composer catalog', () => {
@@ -48,6 +49,23 @@ describe('templateNavigation', () => {
       '/applications/management/orders',
       '/applications/management/inventory',
     ]);
+  });
+
+  it('keeps FixPhone visible while separating implemented views from debt', () => {
+    const fixphone = templateNavigation.find((section) => section.label === 'FixPhone');
+    expect(fixphone).toBeDefined();
+
+    const implementedRoutes = fixphone?.items.filter((item) => item.status !== 'planned').map((item) => item.to);
+    const plannedRoutes = fixphone?.items.filter((item) => item.status === 'planned').map((item) => item.to);
+
+    expect(implementedRoutes).toContain('/apps/inventory/devices/new');
+    expect(implementedRoutes).toContain('/admin/master-data/brands');
+    expect(implementedRoutes).toContain('/store/products');
+    expect(implementedRoutes).toContain('/applications/management/orders');
+    expect(plannedRoutes).toContain('/fixphone/repair-orders');
+    expect(plannedRoutes).toContain('/fixphone/dismantling-orders');
+    expect(plannedRoutes).toContain('/fixphone/admin/users');
+    expect(plannedRoutes).toContain('/fixphone/integrations');
   });
 
   it('keeps Volketas visible while marking pending routes as planned', () => {
