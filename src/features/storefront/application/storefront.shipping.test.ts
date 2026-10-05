@@ -78,10 +78,10 @@ describe('storefront shipping calculation', () => {
   it('rejects unknown zones and refuses cross-currency addition', () => {
     expect(resolveStorefrontShippingQuote(shipping, { method: 'delivery', zoneId: 'missing' })).toBeNull();
 
-    const usdShipping = {
+    const usdShipping: StorefrontShippingViewDto = {
       ...shipping,
       zones: [{
-        ...shipping.zones[0],
+        ...shipping.zones[0]!,
         price: { amountMinor: 500, currencyCode: 'USD' },
       }],
     };
