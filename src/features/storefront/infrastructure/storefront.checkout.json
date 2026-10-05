@@ -1,17 +1,21 @@
 {
   "eyebrow": "Checkout público demo",
   "title": "Revisa la compra antes de continuar",
-  "description": "B6 define la estructura visual del checkout y deja explícito que el cliente debe autenticarse o registrarse antes de confirmar una compra real.",
+  "description": "B16 conecta el gate de identidad con una sesión demo local. Los pagos, inventario y creación de orden continúan fuera de alcance.",
   "stateLabel": "Checkout visual · sin transacción",
   "authGate": {
     "eyebrow": "Paso obligatorio",
     "title": "Identifícate para comprar",
-    "description": "La compra requerirá una cuenta del cliente. En B6 este gate es únicamente visual: no inicia sesión, no registra usuarios y no crea sesión.",
+    "description": "Inicia sesión o crea una cuenta demo para desbloquear este gate visual. La sesión vive solo en memoria React.",
     "requiredLabel": "Autenticación o registro requerido",
-    "signInLabel": "Iniciar sesión pendiente",
-    "signUpLabel": "Crear cuenta pendiente",
+    "signInLabel": "Iniciar sesión",
+    "signUpLabel": "Crear cuenta",
     "signInHref": "/store/account/sign-in",
-    "signUpHref": "/store/account/register"
+    "signUpHref": "/store/account/register",
+    "authenticatedEyebrow": "Cliente identificado",
+    "authenticatedTitle": "Sesión de cliente activa",
+    "authenticatedDescription": "El gate de identidad está resuelto para esta sesión demo. Aún no se confirma la compra ni se procesa un pago.",
+    "authenticatedLabel": "Identidad demo validada"
   },
   "orderSummary": {
     "title": "Resumen de compra demo",
