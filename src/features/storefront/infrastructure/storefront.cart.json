@@ -1,8 +1,8 @@
 {
   "eyebrow": "Carrito público demo",
-  "title": "Carrito preparado para compra futura",
-  "description": "Skeleton visual del carrito público. B5 no guarda productos, no persiste cambios, no calcula envíos reales y no inicia checkout.",
-  "cartStateLabel": "Vista demo no persistente",
+  "title": "Carrito listo para interacción local",
+  "description": "B14 activa cantidades, eliminación, vaciado y totales derivados en memoria. No persiste cambios, no reserva inventario y no crea órdenes.",
+  "cartStateLabel": "Interacción local no persistente",
   "emptyState": {
     "title": "Tu carrito demo está vacío",
     "description": "Cuando el flujo de agregar productos exista, este espacio mostrará las líneas reales. Por ahora es un estado visual reutilizable.",
@@ -20,7 +20,11 @@
       "unitPriceLabel": "UYU 4.890",
       "lineTotalLabel": "UYU 4.890",
       "stockLabel": "Stock demo: 3",
-      "compatibilityLabel": "Compatible: iPhone 13"
+      "compatibilityLabel": "Compatible: iPhone 13",
+      "initialQuantity": 1,
+      "maxQuantity": 3,
+      "currencyCode": "UYU",
+      "unitPriceMinor": 489000
     },
     {
       "id": "cart-line-battery",
@@ -32,11 +36,15 @@
       "unitPriceLabel": "UYU 1.690",
       "lineTotalLabel": "UYU 1.690",
       "stockLabel": "Stock demo: 5",
-      "compatibilityLabel": "Compatible: Galaxy S21"
+      "compatibilityLabel": "Compatible: Galaxy S21",
+      "initialQuantity": 1,
+      "maxQuantity": 5,
+      "currencyCode": "UYU",
+      "unitPriceMinor": 169000
     }
   ],
   "summary": {
-    "title": "Resumen demo",
+    "title": "Resumen actual",
     "items": [
       {
         "id": "subtotal",
@@ -60,7 +68,7 @@
     "totalLabel": "Total demo visible",
     "totalValue": "UYU 6.580",
     "checkoutLabel": "Continuar al checkout",
-    "checkoutDisabledLabel": "Checkout pendiente",
+    "checkoutDisabledLabel": "Continuar al checkout",
     "checkoutPreviewLabel": "Revisar checkout demo",
     "checkoutPreviewHref": "/store/checkout"
   },
@@ -68,12 +76,12 @@
     {
       "id": "no-persistence",
       "title": "Sin persistencia todavía",
-      "description": "Las líneas del carrito son datos demo del provider. No se guardan en localStorage, sessionStorage ni backend."
+      "description": "Las cantidades y eliminaciones viven solo en memoria React. No se guardan en localStorage, sessionStorage ni backend."
     },
     {
       "id": "no-checkout",
-      "title": "Checkout bloqueado para incrementos futuros",
-      "description": "El botón de checkout queda deshabilitado hasta implementar registro, envío por zona, pagos y creación de orden."
+      "title": "Checkout visible, compra aún no transaccional",
+      "description": "B14 permite continuar a la vista de checkout, pero todavía no autentica, cobra, reserva stock ni crea una orden."
     },
     {
       "id": "no-inventory-mutation",

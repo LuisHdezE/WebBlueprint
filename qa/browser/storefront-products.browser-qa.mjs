@@ -278,9 +278,9 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       cartLines: document.querySelectorAll('[data-storefront-cart-line]').length,
       cartImages: document.querySelectorAll('[data-storefront-cart-line] img').length,
       summary: document.querySelector('[data-storefront-cart-summary]')?.textContent ?? '',
-      notices: document.querySelector('[data-storefront-cart-notices]')?.textContent ?? '',
-      disabledCheckoutButtons: [...document.querySelectorAll('[data-storefront-cart] button')].filter((button) => button.disabled && button.textContent?.includes('Checkout pendiente')).length,
-      checkoutPreviewLinks: [...document.querySelectorAll('[data-storefront-cart] a')].filter((link) => link.getAttribute('href') === '/store/checkout').length,
+      total: document.querySelector('[data-storefront-cart-total]')?.textContent ?? '',
+      itemCount: document.querySelector('[data-storefront-cart-item-count]')?.textContent ?? '',
+      checkoutLinks: [...document.querySelectorAll('[data-storefront-cart] a')].filter((link) => link.getAttribute('href') === '/store/checkout').length,
       storageReferences: document.querySelector('[data-storefront-cart]')?.textContent?.includes('localStorage') || document.querySelector('[data-storefront-cart]')?.textContent?.includes('sessionStorage'),
       adminSidebar: Boolean(document.querySelector('[data-template-sidebar]')),
       publicShellBrand: document.querySelector('header')?.textContent?.includes('WebBlueprint') ?? false,
@@ -288,14 +288,51 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     })`);
     check('Storefront cart renders inside storefront shell', cart.shell && cart.cart, cart);
     check('Storefront cart keeps ultra-compact H1 scale', cart.headingFontPx <= 20, cart);
-    check('Storefront cart renders demo lines without simultaneous empty state', cart.title.includes('Carrito preparado') && cart.emptyState === '' && cart.cartLines === 2, cart);
+    check('Storefront cart renders interactive provider lines without simultaneous empty state', cart.title.includes('interacción local') && cart.emptyState === '' && cart.cartLines === 2, cart);
     check('Storefront cart reuses provider-driven product images', cart.cartImages === 2, cart);
-    check('Storefront cart renders demo summary and blocked checkout', cart.summary.includes('UYU 6.580') && cart.disabledCheckoutButtons === 1, cart);
-    check('Storefront cart exposes checkout preview navigation', cart.checkoutPreviewLinks === 1, cart);
-    check('Storefront cart states future registration and checkout flow', cart.summary.includes('Registro requerido') && cart.notices.includes('checkout queda deshabilitado'), cart);
+    check('Storefront cart derives initial total and item count', cart.total.includes('UYU 6.580') && cart.itemCount.includes('2 productos'), cart);
+    check('Storefront cart exposes checkout navigation while items exist', cart.checkoutLinks === 1, cart);
     check('Storefront cart surfaces client storage behavior', cart.storageReferences, cart);
     check('Storefront cart avoids admin sidebar and public blueprint copy', !cart.adminSidebar && !cart.publicShellBrand, cart);
     check('Storefront cart desktop avoids horizontal overflow', !cart.overflow, cart);
+
+    await evaluate(cdp, `document.querySelector('[data-storefront-cart-line-id="cart-line-display"] [data-storefront-cart-increase]')?.click()`);
+    await waitFor(cdp, "document.querySelector('[data-storefront-cart-line-id=\"cart-line-display\"] [data-storefront-cart-quantity-value]')?.textContent === '2'");
+    const increasedCart = await evaluate(cdp, `({
+      quantity: document.querySelector('[data-storefront-cart-line-id="cart-line-display"] [data-storefront-cart-quantity-value]')?.textContent ?? '',
+      lineTotal: document.querySelector('[data-storefront-cart-line-id="cart-line-display"] [data-storefront-cart-line-total]')?.textContent ?? '',
+      total: document.querySelector('[data-storefront-cart-total]')?.textContent ?? '',
+      itemCount: document.querySelector('[data-storefront-cart-item-count]')?.textContent ?? ''
+    })`);
+    check('Storefront cart increases quantity and recomputes totals', increasedCart.quantity === '2' && increasedCart.lineTotal.includes('UYU 9.780') && increasedCart.total.includes('UYU 11.470') && increasedCart.itemCount.includes('3 productos'), increasedCart);
+
+    await evaluate(cdp, `document.querySelector('[data-storefront-cart-line-id="cart-line-battery"] [data-storefront-cart-remove]')?.click()`);
+    await waitFor(cdp, "document.querySelectorAll('[data-storefront-cart-line]').length === 1");
+    const removedLine = await evaluate(cdp, `({
+      lines: document.querySelectorAll('[data-storefront-cart-line]').length,
+      total: document.querySelector('[data-storefront-cart-total]')?.textContent ?? '',
+      itemCount: document.querySelector('[data-storefront-cart-item-count]')?.textContent ?? ''
+    })`);
+    check('Storefront cart removes a line and keeps derived totals coherent', removedLine.lines === 1 && removedLine.total.includes('UYU 9.780') && removedLine.itemCount.includes('2 productos'), removedLine);
+
+    await evaluate(cdp, `document.querySelector('[data-storefront-cart-clear]')?.click()`);
+    await waitFor(cdp, "Boolean(document.querySelector('[data-storefront-cart-empty-state]'))");
+    const emptyCart = await evaluate(cdp, `({
+      lines: document.querySelectorAll('[data-storefront-cart-line]').length,
+      empty: document.querySelector('[data-storefront-cart-empty-state]')?.textContent ?? '',
+      checkoutLinks: [...document.querySelectorAll('[data-storefront-cart] a')].filter((link) => link.getAttribute('href') === '/store/checkout').length,
+      disabledEmptyButton: [...document.querySelectorAll('[data-storefront-cart] button')].some((button) => button.disabled && button.textContent?.includes('Carrito vacío'))
+    })`);
+    check('Storefront cart exposes empty state and blocks checkout after clearing', emptyCart.lines === 0 && emptyCart.empty.includes('Restaurar carrito demo') && emptyCart.checkoutLinks === 0 && emptyCart.disabledEmptyButton, emptyCart);
+
+    await evaluate(cdp, `document.querySelector('[data-storefront-cart-restore]')?.click()`);
+    await waitFor(cdp, "document.querySelectorAll('[data-storefront-cart-line]').length === 2");
+    const restoredCart = await evaluate(cdp, `({
+      lines: document.querySelectorAll('[data-storefront-cart-line]').length,
+      total: document.querySelector('[data-storefront-cart-total]')?.textContent ?? '',
+      quantities: [...document.querySelectorAll('[data-storefront-cart-quantity-value]')].map((node) => node.textContent)
+    })`);
+    check('Storefront cart restores provider initial state', restoredCart.lines === 2 && restoredCart.total.includes('UYU 6.580') && restoredCart.quantities.every((value) => value === '1'), restoredCart);
     await shot('storefront-cart-desktop.png');
 
     await navigate(cdp, checkoutUrl);
@@ -496,7 +533,7 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       summary: Boolean(document.querySelector('[data-storefront-cart-summary]')),
       overflow: document.documentElement.scrollWidth > innerWidth
     })`);
-    check('Mobile preserves cart shell, lines and summary', mobileCart.shell && mobileCart.cart && mobileCart.title.includes('Carrito preparado') && mobileCart.cartLines === 2 && mobileCart.summary, mobileCart);
+    check('Mobile preserves cart shell, lines and summary', mobileCart.shell && mobileCart.cart && mobileCart.title.includes('interacción local') && mobileCart.cartLines === 2 && mobileCart.summary, mobileCart);
     check('Mobile storefront cart avoids horizontal overflow', !mobileCart.overflow, mobileCart);
 
     await navigate(cdp, checkoutUrl);

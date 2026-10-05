@@ -221,7 +221,7 @@ describe('storefront architecture', () => {
     expect(checkout).not.toContain('MercadoPago');
   });
 
-  it('renders cart shell from storefront DTOs without persistence or checkout', () => {
+  it('renders cart interaction from storefront DTOs without persistence or transactions', () => {
     const dto = readFileSync('src/features/storefront/application/storefront.dto.ts', 'utf8');
     const contracts = readFileSync('src/features/storefront/application/storefront.contracts.ts', 'utf8');
     const provider = readFileSync('src/features/storefront/infrastructure/JsonStorefrontProvider.ts', 'utf8');
@@ -238,10 +238,17 @@ describe('storefront architecture', () => {
     expect(cart).toContain('text-[18px]');
     expect(cart).toContain('text-[12px]');
     expect(cart).toContain('grid-cols-[4.75rem_minmax(0,1fr)]');
+    expect(cart).toContain('deriveStorefrontCart');
+    expect(cart).toContain('getInitialCartQuantities');
+    expect(cart).toContain('data-storefront-cart-increase');
+    expect(cart).toContain('data-storefront-cart-decrease');
+    expect(cart).toContain('data-storefront-cart-remove');
+    expect(cart).toContain('data-storefront-cart-clear');
+    expect(cart).toContain('data-storefront-cart-restore');
+    expect(cart).toContain('data-storefront-cart-checkout');
     expect(cart).not.toContain('StorefrontPageIntro');
     expect(cart).not.toContain('rounded-2xl');
     expect(cart).not.toContain('shadow-sm');
-    expect(cart).toContain('disabled type="button"');
     expect(cart).not.toContain('localStorage');
     expect(cart).not.toContain('sessionStorage');
     expect(cart).not.toContain('fetch(');

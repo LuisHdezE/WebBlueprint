@@ -189,6 +189,10 @@ export interface StorefrontCartLineDto {
   subtitle: string;
   href: string;
   badgeLabel: string;
+  initialQuantity: number;
+  maxQuantity: number;
+  currencyCode: string;
+  unitPriceMinor: number;
   quantityLabel: string;
   unitPriceLabel: string;
   lineTotalLabel: string;
