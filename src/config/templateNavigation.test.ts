@@ -12,6 +12,7 @@ describe('templateNavigation', () => {
   it('exposes the complete G1 master navigation families', () => {
     expect(templateNavigation.map((section) => section.label)).toEqual([
       'General',
+      'Gestión',
       'Inventario',
       'Master Data',
       'Tienda online',
@@ -27,7 +28,20 @@ describe('templateNavigation', () => {
       'Layouts',
       'Documentación',
     ]);
-    expect(templateRouteItems).toHaveLength(126);
+    expect(templateRouteItems).toHaveLength(130);
+  });
+
+  it('exposes reusable management views to the Composer catalog', () => {
+    const managementRoutes = templateRouteItems
+      .filter((item) => item.to.startsWith('/applications/management/'))
+      .map((item) => item.to);
+
+    expect(managementRoutes).toEqual([
+      '/applications/management/dashboard',
+      '/applications/management/customers',
+      '/applications/management/orders',
+      '/applications/management/inventory',
+    ]);
   });
 
   it('exposes the extended master data routes added in A4', () => {
