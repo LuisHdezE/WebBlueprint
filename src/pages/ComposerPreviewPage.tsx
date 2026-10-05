@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import type { CSSProperties } from 'react';
 import { AppIcon } from '@/components/AppIcon';
 import { getSelectedProjectViews } from '@/composer/project.catalog';
+import { getPresetViewPresentation } from '@/composer/project.presets';
 import { readProjectManifest } from '@/composer/project.storage';
 import type { ProjectViewDefinition } from '@/composer/project.types';
 import { themePresets } from '@/theme/themeContext';
@@ -23,7 +24,23 @@ function initials(value: string) {
 
 export function ComposerPreviewPage() {
   const [project] = useState(readProjectManifest);
-  const selectedViews = useMemo(() => getSelectedProjectViews(project.views), [project.views]);
+  const selectedViews = useMemo(
+    () =>
+      getSelectedProjectViews(project.views).map((view) => {
+        const presentation = getPresetViewPresentation(project.presetId, view.path);
+        if (!presentation) {
+          return view;
+        }
+
+        return {
+          ...view,
+          label: presentation.label ?? view.label,
+          section: presentation.section ?? view.section,
+          childLabel: presentation.label ?? view.childLabel,
+        };
+      }),
+    [project.presetId, project.views],
+  );
   const [activePath, setActivePath] = useState(selectedViews[0]?.path ?? '');
   const activeView = selectedViews.find((view) => view.path === activePath) ?? selectedViews[0];
   const activeIndex = activeView ? selectedViews.findIndex((view) => view.path === activeView.path) : -1;
