@@ -59,7 +59,6 @@ export function DispatchBoardView({ repository = mockDispatchRepository }: Dispa
 
   useEffect(() => {
     let active = true;
-    setState({ status: 'loading' });
 
     repository
       .load({ status: filter })
@@ -94,7 +93,10 @@ export function DispatchBoardView({ repository = mockDispatchRepository }: Dispa
             <SelectField
               id="dispatch-status-filter"
               label="Estado"
-              onChange={setFilter}
+              onChange={(nextFilter) => {
+                setState({ status: 'loading' });
+                setFilter(nextFilter);
+              }}
               options={filterOptions}
               value={filter}
             />
