@@ -25,10 +25,12 @@ describe('project composer logic', () => {
 
     expect(presetProject.presetId).toBe('volketas');
     expect(presetProject.views).toEqual([
-      '/dashboard',
+      '/applications/management/dashboard',
+      '/applications/management/orders',
       '/applications/calendar',
       '/maps',
-      '/applications/contacts',
+      '/applications/management/customers',
+      '/applications/management/inventory',
       '/applications/tasks',
       '/applications/invoices/list',
       '/charts',
