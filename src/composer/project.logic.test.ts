@@ -32,18 +32,24 @@ describe('project composer logic', () => {
       '/applications/calendar',
       '/maps',
       '/applications/management/customers',
+      '/user/profile',
+      '/user/account-settings',
+      '/authentication/sign-in',
+      '/authentication/password-reset',
+      '/authentication/two-factor',
+    ]);
+
+    expect(presetProject.views).not.toEqual(expect.arrayContaining([
       '/applications/management/inventory',
       '/applications/tasks',
       '/applications/invoices/list',
       '/charts',
       '/widgets',
-      '/user/profile',
-      '/user/account-settings',
-    ]);
+    ]));
 
-    const edited = toggleProjectView(presetProject, '/applications/tasks');
+    const edited = toggleProjectView(presetProject, '/authentication/sign-in');
     expect(edited.presetId).toBe('volketas');
-    expect(edited.views).not.toContain('/applications/tasks');
+    expect(edited.views).not.toContain('/authentication/sign-in');
   });
 
   it('keeps the selected view sequence editable', () => {
