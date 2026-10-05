@@ -70,6 +70,7 @@ export interface StorefrontProductCardDto {
   stockLabel: string;
   image: StorefrontMediaDto;
   discoveryFacets?: Readonly<Record<string, string>>;
+  discoverySortRanks?: Readonly<Record<string, number>>;
 }
 
 export interface StorefrontPromoBandDto {
