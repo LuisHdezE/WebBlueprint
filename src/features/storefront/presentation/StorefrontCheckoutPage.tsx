@@ -1,7 +1,14 @@
 import { Link } from 'react-router';
+import { deriveStorefrontCart, getInitialCartQuantities } from '../application/storefront.cart';
 import type { StorefrontProvider } from '../application/storefront.contracts';
+import {
+  deriveStorefrontCheckoutPricing,
+  formatStorefrontMoney,
+  resolveStorefrontShippingQuote,
+} from '../application/storefront.shipping';
 import { StorefrontPageIntro } from './StorefrontPrimitives';
 import { useStorefrontSession } from './useStorefrontSession';
+import { useStorefrontShipping } from './useStorefrontShipping';
 
 interface StorefrontCheckoutPageProps {
   provider: StorefrontProvider;
@@ -9,7 +16,28 @@ interface StorefrontCheckoutPageProps {
 
 export function StorefrontCheckoutPage({ provider }: StorefrontCheckoutPageProps) {
   const checkout = provider.getCheckoutView();
+  const cartView = provider.getCartView();
+  const shippingView = provider.getShippingView();
   const { customer } = useStorefrontSession();
+  const { selection } = useStorefrontShipping();
+
+  const cart = deriveStorefrontCart(cartView.lines, getInitialCartQuantities(cartView.lines));
+  const shippingQuote = resolveStorefrontShippingQuote(shippingView, selection);
+  const pricing = deriveStorefrontCheckoutPricing(cart, shippingQuote);
+  const totalValue = pricing.currencyCode && pricing.totalMinor !== undefined
+    ? formatStorefrontMoney(pricing.currencyCode, pricing.totalMinor)
+    : 'No disponible';
+  const shippingCost = shippingQuote
+    ? formatStorefrontMoney(shippingQuote.currencyCode, shippingQuote.amountMinor)
+    : 'Pendiente';
+
+  const shippingFieldValue = (fieldId: string, fallback: string) => {
+    if (!shippingQuote) return fallback;
+    if (fieldId === 'department') return shippingQuote.coverageLabel ?? 'Retiro en tienda';
+    if (fieldId === 'zone') return shippingQuote.title;
+    if (fieldId === 'delivery') return shippingQuote.method === 'pickup' ? 'Retiro en tienda' : 'Envío por zona';
+    return fallback;
+  };
 
   return (
     <main className="bg-[#f7f2ea]" data-storefront-checkout>
@@ -57,16 +85,18 @@ export function StorefrontCheckoutPage({ provider }: StorefrontCheckoutPageProps
                   <h2 className="text-lg font-black text-slate-950">{checkout.shipping.title}</h2>
                   <p className="mt-1.5 max-w-2xl text-[11px] leading-4 text-slate-600">{checkout.shipping.description}</p>
                 </div>
-                <span className="inline-flex w-fit rounded-full bg-slate-100 px-2.5 py-1.5 text-[10px] font-black text-slate-600">{checkout.shipping.statusLabel}</span>
+                <span className="inline-flex w-fit rounded-full bg-slate-100 px-2.5 py-1.5 text-[10px] font-black text-slate-600">
+                  {shippingQuote ? `Seleccionado · ${shippingCost}` : checkout.shipping.statusLabel}
+                </span>
               </div>
               <Link className="mt-3 inline-flex rounded-full border border-[var(--storefront-primary)] px-3 py-2 text-[11px] font-black text-[var(--storefront-primary-strong)]" to={checkout.shipping.actionHref}>
-                {checkout.shipping.actionLabel}
+                {shippingQuote ? 'Cambiar modalidad o zona' : checkout.shipping.actionLabel}
               </Link>
               <div className="mt-4 grid gap-3 sm:grid-cols-3">
                 {checkout.shipping.fields.map((field) => (
                   <article key={field.id} className="rounded-xl border border-slate-200 bg-slate-50 p-3">
                     <p className="text-[10px] font-black uppercase tracking-[0.12em] text-slate-500">{field.label}</p>
-                    <p className="mt-1.5 text-sm font-black text-slate-950">{field.value}</p>
+                    <p className="mt-1.5 text-sm font-black text-slate-950">{shippingFieldValue(field.id, field.value)}</p>
                     <p className="mt-1.5 text-[11px] leading-4 text-slate-500">{field.helper}</p>
                   </article>
                 ))}
@@ -102,17 +132,26 @@ export function StorefrontCheckoutPage({ provider }: StorefrontCheckoutPageProps
           <aside className="h-fit rounded-xl border border-slate-200 bg-white p-3 shadow-sm lg:sticky lg:top-24" data-storefront-checkout-summary>
             <p className="text-[10px] font-black uppercase tracking-[0.16em] text-orange-700">{checkout.orderSummary.title}</p>
             <dl className="mt-4 space-y-3">
-              {checkout.orderSummary.lines.map((line) => (
+              {checkout.orderSummary.lines.filter((line) => line.id !== 'shipping').map((line) => (
                 <div key={line.id} className="flex items-start justify-between gap-3 border-b border-slate-100 pb-3 text-xs">
                   <dt className="font-bold text-slate-600">{line.label}</dt>
                   <dd className="shrink-0 font-black text-slate-950">{line.value}</dd>
                 </div>
               ))}
+              <div className="flex items-start justify-between gap-3 border-b border-slate-100 pb-3 text-xs" data-storefront-checkout-shipping-cost>
+                <dt className="font-bold text-slate-600">{shippingQuote?.title ?? 'Envío según zona'}</dt>
+                <dd className="shrink-0 font-black text-slate-950">{shippingCost}</dd>
+              </div>
             </dl>
             <div className="mt-4 flex items-end justify-between gap-3">
-              <p className="text-xs font-bold text-slate-500">{checkout.orderSummary.totalLabel}</p>
-              <p className="text-2xl font-black text-slate-950">{checkout.orderSummary.totalValue}</p>
+              <p className="text-xs font-bold text-slate-500">
+                {pricing.shippingSelected ? 'Total demo con entrega' : 'Subtotal demo · entrega pendiente'}
+              </p>
+              <p className="text-2xl font-black text-slate-950" data-storefront-checkout-total>{totalValue}</p>
             </div>
+            {pricing.hasCurrencyMismatch ? (
+              <p className="mt-2 text-[10px] font-bold text-red-700">No se suman monedas diferentes.</p>
+            ) : null}
             <button className="mt-4 w-full cursor-not-allowed rounded-full bg-slate-300 px-4 py-2 text-[11px] font-black text-slate-600" disabled type="button">
               Confirmar compra pendiente
             </button>
