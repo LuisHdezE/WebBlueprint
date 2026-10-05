@@ -27,6 +27,7 @@ describe('project composer logic', () => {
     expect(presetProject.theme.colorId).toBe('volketas');
     expect(presetProject.views).toEqual([
       '/applications/management/dashboard',
+      '/applications/management/dispatch',
       '/applications/management/orders',
       '/applications/calendar',
       '/maps',
