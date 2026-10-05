@@ -1,7 +1,7 @@
 import { Link } from 'react-router';
 import type { StorefrontProvider } from '../application/storefront.contracts';
 import { StorefrontPageIntro } from './StorefrontPrimitives';
-import { useStorefrontSession } from './StorefrontSessionContext';
+import { useStorefrontSession } from './useStorefrontSession';
 
 interface StorefrontCheckoutPageProps {
   provider: StorefrontProvider;
