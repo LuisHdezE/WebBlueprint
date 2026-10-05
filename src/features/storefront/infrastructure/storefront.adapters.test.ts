@@ -134,10 +134,11 @@ describe('storefront provider', () => {
     ]);
   });
 
-  it('exposes favorites without customer persistence or cart mutation', () => {
+  it('exposes favorites source data without customer persistence or cart mutation', () => {
     const provider = new JsonStorefrontProvider();
     const favorites = provider.getFavoritesView();
 
+    expect(favorites.title).toBe('Tus productos guardados');
     expect(favorites.products).toHaveLength(3);
     expect(favorites.products.map((product) => product.id)).toEqual([
       'favorite-display',

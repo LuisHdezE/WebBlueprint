@@ -400,7 +400,7 @@ describe('storefront architecture', () => {
     expect(navigation).toContain("to: '/store/shipping'");
   });
 
-  it('renders favorites skeleton without persistence, customer mutation or cart mutation', () => {
+  it('renders interactive favorites without persistence, customer mutation or cart mutation', () => {
     const dto = readFileSync('src/features/storefront/application/storefront.dto.ts', 'utf8');
     const contracts = readFileSync('src/features/storefront/application/storefront.contracts.ts', 'utf8');
     const provider = readFileSync('src/features/storefront/infrastructure/JsonStorefrontProvider.ts', 'utf8');
@@ -414,6 +414,10 @@ describe('storefront architecture', () => {
     expect(favorites).toContain('data-storefront-favorites');
     expect(favorites).toContain('data-storefront-favorites-products');
     expect(favorites).toContain('StorefrontProductCard');
+    expect(favorites).toContain('deriveFavoriteProducts');
+    expect(favorites).toContain('data-storefront-favorite-remove');
+    expect(favorites).toContain('data-storefront-favorites-clear');
+    expect(favorites).toContain('data-storefront-favorites-restore');
     expect(favorites).not.toContain('localStorage');
     expect(favorites).not.toContain('sessionStorage');
     expect(favorites).not.toContain('fetch(');

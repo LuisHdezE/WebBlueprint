@@ -256,15 +256,47 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       shell: Boolean(document.querySelector('[data-storefront-shell]')),
       page: Boolean(document.querySelector('[data-storefront-favorites]')),
       title: document.querySelector('[data-storefront-favorites] h1')?.textContent ?? '',
-      products: document.querySelectorAll('[data-storefront-favorites-products] [data-storefront-listing-product-card]').length,
+      products: document.querySelectorAll('[data-storefront-favorite-item]').length,
+      count: document.querySelector('[data-storefront-favorites-count]')?.textContent ?? '',
+      summary: document.querySelector('[data-storefront-favorites-summary]')?.textContent ?? '',
       emptyState: document.querySelector('[data-storefront-favorites-empty-state]')?.textContent ?? '',
       notices: document.querySelector('[data-storefront-favorites-notices]')?.textContent ?? '',
       overflow: document.documentElement.scrollWidth > innerWidth
     })`);
     check('Storefront favorites renders inside storefront shell', favorites.shell && favorites.page, favorites);
-    check('Storefront favorites renders three provider-driven products', favorites.title.includes('Guarda productos') && favorites.products === 3, favorites);
-    check('Storefront favorites exposes empty state and persistence guardrails', favorites.emptyState.includes('Aún no hay favoritos reales') && favorites.notices.includes('localStorage') && favorites.notices.includes('Sin carrito automático'), favorites);
+    check('Storefront favorites renders three active provider-driven products', favorites.title.includes('Tus productos guardados') && favorites.products === 3 && favorites.count.includes('3 favoritos') && favorites.summary.includes('3 de 3'), favorites);
+    check('Storefront favorites hides empty state while items exist', favorites.emptyState === '', favorites);
+    check('Storefront favorites exposes persistence and cart guardrails', favorites.notices.includes('localStorage') && favorites.notices.includes('Sin carrito automático'), favorites);
     check('Storefront favorites desktop avoids horizontal overflow', !favorites.overflow, favorites);
+
+    await evaluate(cdp, `document.querySelector('[data-storefront-favorite-id="favorite-display"] [data-storefront-favorite-remove]')?.click()`);
+    await waitFor(cdp, "document.querySelectorAll('[data-storefront-favorite-item]').length === 2");
+    const favoriteRemoved = await evaluate(cdp, `({
+      products: document.querySelectorAll('[data-storefront-favorite-item]').length,
+      count: document.querySelector('[data-storefront-favorites-count]')?.textContent ?? '',
+      summary: document.querySelector('[data-storefront-favorites-summary]')?.textContent ?? '',
+      removedStillVisible: Boolean(document.querySelector('[data-storefront-favorite-id="favorite-display"]'))
+    })`);
+    check('Storefront favorites removes one item in memory', favoriteRemoved.products === 2 && favoriteRemoved.count.includes('2 favoritos') && favoriteRemoved.summary.includes('2 de 3') && !favoriteRemoved.removedStillVisible, favoriteRemoved);
+
+    await evaluate(cdp, `document.querySelector('[data-storefront-favorites-clear]')?.click()`);
+    await waitFor(cdp, "Boolean(document.querySelector('[data-storefront-favorites-empty-state]'))");
+    const favoritesEmpty = await evaluate(cdp, `({
+      products: document.querySelectorAll('[data-storefront-favorite-item]').length,
+      count: document.querySelector('[data-storefront-favorites-count]')?.textContent ?? '',
+      emptyState: document.querySelector('[data-storefront-favorites-empty-state]')?.textContent ?? '',
+      restoreVisible: Boolean(document.querySelector('[data-storefront-favorites-restore]'))
+    })`);
+    check('Storefront favorites clear exposes a real empty state', favoritesEmpty.products === 0 && favoritesEmpty.count.includes('0 favoritos') && favoritesEmpty.emptyState.includes('lista de favoritos está vacía') && favoritesEmpty.restoreVisible, favoritesEmpty);
+
+    await evaluate(cdp, `document.querySelector('[data-storefront-favorites-restore]')?.click()`);
+    await waitFor(cdp, "document.querySelectorAll('[data-storefront-favorite-item]').length === 3");
+    const favoritesRestored = await evaluate(cdp, `({
+      products: document.querySelectorAll('[data-storefront-favorite-item]').length,
+      count: document.querySelector('[data-storefront-favorites-count]')?.textContent ?? '',
+      emptyVisible: Boolean(document.querySelector('[data-storefront-favorites-empty-state]'))
+    })`);
+    check('Storefront favorites restores provider initial state', favoritesRestored.products === 3 && favoritesRestored.count.includes('3 favoritos') && !favoritesRestored.emptyVisible, favoritesRestored);
     await shot('storefront-favorites-desktop.png');
 
     await navigate(cdp, cartUrl);
