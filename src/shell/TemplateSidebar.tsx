@@ -21,8 +21,8 @@ type NavigationEntry =
 function itemClassName(isActive: boolean) {
   return `flex min-h-[30px] items-center gap-2 rounded-md border-l-2 px-2 py-1 text-[11.5px] font-medium leading-tight transition-colors ${
     isActive
-      ? 'border-[var(--theme-primary)] bg-[var(--theme-primary-soft)] text-[var(--theme-primary-active)]'
-      : 'border-transparent text-slate-600 hover:bg-[var(--theme-primary-soft)] hover:text-[var(--theme-primary)]'
+      ? 'border-[var(--theme-accent)] bg-[var(--theme-navigation-active-background)] text-[var(--theme-navigation-text)]'
+      : 'border-transparent text-[var(--theme-navigation-text)] hover:bg-[var(--theme-navigation-active-background)] hover:text-[var(--theme-navigation-text)]'
   }`;
 }
 
@@ -97,7 +97,7 @@ export function TemplateSidebar({ collapsed, mobileOpen, onCloseMobile }: Templa
       ) : null}
 
       <aside
-        className={`fixed bottom-0 left-0 top-12 z-40 flex w-[232px] flex-col border-r border-slate-200 bg-white transition-[width,transform] duration-200 ${
+        className={`fixed bottom-0 left-0 top-12 z-40 flex w-[232px] flex-col border-r border-[var(--theme-navigation-border)] bg-[var(--theme-navigation-background)] transition-[width,transform] duration-200 ${
           collapsed ? 'md:w-[68px]' : 'md:w-[232px]'
         } ${mobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}
       >
@@ -122,7 +122,7 @@ export function TemplateSidebar({ collapsed, mobileOpen, onCloseMobile }: Templa
                     className={`mb-1 hidden h-8 items-center justify-center rounded-md transition-colors md:flex ${
                       hasActiveItem
                         ? 'bg-[var(--theme-primary-soft)] text-[var(--theme-primary)]'
-                        : 'text-slate-500 hover:bg-[var(--theme-primary-soft)] hover:text-[var(--theme-primary)]'
+                        : 'text-[var(--theme-navigation-muted)] hover:bg-[var(--theme-navigation-active-background)] hover:text-[var(--theme-navigation-text)]'
                     }`}
                     title={section.label}
                     to={collapsedTarget.to}
@@ -135,7 +135,7 @@ export function TemplateSidebar({ collapsed, mobileOpen, onCloseMobile }: Templa
                   <div
                     className={`px-2 pb-1 text-[9px] font-bold uppercase tracking-[0.12em] ${
                       sectionIndex === 0 ? 'pt-0.5' : 'pt-1'
-                    } ${hasActiveItem ? 'text-[var(--theme-primary)]' : 'text-slate-400'}`}
+                    } ${hasActiveItem ? 'text-[var(--theme-accent)]' : 'text-[var(--theme-navigation-muted)]'}`}
                   >
                     {section.label}
                   </div>
@@ -164,8 +164,8 @@ export function TemplateSidebar({ collapsed, mobileOpen, onCloseMobile }: Templa
                           <summary
                             className={`flex min-h-[30px] cursor-pointer list-none items-center gap-2 rounded-md px-2 py-1 text-[11.5px] font-semibold leading-tight transition-colors ${
                               groupHasActiveItem
-                                ? 'text-[var(--theme-primary-active)]'
-                                : 'text-slate-600 hover:bg-[var(--theme-primary-soft)] hover:text-[var(--theme-primary)]'
+                                ? 'text-[var(--theme-navigation-text)]'
+                                : 'text-[var(--theme-navigation-text)] hover:bg-[var(--theme-navigation-active-background)]'
                             }`}
                           >
                             <AppIcon className="size-[14px] shrink-0" name={groupIcon} />
@@ -173,7 +173,7 @@ export function TemplateSidebar({ collapsed, mobileOpen, onCloseMobile }: Templa
                             <AppIcon className="size-3 shrink-0 transition-transform group-open:rotate-180" name="chevron-down" />
                           </summary>
 
-                          <div className="ml-[13px] mt-0.5 space-y-0.5 border-l border-slate-100 pl-1.5">
+                          <div className="ml-[13px] mt-0.5 space-y-0.5 border-l border-[var(--theme-navigation-border)] pl-1.5">
                             {entry.items.map(({ item, label }) => (
                               <NavLink
                                 key={item.to}
@@ -196,14 +196,14 @@ export function TemplateSidebar({ collapsed, mobileOpen, onCloseMobile }: Templa
           })}
         </nav>
 
-        <div className={`border-t border-slate-100 py-2 ${collapsed ? 'md:px-1.5' : 'px-2'}`}>
+        <div className={`border-t border-[var(--theme-navigation-border)] py-2 ${collapsed ? 'md:px-1.5' : 'px-2'}`}>
           {collapsed ? (
             <div className="hidden h-8 items-center justify-center rounded-md text-slate-500 transition-colors hover:bg-[var(--theme-primary-soft)] hover:text-[var(--theme-primary)] md:flex">
               <AppIcon className="size-4" name="settings" />
             </div>
           ) : null}
           <div
-            className={`flex min-h-[30px] items-center gap-2 rounded-md px-2 py-1 text-[11.5px] font-medium text-slate-500 transition-colors hover:bg-slate-50 hover:text-slate-800 ${
+            className={`flex min-h-[30px] items-center gap-2 rounded-md px-2 py-1 text-[11.5px] font-medium text-[var(--theme-navigation-muted)] transition-colors hover:bg-[var(--theme-navigation-active-background)] hover:text-[var(--theme-navigation-text)] ${
               collapsed ? 'md:hidden' : ''
             }`}
           >
