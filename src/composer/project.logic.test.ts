@@ -20,6 +20,28 @@ describe('project composer logic', () => {
     expect(edited.views).not.toContain('/applications/ecommerce/editor');
   });
 
+  it('defines Volketas as an editable operational preset using selectable views only', () => {
+    const presetProject = applyProjectPreset(createDefaultProject(), 'volketas');
+
+    expect(presetProject.presetId).toBe('volketas');
+    expect(presetProject.views).toEqual([
+      '/dashboard',
+      '/applications/calendar',
+      '/maps',
+      '/applications/contacts',
+      '/applications/tasks',
+      '/applications/invoices/list',
+      '/charts',
+      '/widgets',
+      '/user/profile',
+      '/user/account-settings',
+    ]);
+
+    const edited = toggleProjectView(presetProject, '/applications/tasks');
+    expect(edited.presetId).toBe('volketas');
+    expect(edited.views).not.toContain('/applications/tasks');
+  });
+
   it('keeps the selected view sequence editable', () => {
     let project = createDefaultProject();
     project = toggleProjectView(project, '/applications/contacts');
