@@ -63,11 +63,11 @@ describe('templateNavigation', () => {
       '/applications/management/dashboard',
       '/applications/management/orders',
       '/applications/management/service-order',
-      '/applications/management/alerts',
       '/applications/management/dispatch',
       '/applications/calendar',
       '/maps',
       '/applications/management/customers',
+      '/applications/management/alerts',
       '/user/profile',
       '/user/account-settings',
     ]);
