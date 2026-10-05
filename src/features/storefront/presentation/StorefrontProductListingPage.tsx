@@ -8,14 +8,16 @@ export function StorefrontProductListingPage({ provider }: { provider: Storefron
   const listing = provider.getProductListingView();
   const [searchText, setSearchText] = useState('');
   const [filterSelections, setFilterSelections] = useState<Record<string, string>>({});
+  const [sortId, setSortId] = useState('recommended');
   const discovery = useMemo(
-    () => discoverStorefrontProducts(listing.products, { searchText, filters: filterSelections }),
-    [filterSelections, listing.products, searchText],
+    () => discoverStorefrontProducts(listing.products, { searchText, filters: filterSelections, sortId }),
+    [filterSelections, listing.products, searchText, sortId],
   );
 
   const clearDiscovery = () => {
     setSearchText('');
     setFilterSelections({});
+    setSortId('recommended');
   };
 
   return (
@@ -49,15 +51,17 @@ export function StorefrontProductListingPage({ provider }: { provider: Storefron
             />
           </label>
 
-          <label className="grid gap-1.5 opacity-60">
-            <span className="text-[10px] font-black uppercase tracking-[0.08em] text-slate-500">Orden · B13.3</span>
+          <label className="grid gap-1.5">
+            <span className="text-[10px] font-black uppercase tracking-[0.08em] text-slate-500">Orden</span>
             <select
-              aria-label="Ordenamiento pendiente"
-              className="h-10 rounded-xl border border-black/10 bg-white px-3 text-sm font-bold text-slate-900 outline-none"
-              disabled
+              aria-label="Ordenar productos"
+              className="h-10 rounded-xl border border-black/10 bg-white px-3 text-sm font-bold text-slate-900 outline-none focus:border-[var(--storefront-primary)] focus:ring-4 focus:ring-[var(--storefront-primary-soft)]"
+              data-storefront-discovery-sort
+              onChange={(event) => setSortId(event.target.value)}
+              value={sortId}
             >
               {listing.sortOptions.map((option) => (
-                <option key={option.id}>{option.label}</option>
+                <option key={option.id} value={option.id}>{option.label}</option>
               ))}
             </select>
           </label>
@@ -114,7 +118,7 @@ export function StorefrontProductListingPage({ provider }: { provider: Storefron
                 {discovery.resultCount} de {listing.products.length} productos
               </p>
               <p className="mt-0.5 text-[11px] font-bold text-slate-500">
-                Búsqueda + {discovery.activeFilterCount} filtro{discovery.activeFilterCount === 1 ? '' : 's'} activo{discovery.activeFilterCount === 1 ? '' : 's'} en memoria · ordenamiento continúa en B13.3
+                Búsqueda + {discovery.activeFilterCount} filtro{discovery.activeFilterCount === 1 ? '' : 's'} activo{discovery.activeFilterCount === 1 ? '' : 's'} · orden: {listing.sortOptions.find((option) => option.id === discovery.sortId)?.label ?? discovery.sortId}
               </p>
             </div>
             {discovery.hasActiveCriteria ? (
