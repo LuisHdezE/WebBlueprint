@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { readdirSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 describe('storefront payment architecture', () => {
@@ -40,6 +41,39 @@ describe('storefront payment architecture', () => {
       expect(file).not.toContain('MercadoPago');
       expect(file).not.toContain('createOrder');
       expect(file).not.toContain('inventory');
+    });
+  });
+
+  it('keeps payment context memory-only and decoupled from application', () => {
+    const contextDirectory = 'src/features/storefront/presentation/payment-context';
+    const files = readdirSync(contextDirectory)
+      .filter((file) => /\.(ts|tsx)$/.test(file) && !file.endsWith('.test.ts') && !file.endsWith('.test.tsx'))
+      .map((file) => readFileSync(`${contextDirectory}/${file}`, 'utf8'));
+    const reducer = readFileSync(`${contextDirectory}/payment-reducer.ts`, 'utf8');
+    const provider = readFileSync(`${contextDirectory}/StorefrontPaymentProvider.tsx`, 'utf8');
+    const hook = readFileSync(`${contextDirectory}/useStorefrontPayment.ts`, 'utf8');
+    const state = readFileSync(`${contextDirectory}/payment-state.ts`, 'utf8');
+    const router = readFileSync('src/app/router/AppRouter.tsx', 'utf8');
+
+    expect(state).toContain('selectedPaymentMethodId: string | null');
+    expect(state).toContain('selectedPaymentMethodId: null');
+    expect(provider).toContain('useReducer(storefrontPaymentReducer, initialStorefrontPaymentState)');
+    expect(provider).toContain('useMemo(() => ({');
+    expect(provider).toContain('<StorefrontPaymentContext.Provider value={value}>');
+    expect(hook).toContain('useStorefrontPayment must be used inside StorefrontPaymentProvider.');
+    expect(reducer).not.toContain('react');
+    expect(router).toContain('StorefrontPaymentProvider');
+
+    files.forEach((file) => {
+      expect(file).not.toContain('../application');
+      expect(file).not.toContain('@/features/storefront/application');
+      expect(file).not.toContain('localStorage');
+      expect(file).not.toContain('sessionStorage');
+      expect(file).not.toContain('fetch(');
+      expect(file).not.toContain('axios');
+      expect(file).not.toContain('Stripe');
+      expect(file).not.toContain('MercadoPago');
+      expect(file).not.toContain('createOrder');
     });
   });
 });
