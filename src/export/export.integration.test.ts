@@ -5,19 +5,20 @@ import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { createDefaultProject } from '@/composer/project.logic';
+import { applyProjectPreset, createDefaultProject } from '@/composer/project.logic';
 import { buildReactExportZip } from '@/export/export.engine';
 
 const smoke = process.env.WEBBLUEPRINT_EXPORT_SMOKE === '1' ? it : it.skip;
 
 describe('G2 exported project runtime proof', () => {
   smoke('extracts the real ZIP and passes npm ci plus the generated quality gate', () => {
-    const manifest = {
-      ...createDefaultProject(),
-      application: { name: 'CI Export Proof', logoDataUrl: null, faviconDataUrl: null },
-      theme: { colorId: 'teal' as const },
-      views: ['/dashboard', '/pages/contact'],
-    };
+    const manifest = applyProjectPreset(
+      {
+        ...createDefaultProject(),
+        application: { name: 'Volketas Export Proof', logoDataUrl: null, faviconDataUrl: null },
+      },
+      'volketas',
+    );
     const exported = buildReactExportZip(manifest);
     const workspace = mkdtempSync(join(tmpdir(), 'webblueprint-export-'));
     const projectDirectory = join(workspace, 'project');
@@ -32,7 +33,10 @@ describe('G2 exported project runtime proof', () => {
       execFileSync('npm', ['run', 'check'], { cwd: projectDirectory, stdio: 'inherit' });
 
       expect(existsSync(join(projectDirectory, 'webblueprint.json'))).toBe(true);
-      expect(existsSync(join(projectDirectory, 'contracts', 'view-content-v1.schema.json'))).toBe(true);
+      expect(existsSync(join(projectDirectory, 'src', 'dispatch', 'DispatchBoardView.tsx'))).toBe(true);
+      expect(existsSync(join(projectDirectory, 'src', 'service-orders', 'ServiceOrderDetailView.tsx'))).toBe(true);
+      expect(existsSync(join(projectDirectory, 'src', 'alerts-center', 'AlertCenterView.tsx'))).toBe(true);
+      expect(existsSync(join(projectDirectory, 'src', 'assets', 'AssetDetailView.tsx'))).toBe(true);
       expect(existsSync(join(projectDirectory, 'docs', 'architecture.md'))).toBe(true);
       expect(existsSync(join(projectDirectory, 'dist', 'index.html'))).toBe(true);
     } finally {
