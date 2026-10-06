@@ -505,7 +505,7 @@ const sourceBackedTsconfig = `{
     "noEmit": true,
     "jsx": "react-jsx",
     "types": ["vite/client", "vitest/globals"],
-    "paths": { "@/*": ["src/*"] }
+    "paths": { "@/*": ["./src/*"] }
   },
   "include": ["src/main.tsx", "src/exported/**/*.ts", "src/exported/**/*.tsx", "vite.config.ts"]
 }
