@@ -92,7 +92,9 @@ describe('templateNavigation', () => {
   });
 
   it('exposes the extended master data routes added in A4', () => {
-    const masterDataRoutes = templateRouteItems.filter((item) => item.to.startsWith('/admin/master-data/')).map((item) => item.to);
+    const masterDataRoutes = templateNavigation
+      .find((section) => section.label === 'Master Data')
+      ?.items.map((item) => item.to);
 
     expect(masterDataRoutes).toEqual([
       '/admin/master-data/brands',
