@@ -11,7 +11,7 @@ describe('FixPhone source assembly', () => {
 
   it('keeps product debt outside the executable assembly', () => {
     expect(fixPhoneAssembly.debtRoutes.length).toBeGreaterThan(0);
-    expect(fixPhoneImplementedRoutes).not.toEqual(expect.arrayContaining(fixPhoneAssembly.debtRoutes));
+    expect(fixPhoneImplementedRoutes).not.toEqual(expect.arrayContaining([...fixPhoneAssembly.debtRoutes]));
   });
 
   it('excludes generic demo families that would duplicate or contaminate FixPhone', () => {
