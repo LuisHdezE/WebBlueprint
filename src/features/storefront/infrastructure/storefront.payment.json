@@ -1,0 +1,69 @@
+{
+  "eyebrow": "Pago demo",
+  "title": "Selecciona un método de pago",
+  "description": "B18 define métodos de pago reutilizables para el checkout sin SDKs, cobros reales, backend ni creación de órdenes.",
+  "stateLabel": "Payment domain · sin transacción",
+  "defaultMethodId": "card",
+  "methods": [
+    {
+      "id": "card",
+      "kind": "card",
+      "title": "Tarjeta",
+      "description": "Método demo para representar pago con tarjeta mediante un proveedor futuro.",
+      "statusLabel": "Demo habilitado",
+      "summaryLabel": "Tarjeta demo",
+      "enabled": true,
+      "fee": {
+        "amountMinor": 0,
+        "currencyCode": "UYU"
+      }
+    },
+    {
+      "id": "cash",
+      "kind": "cash",
+      "title": "Efectivo",
+      "description": "Método demo para coordinar pago al retirar o recibir el producto.",
+      "statusLabel": "Demo habilitado",
+      "summaryLabel": "Efectivo demo",
+      "enabled": true,
+      "fee": {
+        "amountMinor": 0,
+        "currencyCode": "UYU"
+      }
+    },
+    {
+      "id": "mercado-pago",
+      "kind": "mercado-pago",
+      "title": "Mercado Pago demo",
+      "description": "Placeholder visual para una integración futura. No carga SDK ni inicia checkout real.",
+      "statusLabel": "Demo habilitado",
+      "summaryLabel": "Mercado Pago demo",
+      "enabled": true,
+      "fee": {
+        "amountMinor": 0,
+        "currencyCode": "UYU"
+      }
+    }
+  ],
+  "disabledNotice": {
+    "title": "Método no disponible",
+    "description": "El método seleccionado no está habilitado en la configuración demo del Blueprint."
+  },
+  "notices": [
+    {
+      "id": "no-payment-sdk",
+      "title": "Sin SDK de pago",
+      "description": "Este bloque no incorpora Mercado Pago, Stripe ni otro proveedor real."
+    },
+    {
+      "id": "no-backend",
+      "title": "Sin backend",
+      "description": "La selección queda preparada para frontend y no llama APIs externas."
+    },
+    {
+      "id": "no-order-mutation",
+      "title": "Sin creación de orden",
+      "description": "Seleccionar un método no confirma compra ni genera pedidos."
+    }
+  ]
+}
