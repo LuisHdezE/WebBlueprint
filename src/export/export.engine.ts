@@ -401,12 +401,17 @@ function createSourceBackedRoutes(views: readonly ProjectViewDefinition[]) {
   return `import type { ReactNode } from 'react';\n${imports}\n\n${setup}\n\nexport type SourceBackedRoute = { path: string; label: string; section: string; element: ReactNode };\n\nexport const sourceBackedRoutes: readonly SourceBackedRoute[] = [\n${entries}\n];\n`;
 }
 
-const sourceBackedProjectApp = `import { useMemo, useState } from 'react';
+function createSourceBackedProjectApp(manifest: BlueprintProjectManifest) {
+  return `import { useMemo } from 'react';
+import { Navigate, NavLink, Route, Routes, useLocation } from 'react-router';
 import { sourceBackedRoutes } from './routes';
 
+const applicationName = ${JSON.stringify(manifest.application.name)};
+const applicationLogo = ${JSON.stringify(manifest.application.logoDataUrl)};
+
 export function ProjectApp() {
-  const [activePath, setActivePath] = useState(sourceBackedRoutes[0]?.path ?? '');
-  const active = sourceBackedRoutes.find((route) => route.path === activePath) ?? sourceBackedRoutes[0];
+  const location = useLocation();
+  const active = sourceBackedRoutes.find((route) => route.path === location.pathname) ?? sourceBackedRoutes[0];
   const sections = useMemo(() => {
     const grouped = new Map<string, Array<(typeof sourceBackedRoutes)[number]>>();
     sourceBackedRoutes.forEach((route) => grouped.set(route.section, [...(grouped.get(route.section) ?? []), route]));
@@ -416,28 +421,37 @@ export function ProjectApp() {
   return (
     <div className="app-shell">
       <aside className="sidebar">
-        <div className="brand"><span className="brand-mark" /><div className="brand-copy"><strong>Volketas</strong><span>Operational Manager</span></div></div>
+        <div className="brand">
+          {applicationLogo ? <img alt="Logo" src={applicationLogo} /> : <span className="brand-mark" />}
+          <div className="brand-copy"><strong>{applicationName}</strong><span>Aplicación exportada</span></div>
+        </div>
         <nav>
           {sections.map(([section, items]) => (
             <section className="nav-section" key={section}>
               <div className="nav-section-title">{section}</div>
               {items.map((route) => (
-                <button className={route.path === active?.path ? 'nav-item active' : 'nav-item'} key={route.path} onClick={() => setActivePath(route.path)} type="button">
+                <NavLink className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'} key={route.path} to={route.path}>
                   <span className="nav-label">{route.label}</span>
-                </button>
+                </NavLink>
               ))}
             </section>
           ))}
         </nav>
       </aside>
       <div className="workspace">
-        <header className="topbar"><div><strong>{active?.label ?? 'Volketas'}</strong><span>{active?.path}</span></div><div><strong>{sourceBackedRoutes.findIndex((route) => route.path === active?.path) + 1} / {sourceBackedRoutes.length}</strong><span>Source-backed export</span></div></header>
-        <main className="content">{active?.element}</main>
+        <header className="topbar"><div><strong>{active?.label ?? applicationName}</strong><span>{active?.path}</span></div><div><strong>{sourceBackedRoutes.findIndex((route) => route.path === active?.path) + 1} / {sourceBackedRoutes.length}</strong><span>Selection = Preview = Export</span></div></header>
+        <main className="content">
+          <Routes>
+            {sourceBackedRoutes.map((route) => <Route element={route.element} key={route.path} path={route.path} />)}
+            <Route path="*" element={<Navigate replace to={sourceBackedRoutes[0]?.path ?? '/'} />} />
+          </Routes>
+        </main>
       </div>
     </div>
   );
 }
 `;
+}
 
 function createSourceBackedMain(themeColorId: string) {
   return `import { StrictMode } from 'react';
@@ -582,7 +596,7 @@ function buildSourceBackedExportProject(
     { path: 'index.html', content: createIndexHtml(manifest) },
     { path: 'package-lock.json', content: createPackageLock(manifest) },
     { path: 'package.json', content: createPackageJson(manifest) },
-    { path: 'src/exported/ProjectApp.tsx', content: sourceBackedProjectApp },
+    { path: 'src/exported/ProjectApp.tsx', content: createSourceBackedProjectApp(manifest) },
     { path: 'src/exported/routeManifest.ts', content: createSourceBackedRouteManifest(views) },
     { path: 'src/exported/routeManifest.test.ts', content: createSourceBackedRouteTest(views) },
     { path: 'src/exported/routes.tsx', content: createSourceBackedRoutes(views) },
