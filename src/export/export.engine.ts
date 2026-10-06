@@ -2,6 +2,7 @@ import packageJsonTemplateText from '../../package.json?raw';
 import packageLockTemplateText from '../../package-lock.json?raw';
 import eslintTemplateText from '../../eslint.config.js?raw';
 import { getSelectedProjectViews } from '@/composer/project.catalog';
+import { getPresetViewPresentation } from '@/composer/project.presets';
 import type { BlueprintProjectManifest, ProjectViewDefinition } from '@/composer/project.types';
 import type { ExportProject, ExportProjectFile } from '@/export/export.types';
 import { createStoredZip } from '@/export/export.zip';
@@ -20,6 +21,26 @@ type PackageLockTemplate = {
 };
 
 const packageTemplate = JSON.parse(packageJsonTemplateText) as PackageTemplate;
+
+const sourceTemplateFiles = import.meta.glob('../**/*.{ts,tsx,css,json}', {
+  eager: true,
+  query: '?raw',
+  import: 'default',
+}) as Record<string, string>;
+
+function applyPresetPresentation(manifest: BlueprintProjectManifest, views: readonly ProjectViewDefinition[]) {
+  return views.map((view) => {
+    const presentation = getPresetViewPresentation(manifest.presetId, view.path);
+    return presentation
+      ? {
+          ...view,
+          label: presentation.label ?? view.label,
+          section: presentation.section ?? view.section,
+          childLabel: presentation.label ?? view.childLabel,
+        }
+      : view;
+  });
+}
 
 function slugify(value: string) {
   return (
@@ -121,10 +142,10 @@ function createThemeCss(manifest: BlueprintProjectManifest) {
     throw new Error('No existe un tema disponible para la exportación.');
   }
 
-  return `:root {\n  --theme-primary: ${theme.primary};\n  --theme-primary-hover: ${theme.primaryHover};\n  --theme-primary-active: ${theme.primaryActive};\n  --theme-primary-soft: ${theme.primarySoft};\n  --theme-primary-muted: ${theme.primaryMuted};\n  --theme-primary-border: ${theme.primaryBorder};\n  --theme-on-primary: ${theme.onPrimary};\n  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;\n  color: #0f172a;\n  background: #f8fafc;\n}\n* { box-sizing: border-box; }\nbody { margin: 0; min-width: 320px; min-height: 100vh; }\nbutton { font: inherit; }\n`;
+  return `:root {\n  --theme-primary: ${theme.primary};\n  --theme-primary-hover: ${theme.primaryHover};\n  --theme-primary-active: ${theme.primaryActive};\n  --theme-primary-soft: ${theme.primarySoft};\n  --theme-primary-muted: ${theme.primaryMuted};\n  --theme-primary-border: ${theme.primaryBorder};\n  --theme-on-primary: ${theme.onPrimary};\n  --theme-accent: ${theme.accent ?? theme.primary};\n  --theme-accent-hover: ${theme.accentHover ?? theme.primaryHover};\n  --theme-accent-soft: ${theme.accentSoft ?? theme.primarySoft};\n  --theme-navigation-background: ${theme.navigationBackground ?? '#ffffff'};\n  --theme-navigation-text: ${theme.navigationText ?? '#475569'};\n  --theme-navigation-muted: ${theme.navigationMuted ?? '#94a3b8'};\n  --theme-navigation-border: ${theme.navigationBorder ?? '#e2e8f0'};\n  --theme-navigation-active-background: ${theme.navigationActiveBackground ?? theme.primarySoft};\n  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;\n  color: #0f172a;\n  background: #f8fafc;\n}\n* { box-sizing: border-box; }\nbody { margin: 0; min-width: 320px; min-height: 100vh; }\nbutton { font: inherit; }\n`;
 }
 
-const shellCss = `.app-shell { min-height: 100vh; display: grid; grid-template-columns: 232px minmax(0, 1fr); background: #f8fafc; }\n.sidebar { height: 100vh; position: sticky; top: 0; overflow: auto; border-right: 1px solid #e2e8f0; background: #fff; padding: 12px 10px; }\n.brand { display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 2px 6px 12px; border-bottom: 1px solid #e2e8f0; }\n.brand img, .brand-mark { width: 32px; height: 32px; border-radius: 8px; object-fit: contain; background: var(--theme-primary); }\n.brand strong { display: block; font-size: 13px; }\n.brand span { display: block; margin-top: 2px; color: #64748b; font-size: 9px; }\n.nav-section { margin-top: 12px; }\n.nav-section-title { padding: 0 8px 5px; color: #94a3b8; font-size: 9px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }\n.nav-item { width: 100%; min-height: 34px; display: flex; align-items: center; gap: 8px; border: 0; border-left: 2px solid transparent; border-radius: 7px; background: transparent; color: #475569; cursor: pointer; padding: 7px 9px; text-align: left; font-size: 11.5px; }\n.nav-item:hover { background: var(--theme-primary-soft); color: var(--theme-primary); }\n.nav-item.active { border-left-color: var(--theme-primary); background: var(--theme-primary-soft); color: var(--theme-primary-active); font-weight: 700; }\n.workspace { min-width: 0; }\n.topbar { min-height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 12px; position: sticky; top: 0; z-index: 10; border-bottom: 1px solid #e2e8f0; background: var(--theme-primary); color: var(--theme-on-primary); padding: 8px 18px; }\n.topbar strong { display: block; font-size: 12px; }\n.topbar span { display: block; margin-top: 2px; color: color-mix(in srgb, var(--theme-on-primary) 68%, transparent); font-size: 9px; }\n.content { max-width: 1200px; margin: 0 auto; padding: 22px; }\n.view-card { border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; padding: 22px; box-shadow: 0 1px 2px rgba(15, 23, 42, .04); }\n.view-card h1 { margin: 4px 0 0; font-size: 28px; letter-spacing: -.03em; }\n.eyebrow { margin: 0; color: var(--theme-primary); font-size: 10px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }\n.summary { margin: 9px 0 0; color: #64748b; font-size: 13px; line-height: 1.65; }\n.metrics { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; margin-top: 18px; }\n.metric { border: 1px solid #e2e8f0; border-radius: 9px; background: #f8fafc; padding: 12px; }\n.metric span { display: block; color: #94a3b8; font-size: 9px; text-transform: uppercase; }\n.metric strong { display: block; margin-top: 5px; font-size: 18px; }\n.items { display: grid; gap: 8px; margin-top: 18px; }\n.item { border: 1px solid #e2e8f0; border-radius: 9px; padding: 12px; }\n.item strong { font-size: 12px; }\n.item p { margin: 4px 0 0; color: #64748b; font-size: 11px; line-height: 1.5; }\n.state { border: 1px dashed #cbd5e1; border-radius: 9px; background: #f8fafc; color: #64748b; padding: 24px; text-align: center; font-size: 12px; }\n.error { border-color: #fecaca; background: #fef2f2; color: #991b1b; }\n@media (max-width: 760px) { .app-shell { grid-template-columns: 76px minmax(0, 1fr); } .brand-copy, .nav-label, .nav-section-title { display: none; } .nav-item { justify-content: center; padding-inline: 5px; } .content { padding: 14px; } .metrics { grid-template-columns: 1fr; } }\n`;
+const shellCss = `.app-shell { min-height: 100vh; display: grid; grid-template-columns: 232px minmax(0, 1fr); background: #f8fafc; }\n.sidebar { height: 100vh; position: sticky; top: 0; overflow: auto; border-right: 1px solid var(--theme-navigation-border); background: var(--theme-navigation-background); color: var(--theme-navigation-text); padding: 12px 10px; }\n.brand { display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 2px 6px 12px; border-bottom: 1px solid #e2e8f0; }\n.brand img, .brand-mark { width: 32px; height: 32px; border-radius: 8px; object-fit: contain; background: var(--theme-primary); }\n.brand strong { display: block; font-size: 13px; }\n.brand span { display: block; margin-top: 2px; color: var(--theme-navigation-muted); font-size: 9px; }\n.nav-section { margin-top: 12px; }\n.nav-section-title { padding: 0 8px 5px; color: var(--theme-navigation-muted); font-size: 9px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }\n.nav-item { width: 100%; min-height: 34px; display: flex; align-items: center; gap: 8px; border: 0; border-left: 2px solid transparent; border-radius: 7px; background: transparent; color: var(--theme-navigation-text); cursor: pointer; padding: 7px 9px; text-align: left; font-size: 11.5px; }\n.nav-item:hover { background: var(--theme-navigation-active-background); color: var(--theme-navigation-text); }\n.nav-item.active { border-left-color: var(--theme-accent); background: var(--theme-navigation-active-background); color: var(--theme-navigation-text); font-weight: 700; }\n.workspace { min-width: 0; }\n.topbar { min-height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 12px; position: sticky; top: 0; z-index: 10; border-bottom: 1px solid #e2e8f0; background: var(--theme-primary); color: var(--theme-on-primary); padding: 8px 18px; }\n.topbar strong { display: block; font-size: 12px; }\n.topbar span { display: block; margin-top: 2px; color: color-mix(in srgb, var(--theme-on-primary) 68%, transparent); font-size: 9px; }\n.content { max-width: 1200px; margin: 0 auto; padding: 22px; }\n.view-card { border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; padding: 22px; box-shadow: 0 1px 2px rgba(15, 23, 42, .04); }\n.view-card h1 { margin: 4px 0 0; font-size: 28px; letter-spacing: -.03em; }\n.eyebrow { margin: 0; color: var(--theme-primary); font-size: 10px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }\n.summary { margin: 9px 0 0; color: #64748b; font-size: 13px; line-height: 1.65; }\n.metrics { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; margin-top: 18px; }\n.metric { border: 1px solid #e2e8f0; border-radius: 9px; background: #f8fafc; padding: 12px; }\n.metric span { display: block; color: var(--theme-navigation-muted); font-size: 9px; text-transform: uppercase; }\n.metric strong { display: block; margin-top: 5px; font-size: 18px; }\n.items { display: grid; gap: 8px; margin-top: 18px; }\n.item { border: 1px solid #e2e8f0; border-radius: 9px; padding: 12px; }\n.item strong { font-size: 12px; }\n.item p { margin: 4px 0 0; color: #64748b; font-size: 11px; line-height: 1.5; }\n.state { border: 1px dashed #cbd5e1; border-radius: 9px; background: #f8fafc; color: #64748b; padding: 24px; text-align: center; font-size: 12px; }\n.error { border-color: #fecaca; background: #fef2f2; color: #991b1b; }\n@media (max-width: 760px) { .app-shell { grid-template-columns: 76px minmax(0, 1fr); } .brand-copy, .nav-label, .nav-section-title { display: none; } .nav-item { justify-content: center; padding-inline: 5px; } .content { padding: 14px; } .metrics { grid-template-columns: 1fr; } }\n`;
 
 const asyncStateSource = `export type AsyncState<T> =\n  | { status: 'loading' }\n  | { status: 'success'; data: T }\n  | { status: 'empty' }\n  | { status: 'error'; message: string };\n`;
 
@@ -257,10 +278,333 @@ const viteConfig = `import { defineConfig } from 'vite';\nimport react from '@vi
 
 const tsconfig = `{\n  "compilerOptions": {\n    "target": "ES2023",\n    "useDefineForClassFields": true,\n    "lib": ["ES2023", "DOM", "DOM.Iterable"],\n    "skipLibCheck": true,\n    "strict": true,\n    "module": "ESNext",\n    "moduleResolution": "Bundler",\n    "resolveJsonModule": true,\n    "allowSyntheticDefaultImports": true,\n    "noEmit": true,\n    "jsx": "react-jsx",\n    "types": ["vite/client", "vitest/globals"]\n  },\n  "include": ["src", "vite.config.ts"]\n}\n`;
 
+
+type SourceBackedRouteDefinition = {
+  imports: readonly string[];
+  setup?: readonly string[];
+  element: string;
+};
+
+const sourceBackedRouteDefinitions: Readonly<Record<string, SourceBackedRouteDefinition>> = {
+  '/applications/management/dashboard': {
+    imports: ["import { DashboardView } from '@/dashboard/DashboardView';"],
+    element: '<DashboardView />',
+  },
+  '/applications/management/dispatch': {
+    imports: ["import { DispatchBoardView } from '@/dispatch/DispatchBoardView';"],
+    element: '<DispatchBoardView />',
+  },
+  '/applications/management/orders': {
+    imports: ["import { OrderListView } from '@/orders/OrderListView';"],
+    element: '<OrderListView />',
+  },
+  '/applications/management/service-order': {
+    imports: ["import { ServiceOrderDetailView } from '@/service-orders/ServiceOrderDetailView';"],
+    element: '<ServiceOrderDetailView />',
+  },
+  '/applications/calendar': {
+    imports: [
+      "import { JsonCalendarContentProvider } from '@/features/applications/calendar/infrastructure/JsonCalendarContentProvider';",
+      "import { CalendarPage } from '@/features/applications/calendar/presentation/CalendarPage';",
+    ],
+    setup: ['const calendarContentProvider = new JsonCalendarContentProvider();'],
+    element: '<CalendarPage contentProvider={calendarContentProvider} />',
+  },
+  '/maps': {
+    imports: ["import { MapViewPage } from '@/features/maps/presentation/MapViewPage';"],
+    element: '<MapViewPage />',
+  },
+  '/applications/management/alerts': {
+    imports: ["import { AlertCenterView } from '@/alerts-center/AlertCenterView';"],
+    element: '<AlertCenterView />',
+  },
+  '/applications/management/customers': {
+    imports: ["import { CustomerDirectoryView } from '@/customers/CustomerDirectoryView';"],
+    element: '<CustomerDirectoryView />',
+  },
+  '/applications/management/asset': {
+    imports: ["import { AssetDetailView } from '@/assets/AssetDetailView';"],
+    element: '<AssetDetailView />',
+  },
+  '/user/profile': {
+    imports: ["import { UserProfilePage } from '@/features/user/presentation/UserProfilePage';"],
+    element: '<UserProfilePage />',
+  },
+  '/user/account-settings': {
+    imports: ["import { AccountSettingsPage } from '@/features/user/presentation/AccountSettingsPage';"],
+    element: '<AccountSettingsPage />',
+  },
+  '/authentication/sign-in': {
+    imports: [
+      "import { JsonSignInContentProvider } from '@/features/authentication/sign-in/infrastructure/JsonSignInContentProvider';",
+      "import { MockSignInGateway } from '@/features/authentication/sign-in/infrastructure/MockSignInGateway';",
+      "import { SignInPage } from '@/features/authentication/sign-in/presentation/SignInPage';",
+    ],
+    setup: [
+      'const signInContentProvider = new JsonSignInContentProvider();',
+      'const signInGateway = new MockSignInGateway();',
+    ],
+    element: '<SignInPage contentProvider={signInContentProvider} gateway={signInGateway} />',
+  },
+  '/authentication/password-reset': {
+    imports: [
+      "import { JsonPasswordResetContentProvider } from '@/features/authentication/password-reset/infrastructure/JsonPasswordResetContentProvider';",
+      "import { MockPasswordResetGateway } from '@/features/authentication/password-reset/infrastructure/MockPasswordResetGateway';",
+      "import { PasswordResetPage } from '@/features/authentication/password-reset/presentation/PasswordResetPage';",
+    ],
+    setup: [
+      'const passwordResetContentProvider = new JsonPasswordResetContentProvider();',
+      'const passwordResetGateway = new MockPasswordResetGateway();',
+    ],
+    element: '<PasswordResetPage contentProvider={passwordResetContentProvider} gateway={passwordResetGateway} />',
+  },
+  '/authentication/two-factor': {
+    imports: [
+      "import { JsonTwoFactorContentProvider } from '@/features/authentication/two-factor/infrastructure/JsonTwoFactorContentProvider';",
+      "import { MockTwoFactorGateway } from '@/features/authentication/two-factor/infrastructure/MockTwoFactorGateway';",
+      "import { TwoFactorPage } from '@/features/authentication/two-factor/presentation/TwoFactorPage';",
+    ],
+    setup: [
+      'const twoFactorContentProvider = new JsonTwoFactorContentProvider();',
+      'const twoFactorGateway = new MockTwoFactorGateway();',
+    ],
+    element: '<TwoFactorPage contentProvider={twoFactorContentProvider} gateway={twoFactorGateway} />',
+  },
+};
+
+function createSourceBackedRouteManifest(views: readonly ProjectViewDefinition[]) {
+  return `export const routeManifest = ${JSON.stringify(
+    views.map((view) => ({ path: view.path, label: view.label, section: view.section })),
+    null,
+    2,
+  )} as const;\n`;
+}
+
+function createSourceBackedRoutes(views: readonly ProjectViewDefinition[]) {
+  const definitions = views.map((view) => {
+    const definition = sourceBackedRouteDefinitions[view.path];
+    if (!definition) {
+      throw new Error(`La vista ${view.path} todavía no tiene export source-backed.`);
+    }
+    return { view, definition };
+  });
+
+  const imports = [...new Set(definitions.flatMap(({ definition }) => definition.imports))].join('\n');
+  const setup = [...new Set(definitions.flatMap(({ definition }) => definition.setup ?? []))].join('\n');
+  const entries = definitions
+    .map(
+      ({ view, definition }) =>
+        `  { path: ${JSON.stringify(view.path)}, label: ${JSON.stringify(view.label)}, section: ${JSON.stringify(view.section)}, element: ${definition.element} },`,
+    )
+    .join('\n');
+
+  return `import type { ReactNode } from 'react';\n${imports}\n\n${setup}\n\nexport type SourceBackedRoute = { path: string; label: string; section: string; element: ReactNode };\n\nexport const sourceBackedRoutes: readonly SourceBackedRoute[] = [\n${entries}\n];\n`;
+}
+
+const sourceBackedProjectApp = `import { useMemo, useState } from 'react';
+import { sourceBackedRoutes } from './routes';
+
+export function ProjectApp() {
+  const [activePath, setActivePath] = useState(sourceBackedRoutes[0]?.path ?? '');
+  const active = sourceBackedRoutes.find((route) => route.path === activePath) ?? sourceBackedRoutes[0];
+  const sections = useMemo(() => {
+    const grouped = new Map<string, Array<(typeof sourceBackedRoutes)[number]>>();
+    sourceBackedRoutes.forEach((route) => grouped.set(route.section, [...(grouped.get(route.section) ?? []), route]));
+    return [...grouped.entries()];
+  }, []);
+
+  return (
+    <div className="app-shell">
+      <aside className="sidebar">
+        <div className="brand"><span className="brand-mark" /><div className="brand-copy"><strong>Volketas</strong><span>Operational Manager</span></div></div>
+        <nav>
+          {sections.map(([section, items]) => (
+            <section className="nav-section" key={section}>
+              <div className="nav-section-title">{section}</div>
+              {items.map((route) => (
+                <button className={route.path === active?.path ? 'nav-item active' : 'nav-item'} key={route.path} onClick={() => setActivePath(route.path)} type="button">
+                  <span className="nav-label">{route.label}</span>
+                </button>
+              ))}
+            </section>
+          ))}
+        </nav>
+      </aside>
+      <div className="workspace">
+        <header className="topbar"><div><strong>{active?.label ?? 'Volketas'}</strong><span>{active?.path}</span></div><div><strong>{sourceBackedRoutes.findIndex((route) => route.path === active?.path) + 1} / {sourceBackedRoutes.length}</strong><span>Source-backed export</span></div></header>
+        <main className="content">{active?.element}</main>
+      </div>
+    </div>
+  );
+}
+`;
+
+function createSourceBackedMain(themeColorId: string) {
+  return `import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router';
+import { ProjectApp } from '@/exported/ProjectApp';
+import { ThemeProvider } from '@/theme/ThemeProvider';
+import '@/styles/index.css';
+import '@/exported/theme.css';
+import '@/exported/shell.css';
+
+window.localStorage.setItem('webblueprint-theme-color', ${JSON.stringify(themeColorId)});
+
+const rootElement = document.getElementById('root');
+if (!rootElement) throw new Error('Root element #root was not found.');
+
+createRoot(rootElement).render(
+  <StrictMode>
+    <BrowserRouter>
+      <ThemeProvider>
+        <ProjectApp />
+      </ThemeProvider>
+    </BrowserRouter>
+  </StrictMode>,
+);
+`;
+}
+
+const sourceBackedViteConfig = `import { fileURLToPath, URL } from 'node:url';
+import tailwindcss from '@tailwindcss/vite';
+import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+  resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) } },
+});
+`;
+
+const sourceBackedTsconfig = `{
+  "compilerOptions": {
+    "target": "ES2023",
+    "useDefineForClassFields": true,
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "skipLibCheck": true,
+    "strict": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "types": ["vite/client", "vitest/globals"],
+    "baseUrl": ".",
+    "paths": { "@/*": ["src/*"] }
+  },
+  "include": ["src/main.tsx", "src/exported/**/*.ts", "src/exported/**/*.tsx", "vite.config.ts"]
+}
+`;
+
+function sourceBackedFiles() {
+  return Object.entries(sourceTemplateFiles)
+    .map(([path, content]) => ({
+      path: path.replace(/^\.\.\//, 'src/'),
+      content,
+    }))
+    .filter(
+      (file) =>
+        file.path !== 'src/main.tsx' &&
+        !/\.(test|spec)\.[jt]sx?$/.test(file.path) &&
+        !file.path.includes('/__tests__/'),
+    );
+}
+
+function createSourceBackedRouteTest(views: readonly ProjectViewDefinition[]) {
+  return `import { describe, expect, it } from 'vitest';
+import { routeManifest } from './routeManifest';
+
+describe('source-backed route manifest', () => {
+  it('preserves exact Composer selection and order', () => {
+    expect(routeManifest.map((route) => route.path)).toEqual(${JSON.stringify(views.map((view) => view.path))});
+  });
+
+  it('does not duplicate routes', () => {
+    expect(new Set(routeManifest.map((route) => route.path)).size).toBe(routeManifest.length);
+  });
+});
+`;
+}
+
+function createSourceBackedReadme(manifest: BlueprintProjectManifest, views: readonly ProjectViewDefinition[]) {
+  return `# ${manifest.application.name}
+
+Aplicación React independiente exportada desde WebBlueprint usando superficies **source-backed**.
+
+## Selección exportada
+
+${views.map((view, index) => `${index + 1}. \`${view.path}\` · ${view.label}`).join('\n')}
+
+## Ejecutar
+
+\`\`\`bash
+npm ci
+npm run dev
+\`\`\`
+
+## Quality gate
+
+\`\`\`bash
+npm run check
+\`\`\`
+
+El archivo \`webblueprint.json\` conserva el manifest original. Las rutas activas viven en \`src/exported/routeManifest.ts\` y las superficies se montan desde las implementaciones reales reutilizadas de WebBlueprint.
+`;
+}
+
+function createSourceBackedArchitectureDoc(views: readonly ProjectViewDefinition[]) {
+  return `# Arquitectura del export source-backed
+
+Este export conserva las implementaciones reales necesarias de WebBlueprint y genera un composition root independiente para la selección actual.
+
+- \`src/exported/routes.tsx\` conecta las ${views.length} rutas seleccionadas con sus superficies reales.
+- \`src/exported/routeManifest.ts\` conserva orden, label y sección del preset.
+- \`src/main.tsx\` aplica el theme del manifest y monta la aplicación independiente.
+- Las rutas no seleccionadas no se montan en el runtime exportado.
+- El código reusable de soporte se conserva para mantener contratos, providers, primitives y dependencias de las superficies seleccionadas.
+- No se sintetizan páginas genéricas \`ViewContent\` para el preset Volketas.
+`;
+}
+
+function buildSourceBackedExportProject(
+  manifest: BlueprintProjectManifest,
+  views: readonly ProjectViewDefinition[],
+  rootName: string,
+): ExportProject {
+  const copiedSource = sourceBackedFiles();
+  const generated: ExportProjectFile[] = [
+    { path: '.gitignore', content: 'node_modules\ndist\ncoverage\n.DS_Store\n' },
+    { path: 'README.md', content: createSourceBackedReadme(manifest, views) },
+    { path: 'docs/architecture.md', content: createSourceBackedArchitectureDoc(views) },
+    { path: 'eslint.config.js', content: eslintTemplateText },
+    { path: 'index.html', content: createIndexHtml(manifest) },
+    { path: 'package-lock.json', content: createPackageLock(manifest) },
+    { path: 'package.json', content: createPackageJson(manifest) },
+    { path: 'src/exported/ProjectApp.tsx', content: sourceBackedProjectApp },
+    { path: 'src/exported/routeManifest.ts', content: createSourceBackedRouteManifest(views) },
+    { path: 'src/exported/routeManifest.test.ts', content: createSourceBackedRouteTest(views) },
+    { path: 'src/exported/routes.tsx', content: createSourceBackedRoutes(views) },
+    { path: 'src/exported/shell.css', content: shellCss },
+    { path: 'src/exported/theme.css', content: createThemeCss(manifest) },
+    { path: 'src/main.tsx', content: createSourceBackedMain(manifest.theme.colorId) },
+    { path: 'tsconfig.json', content: sourceBackedTsconfig },
+    { path: 'vite.config.ts', content: sourceBackedViteConfig },
+    { path: 'webblueprint.json', content: `${JSON.stringify(manifest, null, 2)}\n` },
+  ];
+
+  return { rootName, files: [...copiedSource, ...generated] };
+}
+
 export function buildReactExportProject(manifest: BlueprintProjectManifest): ExportProject {
   assertExportableManifest(manifest);
-  const views = getSelectedProjectViews(manifest.views);
+  const views = applyPresetPresentation(manifest, getSelectedProjectViews(manifest.views));
   const rootName = slugify(manifest.application.name);
+
+  if (manifest.presetId === 'volketas') {
+    return buildSourceBackedExportProject(manifest, views, rootName);
+  }
 
   const files: ExportProjectFile[] = [
     { path: '.gitignore', content: 'node_modules\ndist\ncoverage\n.DS_Store\n' },
