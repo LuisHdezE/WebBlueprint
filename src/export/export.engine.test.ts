@@ -85,7 +85,7 @@ describe('G2 ZIP Export v1', () => {
     const manifest = applyProjectPreset(
       {
         ...createDefaultProject(),
-        application: { name: 'Volketas', logoDataUrl: null, faviconDataUrl: null },
+        application: { name: 'Volketas Operaciones', logoDataUrl: 'data:image/svg+xml;base64,dm9sa2V0YXM=', faviconDataUrl: null },
       },
       'volketas',
     );
@@ -96,6 +96,7 @@ describe('G2 ZIP Export v1', () => {
     const routeManifest = project.files.find((file) => file.path === 'src/exported/routeManifest.ts')?.content ?? '';
     const theme = project.files.find((file) => file.path === 'src/exported/theme.css')?.content ?? '';
     const shell = project.files.find((file) => file.path === 'src/exported/shell.css')?.content ?? '';
+    const projectApp = project.files.find((file) => file.path === 'src/exported/ProjectApp.tsx')?.content ?? '';
 
     expect(paths).toContain('src/dispatch/DispatchBoardView.tsx');
     expect(paths).toContain('src/service-orders/ServiceOrderDetailView.tsx');
@@ -109,6 +110,12 @@ describe('G2 ZIP Export v1', () => {
     expect(theme).toContain('#0b2f4f');
     expect(theme).toContain('#f97316');
     expect(shell).toContain('var(--theme-navigation-background)');
+    expect(projectApp).toContain("import { Navigate, NavLink, Route, Routes, useLocation } from 'react-router';");
+    expect(projectApp).toContain('to={route.path}');
+    expect(projectApp).toContain('path={route.path}');
+    expect(projectApp).toContain('Volketas Operaciones');
+    expect(projectApp).toContain('data:image/svg+xml;base64,dm9sa2V0YXM=');
+    expect(projectApp).not.toContain('<strong>Volketas</strong>');
     expect(project.files.some((file) => file.path.includes('applications-management-dispatch/presentation'))).toBe(false);
   });
 
