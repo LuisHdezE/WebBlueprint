@@ -4,11 +4,13 @@ import rawCheckout from './storefront.checkout.json';
 import rawContact from './storefront.contact.json';
 import rawIdentity from './storefront.identity.json';
 import rawFavorites from './storefront.favorites.json';
+import rawPayment from './storefront.payment.json';
 import rawStorefront from './storefront.view.json';
 import rawShipping from './storefront.shipping.json';
 import rawWarranty from './storefront.warranty.json';
 import type { StorefrontProvider } from '../application/storefront.contracts';
 import type { StorefrontCartViewDto, StorefrontCatalogRouteViewDto, StorefrontCatalogViewDto, StorefrontCheckoutViewDto, StorefrontContactViewDto, StorefrontCustomerIdentityViewDto, StorefrontFavoritesViewDto, StorefrontHomeViewDto, StorefrontProductDetailDto, StorefrontProductDetailViewDto, StorefrontProductListingViewDto, StorefrontShellViewDto, StorefrontShippingViewDto, StorefrontViewDto, StorefrontWarrantyViewDto } from '../application/storefront.dto';
+import type { StorefrontPaymentViewDto } from '../application/storefront.payment.dto';
 
 type RawStorefrontCatalogRoute = Omit<StorefrontCatalogRouteViewDto, 'products'> & {
   productIds: readonly string[];
@@ -32,6 +34,7 @@ export class JsonStorefrontProvider implements StorefrontProvider {
       })),
     };
 
+    const payment = this.getPaymentView();
     const view = {
       ...(rawStorefront as Omit<StorefrontViewDto, 'cart' | 'checkout' | 'customerIdentity' | 'shipping' | 'favorites' | 'contact' | 'warranty' | 'catalog'>),
       cart: rawCart as StorefrontCartViewDto,
@@ -67,6 +70,8 @@ export class JsonStorefrontProvider implements StorefrontProvider {
       || !view.checkout?.title
       || !view.checkout.authGate.requiredLabel
       || !view.checkout.payment.options.length
+      || !payment.methods.length
+      || !payment.methods.every((method) => method.fee.currencyCode && Number.isInteger(method.fee.amountMinor))
       || !view.customerIdentity?.signIn.fields.length
       || !view.customerIdentity.register.fields.length
       || !view.shipping?.zones.length
@@ -117,6 +122,10 @@ export class JsonStorefrontProvider implements StorefrontProvider {
 
   getCheckoutView(): StorefrontCheckoutViewDto {
     return this.getStorefrontView().checkout;
+  }
+
+  getPaymentView(): StorefrontPaymentViewDto {
+    return rawPayment as StorefrontPaymentViewDto;
   }
 
   getCustomerIdentityView(): StorefrontCustomerIdentityViewDto {
