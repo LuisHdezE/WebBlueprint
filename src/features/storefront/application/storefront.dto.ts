@@ -393,11 +393,16 @@ export interface StorefrontFavoritesViewDto {
   }[];
 }
 
+export interface StorefrontMoneyDto {
+  amountMinor: number;
+  currencyCode: string;
+}
+
 export interface StorefrontShippingZoneDto {
   id: string;
   name: string;
   description: string;
-  priceLabel: string;
+  price: StorefrontMoneyDto;
   etaLabel: string;
   coverageLabel: string;
 }
@@ -413,7 +418,7 @@ export interface StorefrontShippingViewDto {
     id: string;
     title: string;
     description: string;
-    priceLabel: string;
+    price: StorefrontMoneyDto;
     etaLabel: string;
   };
   zones: readonly StorefrontShippingZoneDto[];

@@ -405,15 +405,34 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       page: Boolean(document.querySelector('[data-storefront-shipping]')),
       title: document.querySelector('[data-storefront-shipping] h1')?.textContent ?? '',
       zones: document.querySelectorAll('[data-storefront-shipping-zones] article').length,
+      options: document.querySelectorAll('[data-storefront-shipping-option]').length,
       pickup: document.querySelector('[data-storefront-shipping-pickup]')?.textContent ?? '',
       disabledFields: document.querySelectorAll('[data-storefront-shipping-address] input:disabled').length,
       notices: document.querySelector('[data-storefront-shipping-notices]')?.textContent ?? '',
       overflow: document.documentElement.scrollWidth > innerWidth
     })`);
-    check('Storefront shipping renders four demo zones', shipping.shell && shipping.page && shipping.zones === 4, shipping);
-    check('Storefront shipping preserves pickup and disabled address preview', shipping.pickup.includes('Sin costo') && shipping.disabledFields === 3, shipping);
+    check('Storefront shipping renders four zones plus pickup selection', shipping.shell && shipping.page && shipping.zones === 4 && shipping.options === 5, shipping);
+    check('Storefront shipping preserves disabled address preview', shipping.pickup.includes('UYU 0') && shipping.disabledFields === 3, shipping);
     check('Storefront shipping surfaces non-persistence guardrails', shipping.notices.includes('localStorage') && shipping.notices.includes('Sin transportista') && shipping.notices.includes('Sin mutación de pedido'), shipping);
     check('Storefront shipping desktop avoids horizontal overflow', !shipping.overflow, shipping);
+
+    await evaluate(cdp, `document.querySelector('[data-storefront-shipping-option="canelones-sur"]')?.click()`);
+    await waitFor(cdp, "document.querySelector('[data-storefront-shipping-option=canelones-sur]')?.getAttribute('data-storefront-shipping-selected') === 'true'");
+    const selectedShipping = await evaluate(cdp, `({
+      summary: document.querySelector('[data-storefront-shipping-selection-summary]')?.textContent ?? '',
+      cost: document.querySelector('[data-storefront-shipping-selection-cost]')?.textContent ?? ''
+    })`);
+    check('Storefront shipping selects Canelones from structured tariff data', selectedShipping.summary.includes('Canelones') && selectedShipping.cost.includes('UYU 320'), selectedShipping);
+
+    await evaluate(cdp, `document.querySelector('[data-storefront-shipping-summary] a')?.click()`);
+    await waitFor(cdp, "location.pathname === '/store/checkout' && Boolean(document.querySelector('[data-storefront-checkout-total]'))");
+    const checkoutWithShipping = await evaluate(cdp, `({
+      shipping: document.querySelector('[data-storefront-checkout-shipping-cost]')?.textContent ?? '',
+      total: document.querySelector('[data-storefront-checkout-total]')?.textContent ?? '',
+      delivery: document.querySelector('[data-storefront-checkout-shipping]')?.textContent ?? ''
+    })`);
+    check('Storefront checkout receives the shared shipping selection', checkoutWithShipping.shipping.includes('UYU 320') && checkoutWithShipping.delivery.includes('Canelones'), checkoutWithShipping);
+    check('Storefront checkout adds shipping to structured cart subtotal', checkoutWithShipping.total.includes('UYU 6.900'), checkoutWithShipping);
     await shot('storefront-shipping-desktop.png');
 
     await navigate(cdp, contactUrl);

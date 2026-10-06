@@ -1,7 +1,7 @@
 {
   "eyebrow": "Checkout público demo",
   "title": "Revisa la compra antes de continuar",
-  "description": "B16 conecta el gate de identidad con una sesión demo local. Los pagos, inventario y creación de orden continúan fuera de alcance.",
+  "description": "B17 mantiene la sesión demo local y añade cálculo de entrega por zona al total del checkout. Los pagos, inventario y creación de orden continúan fuera de alcance.",
   "stateLabel": "Checkout visual · sin transacción",
   "authGate": {
     "eyebrow": "Paso obligatorio",
@@ -36,31 +36,31 @@
         "value": "Pendiente"
       }
     ],
-    "totalLabel": "Total demo sin envío",
+    "totalLabel": "Subtotal demo",
     "totalValue": "UYU 6.580"
   },
   "shipping": {
     "title": "Entrega y envío",
-    "description": "Consulta una zona demo para visualizar cómo impactará el costo de entrega.",
+    "description": "Selecciona retiro o una zona demo para calcular cómo impacta el costo de entrega.",
     "statusLabel": "Tarifas demo disponibles",
     "fields": [
       {
         "id": "department",
         "label": "Departamento",
-        "value": "Montevideo (demo)",
-        "helper": "Dato visual, no editable."
+        "value": "A definir",
+        "helper": "Se actualiza con la selección de entrega."
       },
       {
         "id": "zone",
         "label": "Zona de entrega",
         "value": "A definir",
-        "helper": "El costo dependerá de la zona."
+        "helper": "B17 resuelve la tarifa desde datos monetarios estructurados."
       },
       {
         "id": "delivery",
         "label": "Modalidad",
         "value": "Envío o retiro",
-        "helper": "Sin selección funcional en B6."
+        "helper": "La selección vive solo en memoria React."
       }
     ],
     "actionLabel": "Ver zonas y costos",
@@ -68,7 +68,7 @@
   },
   "payment": {
     "title": "Método de pago",
-    "description": "Los métodos aparecen para reservar el espacio visual del flujo. Ninguno procesa pagos en B6.",
+    "description": "Los métodos aparecen para reservar el espacio visual del flujo. Ninguno procesa pagos todavía.",
     "options": [
       {
         "id": "mercado-pago",
