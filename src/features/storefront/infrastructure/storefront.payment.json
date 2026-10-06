@@ -53,7 +53,7 @@
     {
       "id": "no-payment-sdk",
       "title": "Sin SDK de pago",
-      "description": "Este bloque no incorpora Mercado Pago, Stripe ni otro proveedor real."
+      "description": "Este bloque no incorpora proveedores reales de pago."
     },
     {
       "id": "no-backend",
