@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createDefaultProject } from '@/composer/project.logic';
+import { applyProjectPreset, createDefaultProject } from '@/composer/project.logic';
 import type { BlueprintProjectManifest } from '@/composer/project.types';
 import { buildReactExportProject, buildReactExportZip } from '@/export/export.engine';
 
@@ -79,6 +79,37 @@ describe('G2 ZIP Export v1', () => {
     expect(packageLock.packages?.['']?.name).toBe(packageJson.name);
     expect(packageLock.packages?.['']?.dependencies).toEqual(packageJson.dependencies);
     expect(packageLock.packages?.['']?.devDependencies).toEqual(packageJson.devDependencies);
+  });
+
+  it('exports Volketas as source-backed routes with aliases and full visual theme', () => {
+    const manifest = applyProjectPreset(
+      {
+        ...createDefaultProject(),
+        application: { name: 'Volketas', logoDataUrl: null, faviconDataUrl: null },
+      },
+      'volketas',
+    );
+
+    const project = buildReactExportProject(manifest);
+    const paths = project.files.map((file) => file.path);
+    const routes = project.files.find((file) => file.path === 'src/exported/routes.tsx')?.content ?? '';
+    const routeManifest = project.files.find((file) => file.path === 'src/exported/routeManifest.ts')?.content ?? '';
+    const theme = project.files.find((file) => file.path === 'src/exported/theme.css')?.content ?? '';
+    const shell = project.files.find((file) => file.path === 'src/exported/shell.css')?.content ?? '';
+
+    expect(paths).toContain('src/dispatch/DispatchBoardView.tsx');
+    expect(paths).toContain('src/service-orders/ServiceOrderDetailView.tsx');
+    expect(paths).toContain('src/alerts-center/AlertCenterView.tsx');
+    expect(paths).toContain('src/assets/AssetDetailView.tsx');
+    expect(routes).toContain('<DispatchBoardView />');
+    expect(routes).toContain('<ServiceOrderDetailView />');
+    expect(routeManifest).toContain('"label": "Despacho"');
+    expect(routeManifest).toContain('"label": "Servicios"');
+    expect(routeManifest).toContain('"label": "Activos"');
+    expect(theme).toContain('#0b2f4f');
+    expect(theme).toContain('#f97316');
+    expect(shell).toContain('var(--theme-navigation-background)');
+    expect(project.files.some((file) => file.path.includes('applications-management-dispatch/presentation'))).toBe(false);
   });
 
   it('creates byte-for-byte deterministic ZIP output', () => {
