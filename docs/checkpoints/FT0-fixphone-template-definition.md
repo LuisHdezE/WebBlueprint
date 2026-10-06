@@ -103,3 +103,8 @@ Objetivo:
 3. exportar/trasladar la selección útil a `LuisHdezE/FixPhone`;
 4. mantener la deuda como inventario explícito, no implementarla;
 5. dejar FixPhone navegable como MVP web antes de la vinculación API.
+
+
+## CI refresh
+
+Se agregó este checkpoint únicamente para forzar la revalidación del HEAD corregido de la PR #105 después de ajustar el test canónico de Master Data.
