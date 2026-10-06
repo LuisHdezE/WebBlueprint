@@ -44,6 +44,22 @@ describe('project composer logic', () => {
     expect(edited.views).not.toContain('/store/favorites');
   });
 
+  it('keeps FixPhone-specific labels outside the generic view catalog', () => {
+    expect(getPresetViewPresentation('fixphone', '/apps/inventory/dashboard')).toEqual({
+      label: 'Panel operativo',
+      section: 'Operación',
+    });
+    expect(getPresetViewPresentation('fixphone', '/store/products')).toEqual({
+      label: 'Productos',
+      section: 'Tienda online',
+    });
+    expect(getPresetViewPresentation('fixphone', '/applications/management/orders')).toEqual({
+      label: 'Pedidos',
+      section: 'Comercial',
+    });
+    expect(getPresetViewPresentation('crm', '/apps/inventory/dashboard')).toBeUndefined();
+  });
+
   it('defines Volketas as an editable operational preset using selectable views only', () => {
     const presetProject = applyProjectPreset(createDefaultProject(), 'volketas');
 
