@@ -21,6 +21,29 @@ describe('project composer logic', () => {
     expect(edited.views).not.toContain('/applications/ecommerce/editor');
   });
 
+  it('defines FixPhone as an editable MVP preset using implemented selectable views only', () => {
+    const presetProject = applyProjectPreset(createDefaultProject(), 'fixphone');
+
+    expect(presetProject.presetId).toBe('fixphone');
+    expect(presetProject.theme.colorId).toBe('blue');
+    expect(presetProject.views).toContain('/apps/inventory/devices');
+    expect(presetProject.views).toContain('/admin/master-data/brands');
+    expect(presetProject.views).toContain('/store/products');
+    expect(presetProject.views).toContain('/store/cart');
+    expect(presetProject.views).toContain('/applications/management/orders');
+    expect(presetProject.views).not.toEqual(expect.arrayContaining([
+      '/fixphone/repair-orders',
+      '/fixphone/dismantling-orders',
+      '/fixphone/integrations',
+      '/applications/ecommerce/products',
+      '/applications/ecommerce/shop',
+    ]));
+
+    const edited = toggleProjectView(presetProject, '/store/favorites');
+    expect(edited.presetId).toBe('fixphone');
+    expect(edited.views).not.toContain('/store/favorites');
+  });
+
   it('defines Volketas as an editable operational preset using selectable views only', () => {
     const presetProject = applyProjectPreset(createDefaultProject(), 'volketas');
 
