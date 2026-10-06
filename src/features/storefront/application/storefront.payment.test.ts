@@ -68,9 +68,12 @@ describe('storefront payment domain', () => {
   });
 
   it('does not resolve unknown or disabled methods', () => {
+    const disabledMethod = paymentView.methods.find((method) => method.id === 'disabled-method');
+
     expect(resolvePayment(paymentView, 'missing')).toBeNull();
     expect(resolvePayment(paymentView, 'disabled-method')).toBeNull();
-    expect(isPaymentEnabled(paymentView.methods[2])).toBe(false);
+    expect(disabledMethod).toBeDefined();
+    expect(isPaymentEnabled(disabledMethod!)).toBe(false);
   });
 
   it('derives checkout payment state from the selected method', () => {
