@@ -25,10 +25,16 @@ export type ProjectViewDefinition = {
   childLabel: string;
 };
 
+export type ProjectPresetViewPresentation = {
+  label?: string;
+  section?: string;
+};
+
 export type ProjectPresetDefinition = {
   id: string;
   name: string;
   description: string;
   viewPaths: readonly string[];
   themeColorId?: ThemeColorId;
+  viewPresentation?: Readonly<Record<string, ProjectPresetViewPresentation>>;
 };
