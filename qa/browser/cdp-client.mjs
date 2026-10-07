@@ -52,7 +52,8 @@ async function findAvailablePort() {
   });
 }
 
-async function waitForDebugTarget(port, timeoutMs = 15_000) {
+// GitHub-hosted runners can need more than 15s for the first cold Chrome startup.
+async function waitForDebugTarget(port, timeoutMs = 30_000) {
   const startedAt = Date.now();
   let lastError;
 
