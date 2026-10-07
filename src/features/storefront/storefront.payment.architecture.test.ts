@@ -31,6 +31,7 @@ describe('storefront payment architecture', () => {
       'src/features/storefront/application/storefront.payment.dto.ts',
       'src/features/storefront/infrastructure/JsonStorefrontProvider.ts',
       'src/features/storefront/infrastructure/storefront.payment.json',
+      'src/features/storefront/presentation/StorefrontCheckoutPage.tsx',
     ].map((path) => readFileSync(path, 'utf8'));
 
     files.forEach((file) => {
@@ -42,6 +43,19 @@ describe('storefront payment architecture', () => {
       expect(file).not.toContain('createOrder');
       expect(file).not.toContain('inventory');
     });
+  });
+
+  it('renders interactive checkout payment selection from the payment context', () => {
+    const checkout = readFileSync('src/features/storefront/presentation/StorefrontCheckoutPage.tsx', 'utf8');
+
+    expect(checkout).toContain('provider.getPaymentView()');
+    expect(checkout).toContain('deriveCheckoutPayment(paymentView, selectedPaymentMethodId)');
+    expect(checkout).toContain('useStorefrontPayment');
+    expect(checkout).toContain('selectPaymentMethod(method.id)');
+    expect(checkout).toContain('data-storefront-payment-method');
+    expect(checkout).toContain('data-storefront-payment-selected');
+    expect(checkout).toContain('data-storefront-checkout-payment-summary');
+    expect(checkout).not.toContain('checkout.payment.options.map');
   });
 
   it('keeps payment context memory-only and decoupled from application', () => {

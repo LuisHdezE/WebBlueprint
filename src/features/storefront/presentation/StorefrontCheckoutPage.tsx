@@ -1,11 +1,13 @@
 import { Link } from 'react-router';
 import { deriveStorefrontCart, getInitialCartQuantities } from '../application/storefront.cart';
 import type { StorefrontProvider } from '../application/storefront.contracts';
+import { deriveCheckoutPayment } from '../application/storefront.payment';
 import {
   deriveStorefrontCheckoutPricing,
   formatStorefrontMoney,
   resolveStorefrontShippingQuote,
 } from '../application/storefront.shipping';
+import { useStorefrontPayment } from './payment-context';
 import { StorefrontPageIntro } from './StorefrontPrimitives';
 import { useStorefrontSession } from './useStorefrontSession';
 import { useStorefrontShipping } from './useStorefrontShipping';
@@ -17,16 +19,22 @@ interface StorefrontCheckoutPageProps {
 export function StorefrontCheckoutPage({ provider }: StorefrontCheckoutPageProps) {
   const checkout = provider.getCheckoutView();
   const cartView = provider.getCartView();
+  const paymentView = provider.getPaymentView();
   const shippingView = provider.getShippingView();
   const { customer } = useStorefrontSession();
+  const { selectedPaymentMethodId, selectPaymentMethod } = useStorefrontPayment();
   const { selection } = useStorefrontShipping();
 
   const cart = deriveStorefrontCart(cartView.lines, getInitialCartQuantities(cartView.lines));
+  const checkoutPayment = deriveCheckoutPayment(paymentView, selectedPaymentMethodId);
   const shippingQuote = resolveStorefrontShippingQuote(shippingView, selection);
   const pricing = deriveStorefrontCheckoutPricing(cart, shippingQuote);
   const totalValue = pricing.currencyCode && pricing.totalMinor !== undefined
     ? formatStorefrontMoney(pricing.currencyCode, pricing.totalMinor)
     : 'No disponible';
+  const paymentFeeValue = checkoutPayment.currencyCode && checkoutPayment.feeMinor !== undefined
+    ? formatStorefrontMoney(checkoutPayment.currencyCode, checkoutPayment.feeMinor)
+    : 'Pendiente';
   const shippingCost = shippingQuote
     ? formatStorefrontMoney(shippingQuote.currencyCode, shippingQuote.amountMinor)
     : 'Pendiente';
@@ -104,16 +112,53 @@ export function StorefrontCheckoutPage({ provider }: StorefrontCheckoutPageProps
             </section>
 
             <section className="rounded-xl border border-slate-200 bg-white p-3 shadow-sm" data-storefront-checkout-payment>
-              <h2 className="text-lg font-black text-slate-950">{checkout.payment.title}</h2>
-              <p className="mt-1.5 max-w-2xl text-[11px] leading-4 text-slate-600">{checkout.payment.description}</p>
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-[0.16em] text-orange-700">{paymentView.eyebrow}</p>
+                  <h2 className="mt-1 text-lg font-black text-slate-950">{paymentView.title}</h2>
+                  <p className="mt-1.5 max-w-2xl text-[11px] leading-4 text-slate-600">{paymentView.description}</p>
+                </div>
+                <span className="inline-flex w-fit rounded-full bg-slate-100 px-2.5 py-1.5 text-[10px] font-black text-slate-600" data-storefront-payment-status>
+                  {checkoutPayment.statusLabel ?? paymentView.stateLabel}
+                </span>
+              </div>
               <div className="mt-4 grid gap-3 sm:grid-cols-3">
-                {checkout.payment.options.map((option) => (
-                  <article key={option.id} className="rounded-xl border border-slate-200 p-3">
+                {paymentView.methods.map((method) => {
+                  const selected = method.id === checkoutPayment.methodId;
+                  return (
+                    <button
+                      key={method.id}
+                      aria-pressed={selected}
+                      className={`rounded-xl border p-3 text-left transition ${selected ? 'border-[var(--storefront-primary)] bg-orange-50 shadow-sm' : 'border-slate-200 bg-white hover:border-orange-200 hover:bg-orange-50/40'} ${method.enabled ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'}`}
+                      data-storefront-payment-method={method.id}
+                      data-storefront-payment-selected={selected ? 'true' : 'false'}
+                      disabled={!method.enabled}
+                      onClick={() => selectPaymentMethod(method.id)}
+                      type="button"
+                    >
                     <div className="flex items-start justify-between gap-2">
-                      <h3 className="text-sm font-black text-slate-950">{option.title}</h3>
-                      <span className="rounded-full bg-slate-100 px-2 py-1 text-[9px] font-black uppercase tracking-[0.12em] text-slate-500">{option.statusLabel}</span>
+                      <h3 className="text-sm font-black text-slate-950">{method.title}</h3>
+                      <span className="rounded-full bg-slate-100 px-2 py-1 text-[9px] font-black uppercase tracking-[0.12em] text-slate-500">{selected ? 'Seleccionado' : method.statusLabel}</span>
                     </div>
-                    <p className="mt-2 text-[11px] leading-4 text-slate-600">{option.description}</p>
+                    <p className="mt-2 text-[11px] leading-4 text-slate-600">{method.description}</p>
+                    <p className="mt-3 text-[10px] font-black uppercase tracking-[0.12em] text-slate-500">
+                      Comisión demo · {formatStorefrontMoney(method.fee.currencyCode, method.fee.amountMinor)}
+                    </p>
+                    </button>
+                  );
+                })}
+              </div>
+              {checkoutPayment.paymentEnabled ? null : (
+                <div className="mt-3 rounded-xl border border-orange-200 bg-orange-50 p-3" data-storefront-payment-disabled-notice>
+                  <h3 className="text-xs font-black text-orange-900">{paymentView.disabledNotice.title}</h3>
+                  <p className="mt-1 text-[11px] leading-4 text-orange-800">{paymentView.disabledNotice.description}</p>
+                </div>
+              )}
+              <div className="mt-3 grid gap-2 sm:grid-cols-3">
+                {paymentView.notices.map((notice) => (
+                  <article key={notice.id} className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                    <h3 className="text-[11px] font-black text-slate-950">{notice.title}</h3>
+                    <p className="mt-1 text-[10px] leading-4 text-slate-600">{notice.description}</p>
                   </article>
                 ))}
               </div>
@@ -141,6 +186,10 @@ export function StorefrontCheckoutPage({ provider }: StorefrontCheckoutPageProps
               <div className="flex items-start justify-between gap-3 border-b border-slate-100 pb-3 text-xs" data-storefront-checkout-shipping-cost>
                 <dt className="font-bold text-slate-600">{shippingQuote?.title ?? 'Envío según zona'}</dt>
                 <dd className="shrink-0 font-black text-slate-950">{shippingCost}</dd>
+              </div>
+              <div className="flex items-start justify-between gap-3 border-b border-slate-100 pb-3 text-xs" data-storefront-checkout-payment-summary>
+                <dt className="font-bold text-slate-600">{checkoutPayment.summaryLabel ?? 'Método de pago pendiente'}</dt>
+                <dd className="shrink-0 font-black text-slate-950">{paymentFeeValue}</dd>
               </div>
             </dl>
             <div className="mt-4 flex items-end justify-between gap-3">
