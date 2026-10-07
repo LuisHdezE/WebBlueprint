@@ -377,6 +377,9 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
       authGate: document.querySelector('[data-storefront-checkout-auth-gate]')?.textContent ?? '',
       shipping: document.querySelector('[data-storefront-checkout-shipping]')?.textContent ?? '',
       payment: document.querySelector('[data-storefront-checkout-payment]')?.textContent ?? '',
+      selectedPayment: document.querySelector('[data-storefront-payment-method="card"]')?.getAttribute('data-storefront-payment-selected') ?? '',
+      paymentMethods: [...document.querySelectorAll('[data-storefront-payment-method]')].map((method) => method.getAttribute('data-storefront-payment-method')),
+      paymentSummary: document.querySelector('[data-storefront-checkout-payment-summary]')?.textContent ?? '',
       summary: document.querySelector('[data-storefront-checkout-summary]')?.textContent ?? '',
       notices: document.querySelector('[data-storefront-checkout-notices]')?.textContent ?? '',
       disabledButtons: [...document.querySelectorAll('[data-storefront-checkout] button')].filter((button) => button.disabled).length,
@@ -391,11 +394,28 @@ export async function runBrowserQa({ baseUrl, artifactDir }) {
     check('Storefront checkout requires authentication or registration', checkout.title.includes('Revisa la compra') && checkout.authGate.includes('Autenticación o registro requerido'), checkout);
     check('Storefront checkout links to dedicated customer identity routes', checkout.identityLinks.includes('/store/account/sign-in') && checkout.identityLinks.includes('/store/account/register'), checkout);
     check('Storefront checkout exposes shipping zone navigation', checkout.shipping.includes('Tarifas demo disponibles') && checkout.shippingLinks.includes('/store/shipping'), checkout);
-    check('Storefront checkout exposes payment placeholders', checkout.payment.includes('Mercado Pago') && checkout.payment.includes('Tarjeta') && checkout.payment.includes('WhatsApp'), checkout);
+    check('Storefront checkout exposes interactive payment methods', checkout.paymentMethods.join('|') === 'card|cash|mercado-pago' && checkout.payment.includes('Mercado Pago demo') && checkout.payment.includes('Tarjeta') && checkout.payment.includes('Efectivo'), checkout);
+    check('Storefront checkout defaults payment through the payment domain', checkout.selectedPayment === 'true' && checkout.paymentSummary.includes('Tarjeta demo'), checkout);
     check('Storefront checkout remains non-transactional', checkout.summary.includes('UYU 6.580') && checkout.disabledButtons >= 1 && checkout.notices.includes('Sin creación de orden'), checkout);
     check('Storefront checkout surfaces no-client-persistence guardrail', checkout.notices.includes('localStorage') && checkout.notices.includes('sessionStorage'), checkout);
     check('Storefront checkout avoids admin sidebar and public blueprint copy', !checkout.adminSidebar && !checkout.publicShellBrand, checkout);
     check('Storefront checkout desktop avoids horizontal overflow', !checkout.overflow, checkout);
+    await evaluate(cdp, `document.querySelector('[data-storefront-payment-method="cash"]')?.click()`);
+    await waitFor(cdp, "document.querySelector('[data-storefront-payment-method=\"cash\"]')?.getAttribute('data-storefront-payment-selected') === 'true'");
+    const checkoutCashPayment = await evaluate(cdp, `({
+      card: document.querySelector('[data-storefront-payment-method="card"]')?.getAttribute('data-storefront-payment-selected') ?? '',
+      cash: document.querySelector('[data-storefront-payment-method="cash"]')?.getAttribute('data-storefront-payment-selected') ?? '',
+      paymentSummary: document.querySelector('[data-storefront-checkout-payment-summary]')?.textContent ?? ''
+    })`);
+    check('Storefront checkout changes payment selection in memory', checkoutCashPayment.card === 'false' && checkoutCashPayment.cash === 'true' && checkoutCashPayment.paymentSummary.includes('Efectivo demo'), checkoutCashPayment);
+    await evaluate(cdp, `document.querySelector('[data-storefront-payment-method="mercado-pago"]')?.click()`);
+    await waitFor(cdp, "document.querySelector('[data-storefront-payment-method=\"mercado-pago\"]')?.getAttribute('data-storefront-payment-selected') === 'true'");
+    const checkoutMercadoPagoPayment = await evaluate(cdp, `({
+      cash: document.querySelector('[data-storefront-payment-method="cash"]')?.getAttribute('data-storefront-payment-selected') ?? '',
+      mercadoPago: document.querySelector('[data-storefront-payment-method="mercado-pago"]')?.getAttribute('data-storefront-payment-selected') ?? '',
+      paymentSummary: document.querySelector('[data-storefront-checkout-payment-summary]')?.textContent ?? ''
+    })`);
+    check('Storefront checkout changes payment selection to Mercado Pago demo', checkoutMercadoPagoPayment.cash === 'false' && checkoutMercadoPagoPayment.mercadoPago === 'true' && checkoutMercadoPagoPayment.paymentSummary.includes('Mercado Pago demo'), checkoutMercadoPagoPayment);
     await shot('storefront-checkout-desktop.png');
 
     await navigate(cdp, shippingUrl);
