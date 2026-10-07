@@ -52,7 +52,7 @@ async function findAvailablePort() {
   });
 }
 
-// GitHub-hosted runners can need extra time for cold Chrome startup.
+// GitHub-hosted runners can need extra time for cold or repeated Chrome startup.
 async function waitForDebugTarget(port, timeoutMs = 45_000) {
   const startedAt = Date.now();
   let lastError;
