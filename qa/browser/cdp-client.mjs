@@ -52,8 +52,8 @@ async function findAvailablePort() {
   });
 }
 
-// GitHub-hosted runners can need more than 15s for the first cold Chrome startup.
-async function waitForDebugTarget(port, timeoutMs = 30_000) {
+// GitHub-hosted runners can need extra time for cold Chrome startup.
+async function waitForDebugTarget(port, timeoutMs = 45_000) {
   const startedAt = Date.now();
   let lastError;
 
@@ -102,7 +102,7 @@ function removeProfile(profileDir) {
   });
 }
 
-export async function launchChrome({ port } = {}) {
+async function launchChromeOnce({ port } = {}) {
   const chromeBinary = findChromeBinary();
   const debugPort = port ?? await findAvailablePort();
   const profileDir = mkdtempSync(join(tmpdir(), 'webblueprint-qa-chrome-'));
@@ -151,6 +151,22 @@ export async function launchChrome({ port } = {}) {
     removeProfile(profileDir);
     throw new Error(`${error instanceof Error ? error.message : String(error)}\nChrome stderr:\n${stderr}`);
   }
+}
+
+export async function launchChrome({ port, attempts = 2 } = {}) {
+  let lastError;
+
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      return await launchChromeOnce({ port });
+    } catch (error) {
+      lastError = error;
+      if (attempt === attempts) break;
+      await sleep(500);
+    }
+  }
+
+  throw lastError;
 }
 
 export async function connectCdp(webSocketDebuggerUrl) {
