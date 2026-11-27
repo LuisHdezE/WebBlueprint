@@ -1,6 +1,6 @@
 # Demo de oferta con WebBlueprint
 
-El objetivo es mostrar un recorrido funcional que responda al pedido principal de la oferta. El resultado del ejercicio es el ZIP que genera el Composer y una ficha que permite retomar el trabajo si se confirma el proyecto.
+El objetivo es mostrar un recorrido funcional que responda al pedido principal de la oferta. El flujo termina con la plantilla disponible en el Composer de EliasWorks, el ZIP verificado y una ficha para retomar el desarrollo si se confirma el proyecto.
 
 ## Instrucción para una oferta nueva
 
@@ -15,9 +15,10 @@ En una conversación nueva, incluí el enlace a esta guía con la oferta. Si el 
 1. Leer la oferta y elegir el recorrido principal que el cliente pueda evaluar. Revisar el catálogo y las plantillas de `LuisHdezE/WebBlueprint` para aprovechar lo que ya existe.
 2. Preparar en una rama una demo navegable con las vistas, la identidad visual, los datos ficticios y los roles de prueba que requiera ese recorrido. Si hay sitio público y panel, conectar ambos mediante una acción verificable. Agregar al catálogo solo las vistas reutilizables necesarias y registrar la selección como una plantilla base versionada del Composer.
 3. Comprobar que la plantilla se puede seleccionar, ajustar y previsualizar. Generar el ZIP con el exportador de WebBlueprint, compilarlo y repetir el recorrido en escritorio y móvil.
-4. Entregar el ZIP con su manifiesto, una PR en borrador y la ficha de la oferta. La ficha debe registrar el resultado de las pruebas, qué funcionó con datos simulados y los pendientes de desarrollo con criterios de aceptación.
+4. Abrir la PR contra `main`, comprobar el CI del cambio y fusionarla cuando pasen las pruebas. Esperar el despliegue de EliasWorks e ingresar al Composer publicado. Seleccionar la plantilla, abrir la vista previa y exportar el ZIP desde el hosting.
+5. Entregar el enlace del Composer, la PR, el ZIP con su manifiesto y la ficha de la oferta. La ficha debe registrar el resultado de las pruebas, qué funcionó con datos simulados y los pendientes de desarrollo con criterios de aceptación.
 
-Trabajá hasta obtener una demo comprobable. Para el caso de que el cliente confirme el proyecto, dejá identificada la primera entrega funcional y las decisiones de arquitectura que corresponde aprobar. Usá la rama y la PR como punto de revisión antes de integrar el cambio en el Composer publicado.
+El pedido de aplicar este flujo incluye integrar y publicar la plantilla en el Composer existente de EliasWorks después de que pasen las pruebas. Ante un fallo, diagnosticá el problema, corregilo y repetí la verificación. Para el caso de que el cliente confirme el proyecto, dejá identificada la primera entrega funcional y las decisiones de arquitectura que corresponde aprobar.
 
 ## Armar y verificar la demo
 
@@ -56,7 +57,7 @@ Si se confirma el proyecto, convertí las filas de pendientes en tareas. Validá
 
 **Pedido.** Sitio público por marca con carta, historia, horarios y contacto. El personal debe poder actualizar precios, horarios de feriado y especiales. [Oferta de Freelancer](https://www.freelancer.com/projects/web-development/branded-restaurant-websites-for-multiple)
 
-**Base.** Plantilla **Sitios para restaurantes**. Incluye Inicio, Carta digital, Sobre el restaurante, Ubicación y contacto, y Editor del restaurante. La PR está en borrador a la fecha de la prueba. [WebBlueprint PR #111](https://github.com/LuisHdezE/WebBlueprint/pull/111)
+**Base.** Plantilla **Sitios para restaurantes**. Incluye Inicio, Carta digital, Sobre el restaurante, Ubicación y contacto, y Editor del restaurante. El desarrollo de la plantilla quedó registrado en esta PR. [WebBlueprint PR #111](https://github.com/LuisHdezE/WebBlueprint/pull/111)
 
 **Recorrido verificado.** Editar el precio de la Margherita, el horario de feriado y el especial de Forno de Barrio. Guardar, abrir la carta y la vista de ubicación, y comprobar que se ven los cambios. Cambiar a Marea Clara y confirmar que conserva sus propios datos.
 
