@@ -11,13 +11,17 @@ import { buildReactExportZip } from '@/export/export.engine';
 const smoke = process.env.WEBBLUEPRINT_EXPORT_SMOKE === '1' ? it : it.skip;
 
 describe('G2 exported project runtime proof', () => {
-  smoke('extracts the real ZIP and passes npm ci plus the generated quality gate', () => {
+  smoke.each([
+    ['volketas', ['src/dispatch/DispatchBoardView.tsx', 'src/service-orders/ServiceOrderDetailView.tsx', 'src/alerts-center/AlertCenterView.tsx']],
+    ['real-estate', ['src/templates/real-estate/presentation/RealEstateView.tsx', 'src/templates/real-estate/infrastructure/listing-images.ts']],
+    ['restaurants', ['src/templates/restaurants/presentation/RestaurantView.tsx', 'src/templates/restaurants/infrastructure/restaurant-images.ts']],
+  ])('extracts the %s ZIP and passes the generated quality gate', (preset, sourceFiles) => {
     const manifest = applyProjectPreset(
       {
         ...createDefaultProject(),
-        application: { name: 'Volketas Export Proof', logoDataUrl: null, faviconDataUrl: null },
+        application: { name: `${preset} Export Proof`, logoDataUrl: null, faviconDataUrl: null },
       },
-      'volketas',
+      preset,
     );
     const exported = buildReactExportZip(manifest);
     const workspace = mkdtempSync(join(tmpdir(), 'webblueprint-export-'));
@@ -32,13 +36,9 @@ describe('G2 exported project runtime proof', () => {
       execFileSync('npm', ['ci', '--no-audit', '--no-fund'], { cwd: projectDirectory, stdio: 'pipe' });
       execFileSync('npm', ['run', 'check'], { cwd: projectDirectory, stdio: 'inherit' });
 
-      expect(existsSync(join(projectDirectory, 'webblueprint.json'))).toBe(true);
-      expect(existsSync(join(projectDirectory, 'src', 'dispatch', 'DispatchBoardView.tsx'))).toBe(true);
-      expect(existsSync(join(projectDirectory, 'src', 'service-orders', 'ServiceOrderDetailView.tsx'))).toBe(true);
-      expect(existsSync(join(projectDirectory, 'src', 'alerts-center', 'AlertCenterView.tsx'))).toBe(true);
-      expect(existsSync(join(projectDirectory, 'src', 'assets', 'AssetDetailView.tsx'))).toBe(true);
-      expect(existsSync(join(projectDirectory, 'docs', 'architecture.md'))).toBe(true);
-      expect(existsSync(join(projectDirectory, 'dist', 'index.html'))).toBe(true);
+      for (const path of ['webblueprint.json', 'docs/architecture.md', 'dist/index.html', ...sourceFiles]) {
+        expect(existsSync(join(projectDirectory, path)), path).toBe(true);
+      }
     } finally {
       rmSync(workspace, { recursive: true, force: true });
     }

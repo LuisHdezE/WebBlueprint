@@ -9,6 +9,7 @@ export type BlueprintProjectManifest = {
     faviconDataUrl: string | null;
   };
   presetId: string | null;
+  savedPresetId?: string;
   theme: {
     colorId: ThemeColorId;
   };
@@ -37,4 +38,12 @@ export type ProjectPresetDefinition = {
   viewPaths: readonly string[];
   themeColorId?: ThemeColorId;
   viewPresentation?: Readonly<Record<string, ProjectPresetViewPresentation>>;
+};
+
+export type SavedProjectPreset = {
+  id: string;
+  name: string;
+  basePresetId: string | null;
+  themeColorId: ThemeColorId;
+  viewPaths: readonly string[];
 };

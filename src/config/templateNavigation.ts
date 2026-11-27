@@ -1,4 +1,6 @@
 import type { AppIconName } from '@/components/AppIcon';
+import { realEstateName, realEstateViews } from '@/templates/real-estate/real-estate.views';
+import { restaurantName, restaurantViews } from '@/templates/restaurants/restaurant.views';
 
 export type TemplateNavigationItemStatus = 'implemented' | 'planned';
 
@@ -23,6 +25,16 @@ export const templateNavigation: readonly TemplateNavigationSection[] = [
     label: 'General',
     icon: 'dashboard',
     items: [{ label: 'Dashboard', to: '/dashboard', icon: 'dashboard' }],
+  },
+  {
+    label: realEstateName,
+    icon: 'apps',
+    items: realEstateViews.map(({ path, label, icon }) => ({ to: path, label, icon, status: 'implemented' })),
+  },
+  {
+    label: restaurantName,
+    icon: 'book',
+    items: restaurantViews.map(({ path, label, icon }) => ({ to: path, label, icon, status: 'implemented' })),
   },
   {
     label: 'FixPhone',

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { applyProjectPreset, createDefaultProject } from '@/composer/project.logic';
+import { applyProjectPreset, createDefaultProject, toggleProjectView } from '@/composer/project.logic';
 import type { BlueprintProjectManifest } from '@/composer/project.types';
 import { buildReactExportProject, buildReactExportZip } from '@/export/export.engine';
 
@@ -117,6 +117,48 @@ describe('G2 ZIP Export v1', () => {
     expect(projectApp).toContain('data:image/svg+xml;base64,dm9sa2V0YXM=');
     expect(projectApp).not.toContain('<strong>Volketas</strong>');
     expect(project.files.some((file) => file.path.includes('applications-management-dispatch/presentation'))).toBe(false);
+  });
+
+  it('exports the selected marketplace views with their real implementation and packaged images', () => {
+    const preset = applyProjectPreset(createDefaultProject(), 'real-estate');
+    const manifest = toggleProjectView(toggleProjectView(preset, '/real-estate/admin'), '/pages/contact');
+    const project = buildReactExportProject(manifest);
+    const files = new Map(project.files.map((file) => [file.path, file.content]));
+    const routes = files.get('src/app/router/routes.tsx') ?? '';
+
+    expect(preset.views).toEqual([
+      '/real-estate/catalog', '/real-estate/property', '/real-estate/access', '/real-estate/lister', '/real-estate/admin',
+    ]);
+    expect([...routes.matchAll(/path: '([^']+)'/g)].map((match) => match[1])).toEqual(manifest.views);
+    expect(routes).toContain('<RealEstateView view="catalog" />');
+    expect(routes).not.toContain('<RealEstateView view="admin" />');
+    expect(routes).toContain('<PagesContactPage');
+    expect(files.get('src/shell/AppShell.tsx')).toContain('<RealEstateProvider');
+    expect(files.get('src/templates/real-estate/presentation/real-estate.css')).toContain('.real-estate-view');
+    expect(files.get('src/templates/real-estate/infrastructure/listing-images.ts')).toContain('data:image/webp;base64,');
+    expect(files.has('src/features/real-estate-catalog/presentation/RealEstateCatalogPage.tsx')).toBe(false);
+  });
+
+  it('exports restaurant views and shares a session only for selected interactive templates', () => {
+    const manifest = applyProjectPreset(createDefaultProject(), 'restaurants');
+    expect(manifest.views).toEqual([
+      '/restaurants/home', '/restaurants/menu', '/restaurants/about', '/restaurants/location', '/restaurants/editor',
+    ]);
+    const restaurantOnly = buildReactExportProject(manifest);
+    const files = new Map(restaurantOnly.files.map((file) => [file.path, file.content]));
+    expect(files.get('src/app/router/routes.tsx')).toContain('<RestaurantView view="editor" />');
+    expect(files.get('src/shell/AppShell.tsx')).toContain('<RestaurantProvider');
+    expect(files.get('src/templates/restaurants/presentation/restaurant.css')).toContain('.restaurant-view');
+    expect(files.get('src/templates/restaurants/infrastructure/restaurant-images.ts')).toContain('data:image/webp;base64,');
+    expect(restaurantOnly.files.some(({ path }) => path.startsWith('src/templates/real-estate/'))).toBe(false);
+
+    const mixed = toggleProjectView(toggleProjectView(manifest, '/restaurants/editor'), '/real-estate/catalog');
+    const mixedFiles = new Map(buildReactExportProject(mixed).files.map((file) => [file.path, file.content]));
+    const routes = mixedFiles.get('src/app/router/routes.tsx') ?? '';
+    expect([...routes.matchAll(/path: '([^']+)'/g)].map((match) => match[1])).toEqual(mixed.views);
+    expect(routes).not.toContain('<RestaurantView view="editor" />');
+    expect(routes).toContain('<RealEstateView view="catalog" />');
+    expect(mixedFiles.get('src/shell/AppShell.tsx')).toContain('</RestaurantProvider></RealEstateProvider>');
   });
 
   it('creates byte-for-byte deterministic ZIP output', () => {

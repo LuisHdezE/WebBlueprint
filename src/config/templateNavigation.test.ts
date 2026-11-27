@@ -12,9 +12,11 @@ describe('templateNavigation', () => {
     expect(new Set(nonVolketasRoutes).size).toBe(nonVolketasRoutes.length);
   });
 
-  it('exposes the complete G1 master navigation families plus visible Volketas shell', () => {
+  it('exposes the master navigation families and implemented templates', () => {
     expect(templateNavigation.map((section) => section.label)).toEqual([
       'General',
+      'Marketplace inmobiliario',
+      'Sitios para restaurantes',
       'FixPhone',
       'Volketas',
       'Gestión',
@@ -33,7 +35,7 @@ describe('templateNavigation', () => {
       'Layouts',
       'Documentación',
     ]);
-    expect(templateRouteItems).toHaveLength(205);
+    expect(templateRouteItems).toHaveLength(215);
   });
 
   it('exposes reusable management views to the Composer catalog', () => {
