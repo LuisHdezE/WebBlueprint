@@ -2,6 +2,23 @@
 
 El objetivo es mostrar un recorrido funcional que responda al pedido principal de la oferta. El resultado del ejercicio es el ZIP que genera el Composer y una ficha que permite retomar el trabajo si se confirma el proyecto.
 
+## Instrucción para una oferta nueva
+
+Mensaje breve para una conversación donde ya se conoce esta guía.
+
+> Dalila, aplicá el flujo Demo de oferta con WebBlueprint a esta oferta. [ENLACE O TEXTO]
+
+En una conversación nueva, incluí el enlace a esta guía con la oferta. Si el anuncio requiere acceso, pegá la descripción o adjuntá las capturas.
+
+### Qué debe ejecutar el asistente
+
+1. Leer la oferta y elegir el recorrido principal que el cliente pueda evaluar. Revisar el catálogo y las plantillas de `LuisHdezE/WebBlueprint` para aprovechar lo que ya existe.
+2. Preparar en una rama una demo navegable con las vistas, la identidad visual, los datos ficticios y los roles de prueba que requiera ese recorrido. Si hay sitio público y panel, conectar ambos mediante una acción verificable. Agregar al catálogo solo las vistas reutilizables necesarias y registrar la selección como una plantilla base versionada del Composer.
+3. Comprobar que la plantilla se puede seleccionar, ajustar y previsualizar. Generar el ZIP con el exportador de WebBlueprint, compilarlo y repetir el recorrido en escritorio y móvil.
+4. Entregar el ZIP con su manifiesto, una PR en borrador y la ficha de la oferta. La ficha debe registrar el resultado de las pruebas, qué funcionó con datos simulados y los pendientes de desarrollo con criterios de aceptación.
+
+Trabajá hasta obtener una demo comprobable. Para el caso de que el cliente confirme el proyecto, dejá identificada la primera entrega funcional y las decisiones de arquitectura que corresponde aprobar. Usá la rama y la PR como punto de revisión antes de integrar el cambio en el Composer publicado.
+
 ## Armar y verificar la demo
 
 1. Elegí en **Composer → Plantilla base** la plantilla más cercana, o **Aplicación vacía** para armar tu propia selección. En **Vistas**, abrí las familias del catálogo y elegí las pantallas que necesita el recorrido, aunque vengan de proyectos distintos.
