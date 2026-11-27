@@ -1,4 +1,5 @@
 import type { ProjectPresetDefinition } from '@/composer/project.types';
+import { realEstateName, realEstatePresetId, realEstateViews } from '@/templates/real-estate/real-estate.views';
 
 export const projectPresets: readonly ProjectPresetDefinition[] = [
   {
@@ -6,6 +7,13 @@ export const projectPresets: readonly ProjectPresetDefinition[] = [
     name: 'Aplicación vacía',
     description: 'Empieza sin vistas seleccionadas y construye la navegación desde cero.',
     viewPaths: [],
+  },
+  {
+    id: realEstatePresetId,
+    name: realEstateName,
+    description: 'Catálogo de venta y alquiler, ficha de inmueble, cuentas de demostración y paneles de anunciante y administración.',
+    viewPaths: realEstateViews.map(({ path }) => path),
+    viewPresentation: Object.fromEntries(realEstateViews.map(({ path, section }) => [path, { section }])),
   },
   {
     id: 'ecommerce',

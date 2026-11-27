@@ -6,6 +6,10 @@ import { getPresetViewPresentation } from '@/composer/project.presets';
 import { readProjectManifest } from '@/composer/project.storage';
 import type { ProjectViewDefinition } from '@/composer/project.types';
 import { themePresets } from '@/theme/themeContext';
+import { demoProperties } from '@/templates/real-estate/infrastructure/demo-properties';
+import { RealEstateProvider } from '@/templates/real-estate/presentation/RealEstateProvider';
+import { RealEstateView } from '@/templates/real-estate/presentation/RealEstateView';
+import { findRealEstateView } from '@/templates/real-estate/real-estate.views';
 
 function groupViewsBySection(views: readonly ProjectViewDefinition[]) {
   const sections = new Map<string, ProjectViewDefinition[]>();
@@ -43,6 +47,7 @@ export function ComposerPreviewPage() {
   );
   const [activePath, setActivePath] = useState(selectedViews[0]?.path ?? '');
   const activeView = selectedViews.find((view) => view.path === activePath) ?? selectedViews[0];
+  const realEstateView = activeView && findRealEstateView(activeView.path);
   const activeIndex = activeView ? selectedViews.findIndex((view) => view.path === activeView.path) : -1;
   const sections = groupViewsBySection(selectedViews);
   const theme = themePresets.find((preset) => preset.id === project.theme.colorId) ?? themePresets[0];
@@ -95,7 +100,7 @@ export function ComposerPreviewPage() {
   return (
     <div className="min-h-dvh bg-slate-50 text-slate-800" style={themeStyle}>
       <header className="fixed inset-x-0 top-0 z-40 flex h-12 items-center bg-[var(--preview-primary)] text-[var(--preview-on-primary)] shadow-sm">
-        <div className="flex h-full w-[232px] items-center gap-2 border-r border-white/10 px-3">
+        <div className="flex h-full min-w-0 basis-2/5 items-center gap-2 border-r border-white/10 px-3 sm:w-[232px] sm:basis-auto">
           {project.application.logoDataUrl ? (
             <img alt="Logo" className="size-7 rounded bg-white/95 object-contain p-0.5" src={project.application.logoDataUrl} />
           ) : (
@@ -115,7 +120,7 @@ export function ComposerPreviewPage() {
         </div>
       </header>
 
-      <aside className="fixed bottom-0 left-0 top-12 z-30 w-[232px] overflow-y-auto border-r border-[var(--preview-navigation-border)] bg-[var(--preview-navigation-background)] px-2 py-2">
+      <aside aria-label="Vistas seleccionadas" className="mt-12 border-b border-[var(--preview-navigation-border)] bg-[var(--preview-navigation-background)] px-2 py-2 sm:fixed sm:bottom-0 sm:left-0 sm:top-12 sm:z-30 sm:mt-0 sm:w-[232px] sm:overflow-y-auto sm:border-r">
         {sections.map((section, index) => (
           <section className={index === 0 ? 'mb-2' : 'mb-2.5'} key={section.label}>
             <div className="px-2 pb-1 pt-1 text-[9px] font-bold uppercase tracking-[0.12em] text-[var(--preview-navigation-muted)]">{section.label}</div>
@@ -129,6 +134,7 @@ export function ComposerPreviewPage() {
                         ? 'border-[var(--preview-accent)] bg-[var(--preview-navigation-active-background)] text-[var(--preview-navigation-text)]'
                         : 'border-transparent text-[var(--preview-navigation-text)] hover:bg-[var(--preview-navigation-active-background)]'
                     }`}
+                    aria-pressed={active}
                     key={view.path}
                     onClick={() => setActivePath(view.path)}
                     type="button"
@@ -143,7 +149,7 @@ export function ComposerPreviewPage() {
         ))}
       </aside>
 
-      <main className="min-h-dvh pl-[232px] pt-12">
+      <main className="min-h-dvh sm:pl-[232px] sm:pt-12">
         <div className="min-h-[calc(100dvh-48px)] p-5">
           <div className="mx-auto max-w-[1200px]">
             <div className="flex flex-col gap-3 border-b border-slate-200 pb-4 sm:flex-row sm:items-end sm:justify-between">
@@ -172,30 +178,36 @@ export function ComposerPreviewPage() {
               </div>
             </div>
 
-            <section className="mt-4 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-              <div className="flex items-center gap-2">
-                <span className="grid size-9 place-items-center rounded-md bg-[var(--preview-primary-soft)] text-[var(--preview-primary)]">
-                  {activeView ? <AppIcon className="size-4" name={activeView.icon} /> : null}
-                </span>
-                <div>
-                  <h2 className="text-sm font-semibold text-slate-900">Preview filtrada por Blueprint Manifest</h2>
-                  <p className="mt-0.5 text-[11px] text-slate-500">Solo las vistas seleccionadas existen en esta navegación.</p>
-                </div>
-              </div>
+            <RealEstateProvider properties={demoProperties} viewPaths={project.views} onNavigate={setActivePath}>
+              {realEstateView ? (
+                <div className="mt-4"><RealEstateView view={realEstateView.id} /></div>
+              ) : (
+                <section className="mt-4 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+                  <div className="flex items-center gap-2">
+                    <span className="grid size-9 place-items-center rounded-md bg-[var(--preview-primary-soft)] text-[var(--preview-primary)]">
+                      {activeView ? <AppIcon className="size-4" name={activeView.icon} /> : null}
+                    </span>
+                    <div>
+                      <h2 className="text-sm font-semibold text-slate-900">Preview filtrada por Blueprint Manifest</h2>
+                      <p className="mt-0.5 text-[11px] text-slate-500">Solo las vistas seleccionadas existen en esta navegación.</p>
+                    </div>
+                  </div>
 
-              <div className="mt-5 grid gap-3 sm:grid-cols-3">
-                <PreviewStat label="Aplicación" value={project.application.name} />
-                <PreviewStat label="Tema" value={theme.label} />
-                <PreviewStat label="Vistas incluidas" value={String(selectedViews.length)} />
-              </div>
+                  <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                    <PreviewStat label="Aplicación" value={project.application.name} />
+                    <PreviewStat label="Tema" value={theme.label} />
+                    <PreviewStat label="Vistas incluidas" value={String(selectedViews.length)} />
+                  </div>
 
-              <div className="mt-5 rounded-md border border-dashed border-slate-200 bg-slate-50 px-4 py-8 text-center">
-                <p className="text-xs font-semibold text-slate-700">Superficie de la vista: {activeView?.label}</p>
-                <p className="mx-auto mt-1 max-w-xl text-[11px] leading-5 text-slate-500">
-                  Durante G2 esta preview valida identidad, tema, secuencia y navegación filtrada. A medida que las vistas del catálogo se implementen, este mismo manifest las renderizará sin cambiar la selección.
-                </p>
-              </div>
-            </section>
+                  <div className="mt-5 rounded-md border border-dashed border-slate-200 bg-slate-50 px-4 py-8 text-center">
+                    <p className="text-xs font-semibold text-slate-700">Superficie de la vista: {activeView?.label}</p>
+                    <p className="mx-auto mt-1 max-w-xl text-[11px] leading-5 text-slate-500">
+                      Durante G2 esta preview valida identidad, tema, secuencia y navegación filtrada. A medida que las vistas del catálogo se implementen, este mismo manifest las renderizará sin cambiar la selección.
+                    </p>
+                  </div>
+                </section>
+              )}
+            </RealEstateProvider>
           </div>
         </div>
       </main>

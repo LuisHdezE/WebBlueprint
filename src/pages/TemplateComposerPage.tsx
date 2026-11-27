@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
-import type { ChangeEvent } from 'react';
+import { useEffect, useMemo } from 'react';
+import type { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import { AppIcon } from '@/components/AppIcon';
 import { getProjectViewsBySection, getSelectedProjectViews } from '@/composer/project.catalog';
 import {
@@ -10,7 +10,7 @@ import {
   toggleProjectView,
 } from '@/composer/project.logic';
 import { getProjectPreset, projectPresets } from '@/composer/project.presets';
-import { readProjectManifest, writeProjectManifest } from '@/composer/project.storage';
+import { writeProjectManifest } from '@/composer/project.storage';
 import type { BlueprintProjectManifest } from '@/composer/project.types';
 import { themePresets } from '@/theme/themeContext';
 
@@ -27,8 +27,12 @@ function selectionsMatch(left: readonly string[], right: readonly string[]) {
   return left.length === right.length && left.every((path, index) => path === right[index]);
 }
 
-export function TemplateComposerPage() {
-  const [project, setProject] = useState<BlueprintProjectManifest>(readProjectManifest);
+type Props = {
+  project: BlueprintProjectManifest;
+  setProject: Dispatch<SetStateAction<BlueprintProjectManifest>>;
+};
+
+export function TemplateComposerPage({ project, setProject }: Props) {
   const sections = useMemo(() => getProjectViewsBySection(), []);
   const selectedViews = getSelectedProjectViews(project.views);
   const selectedPreset = getProjectPreset(project.presetId);
@@ -189,6 +193,7 @@ export function TemplateComposerPage() {
                         ? 'border-[var(--theme-primary-border)] bg-[var(--theme-primary-soft)]'
                         : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50'
                     }`}
+                    aria-pressed={active}
                     key={preset.id}
                     onClick={() => setProject((current) => applyProjectPreset(current, preset.id))}
                     type="button"

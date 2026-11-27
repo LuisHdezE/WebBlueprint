@@ -1,4 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router';
+import { realEstateViews } from '@/templates/real-estate/real-estate.views';
+import { RealEstateRoute } from '@/templates/real-estate/presentation/RealEstateRoute';
+import { RealEstateView } from '@/templates/real-estate/presentation/RealEstateView';
 import { ProtectedRoute } from '@/auth/ProtectedRoute';
 import { JsonPasswordResetContentProvider } from '@/features/authentication/password-reset/infrastructure/JsonPasswordResetContentProvider';
 import { MockPasswordResetGateway } from '@/features/authentication/password-reset/infrastructure/MockPasswordResetGateway';
@@ -169,6 +172,9 @@ export function AppRouter() {
         <Route index element={<Navigate to="/dashboard" replace />} />
         <Route path="dashboard" element={<TemplateOverviewPage />} />
         <Route path="composer" element={<TemplateComposerExportPage />} />
+        <Route element={<RealEstateRoute />}>
+          {realEstateViews.map(({ id, path }) => <Route element={<RealEstateView view={id} />} key={id} path={path} />)}
+        </Route>
         <Route path="applications/management/dashboard" element={<DashboardView />} />
         <Route path="applications/management/dispatch" element={<DispatchBoardView />} />
         <Route path="applications/management/service-order" element={<ServiceOrderDetailView />} />
