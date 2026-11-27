@@ -121,7 +121,8 @@ describe('G2 ZIP Export v1', () => {
 
   it('exports the selected marketplace views with their real implementation and packaged images', () => {
     const preset = applyProjectPreset(createDefaultProject(), 'real-estate');
-    const manifest = toggleProjectView(toggleProjectView(preset, '/real-estate/admin'), '/pages/contact');
+    const mixed = toggleProjectView(toggleProjectView(preset, '/real-estate/admin'), '/pages/contact');
+    const manifest = toggleProjectView(mixed, '/authentication/sign-in');
     const project = buildReactExportProject(manifest);
     const files = new Map(project.files.map((file) => [file.path, file.content]));
     const routes = files.get('src/app/router/routes.tsx') ?? '';
@@ -131,6 +132,9 @@ describe('G2 ZIP Export v1', () => {
     ]);
     expect([...routes.matchAll(/path: '([^']+)'/g)].map((match) => match[1])).toEqual(manifest.views);
     expect(routes).toContain('<RealEstateView view="catalog" />');
+    expect(routes.split('\n').find((line) => line.includes("path: '/authentication/sign-in'")))
+      .toContain('<RealEstateView view="access" />');
+    expect(files.has('src/features/authentication-sign-in/presentation/AuthenticationSignInPage.tsx')).toBe(false);
     expect(routes).not.toContain('<RealEstateView view="admin" />');
     expect(routes).toContain('<PagesContactPage');
     expect(files.get('src/shell/AppShell.tsx')).toContain('<RealEstateProvider');

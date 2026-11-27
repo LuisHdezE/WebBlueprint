@@ -9,7 +9,7 @@ import { themePresets } from '@/theme/themeContext';
 import { demoProperties } from '@/templates/real-estate/infrastructure/demo-properties';
 import { RealEstateProvider } from '@/templates/real-estate/presentation/RealEstateProvider';
 import { RealEstateView } from '@/templates/real-estate/presentation/RealEstateView';
-import { findRealEstateView } from '@/templates/real-estate/real-estate.views';
+import { findRealEstateView, hasRealEstateViews, realEstateSignInPath } from '@/templates/real-estate/real-estate.views';
 import { demoRestaurants } from '@/templates/restaurants/infrastructure/demo-restaurants';
 import { RestaurantProvider } from '@/templates/restaurants/presentation/RestaurantProvider';
 import { RestaurantView } from '@/templates/restaurants/presentation/RestaurantView';
@@ -51,7 +51,9 @@ export function ComposerPreviewPage() {
   );
   const [activePath, setActivePath] = useState(selectedViews[0]?.path ?? '');
   const activeView = selectedViews.find((view) => view.path === activePath) ?? selectedViews[0];
-  const realEstateView = activeView && findRealEstateView(activeView.path);
+  const realEstateViewId = activeView?.path === realEstateSignInPath && hasRealEstateViews(project.views)
+    ? 'access'
+    : activeView && findRealEstateView(activeView.path)?.id;
   const restaurantView = activeView && findRestaurantView(activeView.path);
   const activeIndex = activeView ? selectedViews.findIndex((view) => view.path === activeView.path) : -1;
   const sections = groupViewsBySection(selectedViews);
@@ -185,8 +187,8 @@ export function ComposerPreviewPage() {
 
             <RealEstateProvider properties={demoProperties} viewPaths={project.views} onNavigate={setActivePath}>
               <RestaurantProvider restaurants={demoRestaurants} viewPaths={project.views} onNavigate={setActivePath}>
-                {realEstateView ? (
-                  <div className="mt-4"><RealEstateView view={realEstateView.id} /></div>
+                {realEstateViewId ? (
+                  <div className="mt-4"><RealEstateView view={realEstateViewId} /></div>
                 ) : restaurantView ? (
                   <div className="mt-4"><RestaurantView view={restaurantView.id} /></div>
                 ) : (

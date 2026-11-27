@@ -9,7 +9,7 @@ import { createStoredZip } from '@/export/export.zip';
 import { themePresets } from '@/theme/themeContext';
 import { listingImages } from '@/templates/real-estate/infrastructure/listing-images';
 import realEstateCss from '@/templates/real-estate/presentation/real-estate.css?inline';
-import { realEstateViews } from '@/templates/real-estate/real-estate.views';
+import { hasRealEstateViews, realEstateSignInPath, realEstateViews } from '@/templates/real-estate/real-estate.views';
 import { restaurantImages } from '@/templates/restaurants/infrastructure/restaurant-images';
 import restaurantCss from '@/templates/restaurants/presentation/restaurant.css?inline';
 import { restaurantViews } from '@/templates/restaurants/restaurant.views';
@@ -236,12 +236,16 @@ function interactiveRouteDefinitions(prefix: string) {
 
 const interactiveRoutes: ReadonlyMap<string, SourceBackedRouteDefinition> = new Map(interactiveRouteDefinitions('../../templates').map((route) => [route.path, route]));
 
-function createRoutesSource(views: readonly ProjectViewDefinition[], genericViews: readonly ProjectViewDefinition[]) {
+function createRoutesSource(
+  views: readonly ProjectViewDefinition[],
+  genericViews: readonly ProjectViewDefinition[],
+  routes: ReadonlyMap<string, SourceBackedRouteDefinition>,
+) {
   const imports = genericViews.map((view) =>
     `import { ${componentName(view)} } from '../../features/${featureKey(view)}/presentation/${componentName(view)}';`,
   );
   const entries = views.map((view) => {
-    const route = interactiveRoutes.get(view.path);
+    const route = routes.get(view.path);
     if (route) imports.push(...route.imports);
     const element = route?.element ?? `<${componentName(view)} repository={viewRepositories['${view.path}']} />`;
     return `  { path: '${view.path}', label: ${JSON.stringify(view.label)}, section: ${JSON.stringify(view.section)}, element: ${element} },`;
@@ -704,11 +708,19 @@ export function buildReactExportProject(manifest: BlueprintProjectManifest): Exp
   const rootName = slugify(manifest.application.name);
   const selectedPaths = new Set(views.map(({ path }) => path));
   const templates = interactiveTemplates.filter((template) => template.views.some(({ path }) => selectedPaths.has(path)));
-  const genericViews = views.filter((view) => !interactiveRoutes.has(view.path));
 
   if (manifest.presetId === 'volketas') {
     return buildSourceBackedExportProject(manifest, views, rootName, templates);
   }
+
+  const routes = new Map(interactiveRoutes);
+  if (selectedPaths.has(realEstateSignInPath) && hasRealEstateViews(manifest.views)) {
+    routes.set(realEstateSignInPath, {
+      imports: ["import { RealEstateView } from '../../templates/real-estate/presentation/RealEstateView';"],
+      element: '<RealEstateView view="access" />',
+    });
+  }
+  const genericViews = views.filter((view) => !routes.has(view.path));
 
   const files: ExportProjectFile[] = [
     { path: '.gitignore', content: 'node_modules\ndist\ncoverage\n.DS_Store\n' },
@@ -724,7 +736,7 @@ export function buildReactExportProject(manifest: BlueprintProjectManifest): Exp
     { path: 'src/app/config/project.ts', content: createProjectConfig(manifest, views) },
     { path: 'src/app/providers/viewRepositories.ts', content: createProvidersSource(genericViews) },
     { path: 'src/app/router/routes.test.ts', content: createRoutesTest(views) },
-    { path: 'src/app/router/routes.tsx', content: createRoutesSource(views, genericViews) },
+    { path: 'src/app/router/routes.tsx', content: createRoutesSource(views, genericViews, routes) },
     { path: 'src/core/contracts/AsyncState.ts', content: asyncStateSource },
     { path: 'src/core/domain/ViewContent.ts', content: viewContentSource },
     { path: 'src/main.tsx', content: mainSource },
