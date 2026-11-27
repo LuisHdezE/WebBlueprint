@@ -4,12 +4,20 @@ El objetivo es mostrar un recorrido funcional que responda al pedido principal d
 
 ## Armar y verificar la demo
 
-1. Elegí en **Composer → Plantilla base** la plantilla más cercana. Aprovechá las vistas, la navegación, los componentes y el tema disponibles. Incorporá una vista al catálogo cuando haga falta para completar el recorrido y pueda reutilizarse en otras ofertas.
+1. Elegí en **Composer → Plantilla base** la plantilla más cercana, o **Aplicación vacía** para armar tu propia selección. En **Vistas**, abrí las familias del catálogo y elegí las pantallas que necesita el recorrido, aunque vengan de proyectos distintos.
 2. Ajustá nombre, logo, tema y selección de vistas. Prepará los datos ficticios del recorrido. Para una oferta con sitio público y panel interno, elegí una acción que conecte ambos.
 3. Abrí **Vista previa**. Probá la acción principal y el resultado que debe ver el usuario. Comprobá que las vistas y su orden correspondan a la selección del Composer.
 4. Usá **Exportar aplicación ZIP**. Descomprimí y ejecutá `npm ci` y `npm run check`. Abrí la compilación en el navegador y repetí el recorrido en escritorio y móvil. Revisá textos, imágenes, controles y desbordes. Guardá el ZIP con su `webblueprint.json` y vinculá la revisión de GitHub que lo identifica. [Arquitectura de exportación](../decisions/0008-contract-first-export-architecture.md)
 
 Registrá cada recorrido como **Verificado**, **Simulado** o **Pendiente** según la evidencia. Una función puede tener un recorrido verificado con datos simulados, como un editor que actualiza una vista pública durante la sesión.
+
+## Qué aporta cada proyecto al catálogo
+
+La plantilla base precarga una selección editable. Cada vista de aplicación tiene su propia entrada en el catálogo que comparten el menú de WebBlueprint y el Composer. Así, una pantalla nueva puede usarse por sí sola o junto con pantallas de otros proyectos.
+
+Cuando falte una pantalla que pueda servir en otras ofertas, incorporala como vista de catálogo y registrá en la ficha qué hace y qué recorrido se verificó. Si una vista del menú está marcada como próxima, o si solo se renderiza una maqueta, anotá su estado y el trabajo que falta antes de mostrarla como funcional. Si una combinación se repite, registrá una plantilla base que referencie las vistas existentes.
+
+**Combinación verificada.** Desde la plantilla de restaurantes, agregamos solo **Catálogo de inmuebles** en la familia **Marketplace inmobiliario**. La vista previa y el ZIP mostraron las seis vistas. En el ZIP compilado, editamos un precio de la carta, filtramos los inmuebles por alquiler y volvimos a la carta para comprobar que el cambio seguía visible durante la sesión.
 
 ## Ficha para copiar por oferta
 
@@ -18,6 +26,7 @@ Registrá cada recorrido como **Verificado**, **Simulado** o **Pendiente** segú
 | Fuente | Enlace de la oferta y objetivo principal en una frase. |
 | Base | Plantilla, vistas, versión o PR, y referencia al ZIP y su manifiesto. |
 | Recorrido | Rol, acción, resultado esperado y datos ficticios usados. |
+| Aporte al catálogo | Vistas reutilizadas o añadidas, familia de origen y estado de cada vista nueva. |
 | Evidencia | Dispositivo o ancho probado, resultado observado y ZIP o versión verificada. Marcá como pendiente lo que falte ejecutar. |
 | Pendientes | Por cada uno, requisito, qué existe hoy, trabajo que falta, dependencia si aplica y criterio de aceptación. |
 | Primera entrega | El recorrido más pequeño que debería funcionar de extremo a extremo con datos y permisos reales. |
