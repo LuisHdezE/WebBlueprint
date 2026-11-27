@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { CSSProperties } from 'react';
+import type { CSSProperties, FormEvent } from 'react';
 import { filterProperties } from '../application/real-estate.types';
 import type { Property, PropertyFilters } from '../application/real-estate.types';
 import { useRealEstateSession } from './real-estate.context';
@@ -91,14 +91,45 @@ function PropertyDetail() {
   );
 }
 
+const demoAccounts = [
+  { destination: 'catalog', label: 'Interesado' },
+  { destination: 'lister', label: 'Anunciante' },
+  { destination: 'admin', label: 'Administrador' },
+] as const;
+
 function DemoAccess() {
   const { canOpen, open } = useRealEstateSession();
+  const accounts = demoAccounts.filter(({ destination }) => canOpen(destination));
+
+  function signIn(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const selected = new FormData(event.currentTarget).get('account');
+    const account = accounts.find(({ destination }) => destination === selected);
+    if (account) open(account.destination);
+  }
+
   return (
     <div className="estate-box">
       <h2>Elegí una cuenta de demostración</h2>
-      <p>Los roles sirven para explorar el recorrido con datos ficticios.</p>
-      {canOpen('lister') ? <button onClick={() => open('lister')} type="button">Entrar como anunciante</button> : null}
-      {canOpen('admin') ? <button onClick={() => open('admin')} type="button">Entrar como administrador</button> : null}
+      {accounts.length ? (
+        <>
+          <p>Los roles sirven para explorar el recorrido con datos ficticios.</p>
+          <form onSubmit={signIn}>
+            <div className="estate-filters">
+              <label>
+                Rol de demostración
+                <select name="account" required defaultValue="">
+                  <option value="" disabled>Elegí un rol</option>
+                  {accounts.map(({ destination, label }) => (
+                    <option key={destination} value={destination}>{label}</option>
+                  ))}
+                </select>
+              </label>
+            </div>
+            <button type="submit">Iniciar sesión</button>
+          </form>
+        </>
+      ) : <p>La selección del proyecto no incluye vistas de destino para las cuentas de demostración.</p>}
     </div>
   );
 }

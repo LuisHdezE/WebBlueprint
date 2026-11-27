@@ -14,3 +14,9 @@ export type RealEstateViewId = (typeof realEstateViews)[number]['id'];
 export function findRealEstateView(path: string) {
   return realEstateViews.find((view) => view.path === path);
 }
+
+export const realEstateSignInPath = '/authentication/sign-in';
+
+export function hasRealEstateViews(paths: readonly string[]) {
+  return realEstateViews.some((view) => paths.includes(view.path));
+}
