@@ -14,6 +14,7 @@ describe('G2 exported project runtime proof', () => {
   smoke.each([
     ['volketas', ['src/dispatch/DispatchBoardView.tsx', 'src/service-orders/ServiceOrderDetailView.tsx', 'src/alerts-center/AlertCenterView.tsx']],
     ['real-estate', ['src/templates/real-estate/presentation/RealEstateView.tsx', 'src/templates/real-estate/infrastructure/listing-images.ts']],
+    ['restaurants', ['src/templates/restaurants/presentation/RestaurantView.tsx', 'src/templates/restaurants/infrastructure/restaurant-images.ts']],
   ])('extracts the %s ZIP and passes the generated quality gate', (preset, sourceFiles) => {
     const manifest = applyProjectPreset(
       {

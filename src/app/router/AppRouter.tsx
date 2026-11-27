@@ -2,6 +2,9 @@ import { Navigate, Route, Routes } from 'react-router';
 import { realEstateViews } from '@/templates/real-estate/real-estate.views';
 import { RealEstateRoute } from '@/templates/real-estate/presentation/RealEstateRoute';
 import { RealEstateView } from '@/templates/real-estate/presentation/RealEstateView';
+import { restaurantViews } from '@/templates/restaurants/restaurant.views';
+import { RestaurantRoute } from '@/templates/restaurants/presentation/RestaurantRoute';
+import { RestaurantView } from '@/templates/restaurants/presentation/RestaurantView';
 import { ProtectedRoute } from '@/auth/ProtectedRoute';
 import { JsonPasswordResetContentProvider } from '@/features/authentication/password-reset/infrastructure/JsonPasswordResetContentProvider';
 import { MockPasswordResetGateway } from '@/features/authentication/password-reset/infrastructure/MockPasswordResetGateway';
@@ -174,6 +177,9 @@ export function AppRouter() {
         <Route path="composer" element={<TemplateComposerExportPage />} />
         <Route element={<RealEstateRoute />}>
           {realEstateViews.map(({ id, path }) => <Route element={<RealEstateView view={id} />} key={id} path={path} />)}
+        </Route>
+        <Route element={<RestaurantRoute />}>
+          {restaurantViews.map(({ id, path }) => <Route element={<RestaurantView view={id} />} key={id} path={path} />)}
         </Route>
         <Route path="applications/management/dashboard" element={<DashboardView />} />
         <Route path="applications/management/dispatch" element={<DispatchBoardView />} />

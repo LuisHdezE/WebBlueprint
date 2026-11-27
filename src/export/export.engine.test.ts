@@ -134,8 +134,31 @@ describe('G2 ZIP Export v1', () => {
     expect(routes).not.toContain('<RealEstateView view="admin" />');
     expect(routes).toContain('<PagesContactPage');
     expect(files.get('src/shell/AppShell.tsx')).toContain('<RealEstateProvider');
+    expect(files.get('src/templates/real-estate/presentation/real-estate.css')).toContain('.real-estate-view');
     expect(files.get('src/templates/real-estate/infrastructure/listing-images.ts')).toContain('data:image/webp;base64,');
     expect(files.has('src/features/real-estate-catalog/presentation/RealEstateCatalogPage.tsx')).toBe(false);
+  });
+
+  it('exports restaurant views and shares a session only for selected interactive templates', () => {
+    const manifest = applyProjectPreset(createDefaultProject(), 'restaurants');
+    expect(manifest.views).toEqual([
+      '/restaurants/home', '/restaurants/menu', '/restaurants/about', '/restaurants/location', '/restaurants/editor',
+    ]);
+    const restaurantOnly = buildReactExportProject(manifest);
+    const files = new Map(restaurantOnly.files.map((file) => [file.path, file.content]));
+    expect(files.get('src/app/router/routes.tsx')).toContain('<RestaurantView view="editor" />');
+    expect(files.get('src/shell/AppShell.tsx')).toContain('<RestaurantProvider');
+    expect(files.get('src/templates/restaurants/presentation/restaurant.css')).toContain('.restaurant-view');
+    expect(files.get('src/templates/restaurants/infrastructure/restaurant-images.ts')).toContain('data:image/webp;base64,');
+    expect(restaurantOnly.files.some(({ path }) => path.startsWith('src/templates/real-estate/'))).toBe(false);
+
+    const mixed = toggleProjectView(toggleProjectView(manifest, '/restaurants/editor'), '/real-estate/catalog');
+    const mixedFiles = new Map(buildReactExportProject(mixed).files.map((file) => [file.path, file.content]));
+    const routes = mixedFiles.get('src/app/router/routes.tsx') ?? '';
+    expect([...routes.matchAll(/path: '([^']+)'/g)].map((match) => match[1])).toEqual(mixed.views);
+    expect(routes).not.toContain('<RestaurantView view="editor" />');
+    expect(routes).toContain('<RealEstateView view="catalog" />');
+    expect(mixedFiles.get('src/shell/AppShell.tsx')).toContain('</RestaurantProvider></RealEstateProvider>');
   });
 
   it('creates byte-for-byte deterministic ZIP output', () => {

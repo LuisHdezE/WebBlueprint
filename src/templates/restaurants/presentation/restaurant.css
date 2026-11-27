@@ -1,0 +1,95 @@
+.restaurant-view {
+  --food-bg: #fff4e2;
+  --food-ink: #432017;
+  --food-action: #8c3527;
+  --food-border: #e0c4a8;
+  --food-heading: Georgia, serif;
+  box-sizing: border-box;
+  display: grid;
+  gap: 1rem;
+  width: min(100%, 1100px);
+  margin-inline: auto;
+  border: 1px solid var(--food-border);
+  padding: clamp(.75rem, 3vw, 1.6rem);
+  border-radius: 1rem;
+  background: var(--food-bg);
+  color: var(--food-ink);
+  font: 1rem/1.5 system-ui, sans-serif;
+
+  &.restaurant-coastal {
+    --food-bg: #eaf5f8;
+    --food-ink: #143740;
+    --food-action: #146373;
+    --food-border: #b9d7df;
+    --food-heading: 'Trebuchet MS', system-ui, sans-serif;
+  }
+
+  & * { box-sizing: border-box; }
+  & h2 { margin: 0 0 .6rem; font: 700 clamp(1.65rem, 4vw, 3.6rem)/1.05 var(--food-heading); }
+  & h3 { margin: 0; font: 700 1.25rem/1.3 var(--food-heading); }
+  & p { margin: .3rem 0; }
+  & button, & .restaurant-actions a {
+    min-height: 2.65rem;
+    display: inline-flex;
+    align-items: center;
+    padding: .44rem .8rem;
+    border: 1px solid var(--food-action);
+    border-radius: .5rem;
+    background: var(--food-action);
+    color: white;
+    font: inherit;
+    font-weight: 650;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  & button:hover, & .restaurant-actions a:hover { filter: brightness(.9); }
+  & :focus-visible { outline: 2px solid var(--food-action); outline-offset: 3px; }
+  & .restaurant-brand { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: .5rem; }
+  & .restaurant-brand > span { font: 700 1.35rem/1.3 var(--food-heading); }
+  & label { display: grid; gap: .22rem; font-size: .9rem; font-weight: 650; }
+  & select, & input {
+    width: 100%;
+    min-width: 0;
+    min-height: 2.5rem;
+    border: 1px solid var(--food-border);
+    border-radius: .42rem;
+    padding: .35rem .55rem;
+    background: white;
+    color: inherit;
+    font: inherit;
+  }
+  & .restaurant-hero {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+    overflow: hidden;
+    border: 1px solid var(--food-border);
+    border-radius: .85rem;
+    background: white;
+  }
+  & .restaurant-hero > div { align-self: center; padding: clamp(.85rem, 4vw, 2.8rem); }
+  & .restaurant-hero button { margin-top: .8rem; }
+  & .restaurant-hero img { display: block; width: 100%; height: auto; aspect-ratio: 1.5; object-fit: cover; }
+  &.restaurant-coastal .restaurant-hero img { order: -1; }
+  & .restaurant-content { padding: clamp(.75rem, 3vw, 1.5rem); border: 1px solid var(--food-border); border-radius: .75rem; background: white; }
+  & .restaurant-content h2 { font-size: clamp(1.5rem, 3vw, 2.4rem); }
+  & .restaurant-special { padding: .65rem .8rem; border: 1px solid var(--food-border); border-radius: .5rem; }
+  & .restaurant-special strong { display: block; }
+  & .restaurant-category { margin: 1rem 0; }
+  & .restaurant-category ul { padding: 0; margin: .35rem 0; list-style: none; }
+  & .restaurant-category li { display: flex; justify-content: space-between; gap: .6rem; padding: .55rem 0; border-bottom: 1px solid var(--food-border); }
+  & .restaurant-category li span { flex-shrink: 0; font-weight: 650; }
+  & dt { font-weight: 700; margin-top: .6rem; }
+  & dd { margin: 0; }
+  & .restaurant-actions { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; }
+  & .restaurant-editor { display: grid; gap: .65rem; }
+  & fieldset {
+    min-inline-size: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+    gap: .45rem;
+    border: 1px solid var(--food-border);
+    border-radius: .5rem;
+    padding: .65rem;
+  }
+  & legend { padding: 0 .4rem; font-weight: 700; }
+}

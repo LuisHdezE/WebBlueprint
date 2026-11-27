@@ -10,6 +10,10 @@ import { demoProperties } from '@/templates/real-estate/infrastructure/demo-prop
 import { RealEstateProvider } from '@/templates/real-estate/presentation/RealEstateProvider';
 import { RealEstateView } from '@/templates/real-estate/presentation/RealEstateView';
 import { findRealEstateView } from '@/templates/real-estate/real-estate.views';
+import { demoRestaurants } from '@/templates/restaurants/infrastructure/demo-restaurants';
+import { RestaurantProvider } from '@/templates/restaurants/presentation/RestaurantProvider';
+import { RestaurantView } from '@/templates/restaurants/presentation/RestaurantView';
+import { findRestaurantView } from '@/templates/restaurants/restaurant.views';
 
 function groupViewsBySection(views: readonly ProjectViewDefinition[]) {
   const sections = new Map<string, ProjectViewDefinition[]>();
@@ -48,6 +52,7 @@ export function ComposerPreviewPage() {
   const [activePath, setActivePath] = useState(selectedViews[0]?.path ?? '');
   const activeView = selectedViews.find((view) => view.path === activePath) ?? selectedViews[0];
   const realEstateView = activeView && findRealEstateView(activeView.path);
+  const restaurantView = activeView && findRestaurantView(activeView.path);
   const activeIndex = activeView ? selectedViews.findIndex((view) => view.path === activeView.path) : -1;
   const sections = groupViewsBySection(selectedViews);
   const theme = themePresets.find((preset) => preset.id === project.theme.colorId) ?? themePresets[0];
@@ -179,34 +184,38 @@ export function ComposerPreviewPage() {
             </div>
 
             <RealEstateProvider properties={demoProperties} viewPaths={project.views} onNavigate={setActivePath}>
-              {realEstateView ? (
-                <div className="mt-4"><RealEstateView view={realEstateView.id} /></div>
-              ) : (
-                <section className="mt-4 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-                  <div className="flex items-center gap-2">
-                    <span className="grid size-9 place-items-center rounded-md bg-[var(--preview-primary-soft)] text-[var(--preview-primary)]">
-                      {activeView ? <AppIcon className="size-4" name={activeView.icon} /> : null}
-                    </span>
-                    <div>
-                      <h2 className="text-sm font-semibold text-slate-900">Preview filtrada por Blueprint Manifest</h2>
-                      <p className="mt-0.5 text-[11px] text-slate-500">Solo las vistas seleccionadas existen en esta navegación.</p>
+              <RestaurantProvider restaurants={demoRestaurants} viewPaths={project.views} onNavigate={setActivePath}>
+                {realEstateView ? (
+                  <div className="mt-4"><RealEstateView view={realEstateView.id} /></div>
+                ) : restaurantView ? (
+                  <div className="mt-4"><RestaurantView view={restaurantView.id} /></div>
+                ) : (
+                  <section className="mt-4 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+                    <div className="flex items-center gap-2">
+                      <span className="grid size-9 place-items-center rounded-md bg-[var(--preview-primary-soft)] text-[var(--preview-primary)]">
+                        {activeView ? <AppIcon className="size-4" name={activeView.icon} /> : null}
+                      </span>
+                      <div>
+                        <h2 className="text-sm font-semibold text-slate-900">Preview filtrada por Blueprint Manifest</h2>
+                        <p className="mt-0.5 text-[11px] text-slate-500">Solo las vistas seleccionadas existen en esta navegación.</p>
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="mt-5 grid gap-3 sm:grid-cols-3">
-                    <PreviewStat label="Aplicación" value={project.application.name} />
-                    <PreviewStat label="Tema" value={theme.label} />
-                    <PreviewStat label="Vistas incluidas" value={String(selectedViews.length)} />
-                  </div>
+                    <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                      <PreviewStat label="Aplicación" value={project.application.name} />
+                      <PreviewStat label="Tema" value={theme.label} />
+                      <PreviewStat label="Vistas incluidas" value={String(selectedViews.length)} />
+                    </div>
 
-                  <div className="mt-5 rounded-md border border-dashed border-slate-200 bg-slate-50 px-4 py-8 text-center">
-                    <p className="text-xs font-semibold text-slate-700">Superficie de la vista: {activeView?.label}</p>
-                    <p className="mx-auto mt-1 max-w-xl text-[11px] leading-5 text-slate-500">
-                      Durante G2 esta preview valida identidad, tema, secuencia y navegación filtrada. A medida que las vistas del catálogo se implementen, este mismo manifest las renderizará sin cambiar la selección.
-                    </p>
-                  </div>
-                </section>
-              )}
+                    <div className="mt-5 rounded-md border border-dashed border-slate-200 bg-slate-50 px-4 py-8 text-center">
+                      <p className="text-xs font-semibold text-slate-700">Superficie de la vista: {activeView?.label}</p>
+                      <p className="mx-auto mt-1 max-w-xl text-[11px] leading-5 text-slate-500">
+                        Durante G2 esta preview valida identidad, tema, secuencia y navegación filtrada. A medida que las vistas del catálogo se implementen, este mismo manifest las renderizará sin cambiar la selección.
+                      </p>
+                    </div>
+                  </section>
+                )}
+              </RestaurantProvider>
             </RealEstateProvider>
           </div>
         </div>

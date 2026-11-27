@@ -8,7 +8,11 @@ import type { ExportProject, ExportProjectFile } from '@/export/export.types';
 import { createStoredZip } from '@/export/export.zip';
 import { themePresets } from '@/theme/themeContext';
 import { listingImages } from '@/templates/real-estate/infrastructure/listing-images';
-import { findRealEstateView, realEstateViews } from '@/templates/real-estate/real-estate.views';
+import realEstateCss from '@/templates/real-estate/presentation/real-estate.css?inline';
+import { realEstateViews } from '@/templates/real-estate/real-estate.views';
+import { restaurantImages } from '@/templates/restaurants/infrastructure/restaurant-images';
+import restaurantCss from '@/templates/restaurants/presentation/restaurant.css?inline';
+import { restaurantViews } from '@/templates/restaurants/restaurant.views';
 
 type PackageTemplate = {
   dependencies: Record<string, string>;
@@ -205,39 +209,66 @@ function createProvidersSource(views: readonly ProjectViewDefinition[]) {
   return `${imports}\n\nexport const viewRepositories = {\n${entries}\n} as const;\n`;
 }
 
+const interactiveTemplates = [
+  {
+    folder: 'real-estate', views: realEstateViews, component: 'RealEstateView',
+    provider: 'RealEstateProvider', fixtureModule: 'demo-properties', fixture: 'demoProperties', fixtureProp: 'properties',
+    imageModule: 'listing-images', imageExport: 'listingImages', images: listingImages,
+    styleModule: 'real-estate.css', styleCss: realEstateCss,
+  },
+  {
+    folder: 'restaurants', views: restaurantViews, component: 'RestaurantView',
+    provider: 'RestaurantProvider', fixtureModule: 'demo-restaurants', fixture: 'demoRestaurants', fixtureProp: 'restaurants',
+    imageModule: 'restaurant-images', imageExport: 'restaurantImages', images: restaurantImages,
+    styleModule: 'restaurant.css', styleCss: restaurantCss,
+  },
+] as const;
+
+type InteractiveTemplate = (typeof interactiveTemplates)[number];
+
+function interactiveRouteDefinitions(prefix: string) {
+  return interactiveTemplates.flatMap((template) => template.views.map(({ path, id }) => ({
+    path,
+    imports: [`import { ${template.component} } from '${prefix}/${template.folder}/presentation/${template.component}';`],
+    element: `<${template.component} view=${JSON.stringify(id)} />`,
+  })));
+}
+
+const interactiveRoutes: ReadonlyMap<string, SourceBackedRouteDefinition> = new Map(interactiveRouteDefinitions('../../templates').map((route) => [route.path, route]));
+
 function createRoutesSource(views: readonly ProjectViewDefinition[], genericViews: readonly ProjectViewDefinition[]) {
   const imports = genericViews.map((view) =>
     `import { ${componentName(view)} } from '../../features/${featureKey(view)}/presentation/${componentName(view)}';`,
   );
-  if (genericViews.length !== views.length) {
-    imports.push("import { RealEstateView } from '../../templates/real-estate/presentation/RealEstateView';");
-  }
+  const entries = views.map((view) => {
+    const route = interactiveRoutes.get(view.path);
+    if (route) imports.push(...route.imports);
+    const element = route?.element ?? `<${componentName(view)} repository={viewRepositories['${view.path}']} />`;
+    return `  { path: '${view.path}', label: ${JSON.stringify(view.label)}, section: ${JSON.stringify(view.section)}, element: ${element} },`;
+  });
   if (genericViews.length) {
     imports.push("import { viewRepositories } from '../providers/viewRepositories';");
   }
-  const entries = views.map((view) => {
-    const estate = findRealEstateView(view.path);
-    const element = estate
-      ? `<RealEstateView view=${JSON.stringify(estate.id)} />`
-      : `<${componentName(view)} repository={viewRepositories['${view.path}']} />`;
-    return `  { path: '${view.path}', label: ${JSON.stringify(view.label)}, section: ${JSON.stringify(view.section)}, element: ${element} },`;
-  });
-  return `import type { ReactNode } from 'react';\n${imports.join('\n')}\n\nexport type AppRoute = { path: string; label: string; section: string; element: ReactNode };\n\nexport const appRoutes: readonly AppRoute[] = [\n${entries.join('\n')}\n];\n`;
+  return `import type { ReactNode } from 'react';\n${[...new Set(imports)].join('\n')}\n\nexport type AppRoute = { path: string; label: string; section: string; element: ReactNode };\n\nexport const appRoutes: readonly AppRoute[] = [\n${entries.join('\n')}\n];\n`;
 }
 
-function estateProviderImports(prefix: string) {
-  return `import { demoProperties } from '${prefix}/infrastructure/demo-properties';\nimport { RealEstateProvider } from '${prefix}/presentation/RealEstateProvider';\n`;
+function templateProviderImports(templates: readonly InteractiveTemplate[], prefix: string) {
+  return templates.map(({ folder, fixtureModule, fixture, provider }) =>
+    `import { ${fixture} } from '${prefix}/${folder}/infrastructure/${fixtureModule}';\nimport { ${provider} } from '${prefix}/${folder}/presentation/${provider}';\n`,
+  ).join('');
 }
 
-function estateProviderBody(paths: string, navigate: string, content: string) {
-  return `<RealEstateProvider properties={demoProperties} viewPaths={${paths}} onNavigate={${navigate}}>${content}</RealEstateProvider>`;
+function templateProviderBody(templates: readonly InteractiveTemplate[], paths: string, navigate: string, content: string) {
+  return templates.reduceRight(
+    (body, { provider, fixture, fixtureProp }) =>
+      `<${provider} ${fixtureProp}={${fixture}} viewPaths={${paths}} onNavigate={${navigate}}>${body}</${provider}>`,
+    content,
+  );
 }
 
-function createAppShellSource(withRealEstate: boolean) {
-  const imports = withRealEstate ? estateProviderImports('../templates/real-estate') : '';
-  const content = withRealEstate
-    ? estateProviderBody('routes.map((route) => route.path)', 'setActivePath', '{active?.element}')
-    : '{active?.element}';
+function createAppShellSource(templates: readonly InteractiveTemplate[]) {
+  const imports = templateProviderImports(templates, '../templates');
+  const content = templateProviderBody(templates, 'routes.map((route) => route.path)', 'setActivePath', '{active?.element}');
   return `import { useMemo, useState } from 'react';\nimport type { AppRoute } from '../app/router/routes';\nimport { projectConfig } from '../app/config/project';\n${imports}\ntype Props = { routes: readonly AppRoute[] };\n\nexport function AppShell({ routes }: Props) {\n  const [activePath, setActivePath] = useState(routes[0]?.path ?? '');\n  const active = routes.find((route) => route.path === activePath) ?? routes[0];\n  const sections = useMemo(() => {\n    const grouped = new Map<string, AppRoute[]>();\n    routes.forEach((route) => grouped.set(route.section, [...(grouped.get(route.section) ?? []), route]));\n    return [...grouped.entries()];\n  }, [routes]);\n\n  return (\n    <div className="app-shell">\n      <aside className="sidebar">\n        <div className="brand">\n          {projectConfig.application.logoDataUrl ? <img alt="Logo" src={projectConfig.application.logoDataUrl} /> : <span className="brand-mark" />}\n          <div className="brand-copy"><strong>{projectConfig.application.name}</strong><span>WebBlueprint export</span></div>\n        </div>\n        <nav>{sections.map(([section, items]) => <section className="nav-section" key={section}><div className="nav-section-title">{section}</div>{items.map((route, index) => <button className={route.path === active?.path ? 'nav-item active' : 'nav-item'} key={route.path} aria-label={route.label} title={route.label} onClick={() => setActivePath(route.path)} type="button"><span>{String(index + 1).padStart(2, '0')}</span><span className="nav-label">{route.label}</span></button>)}</section>)}</nav>\n      </aside>\n      <div className="workspace">\n        <header className="topbar"><div><strong>{active?.label ?? projectConfig.application.name}</strong><span>{active?.path}</span></div><div><strong>{routes.findIndex((route) => route.path === active?.path) + 1} / {routes.length}</strong><span>Selección = Preview = Export</span></div></header>\n        <main className="content">${content}</main>\n      </div>\n    </div>\n  );\n}\n`;
 }
 
@@ -309,10 +340,7 @@ type SourceBackedRouteDefinition = {
 };
 
 const sourceBackedRouteDefinitions: Readonly<Record<string, SourceBackedRouteDefinition>> = {
-  ...Object.fromEntries(realEstateViews.map(({ path, id }) => [path, {
-    imports: ["import { RealEstateView } from '@/templates/real-estate/presentation/RealEstateView';"],
-    element: `<RealEstateView view=${JSON.stringify(id)} />`,
-  }])),
+  ...Object.fromEntries(interactiveRouteDefinitions('@/templates').map((route) => [route.path, route])),
   '/applications/management/dashboard': {
     imports: ["import { DashboardView } from '@/dashboard/DashboardView';"],
     element: '<DashboardView />',
@@ -428,21 +456,19 @@ function createSourceBackedRoutes(views: readonly ProjectViewDefinition[]) {
   return `import type { ReactNode } from 'react';\n${imports}\n\n${setup}\n\nexport type SourceBackedRoute = { path: string; label: string; section: string; element: ReactNode };\n\nexport const sourceBackedRoutes: readonly SourceBackedRoute[] = [\n${entries}\n];\n`;
 }
 
-function createSourceBackedProjectApp(manifest: BlueprintProjectManifest, withRealEstate: boolean) {
-  const estateImports = withRealEstate ? estateProviderImports('@/templates/real-estate') : '';
-  const useNavigateImport = withRealEstate ? ', useNavigate' : '';
-  const navigateDeclaration = withRealEstate ? "  const navigate = useNavigate();\n" : '';
+function createSourceBackedProjectApp(manifest: BlueprintProjectManifest, templates: readonly InteractiveTemplate[]) {
+  const templateImports = templateProviderImports(templates, '@/templates');
+  const useNavigateImport = templates.length ? ', useNavigate' : '';
+  const navigateDeclaration = templates.length ? "  const navigate = useNavigate();\n" : '';
   const routes = `<Routes>
             {sourceBackedRoutes.map((route) => <Route element={route.element} key={route.path} path={route.path} />)}
             <Route path="*" element={<Navigate replace to={sourceBackedRoutes[0]?.path ?? '/'} />} />
           </Routes>`;
-  const content = withRealEstate
-    ? estateProviderBody('sourceBackedRoutes.map((route) => route.path)', 'navigate', routes)
-    : routes;
+  const content = templateProviderBody(templates, 'sourceBackedRoutes.map((route) => route.path)', 'navigate', routes);
   return `import { useMemo } from 'react';
 import { Navigate, NavLink, Route, Routes, useLocation${useNavigateImport} } from 'react-router';
 import { sourceBackedRoutes } from './routes';
-${estateImports}
+${templateImports}
 
 const applicationName = ${JSON.stringify(manifest.application.name)};
 const applicationLogo = ${JSON.stringify(manifest.application.logoDataUrl)};
@@ -546,9 +572,6 @@ const sourceBackedTsconfig = `{
 }
 `;
 
-const estateSourcePrefix = 'src/templates/real-estate/';
-const estateImagesPath = `${estateSourcePrefix}infrastructure/listing-images.ts`;
-
 function sourceBackedFiles() {
   return Object.entries(sourceTemplateFiles)
     .map(([path, content]) => ({
@@ -558,27 +581,29 @@ function sourceBackedFiles() {
     .filter(
       (file) =>
         file.path !== 'src/main.tsx' &&
-        !file.path.startsWith(estateSourcePrefix) &&
+        !interactiveTemplates.some(({ folder }) => file.path.startsWith(`src/templates/${folder}/`)) &&
         !/\.(test|spec)\.[jt]sx?$/.test(file.path) &&
         !file.path.includes('/__tests__/'),
     );
 }
 
-function realEstateSourceFiles(): ExportProjectFile[] {
-  return Object.entries(sourceTemplateFiles)
-    .filter(([path]) => path.startsWith('../templates/real-estate/'))
-    .map(([path, content]) => {
-      const destination = path.replace(/^\.\.\//, 'src/');
-      return {
-        path: destination,
-        content: destination === estateImagesPath
-          ? `export const listingImages = ${JSON.stringify(listingImages)};\n`
-          : content,
-      };
-    });
+function interactiveSourceFiles(templates: readonly InteractiveTemplate[]): ExportProjectFile[] {
+  return templates.flatMap(({ folder, imageModule, imageExport, images, styleModule, styleCss }) => {
+    const sourcePrefix = `../templates/${folder}/`;
+    const overrides = {
+      [`${sourcePrefix}infrastructure/${imageModule}.ts`]: `export const ${imageExport} = ${JSON.stringify(images)};\n`,
+      [`${sourcePrefix}presentation/${styleModule}`]: styleCss,
+    };
+    return Object.entries(sourceTemplateFiles)
+      .filter(([path]) => path.startsWith(sourcePrefix))
+      .map(([path, content]) => ({
+        path: path.replace(/^\.\.\//, 'src/'),
+        content: overrides[path] ?? content,
+      }));
+  });
 }
 
-const estateMobileShellCss = `
+const interactiveMobileShellCss = `
 @media (max-width: 760px) {
   .app-shell { grid-template-columns: minmax(0, 1fr); }
   .sidebar { position: static; height: auto; }
@@ -647,7 +672,7 @@ function buildSourceBackedExportProject(
   manifest: BlueprintProjectManifest,
   views: readonly ProjectViewDefinition[],
   rootName: string,
-  withRealEstate: boolean,
+  templates: readonly InteractiveTemplate[],
 ): ExportProject {
   const copiedSource = sourceBackedFiles();
   const generated: ExportProjectFile[] = [
@@ -658,11 +683,11 @@ function buildSourceBackedExportProject(
     { path: 'index.html', content: createIndexHtml(manifest) },
     { path: 'package-lock.json', content: createPackageLock(manifest) },
     { path: 'package.json', content: createPackageJson(manifest) },
-    { path: 'src/exported/ProjectApp.tsx', content: createSourceBackedProjectApp(manifest, withRealEstate) },
+    { path: 'src/exported/ProjectApp.tsx', content: createSourceBackedProjectApp(manifest, templates) },
     { path: 'src/exported/routeManifest.ts', content: createSourceBackedRouteManifest(views) },
     { path: 'src/exported/routeManifest.test.ts', content: createSourceBackedRouteTest(views) },
     { path: 'src/exported/routes.tsx', content: createSourceBackedRoutes(views) },
-    { path: 'src/exported/shell.css', content: withRealEstate ? shellCss + estateMobileShellCss : shellCss },
+    { path: 'src/exported/shell.css', content: templates.length ? shellCss + interactiveMobileShellCss : shellCss },
     { path: 'src/exported/theme.css', content: createThemeCss(manifest) },
     { path: 'src/main.tsx', content: createSourceBackedMain(manifest.theme.colorId) },
     { path: 'tsconfig.json', content: sourceBackedTsconfig },
@@ -670,18 +695,19 @@ function buildSourceBackedExportProject(
     { path: 'webblueprint.json', content: `${JSON.stringify(manifest, null, 2)}\n` },
   ];
 
-  return { rootName, files: [...copiedSource, ...(withRealEstate ? realEstateSourceFiles() : []), ...generated] };
+  return { rootName, files: [...copiedSource, ...interactiveSourceFiles(templates), ...generated] };
 }
 
 export function buildReactExportProject(manifest: BlueprintProjectManifest): ExportProject {
   assertExportableManifest(manifest);
   const views = applyPresetPresentation(manifest, getSelectedProjectViews(manifest.views));
   const rootName = slugify(manifest.application.name);
-  const genericViews = views.filter((view) => !findRealEstateView(view.path));
-  const withRealEstate = genericViews.length !== views.length;
+  const selectedPaths = new Set(views.map(({ path }) => path));
+  const templates = interactiveTemplates.filter((template) => template.views.some(({ path }) => selectedPaths.has(path)));
+  const genericViews = views.filter((view) => !interactiveRoutes.has(view.path));
 
   if (manifest.presetId === 'volketas') {
-    return buildSourceBackedExportProject(manifest, views, rootName, withRealEstate);
+    return buildSourceBackedExportProject(manifest, views, rootName, templates);
   }
 
   const files: ExportProjectFile[] = [
@@ -703,15 +729,15 @@ export function buildReactExportProject(manifest: BlueprintProjectManifest): Exp
     { path: 'src/core/domain/ViewContent.ts', content: viewContentSource },
     { path: 'src/main.tsx', content: mainSource },
     { path: 'src/shared/ui/ViewState.tsx', content: viewStateSource },
-    { path: 'src/shell/AppShell.tsx', content: createAppShellSource(withRealEstate) },
-    { path: 'src/shell/shell.css', content: withRealEstate ? shellCss + estateMobileShellCss : shellCss },
+    { path: 'src/shell/AppShell.tsx', content: createAppShellSource(templates) },
+    { path: 'src/shell/shell.css', content: templates.length ? shellCss + interactiveMobileShellCss : shellCss },
     { path: 'src/theme/theme.css', content: createThemeCss(manifest) },
     { path: 'tsconfig.json', content: tsconfig },
-    { path: 'vite.config.ts', content: withRealEstate ? viteConfig.replace('plugins:', "base: './', plugins:") : viteConfig },
+    { path: 'vite.config.ts', content: templates.length ? viteConfig.replace('plugins:', "base: './', plugins:") : viteConfig },
     { path: 'webblueprint.json', content: `${JSON.stringify(manifest, null, 2)}\n` },
   ];
 
-  if (withRealEstate) files.push(...realEstateSourceFiles());
+  files.push(...interactiveSourceFiles(templates));
 
   for (const view of genericViews) {
     const base = componentName(view).replace(/Page$/, '');

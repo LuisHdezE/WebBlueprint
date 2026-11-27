@@ -16,6 +16,7 @@ describe('templateNavigation', () => {
     expect(templateNavigation.map((section) => section.label)).toEqual([
       'General',
       'Marketplace inmobiliario',
+      'Sitios para restaurantes',
       'FixPhone',
       'Volketas',
       'Gestión',
@@ -34,7 +35,7 @@ describe('templateNavigation', () => {
       'Layouts',
       'Documentación',
     ]);
-    expect(templateRouteItems).toHaveLength(210);
+    expect(templateRouteItems).toHaveLength(215);
   });
 
   it('exposes reusable management views to the Composer catalog', () => {
