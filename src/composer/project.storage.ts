@@ -32,6 +32,7 @@ export function readProjectManifest(): BlueprintProjectManifest {
         logoDataUrl: typeof application?.logoDataUrl === 'string' ? application.logoDataUrl : null,
         faviconDataUrl: typeof application?.faviconDataUrl === 'string' ? application.faviconDataUrl : null,
       },
+      ...(typeof parsed.savedPresetId === 'string' ? { savedPresetId: parsed.savedPresetId } : {}),
       presetId: typeof parsed.presetId === 'string' ? parsed.presetId : null,
       theme: {
         colorId: isThemeColor(theme?.colorId) ? theme.colorId : fallback.theme.colorId,

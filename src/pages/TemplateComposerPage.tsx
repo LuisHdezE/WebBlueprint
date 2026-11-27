@@ -1,5 +1,5 @@
-import { useEffect, useMemo } from 'react';
-import type { ChangeEvent, Dispatch, SetStateAction } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import type { ChangeEvent, Dispatch, FormEvent, SetStateAction } from 'react';
 import { AppIcon } from '@/components/AppIcon';
 import { getProjectViewsBySection, getSelectedProjectViews } from '@/composer/project.catalog';
 import {
@@ -10,6 +10,14 @@ import {
   toggleProjectView,
 } from '@/composer/project.logic';
 import { getProjectPreset, projectPresets } from '@/composer/project.presets';
+import {
+  applySavedProjectPreset,
+  createSavedProjectPreset,
+  maxPresetNameLength,
+  readSavedProjectPresets,
+  savedProjectPresetPrefix,
+  saveProjectPreset,
+} from '@/composer/project.saved-presets';
 import { writeProjectManifest } from '@/composer/project.storage';
 import type { BlueprintProjectManifest } from '@/composer/project.types';
 import { themePresets } from '@/theme/themeContext';
@@ -35,12 +43,49 @@ type Props = {
 export function TemplateComposerPage({ project, setProject }: Props) {
   const sections = useMemo(() => getProjectViewsBySection(), []);
   const selectedViews = getSelectedProjectViews(project.views);
-  const selectedPreset = getProjectPreset(project.presetId);
+  const [savedPresets, setSavedPresets] = useState(() => readSavedProjectPresets(window.localStorage));
+  const [presetName, setPresetName] = useState('');
+  const [saveFeedback, setSaveFeedback] = useState<{ message: string; error: boolean } | null>(null);
+  const selectedSavedPreset = savedPresets.find(({ id }) => id === project.savedPresetId);
+  const selectedPreset = selectedSavedPreset ?? getProjectPreset(project.presetId);
   const presetModified = Boolean(selectedPreset && !selectionsMatch(project.views, selectedPreset.viewPaths));
+  const availablePresets = [
+    ...projectPresets.map((preset) => ({ ...preset, saved: false as const })),
+    ...savedPresets.map((preset) => ({ ...preset, description: 'Guardada en este navegador', saved: true as const })),
+  ];
 
   useEffect(() => {
     writeProjectManifest(project);
   }, [project]);
+
+  useEffect(() => {
+    function refreshSavedPresets(event: StorageEvent) {
+      if (event.storageArea === window.localStorage && (event.key === null || event.key.startsWith(savedProjectPresetPrefix))) {
+        setSavedPresets(readSavedProjectPresets(window.localStorage));
+      }
+    }
+    window.addEventListener('storage', refreshSavedPresets);
+    return () => window.removeEventListener('storage', refreshSavedPresets);
+  }, []);
+
+  function saveSelection(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    try {
+      const saved = createSavedProjectPreset(project, presetName, window.crypto.randomUUID());
+      saveProjectPreset(window.localStorage, saved);
+      setSavedPresets(readSavedProjectPresets(window.localStorage));
+      setProject((current) => applySavedProjectPreset(current, saved));
+      setPresetName('');
+      setSaveFeedback({ message: `Plantilla «${saved.name}» guardada.`, error: false });
+    } catch (error) {
+      setSaveFeedback({
+        message: error instanceof DOMException
+          ? 'No se pudo guardar la plantilla en este navegador.'
+          : error instanceof Error ? error.message : 'No se pudo guardar la plantilla.',
+        error: true,
+      });
+    }
+  }
 
   async function handleAssetUpload(kind: 'logoDataUrl' | 'faviconDataUrl', event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -184,8 +229,8 @@ export function TemplateComposerPage({ project, setProject }: Props) {
             </div>
 
             <div className="mt-4 grid gap-2 md:grid-cols-2 xl:grid-cols-3">
-              {projectPresets.map((preset) => {
-                const active = preset.id === (project.presetId ?? 'blank');
+              {availablePresets.map((preset) => {
+                const active = preset.id === (selectedSavedPreset?.id ?? project.presetId ?? 'blank');
                 return (
                   <button
                     className={`rounded-md border p-3 text-left transition ${
@@ -195,7 +240,9 @@ export function TemplateComposerPage({ project, setProject }: Props) {
                     }`}
                     aria-pressed={active}
                     key={preset.id}
-                    onClick={() => setProject((current) => applyProjectPreset(current, preset.id))}
+                    onClick={() => setProject((current) => (
+                      preset.saved ? applySavedProjectPreset(current, preset) : applyProjectPreset(current, preset.id)
+                    ))}
                     type="button"
                   >
                     <div className="flex items-start justify-between gap-3">
@@ -207,6 +254,32 @@ export function TemplateComposerPage({ project, setProject }: Props) {
                 );
               })}
             </div>
+
+            <form className="mt-4 border-t border-slate-200 pt-4" onSubmit={saveSelection}>
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
+                <label className="min-w-0 flex-1 text-xs font-semibold text-slate-700">
+                  Nombre de la nueva plantilla
+                  <input
+                    className="mt-1.5 block w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-900"
+                    maxLength={maxPresetNameLength}
+                    onChange={(event) => { setPresetName(event.target.value); setSaveFeedback(null); }}
+                    required
+                    value={presetName}
+                  />
+                </label>
+                <button
+                  className="rounded-md bg-[var(--theme-primary)] px-3 py-2.5 text-xs font-semibold text-[var(--theme-on-primary)] disabled:cursor-not-allowed disabled:opacity-50"
+                  disabled={!presetName.trim() || project.views.length === 0}
+                  type="submit"
+                >
+                  Guardar selección como plantilla base
+                </button>
+              </div>
+              <p className="mt-2 text-xs text-slate-600">Guarda las vistas, su orden y el tema en este navegador.</p>
+              {saveFeedback ? (
+                <p className="mt-2 text-xs" role={saveFeedback.error ? 'alert' : 'status'}>{saveFeedback.message}</p>
+              ) : null}
+            </form>
           </section>
 
           <section className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">

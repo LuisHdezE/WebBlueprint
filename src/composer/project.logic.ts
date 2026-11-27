@@ -27,8 +27,10 @@ export function applyProjectPreset(
     return project;
   }
 
+  const next = { ...project };
+  delete next.savedPresetId;
   return {
-    ...project,
+    ...next,
     presetId: preset.id === 'blank' ? null : preset.id,
     theme: preset.themeColorId ? { colorId: preset.themeColorId } : project.theme,
     views: [...preset.viewPaths],

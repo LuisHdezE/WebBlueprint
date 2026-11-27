@@ -15,7 +15,9 @@ Registrá cada recorrido como **Verificado**, **Simulado** o **Pendiente** segú
 
 La plantilla base precarga una selección editable. Cada vista de aplicación tiene su propia entrada en el catálogo que comparten el menú de WebBlueprint y el Composer. Así, una pantalla nueva puede usarse por sí sola o junto con pantallas de otros proyectos.
 
-Cuando falte una pantalla que pueda servir en otras ofertas, incorporala como vista de catálogo y registrá en la ficha qué hace y qué recorrido se verificó. Si una vista del menú está marcada como próxima, o si solo se renderiza una maqueta, anotá su estado y el trabajo que falta antes de mostrarla como funcional. Si una combinación se repite, registrá una plantilla base que referencie las vistas existentes.
+Cuando falte una pantalla que pueda servir en otras ofertas, incorporala como vista de catálogo y registrá en la ficha qué hace y qué recorrido se verificó. Si una vista del menú está marcada como próxima, o si solo se renderiza una maqueta, anotá su estado y el trabajo que falta antes de mostrarla como funcional. Cuando cierres la demo de un proyecto nuevo, dejá su combinación registrada como plantilla base. En el punto **Plantilla base**, escribí un nombre y pulsá **Guardar selección como plantilla base**. La tarjeta queda disponible en el mismo navegador y recupera las vistas, el orden y el tema. Al seleccionarla, podés seguir adaptando el proyecto como con las demás plantillas.
+
+Para que el equipo pueda elegir la misma base en cualquier equipo, incorporá su definición al catálogo versionado de WebBlueprint. La ficha debe indicar el nombre con el que aparece y la revisión que incluye la plantilla.
 
 **Combinación verificada.** Desde la plantilla de restaurantes, agregamos solo **Catálogo de inmuebles** en la familia **Marketplace inmobiliario**. La vista previa y el ZIP mostraron las seis vistas. En el ZIP compilado, editamos un precio de la carta, filtramos los inmuebles por alquiler y volvimos a la carta para comprobar que el cambio seguía visible durante la sesión.
 
